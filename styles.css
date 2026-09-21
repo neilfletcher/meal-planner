@@ -235,7 +235,26 @@
   .recipe-card .title { font-family: var(--font-display); font-weight: 600; font-size: 17px; text-wrap: balance; }
   .recipe-card .time { font-family: var(--font-mono); font-size: 11.5px; color: var(--ink-muted); white-space: nowrap; }
   .recipe-card .tag-row { display: flex; gap: 6px; flex-wrap: wrap; }
+  .card-rating .star-row { gap: 1px; }
+  .card-rating .star-static { font-size: 13px; }
   .empty-state { color: var(--ink-muted); padding: 32px 8px; text-align: center; font-size: 14px; }
+
+  /* ---------- ratings ---------- */
+  .star-row { display: inline-flex; align-items: center; gap: 2px; }
+  .star-static { color: var(--ink-muted); line-height: 1; }
+  .star-static.filled { color: var(--accent-2); }
+  .star-btn {
+    border: none; background: none; cursor: pointer; padding: 2px; font-size: 20px; line-height: 1;
+    color: var(--ink-muted); border-radius: 4px;
+  }
+  .star-btn.filled { color: var(--accent-2); }
+  .star-btn:hover { color: var(--accent-2); background: var(--surface-2); }
+  .star-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+  .rating-block { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 10px; margin: 14px 0; }
+  .rating-label { font-size: 12.5px; font-weight: 600; color: var(--ink-muted); }
+  .rating-hint { flex-basis: 100%; font-size: 11.5px; color: var(--ink-muted); }
+  .picker-rating { margin-left: auto; flex-shrink: 0; }
+  .picker-rating .star-static { font-size: 12px; }
 
   /* ---------- shopping list ---------- */
   .shop-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 10px; }

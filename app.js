@@ -915,7 +915,8 @@
   var state = {
     servings: 1,
     plan: [null, null, null, null, null, null, null],
-    checked: {}
+    checked: {},
+    ratings: {}
   };
   var currentUser = null;       // Firebase auth user, or null when signed out
   var saveTimer = null;
@@ -953,7 +954,7 @@
   function saveLocal() {
     try {
       localStorage.setItem(LOCAL_KEY, JSON.stringify({
-        servings: state.servings, plan: state.plan, checked: state.checked
+        servings: state.servings, plan: state.plan, checked: state.checked, ratings: state.ratings
       }));
     } catch (e) { /* localStorage unavailable - ignore */ }
   }
@@ -971,6 +972,7 @@
     if (typeof data.servings === "number") state.servings = data.servings;
     if (Array.isArray(data.plan) && data.plan.length === 7) state.plan = data.plan;
     if (data.checked && typeof data.checked === "object") state.checked = data.checked;
+    if (data.ratings && typeof data.ratings === "object") state.ratings = data.ratings;
   }
 
   function setSyncStatus(text) {
@@ -991,6 +993,7 @@
           servings: state.servings,
           plan: state.plan,
           checked: state.checked,
+          ratings: state.ratings,
           updatedAt: firebase.firestore.FieldValue.serverTimestamp()
         })
         .then(function () { setSyncStatus("Synced"); })
@@ -1021,6 +1024,7 @@
           servings: state.servings,
           plan: state.plan,
           checked: state.checked,
+          ratings: state.ratings,
           updatedAt: firebase.firestore.FieldValue.serverTimestamp()
         }).catch(function () {});
       }
@@ -1120,6 +1124,46 @@
     return '<span class="tag-pill tag-' + cls + '">' + tag + "</span>";
   }
 
+  /* ============================= RATINGS ============================= */
+  // Rate any dish 1-5 stars. A 1-star rating is treated as "not for me": it's
+  // excluded from "Surprise me" picks (see openPicker below) but stays
+  // visible everywhere else, so it's easy to change your mind later.
+  function ratingStars(recipeId, interactive) {
+    var current = state.ratings[recipeId] || 0;
+    var html = '<div class="star-row" data-recipe-id="' + recipeId + '">';
+    for (var n = 1; n <= 5; n++) {
+      var filled = n <= current;
+      var glyph = filled ? "★" : "☆";
+      if (interactive) {
+        html += '<button type="button" class="star-btn' + (filled ? " filled" : "") + '" data-value="' + n + '" aria-label="Rate ' + n + (n === 1 ? " star" : " stars") + '">' + glyph + "</button>";
+      } else {
+        html += '<span class="star-static' + (filled ? " filled" : "") + '">' + glyph + "</span>";
+      }
+    }
+    html += "</div>";
+    return html;
+  }
+  function wireRatingStars(container, recipeId, onChange) {
+    var row = container.querySelector('.star-row[data-recipe-id="' + recipeId + '"]');
+    if (!row) return;
+    row.querySelectorAll(".star-btn").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var val = parseInt(btn.getAttribute("data-value"), 10);
+        var current = state.ratings[recipeId] || 0;
+        if (current === val) {
+          delete state.ratings[recipeId]; // click the same star again to clear the rating
+        } else {
+          state.ratings[recipeId] = val;
+        }
+        scheduleSave();
+        row.outerHTML = ratingStars(recipeId, true);
+        wireRatingStars(container, recipeId, onChange);
+        renderRecipeGrid(); // keep the card behind the modal in sync (it isn't visible right now, but will be on close)
+        if (onChange) onChange();
+      });
+    });
+  }
+
   /* ============================= TABS ============================= */
   var panels = { planner: document.getElementById("panel-planner"), shopping: document.getElementById("panel-shopping"), recipes: document.getElementById("panel-recipes") };
   var tabBtns = document.querySelectorAll(".tab-btn");
@@ -1203,12 +1247,17 @@
 
   document.getElementById("fill-week-btn").addEventListener("click", function () {
     var used = state.plan.filter(Boolean);
-    var pool = RECIPES.map(function (r) { return r.id; }).filter(function (id) { return used.indexOf(id) === -1; });
+    // Never fill a day with a 1-star dish, same rule as Surprise me. Only
+    // fall back to the full list (including 1-star dishes) if every single
+    // recipe has been rated 1 star, so the week can still be filled.
+    var likedIds = RECIPES.filter(function (r) { return state.ratings[r.id] !== 1; }).map(function (r) { return r.id; });
+    var basePool = likedIds.length ? likedIds : RECIPES.map(function (r) { return r.id; });
+    var pool = basePool.filter(function (id) { return used.indexOf(id) === -1; });
     for (var i = pool.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = pool[i]; pool[i] = pool[j]; pool[j] = t; }
     var pi = 0;
     for (var d = 0; d < 7; d++) {
       if (!state.plan[d]) {
-        if (pi >= pool.length) { pool = RECIPES.map(function (r) { return r.id; }); pi = 0; }
+        if (pi >= pool.length) { pool = basePool.slice(); pi = 0; }
         state.plan[d] = pool[pi++];
       }
     }
@@ -1314,9 +1363,11 @@
     filtered.forEach(function (r) {
       var card = document.createElement("button");
       card.className = "recipe-card";
+      var rated = state.ratings[r.id] ? ratingStars(r.id, false) : "";
       card.innerHTML =
         '<div class="top-row"><span class="title">' + r.title + '</span><span class="time">' + r.prep + "+" + r.cook + " min</span></div>" +
-        '<div class="tag-row">' + r.tags.map(tagPill).join("") + "</div>";
+        '<div class="tag-row">' + r.tags.map(tagPill).join("") + "</div>" +
+        (rated ? '<div class="card-rating">' + rated + "</div>" : "");
       card.addEventListener("click", function () { openRecipeModal(r.id, { fromLibrary: true }); });
       grid.appendChild(card);
     });
@@ -1354,12 +1405,14 @@
       '<div class="tag-row">' + r.tags.map(tagPill).join("") + "</div>" +
       '<div class="modal-meta"><span>Prep ' + r.prep + ' min</span><span>Cook ' + r.cook + ' min</span><span>Serves ' + state.servings + '</span></div>' +
       '<p style="color:var(--ink-muted); font-size:13px;">' + servingsNote + "</p>" +
+      '<div class="rating-block"><span class="rating-label">Your rating</span>' + ratingStars(r.id, true) + '<span class="rating-hint">Tap a star again to clear it. 1 star is never suggested by Surprise me.</span></div>' +
       "<h3>Ingredients</h3>" + ingredientsHtml +
       "<h3>Method</h3><ol class=\"steps\">" + stepsHtml + "</ol>" +
       actionsHtml;
 
     recipeBackdrop.hidden = false;
     document.getElementById("modal-close-btn").addEventListener("click", closeRecipeModal);
+    wireRatingStars(recipeModal, r.id);
 
     if (ctx && ctx.dayIdx !== undefined) {
       document.getElementById("modal-swap-btn").addEventListener("click", function () { closeRecipeModal(); openPicker(ctx.dayIdx); });
@@ -1390,9 +1443,11 @@
   function openPicker(dayIdx) {
     var date = new Date(MONDAY); date.setDate(date.getDate() + dayIdx);
     var rows = RECIPES.map(function (r) {
+      var rated = state.ratings[r.id] ? ratingStars(r.id, false) : "";
       return '<button class="picker-row" data-id="' + r.id + '">' +
         '<span class="swatch" style="background:var(--' + (TAG_COLOR[r.tags[0]] || "border") + ')"></span>' +
         '<span><span class="title">' + r.title + '</span><br><span class="meta">' + r.prep + '+' + r.cook + ' min' + (r.tags.length ? " · " + r.tags.join(", ") : "") + '</span></span>' +
+        (rated ? '<span class="picker-rating">' + rated + '</span>' : "") +
         "</button>";
     }).join("");
     pickerModal.innerHTML =
@@ -1411,7 +1466,11 @@
       });
     });
     document.getElementById("picker-surprise-btn").addEventListener("click", function () {
-      var pick = RECIPES[Math.floor(Math.random() * RECIPES.length)];
+      // Never suggest a dish rated 1 star. Fall back to the full list only
+      // in the (unlikely) case every single recipe has been rated 1 star.
+      var pool = RECIPES.filter(function (r) { return state.ratings[r.id] !== 1; });
+      if (!pool.length) pool = RECIPES;
+      var pick = pool[Math.floor(Math.random() * pool.length)];
       state.plan[dayIdx] = pick.id;
       onStateChanged();
       closePicker();

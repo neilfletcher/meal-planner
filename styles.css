@@ -2,6 +2,7 @@
    Token system supports light/dark via prefers-color-scheme, with
    :root[data-theme] overrides available if you add a manual toggle. */
   :root {
+    color-scheme: light dark;
     --bg: #F4F6F5;
     --surface: #FFFFFF;
     --surface-2: #EAEEEC;
@@ -77,7 +78,7 @@
   }
   h1, h2, h3 { font-family: var(--font-display); font-weight: 600; margin: 0; text-wrap: balance; }
   p { margin: 0; }
-  button { font-family: inherit; }
+  button, input, select, textarea { font-family: inherit; color: inherit; }
   ::selection { background: var(--accent); color: var(--accent-ink); }
 
   /* ---------- header ---------- */

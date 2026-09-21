@@ -905,6 +905,795 @@
         "Warm the flatbread.",
         "Serve the koftas with the flatbread and tzatziki, scattered with a few mint leaves."
       ]
+    },
+    {
+      id: "d53", title: "Korean Gochujang Chicken Traybake", tags: ["spicy"],
+      prep: 8, cook: 22,
+      ingredients: [
+        ing(180, "g", "boneless chicken thighs, cut into chunks", "meat"), ing(150, "g", "tenderstem broccoli", "produce"),
+        ing(1, "tbsp", "gochujang (Korean chilli paste)", "store"), ing(1, "tbsp", "soy sauce", "store"),
+        ing(1, "tsp", "honey", "store"), ing(1, "tsp", "sesame oil", "store"),
+        ing(1, "", "garlic clove", "produce"), ing(1, "tsp", "sesame seeds", "store")
+      ],
+      steps: [
+        "Preheat the oven to 200°C (fan 180°C).",
+        "Mix the gochujang, soy sauce, honey, sesame oil and crushed garlic, then toss through the chicken.",
+        "Spread the chicken over a lined baking tray and roast for 12 minutes.",
+        "Add the broccoli to the tray, tossing it through any juices, and roast for a further 8–10 minutes until the chicken is cooked through and the broccoli is tender.",
+        "Scatter with sesame seeds to serve."
+      ]
+    },
+    {
+      id: "d54", title: "Sausage, Apple & Red Onion Traybake", tags: [],
+      prep: 6, cook: 25,
+      ingredients: [
+        ing(3, "", "pork sausages", "meat"), ing(1, "", "apple, cored and cut into wedges", "produce"),
+        ing(1, "", "red onion, cut into wedges", "produce"), ing(1, "tbsp", "olive oil", "store"),
+        ing(1, "tsp", "wholegrain mustard", "store"), ing(null, "few sprigs", "fresh thyme", "produce")
+      ],
+      steps: [
+        "Preheat the oven to 200°C (fan 180°C).",
+        "Toss the sausages, apple wedges and red onion with the olive oil on a baking tray.",
+        "Roast for 15 minutes.",
+        "Turn everything, drizzle with the mustard and scatter over the thyme, then roast for a further 10 minutes until the sausages are browned and cooked through.",
+        "Serve straight from the tray."
+      ]
+    },
+    {
+      id: "d55", title: "Moroccan-Spiced Cod Traybake with Chickpeas", tags: ["pescatarian"],
+      prep: 7, cook: 18,
+      ingredients: [
+        ing(150, "g", "cod fillet", "meat"), ing(200, "g", "tinned chickpeas, drained", "store"),
+        ing(100, "g", "cherry tomatoes", "produce"), ing(1, "tsp", "ras el hanout", "spice"),
+        ing(1, "tbsp", "olive oil", "store"), ing(0.5, "", "lemon", "produce"),
+        ing(null, "small handful", "fresh coriander", "produce")
+      ],
+      steps: [
+        "Preheat the oven to 200°C (fan 180°C).",
+        "Toss the chickpeas and cherry tomatoes with half the oil and the ras el hanout on a baking tray, and roast for 8 minutes.",
+        "Rub the cod with the remaining oil, nestle it on top of the chickpeas, and squeeze over the lemon juice.",
+        "Roast for a further 10 minutes until the cod flakes easily.",
+        "Scatter with coriander to serve."
+      ]
+    },
+    {
+      id: "d56", title: "Harissa Chickpea & Sweet Potato Traybake", tags: ["vegetarian", "vegan"],
+      prep: 8, cook: 25,
+      ingredients: [
+        ing(200, "g", "sweet potato, cubed", "produce"), ing(200, "g", "tinned chickpeas, drained", "store"),
+        ing(1.5, "tbsp", "harissa paste", "store"), ing(1, "tbsp", "olive oil", "store"),
+        ing(0.5, "", "red onion, cut into wedges", "produce"), ing(null, "small handful", "fresh coriander", "produce")
+      ],
+      steps: [
+        "Preheat the oven to 200°C (fan 180°C).",
+        "Toss the sweet potato with the oil and half the harissa on a baking tray, and roast for 15 minutes.",
+        "Add the chickpeas and red onion, tossed through the remaining harissa, and roast for a further 10 minutes until the sweet potato is tender and caramelised at the edges.",
+        "Scatter with coriander to serve."
+      ]
+    },
+    {
+      id: "d57", title: "Sticky Soy Salmon Traybake with Broccoli", tags: ["pescatarian", "quick"],
+      prep: 5, cook: 12,
+      ingredients: [
+        ing(150, "g", "salmon fillet", "meat"), ing(120, "g", "tenderstem broccoli", "produce"),
+        ing(1.5, "tbsp", "soy sauce", "store"), ing(1, "tsp", "honey", "store"),
+        ing(1, "tsp", "sesame oil", "store"), ing(1, "tsp", "sesame seeds", "store")
+      ],
+      steps: [
+        "Preheat the oven to 200°C (fan 180°C).",
+        "Mix the soy sauce, honey and sesame oil, and brush half over the salmon on a lined baking tray.",
+        "Add the broccoli to the tray and brush with the remaining glaze.",
+        "Roast for 10–12 minutes until the salmon is just cooked through and the broccoli is tender.",
+        "Scatter with sesame seeds to serve."
+      ]
+    },
+    {
+      id: "d58", title: "Cajun Sausage & Pepper Traybake", tags: ["spicy"],
+      prep: 6, cook: 25,
+      ingredients: [
+        ing(3, "", "pork sausages", "meat"), ing(1, "", "pepper, sliced", "produce"),
+        ing(0.5, "", "red onion, sliced", "produce"), ing(1.5, "tsp", "Cajun seasoning", "spice"),
+        ing(1, "tbsp", "olive oil", "store")
+      ],
+      steps: [
+        "Preheat the oven to 200°C (fan 180°C).",
+        "Toss the sausages, pepper and red onion with the oil and Cajun seasoning on a baking tray.",
+        "Roast for 20–25 minutes, turning halfway, until the sausages are cooked through and the vegetables are charred at the edges."
+      ]
+    },
+    {
+      id: "d59", title: "Lemon Herb Chicken Thigh Traybake with New Potatoes", tags: [],
+      prep: 6, cook: 28,
+      ingredients: [
+        ing(180, "g", "boneless chicken thighs", "meat"), ing(150, "g", "new potatoes, halved", "produce"),
+        ing(1, "tbsp", "olive oil", "store"), ing(0.5, "", "lemon", "produce"),
+        ing(1, "tsp", "dried mixed herbs", "spice"), ing(1, "", "garlic clove", "produce")
+      ],
+      steps: [
+        "Preheat the oven to 200°C (fan 180°C).",
+        "Toss the potatoes with half the oil on a baking tray and roast for 10 minutes.",
+        "Toss the chicken with the remaining oil, the dried herbs, crushed garlic and lemon zest, then add to the tray with the potatoes.",
+        "Squeeze over the lemon juice and roast for a further 16–18 minutes until the chicken is cooked through and the potatoes are tender."
+      ]
+    },
+    {
+      id: "d60", title: "Chorizo & New Potato Traybake with Peppers", tags: ["spicy"],
+      prep: 6, cook: 25,
+      ingredients: [
+        ing(80, "g", "cooking chorizo, sliced", "meat"), ing(150, "g", "new potatoes, halved", "produce"),
+        ing(1, "", "pepper, sliced", "produce"), ing(1, "tbsp", "olive oil", "store"),
+        ing(1, "tsp", "smoked paprika", "spice")
+      ],
+      steps: [
+        "Preheat the oven to 200°C (fan 180°C).",
+        "Toss the potatoes with the oil and smoked paprika on a baking tray, and roast for 12 minutes.",
+        "Add the chorizo and pepper to the tray, and roast for a further 13 minutes until the potatoes are tender and the chorizo is crisping at the edges."
+      ]
+    },
+    {
+      id: "d61", title: "Halloumi & Vegetable Traybake with Chilli Honey", tags: ["vegetarian"],
+      prep: 7, cook: 20,
+      ingredients: [
+        ing(100, "g", "halloumi, sliced", "dairy"), ing(1, "", "courgette, sliced", "produce"),
+        ing(1, "", "pepper, sliced", "produce"), ing(1, "tbsp", "olive oil", "store"),
+        ing(1, "tbsp", "honey", "store"), ing(0.5, "tsp", "chilli flakes", "spice")
+      ],
+      steps: [
+        "Preheat the oven to 200°C (fan 180°C).",
+        "Toss the courgette and pepper with the oil on a baking tray and roast for 12 minutes.",
+        "Add the halloumi slices to the tray and roast for a further 8 minutes until golden.",
+        "Warm the honey with the chilli flakes and drizzle over everything to serve."
+      ]
+    },
+    {
+      id: "d62", title: "Greek-Style Chicken Traybake with Feta and Olives", tags: [],
+      prep: 7, cook: 25,
+      ingredients: [
+        ing(180, "g", "boneless chicken thighs", "meat"), ing(100, "g", "cherry tomatoes", "produce"),
+        ing(0.5, "", "red onion, cut into wedges", "produce"), ing(40, "g", "feta, crumbled", "dairy"),
+        ing(6, "", "pitted olives", "store"), ing(1, "tbsp", "olive oil", "store"),
+        ing(1, "tsp", "dried oregano", "spice")
+      ],
+      steps: [
+        "Preheat the oven to 200°C (fan 180°C).",
+        "Toss the chicken, tomatoes and red onion with the oil and oregano on a baking tray.",
+        "Roast for 20–22 minutes until the chicken is cooked through.",
+        "Scatter over the feta and olives and roast for a final 3 minutes to warm through."
+      ]
+    },
+    {
+      id: "d63", title: "Filipino-Style Pork Adobo with Rice", tags: [],
+      prep: 8, cook: 20,
+      ingredients: [
+        ing(180, "g", "pork shoulder or loin, cubed", "meat"), ing(2, "tbsp", "soy sauce", "store"),
+        ing(2, "tbsp", "white or rice vinegar", "store"), ing(1, "", "garlic clove, crushed", "produce"),
+        ing(1, "", "bay leaf", "spice"), ing(0.25, "tsp", "black peppercorns", "spice"),
+        ing(150, "g", "cooked rice", "store")
+      ],
+      steps: [
+        "Brown the pork in a dry pan over medium-high heat for 3–4 minutes.",
+        "Add the soy sauce, vinegar, garlic, bay leaf, peppercorns and a splash of water.",
+        "Bring to a simmer, cover and cook for 12–15 minutes until the pork is tender and the sauce has reduced slightly.",
+        "Serve over the rice."
+      ]
+    },
+    {
+      id: "d64", title: "Vietnamese-Style Caramel Pork with Rice", tags: [],
+      prep: 8, cook: 15,
+      ingredients: [
+        ing(150, "g", "pork mince", "meat"), ing(1.5, "tbsp", "fish sauce", "store"),
+        ing(1.5, "tbsp", "brown sugar", "store"), ing(1, "", "garlic clove", "produce"),
+        ing(1, "tsp", "grated fresh ginger", "produce"), ing(1, "", "spring onion", "produce"),
+        ing(150, "g", "cooked rice", "store")
+      ],
+      steps: [
+        "Melt the sugar in a dry saucepan over medium heat until it turns a deep caramel colour, watching closely so it doesn't burn.",
+        "Add the pork mince and brown for 3–4 minutes, breaking it up as it cooks.",
+        "Stir in the fish sauce, garlic and ginger with a splash of water, and simmer for 5 minutes until sticky.",
+        "Serve over the rice, scattered with sliced spring onion."
+      ]
+    },
+    {
+      id: "d65", title: "Kung Pao-Style Chicken with Peanuts", tags: ["spicy"],
+      prep: 8, cook: 12,
+      ingredients: [
+        ing(180, "g", "chicken breast, diced", "meat"), ing(30, "g", "roasted peanuts", "store"),
+        ing(1, "", "pepper, diced", "produce"), ing(2, "tbsp", "soy sauce", "store"),
+        ing(1, "tbsp", "rice vinegar", "store"), ing(1, "tsp", "chilli flakes", "spice"),
+        ing(1, "", "garlic clove", "produce"), ing(1, "tsp", "cornflour", "store"),
+        ing(150, "g", "cooked rice", "store")
+      ],
+      steps: [
+        "Toss the chicken in the cornflour to coat.",
+        "Heat a splash of oil in a wok over high heat and stir-fry the chicken for 4–5 minutes until browned and cooked through.",
+        "Add the pepper, garlic and chilli flakes, and stir-fry for 2 minutes.",
+        "Pour in the soy sauce and vinegar, simmer for 1–2 minutes, then stir through the peanuts.",
+        "Serve over the rice."
+      ]
+    },
+    {
+      id: "d66", title: "Egg & Vegetable Chow Mein", tags: ["vegetarian", "quick"],
+      prep: 8, cook: 8,
+      ingredients: [
+        ing(100, "g", "dried egg noodles", "store"), ing(2, "", "eggs", "dairy"),
+        ing(100, "g", "stir-fry vegetable mix", "produce"), ing(1.5, "tbsp", "soy sauce", "store"),
+        ing(1, "tsp", "sesame oil", "store"), ing(1, "", "garlic clove", "produce")
+      ],
+      steps: [
+        "Cook the noodles according to the packet instructions, then drain.",
+        "Beat the eggs and scramble in a wok or frying pan over medium heat until just set, then set aside.",
+        "Stir-fry the vegetables and garlic for 3 minutes.",
+        "Add the noodles and soy sauce, and toss for 1–2 minutes until hot through.",
+        "Fold the egg back through and drizzle with sesame oil to serve."
+      ]
+    },
+    {
+      id: "d67", title: "Char Siu-Style Pork Steaks with Steamed Rice", tags: [],
+      prep: 6, cook: 15,
+      ingredients: [
+        ing(180, "g", "pork loin steak", "meat"), ing(2, "tbsp", "hoisin sauce", "store"),
+        ing(1, "tsp", "soy sauce", "store"), ing(1, "tsp", "honey", "store"),
+        ing(0.5, "tsp", "Chinese five spice", "spice"), ing(150, "g", "cooked rice", "store")
+      ],
+      steps: [
+        "Mix the hoisin, soy sauce, honey and five spice, and coat the pork all over.",
+        "Heat a frying pan or griddle over medium-high heat and cook the pork for 6–7 minutes each side, basting with any extra marinade, until glazed and cooked through.",
+        "Rest for 2 minutes, then slice and serve with the rice."
+      ]
+    },
+    {
+      id: "d68", title: "Thai Basil Pork (Pad Krapow)", tags: ["spicy", "quick"],
+      prep: 6, cook: 8,
+      ingredients: [
+        ing(180, "g", "pork mince", "meat"), ing(1, "tbsp", "fish sauce", "store"),
+        ing(1, "tsp", "soy sauce", "store"), ing(1, "tsp", "brown sugar", "store"),
+        ing(1, "", "red chilli", "produce"), ing(2, "", "garlic cloves", "produce"),
+        ing(null, "handful", "fresh basil leaves", "produce"), ing(1, "", "egg", "dairy"),
+        ing(150, "g", "cooked rice", "store")
+      ],
+      steps: [
+        "Fry the crushed garlic and sliced chilli in a splash of oil over high heat for 30 seconds.",
+        "Add the pork mince and brown for 4–5 minutes, breaking it up as it cooks.",
+        "Stir in the fish sauce, soy sauce and sugar, and cook for 1–2 minutes, then stir through the basil leaves.",
+        "Fry the egg separately in a little oil, keeping the yolk runny.",
+        "Serve the pork over the rice, topped with the fried egg."
+      ]
+    },
+    {
+      id: "d69", title: "Thai Peanut Noodles with Tofu", tags: ["vegetarian", "vegan"],
+      prep: 8, cook: 8,
+      ingredients: [
+        ing(150, "g", "firm tofu, cubed", "store"), ing(100, "g", "flat rice noodles", "store"),
+        ing(2, "tbsp", "peanut butter", "store"), ing(1, "tbsp", "soy sauce", "store"),
+        ing(1, "tsp", "sriracha or chilli sauce", "store"), ing(0.5, "", "lime", "produce"),
+        ing(30, "g", "beansprouts", "produce"), ing(1, "tbsp", "vegetable oil", "store")
+      ],
+      steps: [
+        "Soak the rice noodles in boiled water according to the packet instructions, then drain.",
+        "Pat the tofu dry, then fry in the oil over medium-high heat for 5–6 minutes until golden on all sides.",
+        "Whisk the peanut butter, soy sauce, sriracha, lime juice and a splash of hot water into a smooth sauce.",
+        "Add the noodles and beansprouts to the pan with the tofu, pour over the sauce, and toss for 1–2 minutes until well coated."
+      ]
+    },
+    {
+      id: "d70", title: "Butter Chicken with Basmati Rice", tags: [],
+      prep: 8, cook: 15,
+      ingredients: [
+        ing(180, "g", "chicken breast, diced", "meat"), ing(2, "tbsp", "butter chicken or tikka curry paste", "store"),
+        ing(100, "ml", "passata", "store"), ing(2, "tbsp", "single cream or plain yoghurt", "dairy"),
+        ing(1, "", "garlic clove", "produce"), ing(70, "g", "basmati rice", "store"),
+        ing(null, "small handful", "fresh coriander", "produce")
+      ],
+      steps: [
+        "Cook the rice according to the packet instructions.",
+        "Fry the curry paste and crushed garlic in a splash of oil for 1 minute until fragrant.",
+        "Add the chicken and cook for 3–4 minutes until sealed.",
+        "Stir in the passata and simmer for 8–10 minutes until the chicken is cooked through.",
+        "Stir through the cream, taste and adjust seasoning, then serve over the rice scattered with coriander."
+      ]
+    },
+    {
+      id: "d71", title: "Saag Paneer with Rice", tags: ["vegetarian"],
+      prep: 8, cook: 14,
+      ingredients: [
+        ing(150, "g", "paneer, cubed", "dairy"), ing(150, "g", "baby spinach", "produce"),
+        ing(1, "tbsp", "medium curry powder", "spice"), ing(1, "", "garlic clove", "produce"),
+        ing(2, "tbsp", "single cream or plain yoghurt", "dairy"), ing(70, "g", "basmati rice", "store"),
+        ing(1, "tbsp", "vegetable oil", "store")
+      ],
+      steps: [
+        "Cook the rice according to the packet instructions.",
+        "Fry the paneer in the oil over medium-high heat for 3–4 minutes until golden, then set aside.",
+        "Fry the crushed garlic and curry powder in the same pan for 1 minute, then add the spinach and cook until wilted.",
+        "Blend or roughly mash the spinach mixture, stir in the cream, then return the paneer to the pan and warm through.",
+        "Serve over the rice."
+      ]
+    },
+    {
+      id: "d72", title: "Chana Masala with Rice", tags: ["vegetarian", "vegan"],
+      prep: 8, cook: 15,
+      ingredients: [
+        ing(200, "g", "tinned chickpeas, drained", "store"), ing(150, "g", "chopped tomatoes", "store"),
+        ing(0.5, "", "onion, diced", "produce"), ing(1, "", "garlic clove", "produce"),
+        ing(1, "tbsp", "medium curry powder", "spice"), ing(0.5, "tsp", "ground cumin", "spice"),
+        ing(70, "g", "basmati rice", "store"), ing(null, "small handful", "fresh coriander", "produce")
+      ],
+      steps: [
+        "Cook the rice according to the packet instructions.",
+        "Fry the onion and garlic in a splash of oil for 3 minutes until softening.",
+        "Stir in the curry powder and cumin, and fry for 1 minute until fragrant.",
+        "Add the chickpeas and chopped tomatoes, and simmer for 10 minutes until thickened.",
+        "Serve over the rice, scattered with coriander."
+      ]
+    },
+    {
+      id: "d73", title: "Lamb Keema Curry with Peas", tags: [],
+      prep: 8, cook: 18,
+      ingredients: [
+        ing(180, "g", "lamb mince", "meat"), ing(60, "g", "frozen peas", "frozen"),
+        ing(150, "g", "chopped tomatoes", "store"), ing(0.5, "", "onion, diced", "produce"),
+        ing(1, "", "garlic clove", "produce"), ing(1, "tbsp", "medium curry powder or garam masala", "spice"),
+        ing(70, "g", "basmati rice", "store")
+      ],
+      steps: [
+        "Cook the rice according to the packet instructions.",
+        "Fry the onion and garlic in a splash of oil for 3 minutes.",
+        "Add the lamb mince and brown for 4–5 minutes, breaking it up as it cooks.",
+        "Stir in the curry powder, then add the chopped tomatoes and simmer for 8 minutes.",
+        "Stir through the peas and cook for a final 2 minutes, then serve over the rice."
+      ]
+    },
+    {
+      id: "d74", title: "Tandoori-Style Chicken with Minted Rice", tags: ["spicy"],
+      prep: 8, cook: 15,
+      ingredients: [
+        ing(180, "g", "chicken breast or thigh, sliced", "meat"), ing(2, "tbsp", "tandoori curry paste", "store"),
+        ing(2, "tbsp", "plain yoghurt", "dairy"), ing(70, "g", "basmati rice", "store"),
+        ing(null, "small handful", "fresh mint", "produce"), ing(0.5, "", "lemon", "produce")
+      ],
+      steps: [
+        "Cook the rice according to the packet instructions, then stir through the chopped mint.",
+        "Mix the tandoori paste with the yoghurt and coat the chicken.",
+        "Heat a griddle or frying pan over medium-high heat and cook the chicken for 5–6 minutes, turning occasionally, until charred and cooked through.",
+        "Serve over the minted rice with a squeeze of lemon."
+      ]
+    },
+    {
+      id: "d75", title: "Falafel Bowl with Hummus and Flatbread", tags: ["vegetarian", "vegan"],
+      prep: 6, cook: 8,
+      ingredients: [
+        ing(6, "", "shop-bought falafel", "store"), ing(3, "tbsp", "shop-bought hummus", "store"),
+        ing(1, "", "flatbread", "bakery"), ing(0.5, "", "cucumber, diced", "produce"),
+        ing(80, "g", "cherry tomatoes, halved", "produce"), ing(1, "tsp", "olive oil", "store")
+      ],
+      steps: [
+        "Warm the falafel according to the pack instructions.",
+        "Warm the flatbread.",
+        "Toss the cucumber and cherry tomatoes with the olive oil.",
+        "Serve the falafel with the hummus, salad and flatbread."
+      ]
+    },
+    {
+      id: "d76", title: "Za'atar Chicken with Lemon Rice", tags: [],
+      prep: 8, cook: 15,
+      ingredients: [
+        ing(180, "g", "chicken thigh, sliced", "meat"), ing(1.5, "tbsp", "za'atar", "spice"),
+        ing(1, "tbsp", "olive oil", "store"), ing(70, "g", "basmati rice", "store"),
+        ing(0.5, "", "lemon", "produce"), ing(null, "small handful", "fresh parsley", "produce")
+      ],
+      steps: [
+        "Cook the rice according to the packet instructions, then stir through the lemon zest, a squeeze of juice and the chopped parsley.",
+        "Toss the chicken with the za'atar and olive oil.",
+        "Heat a frying pan over medium-high heat and cook the chicken for 6–7 minutes, turning occasionally, until cooked through.",
+        "Serve the chicken over the lemon rice."
+      ]
+    },
+    {
+      id: "d77", title: "Sumac Turkey Flatbread with Pickled Onion", tags: [],
+      prep: 8, cook: 10,
+      ingredients: [
+        ing(180, "g", "turkey breast steak, sliced", "meat"), ing(1, "tsp", "sumac", "spice"),
+        ing(1, "tbsp", "olive oil", "store"), ing(1, "", "flatbread", "bakery"),
+        ing(0.25, "", "red onion, thinly sliced", "produce"), ing(1, "tbsp", "red wine vinegar", "store"),
+        ing(3, "tbsp", "shop-bought hummus", "store")
+      ],
+      steps: [
+        "Toss the red onion with the vinegar and set aside to quick-pickle while you cook.",
+        "Toss the turkey with the sumac and olive oil.",
+        "Heat a frying pan over medium-high heat and cook the turkey for 3–4 minutes each side until cooked through.",
+        "Warm the flatbread and spread with the hummus.",
+        "Top with the sliced turkey and drained pickled onion."
+      ]
+    },
+    {
+      id: "d78", title: "Chipotle Beef Burrito Bowl", tags: ["spicy", "quick"],
+      prep: 8, cook: 8,
+      ingredients: [
+        ing(180, "g", "beef mince or steak strips", "meat"), ing(1, "tsp", "chipotle paste", "store"),
+        ing(150, "g", "cooked rice", "store"), ing(100, "g", "tinned black beans, drained", "store"),
+        ing(60, "g", "sweetcorn", "frozen"), ing(3, "tbsp", "shop-bought salsa", "store"),
+        ing(0.5, "", "avocado", "produce")
+      ],
+      steps: [
+        "Fry the beef in a hot pan for 4–5 minutes until browned, stirring through the chipotle paste for the final minute.",
+        "Warm the black beans and sweetcorn together in a small pan.",
+        "Build the bowl with the rice, beans and sweetcorn, beef, salsa and sliced avocado."
+      ]
+    },
+    {
+      id: "d79", title: "Black Bean & Sweetcorn Quesadillas", tags: ["vegetarian", "quick"],
+      prep: 6, cook: 8,
+      ingredients: [
+        ing(100, "g", "tinned black beans, drained", "store"), ing(60, "g", "sweetcorn", "frozen"),
+        ing(2, "", "flour tortillas", "bakery"), ing(50, "g", "grated cheddar", "dairy"),
+        ing(0.5, "tsp", "smoked paprika", "spice"), ing(3, "tbsp", "shop-bought salsa", "store")
+      ],
+      steps: [
+        "Roughly mash the black beans with the sweetcorn and smoked paprika.",
+        "Spread over one tortilla, scatter with cheese, and top with the second tortilla.",
+        "Dry-fry in a large pan over medium heat for 2–3 minutes each side until golden and the cheese has melted.",
+        "Cut into wedges and serve with the salsa."
+      ]
+    },
+    {
+      id: "d80", title: "Chilaquiles-Style Baked Eggs with Tortilla Chips and Salsa", tags: ["vegetarian", "quick"],
+      prep: 5, cook: 10,
+      ingredients: [
+        ing(2, "", "eggs", "dairy"), ing(150, "g", "shop-bought tomato salsa", "store"),
+        ing(40, "g", "tortilla chips", "store"), ing(30, "g", "grated cheddar", "dairy"),
+        ing(null, "small handful", "fresh coriander", "produce")
+      ],
+      steps: [
+        "Warm the salsa in a small ovenproof frying pan over medium heat.",
+        "Make two wells in the salsa and crack in the eggs.",
+        "Scatter over the cheese, cover, and cook gently for 5–6 minutes until the eggs are just set.",
+        "Scatter the tortilla chips over the top just before serving, with coriander."
+      ]
+    },
+    {
+      id: "d81", title: "Jamaican-Style Chicken Curry with Rice and Peas", tags: ["spicy"],
+      prep: 8, cook: 20,
+      ingredients: [
+        ing(180, "g", "chicken thigh, diced", "meat"), ing(1.5, "tbsp", "curry powder", "spice"),
+        ing(150, "ml", "coconut milk", "store"), ing(0.5, "", "onion, diced", "produce"),
+        ing(1, "", "garlic clove", "produce"), ing(70, "g", "rice", "store"),
+        ing(80, "g", "tinned kidney beans, drained", "store")
+      ],
+      steps: [
+        "Cook the rice with the kidney beans according to the rice packet instructions.",
+        "Fry the onion and garlic in a splash of oil for 3 minutes.",
+        "Stir in the curry powder and fry for 1 minute, then add the chicken and brown for 3–4 minutes.",
+        "Pour in the coconut milk and simmer for 12–15 minutes until the chicken is cooked through and the sauce has thickened.",
+        "Serve with the rice and peas."
+      ]
+    },
+    {
+      id: "d82", title: "Cuban-Style Black Bean Rice Bowl", tags: ["vegetarian", "vegan", "quick"],
+      prep: 6, cook: 10,
+      ingredients: [
+        ing(150, "g", "tinned black beans, drained", "store"), ing(150, "g", "cooked rice", "store"),
+        ing(0.5, "", "pepper, diced", "produce"), ing(0.25, "", "red onion, diced", "produce"),
+        ing(1, "", "garlic clove", "produce"), ing(0.5, "tsp", "ground cumin", "spice"),
+        ing(0.5, "", "lime", "produce")
+      ],
+      steps: [
+        "Fry the pepper, onion and garlic in a splash of oil for 4 minutes until softening.",
+        "Stir in the cumin, then add the black beans and a splash of water, and simmer for 5 minutes.",
+        "Serve over the rice with a squeeze of lime."
+      ]
+    },
+    {
+      id: "d83", title: "Spanish-Style Chicken and Chorizo Rice", tags: ["spicy"],
+      prep: 8, cook: 20,
+      ingredients: [
+        ing(100, "g", "chicken thigh, diced", "meat"), ing(40, "g", "cooking chorizo, sliced", "meat"),
+        ing(70, "g", "paella or short-grain rice", "store"), ing(150, "g", "chopped tomatoes", "store"),
+        ing(0.5, "", "pepper, sliced", "produce"), ing(1, "", "garlic clove", "produce"),
+        ing(0.5, "tsp", "smoked paprika", "spice"), ing(200, "ml", "chicken stock", "store")
+      ],
+      steps: [
+        "Fry the chorizo in a saucepan for 2 minutes until it releases its oil, then add the chicken and brown for 3–4 minutes.",
+        "Add the pepper and garlic, and cook for 2 minutes.",
+        "Stir in the rice and smoked paprika, then add the chopped tomatoes and stock.",
+        "Bring to a simmer, cover and cook for 15–18 minutes, stirring occasionally, until the rice is tender."
+      ]
+    },
+    {
+      id: "d84", title: "Spanish Tortilla-Style Potato & Onion Omelette", tags: ["vegetarian", "quick"],
+      prep: 8, cook: 15,
+      ingredients: [
+        ing(150, "g", "potato, thinly sliced", "produce"), ing(0.5, "", "onion, thinly sliced", "produce"),
+        ing(3, "", "eggs", "dairy"), ing(2, "tbsp", "olive oil", "store")
+      ],
+      steps: [
+        "Heat the oil in a small non-stick frying pan and gently fry the potato and onion for 10 minutes, turning occasionally, until tender.",
+        "Beat the eggs with a pinch of salt and pour over the potatoes, pressing them down evenly.",
+        "Cook over low heat for 4–5 minutes until mostly set.",
+        "Place a plate over the pan, flip the tortilla out, then slide it back in to cook for a further 2 minutes on the other side."
+      ]
+    },
+    {
+      id: "d85", title: "Patatas Bravas Bowl with Fried Egg", tags: ["vegetarian"],
+      prep: 6, cook: 20,
+      ingredients: [
+        ing(200, "g", "potato, cubed", "produce"), ing(1, "tbsp", "olive oil", "store"),
+        ing(100, "g", "chopped tomatoes", "store"), ing(0.5, "tsp", "smoked paprika", "spice"),
+        ing(0.25, "tsp", "chilli flakes", "spice"), ing(1, "", "egg", "dairy")
+      ],
+      steps: [
+        "Toss the potato with the oil on a baking tray and roast at 200°C (fan 180°C) for 20 minutes until crisp, turning halfway.",
+        "Meanwhile, simmer the chopped tomatoes with the smoked paprika and chilli flakes for 8–10 minutes until thickened.",
+        "Fry the egg to your liking.",
+        "Serve the potatoes with the spiced tomato sauce spooned over and the fried egg on top."
+      ]
+    },
+    {
+      id: "d86", title: "Greek-Style Lamb Gyros Bowl with Tzatziki", tags: [],
+      prep: 8, cook: 10,
+      ingredients: [
+        ing(180, "g", "lamb mince", "meat"), ing(1, "tsp", "dried oregano", "spice"),
+        ing(0.5, "tsp", "ground cumin", "spice"), ing(1, "", "garlic clove", "produce"),
+        ing(70, "g", "basmati rice", "store"), ing(4, "tbsp", "shop-bought tzatziki", "store"),
+        ing(80, "g", "cherry tomatoes, halved", "produce")
+      ],
+      steps: [
+        "Cook the rice according to the packet instructions.",
+        "Mix the lamb mince with the oregano, cumin and crushed garlic.",
+        "Fry over medium-high heat for 6–7 minutes, breaking it up, until browned and cooked through.",
+        "Serve over the rice with the tzatziki and cherry tomatoes."
+      ]
+    },
+    {
+      id: "d87", title: "Greek-Style Lemon Orzo with Feta", tags: ["vegetarian"],
+      prep: 6, cook: 12,
+      ingredients: [
+        ing(70, "g", "orzo", "store"), ing(50, "g", "feta, crumbled", "dairy"),
+        ing(80, "g", "cherry tomatoes, halved", "produce"), ing(0.5, "", "lemon", "produce"),
+        ing(1, "tbsp", "olive oil", "store"), ing(null, "small handful", "fresh dill or parsley", "produce")
+      ],
+      steps: [
+        "Cook the orzo in salted boiling water according to the packet instructions, then drain, reserving a splash of the cooking water.",
+        "Toss the warm orzo with the olive oil, lemon zest and a squeeze of juice, loosening with the reserved water if needed.",
+        "Stir through the cherry tomatoes and most of the feta.",
+        "Scatter with the remaining feta and dill or parsley to serve."
+      ]
+    },
+    {
+      id: "d88", title: "Mushroom & Pea Risotto", tags: ["vegetarian"],
+      prep: 8, cook: 22,
+      ingredients: [
+        ing(70, "g", "risotto rice", "store"), ing(120, "g", "chestnut mushrooms, sliced", "produce"),
+        ing(60, "g", "frozen peas", "frozen"), ing(400, "ml", "vegetable stock", "store"),
+        ing(0.25, "", "onion, diced", "produce"), ing(15, "g", "butter", "dairy"),
+        ing(15, "g", "grated parmesan", "dairy")
+      ],
+      steps: [
+        "Heat the stock in a saucepan and keep it at a gentle simmer.",
+        "Melt the butter in another pan and fry the onion for 2 minutes, then add the mushrooms and cook for 4–5 minutes until golden.",
+        "Stir in the rice and cook for 1 minute, then add the hot stock a ladle at a time, stirring and letting each addition absorb before adding the next, for about 16–18 minutes.",
+        "Stir through the peas for the final 3 minutes.",
+        "Remove from the heat, stir through the parmesan, and rest for a minute before serving."
+      ]
+    },
+    {
+      id: "d89", title: "Italian Sausage & Rocket Pasta", tags: ["quick"],
+      prep: 6, cook: 12,
+      ingredients: [
+        ing(2, "", "pork sausages, skins removed", "meat"), ing(70, "g", "pasta", "store"),
+        ing(1, "", "garlic clove", "produce"), ing(0.5, "tsp", "chilli flakes", "spice"),
+        ing(30, "g", "rocket", "produce"), ing(15, "g", "grated parmesan", "dairy")
+      ],
+      steps: [
+        "Cook the pasta in salted boiling water according to the packet instructions, then drain, reserving a splash of the cooking water.",
+        "Meanwhile, break the sausage meat into a hot frying pan and brown for 5–6 minutes, crumbling it as it cooks.",
+        "Add the garlic and chilli flakes, and cook for 1 minute.",
+        "Toss the pasta through the sausage with a splash of the cooking water, then fold through the rocket until just wilted.",
+        "Scatter with parmesan to serve."
+      ]
+    },
+    {
+      id: "d90", title: "Pesto Gnocchi with Cherry Tomatoes", tags: ["vegetarian", "quick"],
+      prep: 5, cook: 8,
+      ingredients: [
+        ing(200, "g", "fresh gnocchi", "store"), ing(3, "tbsp", "shop-bought basil pesto", "store"),
+        ing(100, "g", "cherry tomatoes, halved", "produce"), ing(15, "g", "grated parmesan", "dairy")
+      ],
+      steps: [
+        "Cook the gnocchi in salted boiling water according to the packet instructions until they float, then drain, reserving a splash of the cooking water.",
+        "Toss the gnocchi with the pesto and cherry tomatoes, loosening with the reserved water if needed.",
+        "Scatter with parmesan to serve."
+      ]
+    },
+    {
+      id: "d91", title: "Aglio e Olio with Chilli and Crispy Breadcrumbs", tags: ["vegetarian", "vegan", "quick"],
+      prep: 5, cook: 10,
+      ingredients: [
+        ing(70, "g", "spaghetti", "store"), ing(2, "", "garlic cloves, thinly sliced", "produce"),
+        ing(0.5, "tsp", "chilli flakes", "spice"), ing(3, "tbsp", "olive oil", "store"),
+        ing(2, "tbsp", "breadcrumbs", "store"), ing(null, "small handful", "fresh parsley", "produce")
+      ],
+      steps: [
+        "Cook the spaghetti in salted boiling water according to the packet instructions, then drain, reserving a splash of the cooking water.",
+        "Meanwhile, toast the breadcrumbs in a dry pan for 2–3 minutes until golden, then tip out.",
+        "In the same pan, gently fry the garlic and chilli flakes in the olive oil for 1–2 minutes until fragrant but not coloured.",
+        "Toss the spaghetti through the garlic oil with a splash of the cooking water and the parsley.",
+        "Scatter with the crispy breadcrumbs to serve."
+      ]
+    },
+    {
+      id: "d92", title: "Croque Monsieur-Style Ham & Cheese Toastie with Salad", tags: ["quick"],
+      prep: 5, cook: 8,
+      ingredients: [
+        ing(2, "", "slices bread", "bakery"), ing(2, "", "slices ham", "meat"),
+        ing(40, "g", "grated cheddar or gruyere", "dairy"), ing(1, "tsp", "dijon mustard", "store"),
+        ing(30, "g", "mixed salad leaves", "produce"), ing(1, "tsp", "olive oil", "store")
+      ],
+      steps: [
+        "Spread one slice of bread with the mustard and layer with the ham and half the cheese, then top with the second slice.",
+        "Scatter the remaining cheese over the outside of the sandwich.",
+        "Toast in a dry frying pan over medium heat for 3–4 minutes each side until golden and the cheese has melted.",
+        "Serve with the salad leaves tossed in the olive oil."
+      ]
+    },
+    {
+      id: "d93", title: "French-Style Chicken Chasseur", tags: [],
+      prep: 8, cook: 20,
+      ingredients: [
+        ing(180, "g", "chicken thigh", "meat"), ing(100, "g", "chestnut mushrooms, sliced", "produce"),
+        ing(0.5, "", "onion, diced", "produce"), ing(100, "g", "chopped tomatoes", "store"),
+        ing(100, "ml", "chicken stock", "store"), ing(1, "tsp", "dried tarragon or mixed herbs", "spice"),
+        ing(150, "g", "new potatoes, halved", "produce")
+      ],
+      steps: [
+        "Cook the new potatoes in boiling salted water for 15–18 minutes until tender, then drain.",
+        "Meanwhile, brown the chicken in a splash of oil for 4–5 minutes, then set aside.",
+        "Fry the onion and mushrooms in the same pan for 4 minutes.",
+        "Return the chicken to the pan with the tomatoes, stock and tarragon, and simmer for 10–12 minutes until the chicken is cooked through and the sauce has thickened.",
+        "Serve with the potatoes."
+      ]
+    },
+    {
+      id: "d94", title: "German-Style Currywurst with Fries", tags: ["spicy"],
+      prep: 6, cook: 20,
+      ingredients: [
+        ing(2, "", "pork sausages, sliced", "meat"), ing(150, "g", "frozen fries", "frozen"),
+        ing(3, "tbsp", "ketchup", "store"), ing(1, "tsp", "curry powder", "spice"),
+        ing(0.5, "tsp", "smoked paprika", "spice")
+      ],
+      steps: [
+        "Cook the fries according to the packet instructions.",
+        "Fry the sliced sausages in a pan over medium-high heat for 6–8 minutes until browned all over.",
+        "Warm the ketchup with the curry powder and smoked paprika in a small pan.",
+        "Spoon the curry sauce over the sausages and serve with the fries."
+      ]
+    },
+    {
+      id: "d95", title: "Speedy Cottage Pie Mash Cup", tags: [],
+      prep: 8, cook: 20,
+      ingredients: [
+        ing(180, "g", "beef mince", "meat"), ing(0.5, "", "onion, diced", "produce"),
+        ing(1, "", "carrot, diced", "produce"), ing(1, "tbsp", "tomato puree", "store"),
+        ing(150, "ml", "beef stock", "store"), ing(250, "g", "potato, peeled and cubed", "produce"),
+        ing(15, "g", "butter", "dairy")
+      ],
+      steps: [
+        "Cook the potato in boiling salted water for 15 minutes until tender, then drain and mash with the butter and a splash of milk if you have it.",
+        "Meanwhile, brown the beef mince with the onion and carrot in a hot pan for 5–6 minutes.",
+        "Stir in the tomato puree and stock, and simmer for 10 minutes until thickened.",
+        "Spoon the mince into a bowl or dish and top with the mash."
+      ]
+    },
+    {
+      id: "d96", title: "Bangers and Colcannon Mash with Onion Gravy", tags: [],
+      prep: 6, cook: 22,
+      ingredients: [
+        ing(3, "", "pork sausages", "meat"), ing(250, "g", "potato, peeled and cubed", "produce"),
+        ing(60, "g", "shredded cabbage or kale", "produce"), ing(15, "g", "butter", "dairy"),
+        ing(0.5, "", "onion, sliced", "produce"), ing(150, "ml", "beef or vegetable stock", "store"),
+        ing(1, "tsp", "cornflour", "store")
+      ],
+      steps: [
+        "Cook the potato in boiling salted water for 15 minutes until tender.",
+        "Meanwhile, grill or fry the sausages for 12–15 minutes, turning occasionally, until browned and cooked through.",
+        "Fry the onion in a splash of oil for 6–8 minutes until softened and golden, then stir in the stock and cornflour mixed with a splash of water, and simmer for 2 minutes until thickened into a gravy.",
+        "Steam or boil the cabbage for the final 3 minutes of the potatoes' cooking time, then drain everything and mash together with the butter.",
+        "Serve the sausages over the colcannon mash with the onion gravy."
+      ]
+    },
+    {
+      id: "d97", title: "Miso Butter Salmon with Steamed Rice", tags: ["pescatarian"],
+      prep: 6, cook: 12,
+      ingredients: [
+        ing(150, "g", "salmon fillet", "meat"), ing(1, "tbsp", "miso paste", "store"),
+        ing(15, "g", "butter, softened", "dairy"), ing(1, "tsp", "soy sauce", "store"),
+        ing(70, "g", "jasmine rice", "store"), ing(1, "", "spring onion", "produce")
+      ],
+      steps: [
+        "Cook the rice according to the packet instructions.",
+        "Mash the miso paste into the softened butter with the soy sauce.",
+        "Spread over the salmon and place on a lined baking tray.",
+        "Roast at 200°C (fan 180°C) for 10–12 minutes until just cooked through.",
+        "Serve over the rice, scattered with sliced spring onion."
+      ]
+    },
+    {
+      id: "d98", title: "Yaki Udon with Beef and Vegetables", tags: ["quick"],
+      prep: 8, cook: 8,
+      ingredients: [
+        ing(150, "g", "beef strips (sirloin or rump)", "meat"), ing(200, "g", "straight-to-wok udon noodles", "store"),
+        ing(100, "g", "stir-fry vegetable mix", "produce"), ing(2, "tbsp", "soy sauce", "store"),
+        ing(1, "tsp", "sesame oil", "store"), ing(1, "", "garlic clove", "produce")
+      ],
+      steps: [
+        "Heat a splash of oil in a wok over high heat and stir-fry the beef for 2–3 minutes until browned, then set aside.",
+        "Add the vegetables and garlic to the wok and stir-fry for 3 minutes.",
+        "Add the udon noodles and soy sauce, and toss for 2 minutes to loosen and heat through.",
+        "Return the beef to the wok, toss together, and drizzle with sesame oil to serve."
+      ]
+    },
+    {
+      id: "d99", title: "Bibimbap-Style Beef Rice Bowl", tags: [],
+      prep: 8, cook: 12,
+      ingredients: [
+        ing(150, "g", "beef strips or mince", "meat"), ing(1, "tbsp", "soy sauce", "store"),
+        ing(1, "tsp", "sesame oil", "store"), ing(70, "g", "jasmine or short-grain rice", "store"),
+        ing(60, "g", "carrot, julienned", "produce"), ing(60, "g", "spinach", "produce"),
+        ing(1, "", "egg", "dairy"), ing(1, "tbsp", "gochujang", "store")
+      ],
+      steps: [
+        "Cook the rice according to the packet instructions.",
+        "Fry the beef with the soy sauce and sesame oil in a hot pan for 3–4 minutes until browned, then set aside.",
+        "Quickly stir-fry the carrot for 2 minutes, then wilt the spinach in the same pan for 1 minute. Season each lightly.",
+        "Fry the egg in a little oil, keeping the yolk runny.",
+        "Build the bowl with the rice, beef and vegetables arranged separately, topped with the fried egg and a spoonful of gochujang."
+      ]
+    },
+    {
+      id: "d100", title: "Kimchi Fried Rice with Fried Egg", tags: ["vegetarian"],
+      prep: 6, cook: 10,
+      ingredients: [
+        ing(150, "g", "cooked rice, cold", "store"), ing(80, "g", "kimchi, chopped", "store"),
+        ing(1, "tbsp", "kimchi juice (from the jar)", "store"), ing(1, "tsp", "sesame oil", "store"),
+        ing(1, "", "egg", "dairy"), ing(1, "", "spring onion", "produce")
+      ],
+      steps: [
+        "Heat a splash of oil in a frying pan or wok over high heat and fry the kimchi for 2 minutes.",
+        "Add the cold rice and kimchi juice, and stir-fry for 4–5 minutes, breaking up any clumps, until hot through and starting to crisp.",
+        "Push to one side of the pan, fry the egg in the space, keeping the yolk runny.",
+        "Drizzle the rice with sesame oil, top with the egg, and scatter with sliced spring onion."
+      ]
+    },
+    {
+      id: "d101", title: "Ethiopian-Inspired Spiced Red Lentil Stew", tags: ["vegetarian", "vegan"],
+      prep: 8, cook: 20,
+      ingredients: [
+        ing(80, "g", "dried red lentils", "store"), ing(150, "g", "chopped tomatoes", "store"),
+        ing(0.5, "", "onion, diced", "produce"), ing(1, "", "garlic clove", "produce"),
+        ing(1, "tsp", "smoked paprika", "spice"), ing(0.5, "tsp", "ground ginger", "spice"),
+        ing(0.5, "tsp", "ground cinnamon", "spice"), ing(0.25, "tsp", "chilli flakes", "spice")
+      ],
+      steps: [
+        "Rinse the lentils well.",
+        "Fry the onion and garlic in a splash of oil for 3–4 minutes until softening.",
+        "Stir in the paprika, ginger, cinnamon and chilli flakes, and cook for 1 minute until fragrant.",
+        "Add the lentils, chopped tomatoes and 300ml water, and simmer for 15 minutes, stirring occasionally, until the lentils are tender and the stew has thickened."
+      ]
+    },
+    {
+      id: "d102", title: "Tofu Satay Bowl with Peanut Sauce", tags: ["vegetarian", "vegan"],
+      prep: 8, cook: 10,
+      ingredients: [
+        ing(150, "g", "firm tofu, cubed", "store"), ing(70, "g", "jasmine rice", "store"),
+        ing(2, "tbsp", "peanut butter", "store"), ing(1, "tbsp", "soy sauce", "store"),
+        ing(1, "tsp", "sriracha or chilli sauce", "store"), ing(0.5, "", "lime", "produce"),
+        ing(60, "g", "cucumber, sliced", "produce")
+      ],
+      steps: [
+        "Cook the rice according to the packet instructions.",
+        "Pat the tofu dry and fry in a splash of oil over medium-high heat for 5–6 minutes, turning occasionally, until golden on all sides.",
+        "Whisk the peanut butter, soy sauce, sriracha, lime juice and a splash of hot water into a smooth sauce.",
+        "Serve the tofu over the rice with the cucumber, drizzled with the peanut sauce."
+      ]
     }
   ];
   var RECIPES_BY_ID = {};

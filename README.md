@@ -1,6 +1,6 @@
 # Plate & List
 
-A week of ten-minute-prep dinners for one, with recipes and a shopping list built from what you've planned. One hundred and two dinners, planner, recipe library with search and filters, and a shopping list that scales to how many people you're cooking for.
+A week of ten-minute-prep dinners for one, with recipes and a shopping list built from what you've planned. Four hundred and thirty-seven dinners, planner, recipe library with search and filters, and a shopping list that scales to how many people you're cooking for.
 
 This is a static site (plain HTML, CSS and JavaScript, no build step), so it can be published directly on GitHub Pages. Sign in with Google is optional: without it the app still works fully, saving everything to the browser you're using. With it turned on, your weekly plan, servings setting and shopping list sync across every device you sign into.
 

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plate & List</title>
+<meta name="description" content="A week of ten-minute-prep dinners for one, with a shopping list built from what you've planned.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&family=Public+Sans:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="app-header">
+  <div class="brand-mark">
+    <div class="brand-row">
+      <span class="logomark" aria-hidden="true">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="12" cy="12" r="8.25" stroke="currentColor" stroke-width="1.6"/>
+          <circle cx="12" cy="12" r="3.4" stroke="currentColor" stroke-width="1.6"/>
+        </svg>
+      </span>
+      <h1>Plate &amp; List</h1>
+    </div>
+    <p class="tagline">Ten-minute-prep dinners for one, planned a week out, with the shopping sorted for you.</p>
+  </div>
+
+  <div class="header-controls">
+    <div class="servings-control">
+      <span class="label">Cooking for</span>
+      <div class="stepper">
+        <button type="button" id="servings-minus" aria-label="Fewer people">&minus;</button>
+        <output id="servings-value">1</output>
+        <button type="button" id="servings-plus" aria-label="More people">&plus;</button>
+      </div>
+    </div>
+
+    <div class="account-control" id="account-control">
+      <div id="account-signed-out">
+        <button type="button" class="btn btn-sm" id="google-signin-btn">
+          <svg width="16" height="16" viewBox="0 0 48 48" aria-hidden="true">
+            <path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3c-1.6 4.7-6.1 8-11.3 8-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.1 8 3l6-6C34.6 5.1 29.6 3 24 3 12.4 3 3 12.4 3 24s9.4 21 21 21 21-9.4 21-21c0-1.4-.1-2.8-.4-4.5z"/>
+            <path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.6 15.1 18.9 12 24 12c3.1 0 5.8 1.1 8 3l6-6C34.6 5.1 29.6 3 24 3 16.3 3 9.7 7.3 6.3 14.7z"/>
+            <path fill="#4CAF50" d="M24 45c5.5 0 10.4-1.9 14-5.1l-6.5-5.5C29.5 36.1 26.9 37 24 37c-5.2 0-9.6-3.3-11.3-8l-6.6 5.1C9.6 40.6 16.3 45 24 45z"/>
+            <path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.3-2.2 4.3-4.1 5.7l6.5 5.5C41.5 36 45 30.5 45 24c0-1.4-.1-2.8-.4-4.5z"/>
+          </svg>
+          Sign in with Google
+        </button>
+      </div>
+      <div id="account-signed-in" hidden>
+        <img id="account-avatar" class="account-avatar" alt="">
+        <div class="account-info">
+          <span class="account-name" id="account-name"></span>
+          <span class="account-sync" id="account-sync"></span>
+        </div>
+        <button type="button" class="icon-btn" id="signout-btn" aria-label="Sign out" title="Sign out">&#9211;</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<nav class="tabs" role="tablist">
+  <button class="tab-btn" role="tab" id="tab-planner-btn" aria-selected="true" data-panel="planner">This week<span class="count" id="planner-count"></span></button>
+  <button class="tab-btn" role="tab" id="tab-shopping-btn" aria-selected="false" data-panel="shopping">Shopping list<span class="count" id="shopping-count"></span></button>
+  <button class="tab-btn" role="tab" id="tab-recipes-btn" aria-selected="false" data-panel="recipes">Recipes<span class="count" id="recipes-count"></span></button>
+</nav>
+
+<main>
+  <section class="panel" id="panel-planner">
+    <div class="planner-toolbar">
+      <div>
+        <h2>This week's dinners</h2>
+        <div class="week-range" id="week-range"></div>
+      </div>
+      <div class="toolbar-actions">
+        <button class="btn btn-sm" id="fill-week-btn">Fill empty days</button>
+        <button class="btn btn-ghost btn-sm" id="clear-week-btn">Clear week</button>
+      </div>
+    </div>
+    <div class="day-list" id="day-list"></div>
+  </section>
+
+  <section class="panel" id="panel-shopping" hidden>
+    <div class="shop-header">
+      <h2>Shopping list</h2>
+      <span class="shop-progress" id="shop-progress"></span>
+    </div>
+    <div id="shop-content"></div>
+  </section>
+
+  <section class="panel" id="panel-recipes" hidden>
+    <div class="recipe-filters">
+      <input type="search" class="search-input" id="recipe-search" placeholder="Search recipes or ingredients">
+      <div id="tag-chips" style="display:flex; gap:8px; flex-wrap:wrap;"></div>
+    </div>
+    <div class="recipe-grid" id="recipe-grid"></div>
+  </section>
+</main>
+
+<footer>Fifty-two original dinners, a full year of Sundays, each written for one and ready in ten minutes of prep. Recipes stay put; your week is yours to rearrange.</footer>
+
+<div class="modal-backdrop" id="recipe-modal-backdrop" hidden>
+  <div class="modal" id="recipe-modal" role="dialog" aria-modal="true"></div>
+</div>
+
+<div class="modal-backdrop" id="picker-modal-backdrop" hidden>
+  <div class="modal" id="picker-modal" role="dialog" aria-modal="true"></div>
+</div>
+
+<!-- Firebase (Google Sign-In + cross-device sync). See README.md to set this up;
+     the app works fine locally on one device even before you configure it. -->
+<script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore-compat.js"></script>
+<script src="firebase-config.js"></script>
+<script src="app.js"></script>
+
+</body>
+</html>

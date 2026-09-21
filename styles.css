@@ -130,10 +130,17 @@
   .account-sync { font-size: 10.5px; color: var(--ink-muted); font-family: var(--font-mono); }
 
   /* ---------- tabs ---------- */
-  .tabs { display: flex; gap: 6px; margin-block: 22px; border-bottom: 1px solid var(--border); }
+  .tabs {
+    display: flex; gap: 6px; margin-block: 22px; border-bottom: 1px solid var(--border);
+    overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none;
+  }
+  .tabs::-webkit-scrollbar { display: none; }
   .tab-btn {
     border: none; background: none; color: var(--ink-muted); font-weight: 600; font-size: 15px;
-    padding: 10px 4px; cursor: pointer; position: relative; margin-right: 22px;
+    padding: 10px 4px; cursor: pointer; position: relative; margin-right: 22px; white-space: nowrap; flex-shrink: 0;
+  }
+  @media (max-width: 480px) {
+    .tab-btn { font-size: 14px; margin-right: 14px; }
   }
   .tab-btn[aria-selected="true"] { color: var(--ink); }
   .tab-btn[aria-selected="true"]::after {
@@ -169,6 +176,7 @@
     display: flex; align-items: stretch; overflow: hidden; box-shadow: var(--shadow);
   }
   .day-card.is-today { border-color: var(--accent); }
+  .day-card.is-cooked { background: color-mix(in srgb, var(--good) 6%, var(--surface)); }
   .day-label {
     width: 84px; flex-shrink: 0; display: flex; flex-direction: column; justify-content: center;
     align-items: flex-start; gap: 2px; padding: 14px 16px; background: var(--surface-2);
@@ -196,12 +204,19 @@
   .assigned .info { min-width: 0; display: flex; flex-direction: column; gap: 2px; }
   .assigned .info .title { font-family: var(--font-display); font-weight: 600; font-size: 16.5px; }
   .assigned .info .meta { font-size: 12.5px; color: var(--ink-muted); font-family: var(--font-mono); margin-top: 2px; }
+  .cooked-badge {
+    display: inline-flex; align-items: center; gap: 2px; font-size: 11px; font-weight: 700;
+    color: var(--good); background: color-mix(in srgb, var(--good) 14%, var(--surface));
+    padding: 1px 7px; border-radius: 999px; vertical-align: middle; margin-left: 6px;
+  }
   .day-actions { display: flex; gap: 4px; flex-shrink: 0; }
   .icon-btn {
     width: 30px; height: 30px; border-radius: 50%; border: 1px solid transparent; background: none;
     color: var(--ink-muted); cursor: pointer; display: flex; align-items: center; justify-content: center;
   }
   .icon-btn:hover { background: var(--surface-2); color: var(--ink); }
+  .cook-btn.is-active { background: var(--good); border-color: var(--good); color: #fff; }
+  .cook-btn.is-active:hover { background: var(--good); color: #fff; opacity: 0.9; }
 
   .tag-pill {
     font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 700;
@@ -314,5 +329,39 @@
   .picker-row .swatch { width: 4px; align-self: stretch; border-radius: 3px; }
   .picker-row .title { font-family: var(--font-display); font-weight: 600; font-size: 15px; }
   .picker-row .meta { font-size: 12px; color: var(--ink-muted); font-family: var(--font-mono); }
+
+  /* ---------- stats ---------- */
+  .stats-section { margin-bottom: 32px; }
+  .stats-section h2 { font-size: 20px; margin-bottom: 14px; }
+  .stats-section h3 {
+    font-size: 12px; text-transform: uppercase; letter-spacing: 0.07em; color: var(--ink-muted);
+    font-weight: 700; margin: 22px 0 10px;
+  }
+  .stats-subhead {
+    font-family: var(--font-display); font-weight: 700; font-size: 15.5px; color: var(--ink);
+    margin: 26px 0 2px; padding-top: 20px; border-top: 1px solid var(--border);
+  }
+  .stats-section h2 + .stats-subhead { margin-top: 0; padding-top: 0; border-top: none; }
+  .stats-empty { color: var(--ink-muted); font-size: 14px; padding: 6px 0; }
+  .stats-note { color: var(--ink-muted); font-size: 13px; margin-top: 10px; line-height: 1.5; }
+  .stats-note strong { color: var(--ink); }
+
+  .stat-tile-row { display: flex; flex-wrap: wrap; gap: 10px; }
+  .stat-tile {
+    flex: 1 1 130px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+    box-shadow: var(--shadow); padding: 14px 16px; display: flex; flex-direction: column-reverse; gap: 4px;
+  }
+  .stat-tile .stat-value { font-family: var(--font-display); font-weight: 700; font-size: 24px; }
+  .stat-tile .stat-label { font-size: 12px; color: var(--ink-muted); }
+
+  .rank-list { display: flex; flex-direction: column; gap: 9px; }
+  .rank-row { display: grid; grid-template-columns: minmax(90px, 34%) 1fr auto; align-items: center; gap: 10px; }
+  .rank-label { font-size: 13.5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .rank-bar-track { background: var(--surface-2); border-radius: 999px; height: 10px; overflow: hidden; }
+  .rank-bar-fill { display: block; height: 100%; background: var(--accent); border-radius: 999px; min-width: 10px; }
+  .rank-value {
+    font-family: var(--font-mono); font-variant-numeric: tabular-nums; font-size: 12.5px;
+    color: var(--ink-muted); min-width: 16px; text-align: right;
+  }
 
   footer { margin-top: 40px; color: var(--ink-muted); font-size: 12.5px; text-align: center; }

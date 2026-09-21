@@ -17,7 +17,7 @@
 
   var RECIPES = [
     {
-      id: "d1", title: "Sticky Hoisin Pork with Egg-Fried Rice", tags: ["quick"],
+      id: "d1", title: "Sticky Hoisin Pork with Egg-Fried Rice", tags: ["quick"], cuisine: "China", protein: "pork",
       prep: 6, cook: 10,
       ingredients: [
         ing(150, "g", "pork loin steak, sliced into strips", "meat"), ing(2, "tbsp", "hoisin sauce", "store"),
@@ -36,7 +36,7 @@
       ]
     },
     {
-      id: "d2", title: "Harissa Salmon with Lemon Couscous", tags: ["pescatarian"],
+      id: "d2", title: "Harissa Salmon with Lemon Couscous", tags: ["pescatarian"], cuisine: "Morocco", protein: "fish",
       prep: 5, cook: 12,
       ingredients: [
         ing(150, "g", "salmon fillet", "meat"), ing(1.5, "tbsp", "harissa paste", "store"),
@@ -54,7 +54,7 @@
       ]
     },
     {
-      id: "d3", title: "Thai Green Curry with Chicken", tags: ["spicy"],
+      id: "d3", title: "Thai Green Curry with Chicken", tags: ["spicy"], cuisine: "Thailand", protein: "chicken",
       prep: 8, cook: 10,
       ingredients: [
         ing(150, "g", "chicken breast", "meat"), ing(2, "tbsp", "Thai green curry paste", "store"),
@@ -72,7 +72,7 @@
       ]
     },
     {
-      id: "d4", title: "Sesame Ginger Beef Stir-Fry", tags: ["quick"],
+      id: "d4", title: "Sesame Ginger Beef Stir-Fry", tags: ["quick"], cuisine: "China", protein: "beef",
       prep: 6, cook: 8,
       ingredients: [
         ing(130, "g", "beef frying strips", "meat"), ing(3, "tbsp", "shop-bought sesame ginger stir-fry sauce", "store"),
@@ -88,7 +88,7 @@
       ]
     },
     {
-      id: "d5", title: "Spiced Chickpea & Spinach Curry", tags: ["vegetarian"],
+      id: "d5", title: "Spiced Chickpea & Spinach Curry", tags: ["vegetarian"], cuisine: "India", protein: "plant-based",
       prep: 8, cook: 12,
       ingredients: [
         ing(200, "g", "chickpeas, drained", "store"), ing(200, "g", "chopped tomatoes", "store"),
@@ -107,7 +107,7 @@
       ]
     },
     {
-      id: "d6", title: "Cajun Chicken with Charred Corn Salsa", tags: ["spicy"],
+      id: "d6", title: "Cajun Chicken with Charred Corn Salsa", tags: ["spicy"], cuisine: "USA", protein: "chicken",
       prep: 6, cook: 12,
       ingredients: [
         ing(150, "g", "chicken breast", "meat"), ing(1.5, "tsp", "Cajun seasoning", "spice"),
@@ -123,7 +123,7 @@
       ]
     },
     {
-      id: "d7", title: "Quick Matar Paneer", tags: ["vegetarian"],
+      id: "d7", title: "Quick Matar Paneer", tags: ["vegetarian"], cuisine: "India", protein: "plant-based",
       prep: 8, cook: 12,
       ingredients: [
         ing(120, "g", "paneer, cubed", "dairy"), ing(60, "g", "frozen peas", "frozen"),
@@ -142,7 +142,7 @@
       ]
     },
     {
-      id: "d8", title: "One-Pan Chorizo & Butter Bean Stew", tags: ["quick"],
+      id: "d8", title: "One-Pan Chorizo & Butter Bean Stew", tags: ["quick"], cuisine: "Spain", protein: "pork",
       prep: 6, cook: 12,
       ingredients: [
         ing(60, "g", "cooking chorizo", "meat"), ing(200, "g", "butter beans, drained", "store"),
@@ -159,7 +159,7 @@
       ]
     },
     {
-      id: "d9", title: "Lemon & Herb Cod with Crushed Potatoes", tags: ["pescatarian"],
+      id: "d9", title: "Lemon & Herb Cod with Crushed Potatoes", tags: ["pescatarian"], cuisine: "UK", protein: "fish",
       prep: 6, cook: 15,
       ingredients: [
         ing(150, "g", "cod fillet (or other firm white fish)", "meat"), ing(150, "g", "new potatoes", "produce"),
@@ -176,7 +176,7 @@
       ]
     },
     {
-      id: "d10", title: "Chicken Katsu Curry", tags: [],
+      id: "d10", title: "Chicken Katsu Curry", tags: [], cuisine: "Japan", protein: "chicken",
       prep: 8, cook: 12,
       ingredients: [
         ing(150, "g", "chicken breast", "meat"), ing(40, "g", "panko breadcrumbs", "store"),
@@ -193,7 +193,7 @@
       ]
     },
     {
-      id: "d11", title: "Creamy Garlic Mushroom Tagliatelle", tags: ["vegetarian"],
+      id: "d11", title: "Creamy Garlic Mushroom Tagliatelle", tags: ["vegetarian"], cuisine: "Italy", protein: "plant-based",
       prep: 6, cook: 10,
       ingredients: [
         ing(80, "g", "tagliatelle", "store"), ing(150, "g", "chestnut mushrooms", "produce"),
@@ -211,7 +211,7 @@
       ]
     },
     {
-      id: "d12", title: "Moroccan-Spiced Lamb with Couscous", tags: [],
+      id: "d12", title: "Moroccan-Spiced Lamb with Couscous", tags: [], cuisine: "Morocco", protein: "lamb",
       prep: 8, cook: 10,
       ingredients: [
         ing(150, "g", "lamb mince", "meat"), ing(60, "g", "couscous", "store"),
@@ -230,7 +230,7 @@
       ]
     },
     {
-      id: "d13", title: "Peri-Peri Chicken with Charred Tenderstem", tags: ["spicy"],
+      id: "d13", title: "Peri-Peri Chicken with Charred Tenderstem", tags: ["spicy"], cuisine: "Portugal", protein: "chicken",
       prep: 5, cook: 12,
       ingredients: [
         ing(180, "g", "boneless chicken thighs", "meat"), ing(2, "tbsp", "peri-peri sauce", "store"),
@@ -246,7 +246,7 @@
       ]
     },
     {
-      id: "d14", title: "Beetroot & Goat's Cheese Orzo", tags: ["vegetarian"],
+      id: "d14", title: "Beetroot & Goat's Cheese Orzo", tags: ["vegetarian"], cuisine: "Greece", protein: "plant-based",
       prep: 8, cook: 8,
       ingredients: [
         ing(70, "g", "orzo pasta", "store"), ing(100, "g", "cooked beetroot (vacuum-packed)", "produce"),
@@ -263,7 +263,7 @@
       ]
     },
     {
-      id: "d15", title: "Turkey & Sweetcorn Chilli", tags: ["quick"],
+      id: "d15", title: "Turkey & Sweetcorn Chilli", tags: ["quick"], cuisine: "USA", protein: "turkey",
       prep: 8, cook: 15,
       ingredients: [
         ing(150, "g", "turkey mince", "meat"), ing(60, "g", "sweetcorn", "frozen"),
@@ -282,7 +282,7 @@
       ]
     },
     {
-      id: "d16", title: "Honey Mustard Chicken Traybake", tags: [],
+      id: "d16", title: "Honey Mustard Chicken Traybake", tags: [], cuisine: "UK", protein: "chicken",
       prep: 6, cook: 25,
       ingredients: [
         ing(180, "g", "boneless chicken thighs", "meat"), ing(150, "g", "new potatoes, halved", "produce"),
@@ -299,7 +299,7 @@
       ]
     },
     {
-      id: "d17", title: "Teriyaki Salmon with Sesame Greens", tags: ["pescatarian"],
+      id: "d17", title: "Teriyaki Salmon with Sesame Greens", tags: ["pescatarian"], cuisine: "Japan", protein: "fish",
       prep: 4, cook: 10,
       ingredients: [
         ing(150, "g", "salmon fillet", "meat"), ing(3, "tbsp", "shop-bought teriyaki sauce", "store"),
@@ -315,7 +315,7 @@
       ]
     },
     {
-      id: "d18", title: "Beef & Black Bean Noodles", tags: ["quick"],
+      id: "d18", title: "Beef & Black Bean Noodles", tags: ["quick"], cuisine: "China", protein: "beef",
       prep: 8, cook: 8,
       ingredients: [
         ing(130, "g", "beef frying strips", "meat"), ing(2, "tbsp", "black bean sauce", "store"),
@@ -333,7 +333,7 @@
       ]
     },
     {
-      id: "d19", title: "Spiced Red Lentil Dahl with Flatbread", tags: ["vegetarian", "vegan"],
+      id: "d19", title: "Spiced Red Lentil Dahl with Flatbread", tags: ["vegetarian", "vegan"], cuisine: "India", protein: "plant-based",
       prep: 8, cook: 15,
       ingredients: [
         ing(75, "g", "red lentils", "store"), ing(100, "g", "chopped tomatoes", "store"),
@@ -352,7 +352,7 @@
       ]
     },
     {
-      id: "d20", title: "Chicken Fajita Bowl", tags: ["quick"],
+      id: "d20", title: "Chicken Fajita Bowl", tags: ["quick"], cuisine: "Mexico", protein: "chicken",
       prep: 8, cook: 10,
       ingredients: [
         ing(150, "g", "chicken breast, sliced", "meat"), ing(0.5, "", "pepper", "produce"),
@@ -369,7 +369,7 @@
       ]
     },
     {
-      id: "d21", title: "Pork Chop with Apple & Mustard Sauce", tags: [],
+      id: "d21", title: "Pork Chop with Apple & Mustard Sauce", tags: [], cuisine: "France", protein: "pork",
       prep: 5, cook: 12,
       ingredients: [
         ing(180, "g", "pork chop", "meat"), ing(0.5, "", "apple", "produce"),
@@ -386,7 +386,7 @@
       ]
     },
     {
-      id: "d22", title: "Butternut Squash & Feta Traybake", tags: ["vegetarian"],
+      id: "d22", title: "Butternut Squash & Feta Traybake", tags: ["vegetarian"], cuisine: "Greece", protein: "plant-based",
       prep: 8, cook: 25,
       ingredients: [
         ing(200, "g", "butternut squash, cubed", "produce"), ing(50, "g", "feta cheese", "dairy"),
@@ -403,7 +403,7 @@
       ]
     },
     {
-      id: "d23", title: "Sausage & Butter Bean Cassoulet", tags: [],
+      id: "d23", title: "Sausage & Butter Bean Cassoulet", tags: [], cuisine: "France", protein: "pork",
       prep: 6, cook: 15,
       ingredients: [
         ing(2, "", "pork sausages", "meat"), ing(200, "g", "butter beans, drained", "store"),
@@ -420,7 +420,7 @@
       ]
     },
     {
-      id: "d24", title: "White Fish Tacos with Lime Slaw", tags: ["pescatarian"],
+      id: "d24", title: "White Fish Tacos with Lime Slaw", tags: ["pescatarian"], cuisine: "Mexico", protein: "fish",
       prep: 8, cook: 8,
       ingredients: [
         ing(150, "g", "white fish fillet (pollock or cod)", "meat"), ing(0.5, "tsp", "ground cumin", "spice"),
@@ -438,7 +438,7 @@
       ]
     },
     {
-      id: "d25", title: "Beef Massaman-Style Curry", tags: ["spicy"],
+      id: "d25", title: "Beef Massaman-Style Curry", tags: ["spicy"], cuisine: "Thailand", protein: "beef",
       prep: 8, cook: 12,
       ingredients: [
         ing(150, "g", "beef frying strips", "meat"), ing(2, "tbsp", "massaman or red curry paste", "store"),
@@ -456,7 +456,7 @@
       ]
     },
     {
-      id: "d26", title: "Halloumi & Roasted Veg Couscous", tags: ["vegetarian"],
+      id: "d26", title: "Halloumi & Roasted Veg Couscous", tags: ["vegetarian"], cuisine: "Cyprus", protein: "plant-based",
       prep: 8, cook: 12,
       ingredients: [
         ing(100, "g", "halloumi", "dairy"), ing(0.5, "", "courgette", "produce"),
@@ -474,7 +474,7 @@
       ]
     },
     {
-      id: "d27", title: "Chicken Shawarma Flatbread", tags: ["spicy"],
+      id: "d27", title: "Chicken Shawarma Flatbread", tags: ["spicy"], cuisine: "Lebanon", protein: "chicken",
       prep: 6, cook: 10,
       ingredients: [
         ing(150, "g", "chicken thigh fillets", "meat"), ing(0.5, "tsp", "ground cumin", "spice"),
@@ -490,7 +490,7 @@
       ]
     },
     {
-      id: "d28", title: "Sausage & Lentil One-Pot", tags: [],
+      id: "d28", title: "Sausage & Lentil One-Pot", tags: [], cuisine: "France", protein: "pork",
       prep: 6, cook: 18,
       ingredients: [
         ing(2, "", "pork sausages", "meat"), ing(150, "g", "green or brown lentils, drained", "store"),
@@ -507,7 +507,7 @@
       ]
     },
     {
-      id: "d29", title: "Sweet & Sour Pork", tags: [],
+      id: "d29", title: "Sweet & Sour Pork", tags: [], cuisine: "China", protein: "pork",
       prep: 6, cook: 12,
       ingredients: [
         ing(150, "g", "pork loin steak, cubed", "meat"), ing(80, "g", "pineapple chunks, tinned", "store"),
@@ -524,7 +524,7 @@
       ]
     },
     {
-      id: "d30", title: "Baked Feta Pasta", tags: ["vegetarian"],
+      id: "d30", title: "Baked Feta Pasta", tags: ["vegetarian"], cuisine: "Greece", protein: "plant-based",
       prep: 6, cook: 20,
       ingredients: [
         ing(200, "g", "cherry tomatoes", "produce"), ing(80, "g", "feta cheese, block", "dairy"),
@@ -542,7 +542,7 @@
       ]
     },
     {
-      id: "d31", title: "Chicken & Chorizo Jambalaya", tags: ["spicy"],
+      id: "d31", title: "Chicken & Chorizo Jambalaya", tags: ["spicy"], cuisine: "USA", protein: "chicken",
       prep: 8, cook: 20,
       ingredients: [
         ing(100, "g", "chicken thigh, diced", "meat"), ing(40, "g", "cooking chorizo, sliced", "meat"),
@@ -560,7 +560,7 @@
       ]
     },
     {
-      id: "d32", title: "Beef Tacos with Pico de Gallo", tags: ["quick"],
+      id: "d32", title: "Beef Tacos with Pico de Gallo", tags: ["quick"], cuisine: "Mexico", protein: "beef",
       prep: 5, cook: 10,
       ingredients: [
         ing(150, "g", "beef mince", "meat"), ing(1.5, "tsp", "taco seasoning", "spice"),
@@ -575,7 +575,7 @@
       ]
     },
     {
-      id: "d33", title: "Pan-Seared Trout with Almonds", tags: ["pescatarian"],
+      id: "d33", title: "Pan-Seared Trout with Almonds", tags: ["pescatarian"], cuisine: "France", protein: "fish",
       prep: 5, cook: 8,
       ingredients: [
         ing(150, "g", "trout fillet", "meat"), ing(1, "tbsp", "flaked almonds", "store"),
@@ -592,7 +592,7 @@
       ]
     },
     {
-      id: "d34", title: "Spiced Squash & Coconut Soup", tags: ["vegetarian", "vegan"],
+      id: "d34", title: "Spiced Squash & Coconut Soup", tags: ["vegetarian", "vegan"], cuisine: "Thailand", protein: "plant-based",
       prep: 8, cook: 15,
       ingredients: [
         ing(250, "g", "butternut squash, cubed", "produce"), ing(150, "ml", "coconut milk", "store"),
@@ -611,7 +611,7 @@
       ]
     },
     {
-      id: "d35", title: "Chicken Tikka Skewers with Minted Yoghurt", tags: ["spicy"],
+      id: "d35", title: "Chicken Tikka Skewers with Minted Yoghurt", tags: ["spicy"], cuisine: "India", protein: "chicken",
       prep: 8, cook: 10,
       ingredients: [
         ing(150, "g", "chicken breast, cubed", "meat"), ing(2, "tbsp", "natural yoghurt", "dairy"),
@@ -625,7 +625,7 @@
       ]
     },
     {
-      id: "d36", title: "Beef & Broccoli in Oyster Sauce", tags: ["quick"],
+      id: "d36", title: "Beef & Broccoli in Oyster Sauce", tags: ["quick"], cuisine: "China", protein: "beef",
       prep: 8, cook: 8,
       ingredients: [
         ing(130, "g", "beef frying strips", "meat"), ing(120, "g", "tenderstem broccoli", "produce"),
@@ -643,7 +643,7 @@
       ]
     },
     {
-      id: "d37", title: "Halloumi & Vegetable Skewers with Tzatziki", tags: ["vegetarian"],
+      id: "d37", title: "Halloumi & Vegetable Skewers with Tzatziki", tags: ["vegetarian"], cuisine: "Greece", protein: "plant-based",
       prep: 8, cook: 10,
       ingredients: [
         ing(100, "g", "halloumi, cubed", "dairy"), ing(0.5, "", "courgette", "produce"),
@@ -658,7 +658,7 @@
       ]
     },
     {
-      id: "d38", title: "Duck Breast with Plum Sauce and Egg Noodles", tags: [],
+      id: "d38", title: "Duck Breast with Plum Sauce and Egg Noodles", tags: [], cuisine: "China", protein: "duck",
       prep: 6, cook: 12,
       ingredients: [
         ing(1, "", "duck breast (about 150g)", "meat"), ing(2, "tbsp", "plum sauce", "store"),
@@ -675,7 +675,7 @@
       ]
     },
     {
-      id: "d39", title: "Sausage, Kale & White Bean Stew", tags: [],
+      id: "d39", title: "Sausage, Kale & White Bean Stew", tags: [], cuisine: "Italy", protein: "pork",
       prep: 6, cook: 15,
       ingredients: [
         ing(2, "", "pork sausages", "meat"), ing(200, "g", "cannellini beans, drained", "store"),
@@ -692,7 +692,7 @@
       ]
     },
     {
-      id: "d40", title: "Spiced Cauliflower & Chickpea Traybake", tags: ["vegetarian", "vegan"],
+      id: "d40", title: "Spiced Cauliflower & Chickpea Traybake", tags: ["vegetarian", "vegan"], cuisine: "India", protein: "plant-based",
       prep: 8, cook: 25,
       ingredients: [
         ing(0.5, "", "small cauliflower", "produce"), ing(150, "g", "chickpeas, drained", "store"),
@@ -709,7 +709,7 @@
       ]
     },
     {
-      id: "d41", title: "Ginger Chicken Noodle Soup", tags: [],
+      id: "d41", title: "Ginger Chicken Noodle Soup", tags: [], cuisine: "China", protein: "chicken",
       prep: 8, cook: 12,
       ingredients: [
         ing(120, "g", "chicken breast, sliced", "meat"), ing(400, "ml", "chicken stock", "store"),
@@ -726,7 +726,7 @@
       ]
     },
     {
-      id: "d42", title: "Beef Bulgogi Lettuce Cups", tags: [],
+      id: "d42", title: "Beef Bulgogi Lettuce Cups", tags: [], cuisine: "Korea", protein: "beef",
       prep: 6, cook: 8,
       ingredients: [
         ing(150, "g", "beef frying strips", "meat"), ing(3, "tbsp", "shop-bought bulgogi marinade", "store"),
@@ -741,7 +741,7 @@
       ]
     },
     {
-      id: "d43", title: "Persian-Style Chicken with Saffron Rice", tags: [],
+      id: "d43", title: "Persian-Style Chicken with Saffron Rice", tags: [], cuisine: "Iran", protein: "chicken",
       prep: 8, cook: 20,
       ingredients: [
         ing(180, "g", "chicken thigh fillets", "meat"), ing(70, "g", "basmati rice", "store"),
@@ -758,7 +758,7 @@
       ]
     },
     {
-      id: "d44", title: "Pork Meatballs in Tomato Sauce with Spaghetti", tags: [],
+      id: "d44", title: "Pork Meatballs in Tomato Sauce with Spaghetti", tags: [], cuisine: "Italy", protein: "pork",
       prep: 5, cook: 15,
       ingredients: [
         ing(6, "", "shop-bought pork meatballs", "meat"), ing(1, "", "garlic clove", "produce"),
@@ -774,7 +774,7 @@
       ]
     },
     {
-      id: "d45", title: "Smoked Mackerel & Beetroot Salad", tags: ["pescatarian", "quick"],
+      id: "d45", title: "Smoked Mackerel & Beetroot Salad", tags: ["pescatarian", "quick"], cuisine: "UK", protein: "fish",
       prep: 6, cook: 0,
       ingredients: [
         ing(100, "g", "smoked mackerel fillet", "meat"), ing(100, "g", "cooked beetroot", "produce"),
@@ -790,7 +790,7 @@
       ]
     },
     {
-      id: "d46", title: "Jerk Chicken with Rice and Peas", tags: ["spicy"],
+      id: "d46", title: "Jerk Chicken with Rice and Peas", tags: ["spicy"], cuisine: "Jamaica", protein: "chicken",
       prep: 8, cook: 15,
       ingredients: [
         ing(180, "g", "chicken thigh fillets", "meat"), ing(1.5, "tbsp", "jerk seasoning", "spice"),
@@ -806,7 +806,7 @@
       ]
     },
     {
-      id: "d47", title: "Spiced Sweet Potato & Black Bean Bowl", tags: ["vegetarian", "vegan"],
+      id: "d47", title: "Spiced Sweet Potato & Black Bean Bowl", tags: ["vegetarian", "vegan"], cuisine: "Mexico", protein: "plant-based",
       prep: 8, cook: 15,
       ingredients: [
         ing(1, "", "medium sweet potato", "produce"), ing(150, "g", "black beans, drained", "store"),
@@ -823,7 +823,7 @@
       ]
     },
     {
-      id: "d48", title: "Beef Ragu with Pappardelle", tags: [],
+      id: "d48", title: "Beef Ragu with Pappardelle", tags: [], cuisine: "Italy", protein: "beef",
       prep: 8, cook: 20,
       ingredients: [
         ing(150, "g", "beef mince", "meat"), ing(200, "g", "chopped tomatoes", "store"),
@@ -842,7 +842,7 @@
       ]
     },
     {
-      id: "d49", title: "Lemon Chicken Piccata with Green Beans", tags: [],
+      id: "d49", title: "Lemon Chicken Piccata with Green Beans", tags: [], cuisine: "Italy", protein: "chicken",
       prep: 8, cook: 10,
       ingredients: [
         ing(150, "g", "chicken breast", "meat"), ing(1, "tbsp", "capers", "store"),
@@ -859,7 +859,7 @@
       ]
     },
     {
-      id: "d50", title: "Sweet Potato Katsu Curry", tags: ["vegetarian", "vegan"],
+      id: "d50", title: "Sweet Potato Katsu Curry", tags: ["vegetarian", "vegan"], cuisine: "Japan", protein: "plant-based",
       prep: 8, cook: 15,
       ingredients: [
         ing(1, "", "medium sweet potato, sliced into rounds", "produce"), ing(40, "g", "panko breadcrumbs", "store"),
@@ -876,7 +876,7 @@
       ]
     },
     {
-      id: "d51", title: "Sticky Sesame Tofu with Rice", tags: ["vegetarian", "vegan"],
+      id: "d51", title: "Sticky Sesame Tofu with Rice", tags: ["vegetarian", "vegan"], cuisine: "China", protein: "plant-based",
       prep: 8, cook: 10,
       ingredients: [
         ing(150, "g", "firm tofu", "store"), ing(1.5, "tbsp", "cornflour", "store"),
@@ -893,7 +893,7 @@
       ]
     },
     {
-      id: "d52", title: "Lamb Koftas with Tzatziki and Flatbread", tags: [],
+      id: "d52", title: "Lamb Koftas with Tzatziki and Flatbread", tags: [], cuisine: "Greece", protein: "lamb",
       prep: 4, cook: 10,
       ingredients: [
         ing(4, "", "shop-bought lamb koftas", "meat"), ing(1, "tsp", "olive oil", "store"),
@@ -907,7 +907,7 @@
       ]
     },
     {
-      id: "d53", title: "Korean Gochujang Chicken Traybake", tags: ["spicy"],
+      id: "d53", title: "Korean Gochujang Chicken Traybake", tags: ["spicy"], cuisine: "Korea", protein: "chicken",
       prep: 8, cook: 22,
       ingredients: [
         ing(180, "g", "boneless chicken thighs, cut into chunks", "meat"), ing(150, "g", "tenderstem broccoli", "produce"),
@@ -924,7 +924,7 @@
       ]
     },
     {
-      id: "d54", title: "Sausage, Apple & Red Onion Traybake", tags: [],
+      id: "d54", title: "Sausage, Apple & Red Onion Traybake", tags: [], cuisine: "UK", protein: "pork",
       prep: 6, cook: 25,
       ingredients: [
         ing(3, "", "pork sausages", "meat"), ing(1, "", "apple, cored and cut into wedges", "produce"),
@@ -940,7 +940,7 @@
       ]
     },
     {
-      id: "d55", title: "Moroccan-Spiced Cod Traybake with Chickpeas", tags: ["pescatarian"],
+      id: "d55", title: "Moroccan-Spiced Cod Traybake with Chickpeas", tags: ["pescatarian"], cuisine: "Morocco", protein: "fish",
       prep: 7, cook: 18,
       ingredients: [
         ing(150, "g", "cod fillet", "meat"), ing(200, "g", "tinned chickpeas, drained", "store"),
@@ -957,7 +957,7 @@
       ]
     },
     {
-      id: "d56", title: "Harissa Chickpea & Sweet Potato Traybake", tags: ["vegetarian", "vegan"],
+      id: "d56", title: "Harissa Chickpea & Sweet Potato Traybake", tags: ["vegetarian", "vegan"], cuisine: "Morocco", protein: "plant-based",
       prep: 8, cook: 25,
       ingredients: [
         ing(200, "g", "sweet potato, cubed", "produce"), ing(200, "g", "tinned chickpeas, drained", "store"),
@@ -972,7 +972,7 @@
       ]
     },
     {
-      id: "d57", title: "Sticky Soy Salmon Traybake with Broccoli", tags: ["pescatarian", "quick"],
+      id: "d57", title: "Sticky Soy Salmon Traybake with Broccoli", tags: ["pescatarian", "quick"], cuisine: "China", protein: "fish",
       prep: 5, cook: 12,
       ingredients: [
         ing(150, "g", "salmon fillet", "meat"), ing(120, "g", "tenderstem broccoli", "produce"),
@@ -988,7 +988,7 @@
       ]
     },
     {
-      id: "d58", title: "Cajun Sausage & Pepper Traybake", tags: ["spicy"],
+      id: "d58", title: "Cajun Sausage & Pepper Traybake", tags: ["spicy"], cuisine: "USA", protein: "pork",
       prep: 6, cook: 25,
       ingredients: [
         ing(3, "", "pork sausages", "meat"), ing(1, "", "pepper, sliced", "produce"),
@@ -1002,7 +1002,7 @@
       ]
     },
     {
-      id: "d59", title: "Lemon Herb Chicken Thigh Traybake with New Potatoes", tags: [],
+      id: "d59", title: "Lemon Herb Chicken Thigh Traybake with New Potatoes", tags: [], cuisine: "UK", protein: "chicken",
       prep: 6, cook: 28,
       ingredients: [
         ing(180, "g", "boneless chicken thighs", "meat"), ing(150, "g", "new potatoes, halved", "produce"),
@@ -1017,7 +1017,7 @@
       ]
     },
     {
-      id: "d60", title: "Chorizo & New Potato Traybake with Peppers", tags: ["spicy"],
+      id: "d60", title: "Chorizo & New Potato Traybake with Peppers", tags: ["spicy"], cuisine: "Spain", protein: "pork",
       prep: 6, cook: 25,
       ingredients: [
         ing(80, "g", "cooking chorizo, sliced", "meat"), ing(150, "g", "new potatoes, halved", "produce"),
@@ -1031,7 +1031,7 @@
       ]
     },
     {
-      id: "d61", title: "Halloumi & Vegetable Traybake with Chilli Honey", tags: ["vegetarian"],
+      id: "d61", title: "Halloumi & Vegetable Traybake with Chilli Honey", tags: ["vegetarian"], cuisine: "Cyprus", protein: "plant-based",
       prep: 7, cook: 20,
       ingredients: [
         ing(100, "g", "halloumi, sliced", "dairy"), ing(1, "", "courgette, sliced", "produce"),
@@ -1046,7 +1046,7 @@
       ]
     },
     {
-      id: "d62", title: "Greek-Style Chicken Traybake with Feta and Olives", tags: [],
+      id: "d62", title: "Greek-Style Chicken Traybake with Feta and Olives", tags: [], cuisine: "Greece", protein: "chicken",
       prep: 7, cook: 25,
       ingredients: [
         ing(180, "g", "boneless chicken thighs", "meat"), ing(100, "g", "cherry tomatoes", "produce"),
@@ -1062,7 +1062,7 @@
       ]
     },
     {
-      id: "d63", title: "Filipino-Style Pork Adobo with Rice", tags: [],
+      id: "d63", title: "Filipino-Style Pork Adobo with Rice", tags: [], cuisine: "Philippines", protein: "pork",
       prep: 8, cook: 20,
       ingredients: [
         ing(180, "g", "pork shoulder or loin, cubed", "meat"), ing(2, "tbsp", "soy sauce", "store"),
@@ -1078,7 +1078,7 @@
       ]
     },
     {
-      id: "d64", title: "Vietnamese-Style Caramel Pork with Rice", tags: [],
+      id: "d64", title: "Vietnamese-Style Caramel Pork with Rice", tags: [], cuisine: "Vietnam", protein: "pork",
       prep: 8, cook: 15,
       ingredients: [
         ing(150, "g", "pork mince", "meat"), ing(1.5, "tbsp", "fish sauce", "store"),
@@ -1094,7 +1094,7 @@
       ]
     },
     {
-      id: "d65", title: "Kung Pao-Style Chicken with Peanuts", tags: ["spicy"],
+      id: "d65", title: "Kung Pao-Style Chicken with Peanuts", tags: ["spicy"], cuisine: "China", protein: "chicken",
       prep: 8, cook: 12,
       ingredients: [
         ing(180, "g", "chicken breast, diced", "meat"), ing(30, "g", "roasted peanuts", "store"),
@@ -1112,7 +1112,7 @@
       ]
     },
     {
-      id: "d66", title: "Egg & Vegetable Chow Mein", tags: ["vegetarian", "quick"],
+      id: "d66", title: "Egg & Vegetable Chow Mein", tags: ["vegetarian", "quick"], cuisine: "China", protein: "plant-based",
       prep: 8, cook: 8,
       ingredients: [
         ing(100, "g", "dried egg noodles", "store"), ing(2, "", "eggs", "dairy"),
@@ -1128,7 +1128,7 @@
       ]
     },
     {
-      id: "d67", title: "Char Siu-Style Pork Steaks with Steamed Rice", tags: [],
+      id: "d67", title: "Char Siu-Style Pork Steaks with Steamed Rice", tags: [], cuisine: "China", protein: "pork",
       prep: 6, cook: 15,
       ingredients: [
         ing(180, "g", "pork loin steak", "meat"), ing(2, "tbsp", "hoisin sauce", "store"),
@@ -1142,7 +1142,7 @@
       ]
     },
     {
-      id: "d68", title: "Thai Basil Pork (Pad Krapow)", tags: ["spicy", "quick"],
+      id: "d68", title: "Thai Basil Pork (Pad Krapow)", tags: ["spicy", "quick"], cuisine: "Thailand", protein: "pork",
       prep: 6, cook: 8,
       ingredients: [
         ing(180, "g", "pork mince", "meat"), ing(1, "tbsp", "fish sauce", "store"),
@@ -1160,7 +1160,7 @@
       ]
     },
     {
-      id: "d69", title: "Thai Peanut Noodles with Tofu", tags: ["vegetarian", "vegan"],
+      id: "d69", title: "Thai Peanut Noodles with Tofu", tags: ["vegetarian", "vegan"], cuisine: "Thailand", protein: "plant-based",
       prep: 8, cook: 8,
       ingredients: [
         ing(150, "g", "firm tofu, cubed", "store"), ing(100, "g", "flat rice noodles", "store"),
@@ -1176,7 +1176,7 @@
       ]
     },
     {
-      id: "d70", title: "Butter Chicken with Basmati Rice", tags: [],
+      id: "d70", title: "Butter Chicken with Basmati Rice", tags: [], cuisine: "India", protein: "chicken",
       prep: 8, cook: 15,
       ingredients: [
         ing(180, "g", "chicken breast, diced", "meat"), ing(2, "tbsp", "butter chicken or tikka curry paste", "store"),
@@ -1193,7 +1193,7 @@
       ]
     },
     {
-      id: "d71", title: "Saag Paneer with Rice", tags: ["vegetarian"],
+      id: "d71", title: "Saag Paneer with Rice", tags: ["vegetarian"], cuisine: "India", protein: "plant-based",
       prep: 8, cook: 14,
       ingredients: [
         ing(150, "g", "paneer, cubed", "dairy"), ing(150, "g", "baby spinach", "produce"),
@@ -1210,7 +1210,7 @@
       ]
     },
     {
-      id: "d72", title: "Chana Masala with Rice", tags: ["vegetarian", "vegan"],
+      id: "d72", title: "Chana Masala with Rice", tags: ["vegetarian", "vegan"], cuisine: "India", protein: "plant-based",
       prep: 8, cook: 15,
       ingredients: [
         ing(200, "g", "tinned chickpeas, drained", "store"), ing(150, "g", "chopped tomatoes", "store"),
@@ -1227,7 +1227,7 @@
       ]
     },
     {
-      id: "d73", title: "Lamb Keema Curry with Peas", tags: [],
+      id: "d73", title: "Lamb Keema Curry with Peas", tags: [], cuisine: "India", protein: "lamb",
       prep: 8, cook: 18,
       ingredients: [
         ing(180, "g", "lamb mince", "meat"), ing(60, "g", "frozen peas", "frozen"),
@@ -1244,7 +1244,7 @@
       ]
     },
     {
-      id: "d74", title: "Tandoori-Style Chicken with Minted Rice", tags: ["spicy"],
+      id: "d74", title: "Tandoori-Style Chicken with Minted Rice", tags: ["spicy"], cuisine: "India", protein: "chicken",
       prep: 8, cook: 15,
       ingredients: [
         ing(180, "g", "chicken breast or thigh, sliced", "meat"), ing(2, "tbsp", "tandoori curry paste", "store"),
@@ -1259,7 +1259,7 @@
       ]
     },
     {
-      id: "d75", title: "Falafel Bowl with Hummus and Flatbread", tags: ["vegetarian", "vegan"],
+      id: "d75", title: "Falafel Bowl with Hummus and Flatbread", tags: ["vegetarian", "vegan"], cuisine: "Lebanon", protein: "plant-based",
       prep: 6, cook: 8,
       ingredients: [
         ing(6, "", "shop-bought falafel", "store"), ing(3, "tbsp", "shop-bought hummus", "store"),
@@ -1274,7 +1274,7 @@
       ]
     },
     {
-      id: "d76", title: "Za'atar Chicken with Lemon Rice", tags: [],
+      id: "d76", title: "Za'atar Chicken with Lemon Rice", tags: [], cuisine: "Lebanon", protein: "chicken",
       prep: 8, cook: 15,
       ingredients: [
         ing(180, "g", "chicken thigh, sliced", "meat"), ing(1.5, "tbsp", "za'atar", "spice"),
@@ -1289,7 +1289,7 @@
       ]
     },
     {
-      id: "d77", title: "Sumac Turkey Flatbread with Pickled Onion", tags: [],
+      id: "d77", title: "Sumac Turkey Flatbread with Pickled Onion", tags: [], cuisine: "Turkey", protein: "turkey",
       prep: 8, cook: 10,
       ingredients: [
         ing(180, "g", "turkey breast steak, sliced", "meat"), ing(1, "tsp", "sumac", "spice"),
@@ -1306,7 +1306,7 @@
       ]
     },
     {
-      id: "d78", title: "Chipotle Beef Burrito Bowl", tags: ["spicy", "quick"],
+      id: "d78", title: "Chipotle Beef Burrito Bowl", tags: ["spicy", "quick"], cuisine: "Mexico", protein: "beef",
       prep: 8, cook: 8,
       ingredients: [
         ing(180, "g", "beef mince or steak strips", "meat"), ing(1, "tsp", "chipotle paste", "store"),
@@ -1321,7 +1321,7 @@
       ]
     },
     {
-      id: "d79", title: "Black Bean & Sweetcorn Quesadillas", tags: ["vegetarian", "quick"],
+      id: "d79", title: "Black Bean & Sweetcorn Quesadillas", tags: ["vegetarian", "quick"], cuisine: "Mexico", protein: "plant-based",
       prep: 6, cook: 8,
       ingredients: [
         ing(100, "g", "tinned black beans, drained", "store"), ing(60, "g", "sweetcorn", "frozen"),
@@ -1336,7 +1336,7 @@
       ]
     },
     {
-      id: "d80", title: "Chilaquiles-Style Baked Eggs with Tortilla Chips and Salsa", tags: ["vegetarian", "quick"],
+      id: "d80", title: "Chilaquiles-Style Baked Eggs with Tortilla Chips and Salsa", tags: ["vegetarian", "quick"], cuisine: "Mexico", protein: "plant-based",
       prep: 5, cook: 10,
       ingredients: [
         ing(2, "", "eggs", "dairy"), ing(150, "g", "shop-bought tomato salsa", "store"),
@@ -1351,7 +1351,7 @@
       ]
     },
     {
-      id: "d81", title: "Jamaican-Style Chicken Curry with Rice and Peas", tags: ["spicy"],
+      id: "d81", title: "Jamaican-Style Chicken Curry with Rice and Peas", tags: ["spicy"], cuisine: "Jamaica", protein: "chicken",
       prep: 8, cook: 20,
       ingredients: [
         ing(180, "g", "chicken thigh, diced", "meat"), ing(1.5, "tbsp", "curry powder", "spice"),
@@ -1368,7 +1368,7 @@
       ]
     },
     {
-      id: "d82", title: "Cuban-Style Black Bean Rice Bowl", tags: ["vegetarian", "vegan", "quick"],
+      id: "d82", title: "Cuban-Style Black Bean Rice Bowl", tags: ["vegetarian", "vegan", "quick"], cuisine: "Cuba", protein: "plant-based",
       prep: 6, cook: 10,
       ingredients: [
         ing(150, "g", "tinned black beans, drained", "store"), ing(150, "g", "cooked rice", "store"),
@@ -1383,7 +1383,7 @@
       ]
     },
     {
-      id: "d83", title: "Spanish-Style Chicken and Chorizo Rice", tags: ["spicy"],
+      id: "d83", title: "Spanish-Style Chicken and Chorizo Rice", tags: ["spicy"], cuisine: "Spain", protein: "chicken",
       prep: 8, cook: 20,
       ingredients: [
         ing(100, "g", "chicken thigh, diced", "meat"), ing(40, "g", "cooking chorizo, sliced", "meat"),
@@ -1399,7 +1399,7 @@
       ]
     },
     {
-      id: "d84", title: "Spanish Tortilla-Style Potato & Onion Omelette", tags: ["vegetarian", "quick"],
+      id: "d84", title: "Spanish Tortilla-Style Potato & Onion Omelette", tags: ["vegetarian", "quick"], cuisine: "Spain", protein: "plant-based",
       prep: 8, cook: 15,
       ingredients: [
         ing(150, "g", "potato, thinly sliced", "produce"), ing(0.5, "", "onion, thinly sliced", "produce"),
@@ -1413,7 +1413,7 @@
       ]
     },
     {
-      id: "d85", title: "Patatas Bravas Bowl with Fried Egg", tags: ["vegetarian"],
+      id: "d85", title: "Patatas Bravas Bowl with Fried Egg", tags: ["vegetarian"], cuisine: "Spain", protein: "plant-based",
       prep: 6, cook: 20,
       ingredients: [
         ing(200, "g", "potato, cubed", "produce"), ing(1, "tbsp", "olive oil", "store"),
@@ -1428,7 +1428,7 @@
       ]
     },
     {
-      id: "d86", title: "Greek-Style Lamb Gyros Bowl with Tzatziki", tags: [],
+      id: "d86", title: "Greek-Style Lamb Gyros Bowl with Tzatziki", tags: [], cuisine: "Greece", protein: "lamb",
       prep: 8, cook: 10,
       ingredients: [
         ing(180, "g", "lamb mince", "meat"), ing(1, "tsp", "dried oregano", "spice"),
@@ -1444,7 +1444,7 @@
       ]
     },
     {
-      id: "d87", title: "Greek-Style Lemon Orzo with Feta", tags: ["vegetarian"],
+      id: "d87", title: "Greek-Style Lemon Orzo with Feta", tags: ["vegetarian"], cuisine: "Greece", protein: "plant-based",
       prep: 6, cook: 12,
       ingredients: [
         ing(70, "g", "orzo", "store"), ing(50, "g", "feta, crumbled", "dairy"),
@@ -1459,7 +1459,7 @@
       ]
     },
     {
-      id: "d88", title: "Mushroom & Pea Risotto", tags: ["vegetarian"],
+      id: "d88", title: "Mushroom & Pea Risotto", tags: ["vegetarian"], cuisine: "Italy", protein: "plant-based",
       prep: 8, cook: 22,
       ingredients: [
         ing(70, "g", "risotto rice", "store"), ing(120, "g", "chestnut mushrooms, sliced", "produce"),
@@ -1476,7 +1476,7 @@
       ]
     },
     {
-      id: "d89", title: "Italian Sausage & Rocket Pasta", tags: ["quick"],
+      id: "d89", title: "Italian Sausage & Rocket Pasta", tags: ["quick"], cuisine: "Italy", protein: "pork",
       prep: 6, cook: 12,
       ingredients: [
         ing(2, "", "pork sausages, skins removed", "meat"), ing(70, "g", "pasta", "store"),
@@ -1492,7 +1492,7 @@
       ]
     },
     {
-      id: "d90", title: "Pesto Gnocchi with Cherry Tomatoes", tags: ["vegetarian", "quick"],
+      id: "d90", title: "Pesto Gnocchi with Cherry Tomatoes", tags: ["vegetarian", "quick"], cuisine: "Italy", protein: "plant-based",
       prep: 5, cook: 8,
       ingredients: [
         ing(200, "g", "fresh gnocchi", "store"), ing(3, "tbsp", "shop-bought basil pesto", "store"),
@@ -1505,7 +1505,7 @@
       ]
     },
     {
-      id: "d91", title: "Aglio e Olio with Chilli and Crispy Breadcrumbs", tags: ["vegetarian", "vegan", "quick"],
+      id: "d91", title: "Aglio e Olio with Chilli and Crispy Breadcrumbs", tags: ["vegetarian", "vegan", "quick"], cuisine: "Italy", protein: "plant-based",
       prep: 5, cook: 10,
       ingredients: [
         ing(70, "g", "spaghetti", "store"), ing(2, "", "garlic cloves, thinly sliced", "produce"),
@@ -1521,7 +1521,7 @@
       ]
     },
     {
-      id: "d92", title: "Croque Monsieur-Style Ham & Cheese Toastie with Salad", tags: ["quick"],
+      id: "d92", title: "Croque Monsieur-Style Ham & Cheese Toastie with Salad", tags: ["quick"], cuisine: "France", protein: "pork",
       prep: 5, cook: 8,
       ingredients: [
         ing(2, "", "slices bread", "bakery"), ing(2, "", "slices ham", "meat"),
@@ -1536,7 +1536,7 @@
       ]
     },
     {
-      id: "d93", title: "French-Style Chicken Chasseur", tags: [],
+      id: "d93", title: "French-Style Chicken Chasseur", tags: [], cuisine: "France", protein: "chicken",
       prep: 8, cook: 20,
       ingredients: [
         ing(180, "g", "chicken thigh", "meat"), ing(100, "g", "chestnut mushrooms, sliced", "produce"),
@@ -1553,7 +1553,7 @@
       ]
     },
     {
-      id: "d94", title: "German-Style Currywurst with Fries", tags: ["spicy"],
+      id: "d94", title: "German-Style Currywurst with Fries", tags: ["spicy"], cuisine: "Germany", protein: "pork",
       prep: 6, cook: 20,
       ingredients: [
         ing(2, "", "pork sausages, sliced", "meat"), ing(150, "g", "frozen fries", "frozen"),
@@ -1568,7 +1568,7 @@
       ]
     },
     {
-      id: "d95", title: "Speedy Cottage Pie Mash Cup", tags: [],
+      id: "d95", title: "Speedy Cottage Pie Mash Cup", tags: [], cuisine: "UK", protein: "beef",
       prep: 8, cook: 20,
       ingredients: [
         ing(180, "g", "beef mince", "meat"), ing(0.5, "", "onion, diced", "produce"),
@@ -1584,7 +1584,7 @@
       ]
     },
     {
-      id: "d96", title: "Bangers and Colcannon Mash with Onion Gravy", tags: [],
+      id: "d96", title: "Bangers and Colcannon Mash with Onion Gravy", tags: [], cuisine: "Ireland", protein: "pork",
       prep: 6, cook: 22,
       ingredients: [
         ing(3, "", "pork sausages", "meat"), ing(250, "g", "potato, peeled and cubed", "produce"),
@@ -1601,7 +1601,7 @@
       ]
     },
     {
-      id: "d97", title: "Miso Butter Salmon with Steamed Rice", tags: ["pescatarian"],
+      id: "d97", title: "Miso Butter Salmon with Steamed Rice", tags: ["pescatarian"], cuisine: "Japan", protein: "fish",
       prep: 6, cook: 12,
       ingredients: [
         ing(150, "g", "salmon fillet", "meat"), ing(1, "tbsp", "miso paste", "store"),
@@ -1617,7 +1617,7 @@
       ]
     },
     {
-      id: "d98", title: "Yaki Udon with Beef and Vegetables", tags: ["quick"],
+      id: "d98", title: "Yaki Udon with Beef and Vegetables", tags: ["quick"], cuisine: "Japan", protein: "beef",
       prep: 8, cook: 8,
       ingredients: [
         ing(150, "g", "beef strips (sirloin or rump)", "meat"), ing(200, "g", "straight-to-wok udon noodles", "store"),
@@ -1632,7 +1632,7 @@
       ]
     },
     {
-      id: "d99", title: "Bibimbap-Style Beef Rice Bowl", tags: [],
+      id: "d99", title: "Bibimbap-Style Beef Rice Bowl", tags: [], cuisine: "Korea", protein: "beef",
       prep: 8, cook: 12,
       ingredients: [
         ing(150, "g", "beef strips or mince", "meat"), ing(1, "tbsp", "soy sauce", "store"),
@@ -1649,7 +1649,7 @@
       ]
     },
     {
-      id: "d100", title: "Kimchi Fried Rice with Fried Egg", tags: ["vegetarian"],
+      id: "d100", title: "Kimchi Fried Rice with Fried Egg", tags: ["vegetarian"], cuisine: "Korea", protein: "plant-based",
       prep: 6, cook: 10,
       ingredients: [
         ing(150, "g", "cooked rice, cold", "store"), ing(80, "g", "kimchi, chopped", "store"),
@@ -1664,7 +1664,7 @@
       ]
     },
     {
-      id: "d101", title: "Ethiopian-Inspired Spiced Red Lentil Stew", tags: ["vegetarian", "vegan"],
+      id: "d101", title: "Ethiopian-Inspired Spiced Red Lentil Stew", tags: ["vegetarian", "vegan"], cuisine: "Ethiopia", protein: "plant-based",
       prep: 8, cook: 20,
       ingredients: [
         ing(80, "g", "dried red lentils", "store"), ing(150, "g", "chopped tomatoes", "store"),
@@ -1680,7 +1680,7 @@
       ]
     },
     {
-      id: "d102", title: "Tofu Satay Bowl with Peanut Sauce", tags: ["vegetarian", "vegan"],
+      id: "d102", title: "Tofu Satay Bowl with Peanut Sauce", tags: ["vegetarian", "vegan"], cuisine: "Indonesia", protein: "plant-based",
       prep: 8, cook: 10,
       ingredients: [
         ing(150, "g", "firm tofu, cubed", "store"), ing(70, "g", "jasmine rice", "store"),
@@ -1705,8 +1705,12 @@
     servings: 1,
     plan: [null, null, null, null, null, null, null],
     checked: {},
-    ratings: {}
+    ratings: {},
+    history: [], // log of every dinner a day slot has been filled with: { id, ts, via }
+    cooked: {},  // which of THIS week's day slots have been confirmed cooked: { dayIdx: { id, ts } }
+    cookLog: []  // durable log of confirmed cooks only, separate from planning: { id, ts }
   };
+  var HISTORY_LIMIT = 400; // keep this bounded so it never grows the saved state unreasonably
   var currentUser = null;       // Firebase auth user, or null when signed out
   var saveTimer = null;
   var suppressSave = false;     // true while applying an incoming snapshot, to avoid re-saving it
@@ -1743,7 +1747,8 @@
   function saveLocal() {
     try {
       localStorage.setItem(LOCAL_KEY, JSON.stringify({
-        servings: state.servings, plan: state.plan, checked: state.checked, ratings: state.ratings
+        servings: state.servings, plan: state.plan, checked: state.checked, ratings: state.ratings,
+        history: state.history, cooked: state.cooked, cookLog: state.cookLog
       }));
     } catch (e) { /* localStorage unavailable - ignore */ }
   }
@@ -1762,6 +1767,48 @@
     if (Array.isArray(data.plan) && data.plan.length === 7) state.plan = data.plan;
     if (data.checked && typeof data.checked === "object") state.checked = data.checked;
     if (data.ratings && typeof data.ratings === "object") state.ratings = data.ratings;
+    if (Array.isArray(data.history)) state.history = data.history;
+    if (data.cooked && typeof data.cooked === "object") state.cooked = data.cooked;
+    if (Array.isArray(data.cookLog)) state.cookLog = data.cookLog;
+  }
+
+  function logHistory(recipeId, via) {
+    state.history.push({ id: recipeId, ts: Date.now(), via: via });
+    if (state.history.length > HISTORY_LIMIT) {
+      state.history = state.history.slice(state.history.length - HISTORY_LIMIT);
+    }
+  }
+
+  // Clears any "cooked" confirmation sitting on a day slot - called whenever
+  // that slot's dinner changes, so a tick never survives onto a different dish.
+  function clearCooked(dayIdx) {
+    delete state.cooked[dayIdx];
+  }
+
+  // Toggles the real "I actually cooked this" confirmation for a day slot.
+  // This is deliberately separate from state.history: history logs the moment
+  // a dish is PLANNED (picked, filled, or surprised), which is not proof it
+  // was made. cookLog only grows when the person explicitly confirms it.
+  function toggleCooked(dayIdx) {
+    var recipeId = state.plan[dayIdx];
+    if (!recipeId) return;
+    var entry = state.cooked[dayIdx];
+    if (entry && entry.id === recipeId) {
+      var pos = -1;
+      for (var i = state.cookLog.length - 1; i >= 0; i--) {
+        if (state.cookLog[i].id === entry.id && state.cookLog[i].ts === entry.ts) { pos = i; break; }
+      }
+      if (pos !== -1) state.cookLog.splice(pos, 1);
+      delete state.cooked[dayIdx];
+    } else {
+      var ts = Date.now();
+      state.cooked[dayIdx] = { id: recipeId, ts: ts };
+      state.cookLog.push({ id: recipeId, ts: ts });
+      if (state.cookLog.length > HISTORY_LIMIT) {
+        state.cookLog = state.cookLog.slice(state.cookLog.length - HISTORY_LIMIT);
+      }
+    }
+    onStateChanged();
   }
 
   function setSyncStatus(text) {
@@ -1783,6 +1830,9 @@
           plan: state.plan,
           checked: state.checked,
           ratings: state.ratings,
+          history: state.history,
+          cooked: state.cooked,
+          cookLog: state.cookLog,
           updatedAt: firebase.firestore.FieldValue.serverTimestamp()
         })
         .then(function () { setSyncStatus("Synced"); })
@@ -1814,6 +1864,9 @@
           plan: state.plan,
           checked: state.checked,
           ratings: state.ratings,
+          history: state.history,
+          cooked: state.cooked,
+          cookLog: state.cookLog,
           updatedAt: firebase.firestore.FieldValue.serverTimestamp()
         }).catch(function () {});
       }
@@ -1954,7 +2007,7 @@
   }
 
   /* ============================= TABS ============================= */
-  var panels = { planner: document.getElementById("panel-planner"), shopping: document.getElementById("panel-shopping"), recipes: document.getElementById("panel-recipes") };
+  var panels = { planner: document.getElementById("panel-planner"), shopping: document.getElementById("panel-shopping"), recipes: document.getElementById("panel-recipes"), stats: document.getElementById("panel-stats") };
   var tabBtns = document.querySelectorAll(".tab-btn");
   tabBtns.forEach(function (btn) {
     btn.addEventListener("click", function () {
@@ -1962,6 +2015,7 @@
       btn.setAttribute("aria-selected", "true");
       Object.keys(panels).forEach(function (k) { panels[k].hidden = (k !== btn.dataset.panel); });
       if (btn.dataset.panel === "shopping") renderShopping();
+      if (btn.dataset.panel === "stats") renderStats();
     });
   });
 
@@ -1987,8 +2041,10 @@
     dayList.innerHTML = "";
     for (var idx = 0; idx < 7; idx++) {
       var date = new Date(MONDAY); date.setDate(date.getDate() + idx);
+      var recipeIdForCard = state.plan[idx];
+      var isCooked = !!(recipeIdForCard && state.cooked[idx] && state.cooked[idx].id === recipeIdForCard);
       var card = document.createElement("div");
-      card.className = "day-card" + (idx === todayIdx ? " is-today" : "");
+      card.className = "day-card" + (idx === todayIdx ? " is-today" : "") + (isCooked ? " is-cooked" : "");
 
       var label = document.createElement("div");
       label.className = "day-label";
@@ -2005,20 +2061,26 @@
         assigned.className = "assigned";
         assigned.innerHTML =
           '<span class="swatch" style="background:var(--' + (TAG_COLOR[r.tags[0]] || "border") + ')"></span>' +
-          '<span class="info"><span class="title">' + r.title + '</span>' +
+          '<span class="info"><span class="title">' + r.title + (isCooked ? ' <span class="cooked-badge">&#10003; Cooked</span>' : '') + '</span>' +
           '<span class="meta">' + r.prep + '+' + r.cook + ' min &middot; ' + r.tags.map(function(t){return t;}).join(", ") + '</span></span>';
-        assigned.addEventListener("click", function (rid) { return function () { openRecipeModal(rid, { dayIdx: idx }); }; }(recipeId));
+        assigned.addEventListener("click", function (rid, i) { return function () { openRecipeModal(rid, { dayIdx: i }); }; }(recipeId, idx));
         body.appendChild(assigned);
 
         var actions = document.createElement("div");
         actions.className = "day-actions";
+        var cookBtn = document.createElement("button");
+        cookBtn.className = "icon-btn cook-btn" + (isCooked ? " is-active" : "");
+        cookBtn.setAttribute("aria-label", isCooked ? "Marked as cooked - click to undo" : "Mark as cooked");
+        cookBtn.title = isCooked ? "Cooked – click to undo" : "Mark as cooked";
+        cookBtn.textContent = "✓";
+        cookBtn.addEventListener("click", function (i) { return function (ev) { ev.stopPropagation(); toggleCooked(i); }; }(idx));
         var swapBtn = document.createElement("button");
         swapBtn.className = "icon-btn"; swapBtn.setAttribute("aria-label", "Change dinner"); swapBtn.textContent = "↻";
         swapBtn.addEventListener("click", function (i) { return function () { openPicker(i); }; }(idx));
         var removeBtn = document.createElement("button");
         removeBtn.className = "icon-btn"; removeBtn.setAttribute("aria-label", "Remove"); removeBtn.textContent = "✕";
-        removeBtn.addEventListener("click", function (i) { return function () { state.plan[i] = null; onStateChanged(); }; }(idx));
-        actions.appendChild(swapBtn); actions.appendChild(removeBtn);
+        removeBtn.addEventListener("click", function (i) { return function () { clearCooked(i); state.plan[i] = null; onStateChanged(); }; }(idx));
+        actions.appendChild(cookBtn); actions.appendChild(swapBtn); actions.appendChild(removeBtn);
         body.appendChild(actions);
       } else {
         var emptyBtn = document.createElement("button");
@@ -2048,12 +2110,14 @@
       if (!state.plan[d]) {
         if (pi >= pool.length) { pool = basePool.slice(); pi = 0; }
         state.plan[d] = pool[pi++];
+        logHistory(state.plan[d], "fill");
       }
     }
     onStateChanged();
   });
   document.getElementById("clear-week-btn").addEventListener("click", function () {
     state.plan = [null, null, null, null, null, null, null];
+    state.cooked = {};
     onStateChanged();
   });
 
@@ -2205,7 +2269,7 @@
 
     if (ctx && ctx.dayIdx !== undefined) {
       document.getElementById("modal-swap-btn").addEventListener("click", function () { closeRecipeModal(); openPicker(ctx.dayIdx); });
-      document.getElementById("modal-remove-btn").addEventListener("click", function () { state.plan[ctx.dayIdx] = null; onStateChanged(); closeRecipeModal(); });
+      document.getElementById("modal-remove-btn").addEventListener("click", function () { clearCooked(ctx.dayIdx); state.plan[ctx.dayIdx] = null; onStateChanged(); closeRecipeModal(); });
     } else {
       var pickWrap = document.getElementById("modal-day-picks");
       for (var d = 0; d < 7; d++) {
@@ -2214,7 +2278,9 @@
         b.textContent = DOW_NAMES[d].slice(0, 2);
         b.title = "Add to " + DOW_NAMES[d];
         b.addEventListener("click", function (dayIdx) { return function () {
+          clearCooked(dayIdx);
           state.plan[dayIdx] = r.id;
+          logHistory(r.id, "pick");
           onStateChanged();
           closeRecipeModal();
         }; }(d));
@@ -2249,7 +2315,9 @@
     document.getElementById("picker-close-btn").addEventListener("click", closePicker);
     pickerModal.querySelectorAll(".picker-row").forEach(function (row) {
       row.addEventListener("click", function () {
+        clearCooked(dayIdx);
         state.plan[dayIdx] = row.dataset.id;
+        logHistory(row.dataset.id, "pick");
         onStateChanged();
         closePicker();
       });
@@ -2260,7 +2328,9 @@
       var pool = RECIPES.filter(function (r) { return state.ratings[r.id] !== 1; });
       if (!pool.length) pool = RECIPES;
       var pick = pool[Math.floor(Math.random() * pool.length)];
+      clearCooked(dayIdx);
       state.plan[dayIdx] = pick.id;
+      logHistory(pick.id, "surprise");
       onStateChanged();
       closePicker();
     });
@@ -2268,12 +2338,199 @@
   function closePicker() { pickerBackdrop.hidden = true; pickerModal.innerHTML = ""; }
   pickerBackdrop.addEventListener("click", function (e) { if (e.target === pickerBackdrop) closePicker(); });
 
+  /* ============================= STATS ============================= */
+  function capitalise(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
+
+  function fmtDuration(totalMinutes) {
+    var h = Math.floor(totalMinutes / 60);
+    var m = Math.round(totalMinutes % 60);
+    if (h === 0) return m + " min";
+    return h + "h " + (m ? m + "m" : "");
+  }
+
+  function countBy(list, keyFn) {
+    var counts = {};
+    list.forEach(function (item) {
+      var k = keyFn(item);
+      if (k === null || k === undefined) return;
+      counts[k] = (counts[k] || 0) + 1;
+    });
+    return counts;
+  }
+
+  function topEntries(counts, limit) {
+    return Object.keys(counts)
+      .map(function (k) { return { key: k, count: counts[k] }; })
+      .sort(function (a, b) { return b.count - a.count; })
+      .slice(0, limit || Object.keys(counts).length);
+  }
+
+  function statTile(value, label) {
+    return '<div class="stat-tile"><span class="stat-value">' + value + '</span><span class="stat-label">' + label + "</span></div>";
+  }
+
+  // entries: [{ key, count, label? }] already sorted; label falls back to key
+  function rankList(entries) {
+    if (!entries.length) return "";
+    var max = entries[0].count;
+    return '<div class="rank-list">' + entries.map(function (e) {
+      var pct = max ? Math.round((e.count / max) * 100) : 0;
+      var label = e.label || e.key;
+      return '<div class="rank-row">' +
+        '<span class="rank-label">' + label + '</span>' +
+        '<span class="rank-bar-track"><span class="rank-bar-fill" style="width:' + pct + '%"></span></span>' +
+        '<span class="rank-value">' + e.count + '</span>' +
+        "</div>";
+    }).join("") + "</div>";
+  }
+
+  function renderStats() {
+    var el = document.getElementById("stats-content");
+    var history = state.history;
+    var cookLog = state.cookLog;
+    var html = "";
+
+    /* ---- Your kitchen (personal, built from confirmed cooks + history + ratings) ---- */
+    html += '<div class="stats-section"><h2>Your kitchen</h2>';
+
+    /* Actually cooked: only counts a dish once you tick the checkmark on its
+       day, so these numbers never assume a planned dinner got made. */
+    html += '<h3 class="stats-subhead">What you’ve actually cooked</h3>';
+    var validCooked = cookLog.filter(function (h) { return !!RECIPES_BY_ID[h.id]; });
+    if (!validCooked.length) {
+      html += '<p class="stats-empty">Nothing confirmed yet. Tick the &#10003; on a day once you’ve actually made it, and this fills in: planning a dinner alone doesn’t count here.</p>';
+    } else {
+      var cookedMinutes = validCooked.reduce(function (sum, h) {
+        var r = RECIPES_BY_ID[h.id];
+        return sum + r.prep + r.cook;
+      }, 0);
+      var cookedCountryCounts = countBy(validCooked, function (h) { return RECIPES_BY_ID[h.id].cuisine; });
+      var cookedDistinctCountries = Object.keys(cookedCountryCounts).length;
+
+      html += '<div class="stat-tile-row">' +
+        statTile(validCooked.length, validCooked.length === 1 ? "dinner cooked" : "dinners cooked") +
+        statTile(cookedDistinctCountries, cookedDistinctCountries === 1 ? "country cooked" : "countries cooked") +
+        statTile(fmtDuration(cookedMinutes), "kitchen time logged") +
+        "</div>";
+
+      html += "<h3>Countries you’ve cooked most</h3>" + rankList(topEntries(cookedCountryCounts, 8));
+
+      var cookedDishCounts = countBy(validCooked, function (h) { return h.id; });
+      var cookedDishEntries = topEntries(cookedDishCounts, 8).map(function (e) {
+        return { key: e.key, count: e.count, label: RECIPES_BY_ID[e.key].title };
+      });
+      html += "<h3>Your most-cooked dishes</h3>" + rankList(cookedDishEntries);
+    }
+
+    /* How you've planned: everything ever assigned to a day, whether or not
+       it was confirmed as cooked - this is about planning habits, not proof
+       of what ended up on a plate. */
+    html += '<h3 class="stats-subhead">How you’ve planned</h3>';
+    if (!history.length) {
+      html += '<p class="stats-empty">You haven’t planned a dinner yet. Fill in a week, or hit Surprise me, and your own stats will start building up here.</p>';
+    } else {
+      var validHistory = history.filter(function (h) { return !!RECIPES_BY_ID[h.id]; });
+
+      html += '<div class="stat-tile-row">' +
+        statTile(validHistory.length, validHistory.length === 1 ? "dinner planned" : "dinners planned") +
+        "</div>";
+
+      var dishCounts = countBy(validHistory, function (h) { return h.id; });
+      var dishEntries = topEntries(dishCounts, 8).map(function (e) {
+        return { key: e.key, count: e.count, label: RECIPES_BY_ID[e.key].title };
+      });
+      html += "<h3>Your most-planned dishes</h3>" + rankList(dishEntries);
+
+      var surpriseHistory = validHistory.filter(function (h) { return h.via === "surprise"; });
+      if (surpriseHistory.length) {
+        var surpriseCounts = countBy(surpriseHistory, function (h) { return h.id; });
+        var surpriseEntries = topEntries(surpriseCounts, 5).map(function (e) {
+          return { key: e.key, count: e.count, label: RECIPES_BY_ID[e.key].title };
+        });
+        html += "<h3>Surprise me’s favourites</h3>" + rankList(surpriseEntries);
+      } else {
+        html += '<h3>Surprise me’s favourites</h3><p class="stats-empty">Use the Surprise me button when you fill a day and this fills in.</p>';
+      }
+
+      var viaCounts = countBy(validHistory, function (h) { return h.via; });
+      var viaLabel = { pick: "Chosen by hand", fill: "Filled automatically", surprise: "Surprise me" };
+      var viaEntries = topEntries(viaCounts, 3).map(function (e) {
+        return { key: e.key, count: e.count, label: viaLabel[e.key] || capitalise(e.key) };
+      });
+      html += "<h3>How you plan your week</h3>" + rankList(viaEntries);
+    }
+
+    var ratedIds = Object.keys(state.ratings);
+    if (ratedIds.length) {
+      var sum = ratedIds.reduce(function (s, id) { return s + state.ratings[id]; }, 0);
+      var avg = (sum / ratedIds.length).toFixed(1);
+      var favourites = ratedIds.filter(function (id) { return state.ratings[id] === 5 && RECIPES_BY_ID[id]; })
+        .map(function (id) { return RECIPES_BY_ID[id].title; });
+      var avoided = ratedIds.filter(function (id) { return state.ratings[id] === 1; }).length;
+
+      html += "<h3 class=\"stats-subhead\">Your ratings</h3><div class=\"stat-tile-row\">" +
+        statTile(ratedIds.length, ratedIds.length === 1 ? "dish rated" : "dishes rated") +
+        statTile(avg, "average rating") +
+        "</div>";
+      if (favourites.length) {
+        html += '<p class="stats-note"><strong>5-star favourites:</strong> ' + favourites.join(", ") + "</p>";
+      }
+      if (avoided) {
+        html += '<p class="stats-note">' + avoided + (avoided === 1 ? " dish is" : " dishes are") + " rated 1 star, so Surprise me and Fill empty days are steering around " + (avoided === 1 ? "it" : "them") + ".</p>";
+      }
+    }
+    html += "</div>";
+
+    /* ---- The recipe book (static, always available) ---- */
+    var totalPrep = RECIPES.reduce(function (s, r) { return s + r.prep; }, 0);
+    var totalTimeAll = RECIPES.reduce(function (s, r) { return s + r.prep + r.cook; }, 0);
+    var avgPrep = Math.round(totalPrep / RECIPES.length);
+    var fastest = RECIPES.reduce(function (best, r) { return (r.prep + r.cook) < (best.prep + best.cook) ? r : best; }, RECIPES[0]);
+    var bookCountryCounts = countBy(RECIPES, function (r) { return r.cuisine; });
+    var bookProteinCounts = countBy(RECIPES, function (r) { return r.protein; });
+    var proteinLabel = { "plant-based": "Plant-based", chicken: "Chicken", beef: "Beef", pork: "Pork", lamb: "Lamb", turkey: "Turkey", duck: "Duck", fish: "Fish" };
+
+    html += '<div class="stats-section"><h2>The recipe book</h2>';
+    html += '<div class="stat-tile-row">' +
+      statTile(RECIPES.length, "dinners in the book") +
+      statTile(Object.keys(bookCountryCounts).length, "countries represented") +
+      statTile(avgPrep + " min", "average prep time") +
+      "</div>";
+    html += '<p class="stats-note">Quickest of the lot: <strong>' + fastest.title + "</strong> (" + (fastest.prep + fastest.cook) + " min start to finish). The whole book, cooked once each, comes to about " + fmtDuration(totalTimeAll) + " of kitchen time.</p>";
+
+    html += "<h3>Countries in the book</h3>" + rankList(topEntries(bookCountryCounts, 30));
+
+    var proteinEntries = topEntries(bookProteinCounts, 8).map(function (e) {
+      return { key: e.key, count: e.count, label: proteinLabel[e.key] || capitalise(e.key) };
+    });
+    html += "<h3>What's in the book</h3>" + rankList(proteinEntries);
+
+    var dietCounts = {
+      vegetarian: RECIPES.filter(function (r) { return r.tags.indexOf("vegetarian") !== -1; }).length,
+      vegan: RECIPES.filter(function (r) { return r.tags.indexOf("vegan") !== -1; }).length,
+      pescatarian: RECIPES.filter(function (r) { return r.tags.indexOf("pescatarian") !== -1; }).length,
+      spicy: RECIPES.filter(function (r) { return r.tags.indexOf("spicy") !== -1; }).length,
+      quick: RECIPES.filter(function (r) { return r.tags.indexOf("quick") !== -1; }).length
+    };
+    html += "<h3>Diet &amp; style</h3><div class=\"stat-tile-row\">" +
+      statTile(dietCounts.vegetarian, "vegetarian") +
+      statTile(dietCounts.vegan, "vegan") +
+      statTile(dietCounts.pescatarian, "pescatarian") +
+      statTile(dietCounts.spicy, "spicy") +
+      statTile(dietCounts.quick, "quick") +
+      "</div>";
+    html += "</div>";
+
+    el.innerHTML = html;
+  }
+
   /* ============================= INIT ============================= */
   function renderAll() {
     document.getElementById("servings-value").textContent = state.servings;
     renderPlanner();
     renderRecipeGrid();
     if (!panels.shopping.hidden) renderShopping();
+    if (!panels.stats.hidden) renderStats();
   }
   renderTagChips();
   initPersistence();

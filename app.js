@@ -1703,7 +1703,9 @@
   var DOW_NAMES = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
   var state = {
     servings: 1,
+    mode: "days", // "days" (7-slot week planner) or "batch" (a plain list, not tied to days)
     plan: [null, null, null, null, null, null, null],
+    batch: [],   // batch-mode dinners: [{ uid, id, cookedAt }] - no day attached
     checked: {},
     ratings: {},
     history: [], // log of every dinner a day slot has been filled with: { id, ts, via }
@@ -1711,6 +1713,8 @@
     cookLog: []  // durable log of confirmed cooks only, separate from planning: { id, ts }
   };
   var HISTORY_LIMIT = 400; // keep this bounded so it never grows the saved state unreasonably
+
+  function newUid() { return "b" + Date.now().toString(36) + Math.random().toString(36).slice(2, 7); }
   var currentUser = null;       // Firebase auth user, or null when signed out
   var saveTimer = null;
   var suppressSave = false;     // true while applying an incoming snapshot, to avoid re-saving it
@@ -1747,7 +1751,8 @@
   function saveLocal() {
     try {
       localStorage.setItem(LOCAL_KEY, JSON.stringify({
-        servings: state.servings, plan: state.plan, checked: state.checked, ratings: state.ratings,
+        servings: state.servings, mode: state.mode, plan: state.plan, batch: state.batch,
+        checked: state.checked, ratings: state.ratings,
         history: state.history, cooked: state.cooked, cookLog: state.cookLog
       }));
     } catch (e) { /* localStorage unavailable - ignore */ }
@@ -1764,7 +1769,9 @@
   function applyState(data) {
     if (!data) return;
     if (typeof data.servings === "number") state.servings = data.servings;
+    if (data.mode === "days" || data.mode === "batch") state.mode = data.mode;
     if (Array.isArray(data.plan) && data.plan.length === 7) state.plan = data.plan;
+    if (Array.isArray(data.batch)) state.batch = data.batch;
     if (data.checked && typeof data.checked === "object") state.checked = data.checked;
     if (data.ratings && typeof data.ratings === "object") state.ratings = data.ratings;
     if (Array.isArray(data.history)) state.history = data.history;
@@ -1785,30 +1792,70 @@
     delete state.cooked[dayIdx];
   }
 
+  // Shared cook-log helpers, used by both the day planner's checkmark and the
+  // batch list's checkmark. This is deliberately separate from state.history:
+  // history logs the moment a dish is PLANNED (picked, filled, or surprised),
+  // which is not proof it was made. cookLog only grows when the person
+  // explicitly confirms it with the checkmark.
+  function logCook(recipeId) {
+    var ts = Date.now();
+    state.cookLog.push({ id: recipeId, ts: ts });
+    if (state.cookLog.length > HISTORY_LIMIT) {
+      state.cookLog = state.cookLog.slice(state.cookLog.length - HISTORY_LIMIT);
+    }
+    return ts;
+  }
+  function unlogCook(recipeId, ts) {
+    for (var i = state.cookLog.length - 1; i >= 0; i--) {
+      if (state.cookLog[i].id === recipeId && state.cookLog[i].ts === ts) { state.cookLog.splice(i, 1); return; }
+    }
+  }
+
   // Toggles the real "I actually cooked this" confirmation for a day slot.
-  // This is deliberately separate from state.history: history logs the moment
-  // a dish is PLANNED (picked, filled, or surprised), which is not proof it
-  // was made. cookLog only grows when the person explicitly confirms it.
   function toggleCooked(dayIdx) {
     var recipeId = state.plan[dayIdx];
     if (!recipeId) return;
     var entry = state.cooked[dayIdx];
     if (entry && entry.id === recipeId) {
-      var pos = -1;
-      for (var i = state.cookLog.length - 1; i >= 0; i--) {
-        if (state.cookLog[i].id === entry.id && state.cookLog[i].ts === entry.ts) { pos = i; break; }
-      }
-      if (pos !== -1) state.cookLog.splice(pos, 1);
+      unlogCook(entry.id, entry.ts);
       delete state.cooked[dayIdx];
     } else {
-      var ts = Date.now();
-      state.cooked[dayIdx] = { id: recipeId, ts: ts };
-      state.cookLog.push({ id: recipeId, ts: ts });
-      if (state.cookLog.length > HISTORY_LIMIT) {
-        state.cookLog = state.cookLog.slice(state.cookLog.length - HISTORY_LIMIT);
-      }
+      state.cooked[dayIdx] = { id: recipeId, ts: logCook(recipeId) };
     }
     onStateChanged();
+  }
+
+  // Same idea for a batch-list item, addressed by its uid rather than a day index.
+  function toggleCookedBatch(uid) {
+    var item = null;
+    for (var i = 0; i < state.batch.length; i++) { if (state.batch[i].uid === uid) { item = state.batch[i]; break; } }
+    if (!item) return;
+    if (item.cookedAt) {
+      unlogCook(item.id, item.cookedAt);
+      item.cookedAt = null;
+    } else {
+      item.cookedAt = logCook(item.id);
+    }
+    onStateChanged();
+  }
+
+  function addToBatch(recipeId, via) {
+    state.batch.push({ uid: newUid(), id: recipeId, cookedAt: null });
+    logHistory(recipeId, via || "pick");
+    onStateChanged();
+  }
+  function removeFromBatch(uid) {
+    // Deliberately does not touch cookLog: if this item was already ticked as
+    // cooked, that confirmed cook stays in your history even after the item
+    // itself is taken off the active list.
+    for (var i = 0; i < state.batch.length; i++) {
+      if (state.batch[i].uid === uid) { state.batch.splice(i, 1); break; }
+    }
+    onStateChanged();
+  }
+
+  function currentRecipeIds() {
+    return state.mode === "batch" ? state.batch.map(function (b) { return b.id; }) : state.plan.filter(Boolean);
   }
 
   function setSyncStatus(text) {
@@ -1827,7 +1874,9 @@
         .collection("planner").doc("state")
         .set({
           servings: state.servings,
+          mode: state.mode,
           plan: state.plan,
+          batch: state.batch,
           checked: state.checked,
           ratings: state.ratings,
           history: state.history,
@@ -1861,7 +1910,9 @@
         // is currently on this device (e.g. from local/offline use).
         ref.set({
           servings: state.servings,
+          mode: state.mode,
           plan: state.plan,
+          batch: state.batch,
           checked: state.checked,
           ratings: state.ratings,
           history: state.history,
@@ -2034,9 +2085,118 @@
 
   /* ============================= PLANNER RENDER ============================= */
   var dayList = document.getElementById("day-list");
+  var batchList = document.getElementById("batch-list");
   var todayIdx = (function () { var d = new Date().getDay(); return d === 0 ? 6 : d - 1; })();
 
+  function shuffle(arr) {
+    for (var i = arr.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = arr[i]; arr[i] = arr[j]; arr[j] = t; }
+    return arr;
+  }
+
   function renderPlanner() {
+    var isBatch = state.mode === "batch";
+    document.getElementById("mode-days-btn").setAttribute("aria-pressed", isBatch ? "false" : "true");
+    document.getElementById("mode-batch-btn").setAttribute("aria-pressed", isBatch ? "true" : "false");
+    document.getElementById("days-toolbar").hidden = isBatch;
+    dayList.hidden = isBatch;
+    document.getElementById("batch-toolbar").hidden = !isBatch;
+    batchList.hidden = !isBatch;
+
+    if (isBatch) {
+      renderBatchList();
+      document.getElementById("planner-count").textContent = String(state.batch.length);
+    } else {
+      renderDayList();
+      var planned = state.plan.filter(Boolean).length;
+      document.getElementById("planner-count").textContent = planned + "/7";
+    }
+  }
+
+  function renderBatchList() {
+    batchList.innerHTML = "";
+    if (!state.batch.length) {
+      batchList.innerHTML = '<p class="empty-state">Nothing on your list yet. Hit Surprise me for a random batch, or add dinners one at a time.</p>';
+      return;
+    }
+    state.batch.forEach(function (item) {
+      var r = RECIPES_BY_ID[item.id];
+      if (!r) return;
+      var isCooked = !!item.cookedAt;
+      var card = document.createElement("div");
+      card.className = "day-card" + (isCooked ? " is-cooked" : "");
+
+      var body = document.createElement("div");
+      body.className = "day-body";
+      var assigned = document.createElement("button");
+      assigned.className = "assigned";
+      assigned.innerHTML =
+        '<span class="swatch" style="background:var(--' + (TAG_COLOR[r.tags[0]] || "border") + ')"></span>' +
+        '<span class="info"><span class="title">' + r.title + (isCooked ? ' <span class="cooked-badge">&#10003; Cooked</span>' : '') + '</span>' +
+        '<span class="meta">' + r.prep + '+' + r.cook + ' min &middot; ' + r.tags.map(function(t){return t;}).join(", ") + '</span></span>';
+      assigned.addEventListener("click", function (uid) { return function () { openRecipeModal(item.id, { batchUid: uid }); }; }(item.uid));
+      body.appendChild(assigned);
+
+      var actions = document.createElement("div");
+      actions.className = "day-actions";
+      var cookBtn = document.createElement("button");
+      cookBtn.className = "icon-btn cook-btn" + (isCooked ? " is-active" : "");
+      cookBtn.setAttribute("aria-label", isCooked ? "Marked as cooked - click to undo" : "Mark as cooked");
+      cookBtn.title = isCooked ? "Cooked – click to undo" : "Mark as cooked";
+      cookBtn.textContent = "✓";
+      cookBtn.addEventListener("click", function (uid) { return function (ev) { ev.stopPropagation(); toggleCookedBatch(uid); }; }(item.uid));
+      var swapBtn = document.createElement("button");
+      swapBtn.className = "icon-btn"; swapBtn.setAttribute("aria-label", "Change dinner"); swapBtn.textContent = "↻";
+      swapBtn.addEventListener("click", function (uid) { return function () { openPicker({ type: "batchReplace", uid: uid }); }; }(item.uid));
+      var removeBtn = document.createElement("button");
+      removeBtn.className = "icon-btn"; removeBtn.setAttribute("aria-label", "Remove"); removeBtn.textContent = "✕";
+      removeBtn.addEventListener("click", function (uid) { return function () { removeFromBatch(uid); }; }(item.uid));
+      actions.appendChild(cookBtn); actions.appendChild(swapBtn); actions.appendChild(removeBtn);
+      body.appendChild(actions);
+
+      card.appendChild(body);
+      batchList.appendChild(card);
+    });
+  }
+
+  document.getElementById("mode-days-btn").addEventListener("click", function () {
+    if (state.mode === "days") return;
+    state.mode = "days";
+    onStateChanged();
+  });
+  document.getElementById("mode-batch-btn").addEventListener("click", function () {
+    if (state.mode === "batch") return;
+    state.mode = "batch";
+    onStateChanged();
+  });
+
+  document.getElementById("batch-surprise-btn").addEventListener("click", function () {
+    var input = document.getElementById("batch-count-input");
+    var n = parseInt(input.value, 10);
+    if (!n || n < 1) n = 1;
+    if (n > 30) n = 30;
+    input.value = n;
+    var usedIds = state.batch.map(function (b) { return b.id; });
+    var likedIds = RECIPES.filter(function (r) { return state.ratings[r.id] !== 1; }).map(function (r) { return r.id; });
+    var basePool = likedIds.length ? likedIds : RECIPES.map(function (r) { return r.id; });
+    var pool = shuffle(basePool.filter(function (id) { return usedIds.indexOf(id) === -1; }));
+    var pi = 0;
+    for (var k = 0; k < n; k++) {
+      if (pi >= pool.length) { pool = shuffle(basePool.slice()); pi = 0; }
+      var pickId = pool[pi++];
+      state.batch.push({ uid: newUid(), id: pickId, cookedAt: null });
+      logHistory(pickId, "surprise");
+    }
+    onStateChanged();
+  });
+  document.getElementById("batch-add-btn").addEventListener("click", function () {
+    openPicker({ type: "batchAdd" });
+  });
+  document.getElementById("batch-clear-btn").addEventListener("click", function () {
+    state.batch = [];
+    onStateChanged();
+  });
+
+  function renderDayList() {
     document.getElementById("week-range").textContent = fmtRange();
     dayList.innerHTML = "";
     for (var idx = 0; idx < 7; idx++) {
@@ -2076,7 +2236,7 @@
         cookBtn.addEventListener("click", function (i) { return function (ev) { ev.stopPropagation(); toggleCooked(i); }; }(idx));
         var swapBtn = document.createElement("button");
         swapBtn.className = "icon-btn"; swapBtn.setAttribute("aria-label", "Change dinner"); swapBtn.textContent = "↻";
-        swapBtn.addEventListener("click", function (i) { return function () { openPicker(i); }; }(idx));
+        swapBtn.addEventListener("click", function (i) { return function () { openPicker({ type: "day", dayIdx: i }); }; }(idx));
         var removeBtn = document.createElement("button");
         removeBtn.className = "icon-btn"; removeBtn.setAttribute("aria-label", "Remove"); removeBtn.textContent = "✕";
         removeBtn.addEventListener("click", function (i) { return function () { clearCooked(i); state.plan[i] = null; onStateChanged(); }; }(idx));
@@ -2086,14 +2246,12 @@
         var emptyBtn = document.createElement("button");
         emptyBtn.className = "day-empty-btn";
         emptyBtn.innerHTML = '<span class="plus-badge">+</span> Add a dinner';
-        emptyBtn.addEventListener("click", function (i) { return function () { openPicker(i); }; }(idx));
+        emptyBtn.addEventListener("click", function (i) { return function () { openPicker({ type: "day", dayIdx: i }); }; }(idx));
         body.appendChild(emptyBtn);
       }
       card.appendChild(body);
       dayList.appendChild(card);
     }
-    var planned = state.plan.filter(Boolean).length;
-    document.getElementById("planner-count").textContent = planned + "/7";
   }
 
   document.getElementById("fill-week-btn").addEventListener("click", function () {
@@ -2103,12 +2261,11 @@
     // recipe has been rated 1 star, so the week can still be filled.
     var likedIds = RECIPES.filter(function (r) { return state.ratings[r.id] !== 1; }).map(function (r) { return r.id; });
     var basePool = likedIds.length ? likedIds : RECIPES.map(function (r) { return r.id; });
-    var pool = basePool.filter(function (id) { return used.indexOf(id) === -1; });
-    for (var i = pool.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = pool[i]; pool[i] = pool[j]; pool[j] = t; }
+    var pool = shuffle(basePool.filter(function (id) { return used.indexOf(id) === -1; }));
     var pi = 0;
     for (var d = 0; d < 7; d++) {
       if (!state.plan[d]) {
-        if (pi >= pool.length) { pool = basePool.slice(); pi = 0; }
+        if (pi >= pool.length) { pool = shuffle(basePool.slice()); pi = 0; }
         state.plan[d] = pool[pi++];
         logHistory(state.plan[d], "fill");
       }
@@ -2124,9 +2281,12 @@
   /* ============================= SHOPPING LIST ============================= */
   function renderShopping() {
     var content = document.getElementById("shop-content");
-    var recipeIds = state.plan.filter(Boolean);
+    var recipeIds = currentRecipeIds();
     if (recipeIds.length === 0) {
-      content.innerHTML = '<p class="empty-state">Add some dinners to the week and your shopping list will build itself here.</p>';
+      var emptyMsg = state.mode === "batch"
+        ? "Pick some dinners in the Just pick dinners tab and your shopping list will build itself here."
+        : "Add some dinners to the week and your shopping list will build itself here.";
+      content.innerHTML = '<p class="empty-state">' + emptyMsg + '</p>';
       document.getElementById("shop-progress").textContent = "";
       return;
     }
@@ -2248,6 +2408,12 @@
       actionsHtml = '<div class="modal-actions">' +
         '<button class="btn btn-primary" id="modal-swap-btn">Swap for something else</button>' +
         '<button class="btn btn-ghost" id="modal-remove-btn">Remove from this day</button></div>';
+    } else if (ctx && ctx.batchUid !== undefined) {
+      actionsHtml = '<div class="modal-actions">' +
+        '<button class="btn btn-primary" id="modal-swap-btn">Swap for something else</button>' +
+        '<button class="btn btn-ghost" id="modal-remove-btn">Remove from list</button></div>';
+    } else if (state.mode === "batch") {
+      actionsHtml = '<div class="modal-actions"><button class="btn btn-primary" id="modal-add-batch-btn">Add to your list</button></div>';
     } else {
       actionsHtml = '<h3>Add to a day</h3><div class="day-pick-row" id="modal-day-picks"></div>';
     }
@@ -2268,8 +2434,16 @@
     wireRatingStars(recipeModal, r.id);
 
     if (ctx && ctx.dayIdx !== undefined) {
-      document.getElementById("modal-swap-btn").addEventListener("click", function () { closeRecipeModal(); openPicker(ctx.dayIdx); });
+      document.getElementById("modal-swap-btn").addEventListener("click", function () { closeRecipeModal(); openPicker({ type: "day", dayIdx: ctx.dayIdx }); });
       document.getElementById("modal-remove-btn").addEventListener("click", function () { clearCooked(ctx.dayIdx); state.plan[ctx.dayIdx] = null; onStateChanged(); closeRecipeModal(); });
+    } else if (ctx && ctx.batchUid !== undefined) {
+      document.getElementById("modal-swap-btn").addEventListener("click", function () { closeRecipeModal(); openPicker({ type: "batchReplace", uid: ctx.batchUid }); });
+      document.getElementById("modal-remove-btn").addEventListener("click", function () { removeFromBatch(ctx.batchUid); closeRecipeModal(); });
+    } else if (state.mode === "batch") {
+      document.getElementById("modal-add-batch-btn").addEventListener("click", function () {
+        addToBatch(r.id, "pick");
+        closeRecipeModal();
+      });
     } else {
       var pickWrap = document.getElementById("modal-day-picks");
       for (var d = 0; d < 7; d++) {
@@ -2295,8 +2469,44 @@
   var pickerBackdrop = document.getElementById("picker-modal-backdrop");
   var pickerModal = document.getElementById("picker-modal");
 
-  function openPicker(dayIdx) {
-    var date = new Date(MONDAY); date.setDate(date.getDate() + dayIdx);
+  // Applies a chosen recipe to whatever the picker was opened for - a day
+  // slot, a replacement inside the batch list, or a brand-new batch entry.
+  function applyPick(ctx, recipeId, via) {
+    if (ctx.type === "day") {
+      clearCooked(ctx.dayIdx);
+      state.plan[ctx.dayIdx] = recipeId;
+      logHistory(recipeId, via);
+    } else if (ctx.type === "batchReplace") {
+      for (var i = 0; i < state.batch.length; i++) {
+        if (state.batch[i].uid === ctx.uid) {
+          // Changing the dish clears any cook confirmation on this entry,
+          // same as swapping a day's dinner - but if it was already ticked,
+          // that cook really happened, so its cookLog entry is left alone.
+          state.batch[i].id = recipeId;
+          state.batch[i].cookedAt = null;
+          break;
+        }
+      }
+      logHistory(recipeId, via);
+    } else { // "batchAdd"
+      state.batch.push({ uid: newUid(), id: recipeId, cookedAt: null });
+      logHistory(recipeId, via);
+    }
+  }
+
+  function openPicker(ctx) {
+    var titleText, subText;
+    if (ctx.type === "day") {
+      var date = new Date(MONDAY); date.setDate(date.getDate() + ctx.dayIdx);
+      titleText = "Pick a dinner for " + DOW_NAMES[ctx.dayIdx];
+      subText = date.toLocaleDateString("en-GB", { day: "numeric", month: "long" });
+    } else if (ctx.type === "batchReplace") {
+      titleText = "Change this dinner";
+      subText = "Pick a replacement – it takes this one’s place on your list.";
+    } else {
+      titleText = "Add a dinner";
+      subText = "Pick anything – it’ll join your list, no day attached.";
+    }
     var rows = RECIPES.map(function (r) {
       var rated = state.ratings[r.id] ? ratingStars(r.id, false) : "";
       return '<button class="picker-row" data-id="' + r.id + '">' +
@@ -2307,17 +2517,15 @@
     }).join("");
     pickerModal.innerHTML =
       '<div class="modal-close-row"><button class="icon-btn" id="picker-close-btn" aria-label="Close">✕</button></div>' +
-      "<h2>Pick a dinner for " + DOW_NAMES[dayIdx] + "</h2>" +
-      '<p style="color:var(--ink-muted); font-size:13px;">' + date.toLocaleDateString("en-GB", { day: "numeric", month: "long" }) + "</p>" +
+      "<h2>" + titleText + "</h2>" +
+      '<p style="color:var(--ink-muted); font-size:13px;">' + subText + "</p>" +
       '<div class="picker-list">' + rows + "</div>" +
       '<button class="btn btn-ghost" id="picker-surprise-btn" style="margin-top:14px;">Surprise me</button>';
     pickerBackdrop.hidden = false;
     document.getElementById("picker-close-btn").addEventListener("click", closePicker);
     pickerModal.querySelectorAll(".picker-row").forEach(function (row) {
       row.addEventListener("click", function () {
-        clearCooked(dayIdx);
-        state.plan[dayIdx] = row.dataset.id;
-        logHistory(row.dataset.id, "pick");
+        applyPick(ctx, row.dataset.id, "pick");
         onStateChanged();
         closePicker();
       });
@@ -2328,9 +2536,7 @@
       var pool = RECIPES.filter(function (r) { return state.ratings[r.id] !== 1; });
       if (!pool.length) pool = RECIPES;
       var pick = pool[Math.floor(Math.random() * pool.length)];
-      clearCooked(dayIdx);
-      state.plan[dayIdx] = pick.id;
-      logHistory(pick.id, "surprise");
+      applyPick(ctx, pick.id, "surprise");
       onStateChanged();
       closePicker();
     });

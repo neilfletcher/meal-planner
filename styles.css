@@ -154,7 +154,19 @@
   .panel[hidden] { display: none; }
 
   /* ---------- planner ---------- */
+  .mode-toggle { display: inline-flex; gap: 4px; background: var(--surface-2); border-radius: 999px; padding: 3px; margin-bottom: 16px; }
+  .mode-btn {
+    border: none; background: none; color: var(--ink-muted); font-weight: 600; font-size: 12.5px;
+    padding: 7px 14px; border-radius: 999px; cursor: pointer;
+  }
+  .mode-btn[aria-pressed="true"] { background: var(--surface); color: var(--ink); box-shadow: var(--shadow); }
+  .batch-actions { align-items: center; }
+  .batch-count-input {
+    width: 52px; padding: 8px 6px; text-align: center; border-radius: 999px; border: 1px solid var(--border);
+    background: var(--surface); color: var(--ink); font-size: 13.5px; font-family: var(--font-mono);
+  }
   .planner-toolbar { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 14px; flex-wrap: wrap; }
+  #days-toolbar[hidden], #batch-toolbar[hidden], #day-list[hidden], #batch-list[hidden] { display: none; }
   .planner-toolbar h2 { font-size: 20px; }
   .week-range { color: var(--ink-muted); font-size: 13px; font-family: var(--font-mono); }
   .btn {

@@ -77,7 +77,12 @@
 
 <main>
   <section class="panel" id="panel-planner">
-    <div class="planner-toolbar">
+    <div class="mode-toggle" role="group" aria-label="Planning mode">
+      <button type="button" class="mode-btn" id="mode-days-btn" aria-pressed="true">Plan by day</button>
+      <button type="button" class="mode-btn" id="mode-batch-btn" aria-pressed="false">Just pick dinners</button>
+    </div>
+
+    <div class="planner-toolbar" id="days-toolbar">
       <div>
         <h2>This week's dinners</h2>
         <div class="week-range" id="week-range"></div>
@@ -88,6 +93,22 @@
       </div>
     </div>
     <div class="day-list" id="day-list"></div>
+
+    <div class="planner-toolbar" id="batch-toolbar" hidden>
+      <div>
+        <h2>Dinners to get through</h2>
+        <div class="week-range" id="batch-range">Not tied to any day &ndash; cook them whenever suits.</div>
+      </div>
+      <div class="toolbar-actions batch-actions">
+        <label class="batch-count-label">
+          <input type="number" id="batch-count-input" min="1" max="30" value="4" class="batch-count-input" aria-label="Number of dinners to add">
+        </label>
+        <button class="btn btn-sm" id="batch-surprise-btn">Surprise me</button>
+        <button class="btn btn-ghost btn-sm" id="batch-add-btn">+ Add a dinner</button>
+        <button class="btn btn-ghost btn-sm" id="batch-clear-btn">Clear list</button>
+      </div>
+    </div>
+    <div class="day-list" id="batch-list" hidden></div>
   </section>
 
   <section class="panel" id="panel-shopping" hidden>

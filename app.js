@@ -7362,11 +7362,36 @@
     batch: [],   // batch-mode dinners: [{ uid, id, cookedAt }] - no day attached
     checked: {},
     ratings: {},
+    noSeafood: false, // "No fish or seafood" preference: hides those dishes everywhere
     history: [], // log of every dinner a day slot has been filled with: { id, ts, via }
     cooked: {},  // which of THIS week's day slots have been confirmed cooked: { dayIdx: { id, ts } }
     cookLog: []  // durable log of confirmed cooks only, separate from planning: { id, ts }
   };
   var HISTORY_LIMIT = 400; // keep this bounded so it never grows the saved state unreasonably
+
+  // Fish and seafood you can see on the plate. Background seasonings (fish
+  // sauce, oyster sauce, dashi, bonito flakes) don't count.
+  var SEAFOOD_RE = /\b(prawns?|shrimps?|squid|calamari|anchov|tuna|salmon|cod|haddock|mackerel|fish|crab|mussels?|clams?|scallops?|oysters?|herring|trout|sea ?bass|bream|plaice|pollock|snapper|seafood|lobster|sardines?|basa|coley|kippers?|hake|monkfish)/i;
+  var SEAFOOD_SEASONING_RE = /fish sauce|oyster sauce|bonito|dashi/i;
+  var seafoodCache = {};
+  function hasSeafood(r) {
+    if (seafoodCache[r.id] === undefined) {
+      seafoodCache[r.id] = r.protein === "fish" || r.ingredients.some(function (i) {
+        return SEAFOOD_RE.test(i.item) && !SEAFOOD_SEASONING_RE.test(i.item);
+      });
+    }
+    return seafoodCache[r.id];
+  }
+  function allowedByPrefs(r) { return !(state.noSeafood && hasSeafood(r)); }
+  // Recipes eligible for random suggestions: never 1-star dishes, never
+  // seafood when that's switched off. Falls back gracefully if that's empty.
+  function suggestPool(base) {
+    var src = base || RECIPES;
+    var pool = src.filter(function (r) { return allowedByPrefs(r) && state.ratings[r.id] !== 1; });
+    if (!pool.length) pool = src.filter(allowedByPrefs);
+    if (!pool.length) pool = src;
+    return pool;
+  }
 
   function newUid() { return "b" + Date.now().toString(36) + Math.random().toString(36).slice(2, 7); }
   var currentUser = null;       // Firebase auth user, or null when signed out
@@ -7406,7 +7431,7 @@
     try {
       localStorage.setItem(LOCAL_KEY, JSON.stringify({
         servings: state.servings, mode: state.mode, plan: state.plan, batch: state.batch,
-        checked: state.checked, ratings: state.ratings,
+        checked: state.checked, ratings: state.ratings, noSeafood: !!state.noSeafood,
         history: state.history, cooked: state.cooked, cookLog: state.cookLog
       }));
     } catch (e) { /* localStorage unavailable - ignore */ }
@@ -7428,6 +7453,7 @@
     if (Array.isArray(data.batch)) state.batch = data.batch;
     if (data.checked && typeof data.checked === "object") state.checked = data.checked;
     if (data.ratings && typeof data.ratings === "object") state.ratings = data.ratings;
+    if (typeof data.noSeafood === "boolean") state.noSeafood = data.noSeafood;
     if (Array.isArray(data.history)) state.history = data.history;
     if (data.cooked && typeof data.cooked === "object") state.cooked = data.cooked;
     if (Array.isArray(data.cookLog)) state.cookLog = data.cookLog;
@@ -7533,6 +7559,7 @@
           batch: state.batch,
           checked: state.checked,
           ratings: state.ratings,
+          noSeafood: !!state.noSeafood,
           history: state.history,
           cooked: state.cooked,
           cookLog: state.cookLog,
@@ -7569,6 +7596,7 @@
           batch: state.batch,
           checked: state.checked,
           ratings: state.ratings,
+          noSeafood: !!state.noSeafood,
           history: state.history,
           cooked: state.cooked,
           cookLog: state.cookLog,
@@ -7843,7 +7871,7 @@
     if (n > 30) n = 30;
     input.value = n;
     var usedIds = state.batch.map(function (b) { return b.id; });
-    var likedIds = RECIPES.filter(function (r) { return state.ratings[r.id] !== 1; }).map(function (r) { return r.id; });
+    var likedIds = suggestPool().map(function (r) { return r.id; });
     var basePool = likedIds.length ? likedIds : RECIPES.map(function (r) { return r.id; });
     var pool = shuffle(basePool.filter(function (id) { return usedIds.indexOf(id) === -1; }));
     var pi = 0;
@@ -7926,7 +7954,7 @@
     // Never fill a day with a 1-star dish, same rule as Surprise me. Only
     // fall back to the full list (including 1-star dishes) if every single
     // recipe has been rated 1 star, so the week can still be filled.
-    var likedIds = RECIPES.filter(function (r) { return state.ratings[r.id] !== 1; }).map(function (r) { return r.id; });
+    var likedIds = suggestPool().map(function (r) { return r.id; });
     var basePool = likedIds.length ? likedIds : RECIPES.map(function (r) { return r.id; });
     var pool = shuffle(basePool.filter(function (id) { return used.indexOf(id) === -1; }));
     var pi = 0;
@@ -7946,6 +7974,271 @@
   });
 
   /* ============================= SHOPPING LIST ============================= */
+  /* ============================= SHOPPING LIST CONSOLIDATION ============================= */
+  // Recipes describe ingredients the way you cook them ("onion, finely
+  // diced", "2 tbsp chopped fresh parsley", "160 g shredded white cabbage").
+  // The shopping list needs them the way you BUY them. shopCanon() reduces
+  // each ingredient to a canonical product + unit; shopBuild() then merges
+  // everything that is the same product, converting units where it makes
+  // sense (g/kg, ml/tsp/tbsp, grams of cabbage -> cabbages, lemon juice ->
+  // lemons, handfuls of herbs -> grams, and so on).
+
+  var SHOP_SINGULAR = {
+    onions: "onion", tomatoes: "tomato", potatoes: "potato", chillies: "chilli", carrots: "carrot",
+    eggs: "egg", limes: "lime", lemons: "lemon", radishes: "radish", thighs: "thigh", breasts: "breast",
+    fillets: "fillet", sausages: "sausage", chops: "chop", rashers: "rasher", peppers: "pepper",
+    courgettes: "courgette", shallots: "shallot", apples: "apple", avocados: "avocado", cloves: "clove",
+    heads: "head", mushrooms: "mushroom", tortillas: "tortilla", koftas: "kofta", meatballs: "meatball",
+    gherkins: "gherkin", apricots: "apricot", slices: "slice", sheets: "sheet", handfuls: "handful"
+  };
+  // Nouns that should keep their plural form (never singularised).
+  var SHOP_KEEP_PLURAL = /(salad leaves|curry leaves|lime leaves|sage leaves|whole cloves|green cardamom pods)$/;
+  var SHOP_PLURAL = { chilli: "chillies", tomato: "tomatoes", potato: "potatoes", radish: "radishes", leaf: "leaves" };
+
+  var SHOP_HERBS = { coriander: 1, parsley: 1, dill: 1, mint: 1, basil: 1, chives: 1, tarragon: 1, thyme: 1, rosemary: 1, "thai basil": 1 };
+
+  // Approximate weight of one whole item, used to reconcile "300 g" with "1".
+  var SHOP_EACH_G = {
+    "onion": 150, "red onion": 150, "white onion": 150, "shallot": 40, "tomato": 100, "potato": 200,
+    "baking potato": 300, "floury potato": 200, "waxy potato": 200, "sweet potato": 250, "carrot": 80,
+    "courgette": 200, "pepper": 160, "red pepper": 160, "green pepper": 160, "yellow pepper": 160,
+    "white cabbage": 900, "red cabbage": 900, "cabbage": 900, "cauliflower": 600, "cucumber": 300,
+    "butternut squash": 1000, "swede": 700, "avocado": 150, "apple": 150, "leek": 200,
+    "chicken breast": 170, "chicken thigh": 100, "boneless chicken thigh": 100, "pork chop": 200,
+    "pork loin chop": 200, "lamb chop": 100, "pork sausage": 65, "duck breast": 150,
+    "cod fillet": 150, "salmon fillet": 130, "white fish fillet": 150, "egg": 55, "cherry tomato": 15
+  };
+  // Things you buy whole: grams get converted to a count of the item.
+  var SHOP_BUY_WHOLE = {
+    "onion": 1, "red onion": 1, "white onion": 1, "shallot": 1, "tomato": 1, "carrot": 1, "courgette": 1,
+    "pepper": 1, "red pepper": 1, "green pepper": 1, "yellow pepper": 1, "white cabbage": 1, "red cabbage": 1,
+    "cabbage": 1, "cauliflower": 1, "cucumber": 1, "butternut squash": 1, "swede": 1, "avocado": 1,
+    "apple": 1, "leek": 1, "sweet potato": 1, "lemon": 1, "lime": 1, "orange": 1, "egg": 1
+  };
+  var SHOP_ALIAS = {
+    "cabbage": "white cabbage", "egg yolk": "egg", "boiled egg": "egg", "hard-boiled egg": "egg",
+    "cheddar cheese": "cheddar", "mature cheddar": "cheddar", "feta cheese": "feta",
+    "plain yoghurt": "natural yoghurt", "yoghurt": "natural yoghurt",
+    "tomato puree": "tomato purée", "tomato ketchup": "ketchup", "orzo pasta": "orzo",
+    "gochujang paste": "gochujang", "red kidney beans": "kidney beans", "tomato passata": "passata",
+    "basil leaves": "basil", "thyme leaves": "thyme", "mint and coriander leaves": "mint and coriander",
+    "thumb-sized piece ginger": "ginger", "piece ginger": "ginger", "lettuce leaf": "lettuce leaf",
+    "garlic clove": "garlic", "celery stick": "celery", "lemongrass stalk": "lemongrass",
+    "corn on the cob": "corn on the cob", "gruyere": "gruyère", "boneless chicken thigh": "chicken thigh",
+    "chicken thigh fillet": "chicken thigh", "streaky bacon rasher": "streaky bacon",
+    "kumara": "sweet potato", "scotch bonnet": "scotch bonnet chilli", "lettuce leaves": "lettuce leaf",
+    "bacon rasher": "bacon", "smoked bacon rasher": "smoked bacon"
+  };
+  // Ingredients sold as a whole fruit: juice/zest/wedges become fractions of one.
+  var SHOP_CITRUS = { lemon: 3, lime: 2, orange: 6 }; // tbsp of juice per fruit
+
+  function shopSingular(phrase) {
+    if (SHOP_KEEP_PLURAL.test(phrase)) return phrase;
+    var words = phrase.split(" ");
+    var last = words[words.length - 1];
+    if (SHOP_SINGULAR[last]) words[words.length - 1] = SHOP_SINGULAR[last];
+    if (words[0] === "slices" || words[0] === "sheets" || words[0] === "rashers" || words[0] === "heads") words[0] = SHOP_SINGULAR[words[0]];
+    return words.join(" ");
+  }
+  function shopPlural(phrase) {
+    if (/s$|(anise|falafel|fish|spam|lettuce|swede|squash|garlic|ginger|celery|kale|spinach|rocket|pak choi|cauliflower|broccoli)$/.test(phrase)) return phrase;
+    var words = phrase.split(" ");
+    var last = words[words.length - 1];
+    words[words.length - 1] = SHOP_PLURAL[last] || (/(ch|sh|x)$/.test(last) ? last + "es" : last + "s");
+    return words.join(" ");
+  }
+
+  // One recipe ingredient -> { key, label, cat, unit, amt, herb, drained, tinned }
+  function shopCanon(i, servings) {
+    var cat = i.cat;
+    var unit = (i.unit || "").toLowerCase();
+    var amt = i.amt === null || i.amt === undefined ? null : i.amt * servings;
+    var raw = String(i.item);
+    var drained = /drained/i.test(raw);
+    var tinnedWord = /\btinned\b|\(tinned\)/i.test(raw);
+    var eachG = null;
+    var m = raw.match(/about (\d+)\s*g/i);
+    if (m) eachG = parseInt(m[1], 10);
+
+    var s = raw.replace(/\([^)]*\)/g, " ");                        // drop "(tinned)", "(e.g. cod)"
+    var comma = s.indexOf(",");
+    var head = comma === -1 ? s : s.slice(0, comma);
+    head = head.replace(/\s+/g, " ").trim();
+    var label = head;
+    var k = head.toLowerCase();
+
+    // "X or Y" alternatives in fresh produce: shop for the first option.
+    if (cat === "produce" && / or /.test(k) && !/^each /.test(k)) {
+      k = k.split(" or ")[0].trim();
+      label = label.split(/ or /i)[0].trim();
+    }
+    // Leading prep/size words on fresh and dairy items.
+    if (cat === "produce" || cat === "dairy" || cat === "meat") {
+      var prev;
+      do {
+        prev = k;
+        k = k.replace(/^(finely |thinly |roughly |coarsely |very )?(chopped|shredded|grated|sliced|diced|minced|crushed|torn|cooked(?= (chicken|ham)))\s+/, "")
+             .replace(/^(fresh|small|medium|large|ripe|mature|skinless|very fresh)\s+/, "");
+      } while (k !== prev);
+      label = label.slice(label.length - k.length);
+    }
+    // "tinned chickpeas" and "chickpeas" are the same tin.
+    if (cat === "store" && /^tinned /.test(k)) { k = k.slice(7); label = label.slice(7); tinnedWord = true; }
+    if (cat === "store" && / pasta$/.test(k) && k !== "pasta") { /* keep e.g. "orzo pasta" via alias */ }
+
+    // Unit words hiding in the name: "slices ham", "sheets filo pastry", "rashers streaky bacon".
+    var um = k.match(/^(slices?|sheets?|rashers?|heads?|thin slices|wedge|slice) (.+)$/);
+    if (um && (unit === "" || unit === um[1])) {
+      unit = um[1].replace(/^thin /, "");
+      k = um[2]; label = label.slice(label.length - k.length);
+    }
+    var rm = k.match(/^(.+) rashers?$/);
+    if (rm) { unit = "rasher"; k = rm[1]; label = label.slice(0, rm[1].length); }
+    if (unit === "rashers") unit = "rasher";
+
+    k = shopSingular(k);
+    if (SHOP_ALIAS[k] && SHOP_ALIAS[k] !== k) { k = SHOP_ALIAS[k]; label = k; }
+    if (unit && SHOP_SINGULAR[unit]) unit = SHOP_SINGULAR[unit];
+
+    // Fresh ginger in any form -> grams of ginger.
+    if (cat === "produce" && /ginger$/.test(k) && !/paste|pickled/.test(k)) {
+      k = "ginger"; label = "fresh ginger";
+      if (unit === "thumb") { unit = "g"; amt = amt === null ? 25 : amt * 25; }
+      else if (unit === "slice") { unit = "g"; amt = amt === null ? 3 : amt * 3; }
+      else if (unit === "") { unit = "g"; amt = amt === null ? 25 : amt * 25; } // "thumb-sized piece"
+      else if (unit === "tsp") { unit = "g"; amt = amt * 5; }
+      else if (unit === "tbsp") { unit = "g"; amt = amt * 15; }
+    }
+    // Garlic is counted in cloves, celery in sticks.
+    if (k === "garlic" && unit === "") { unit = "clove"; label = "garlic"; }
+    if (k === "celery" && unit === "") unit = "stick";
+    // A slice or wedge of something you buy whole is a fraction of one.
+    if (SHOP_BUY_WHOLE[k] && (unit === "slice" || unit === "wedge") && amt !== null) {
+      amt = amt / (unit === "slice" ? 8 : 6); unit = "";
+    }
+
+    // Citrus: juice, wedges and slices become fractions of a fruit.
+    var cm = k.match(/^(lemon|lime|orange)( juice| wedge| slice)?$/);
+    if (cat === "produce" && cm) {
+      var fruit = cm[1], part = (cm[2] || "").trim();
+      if (part === "juice") {
+        var tbsp = unit === "tbsp" ? amt : unit === "tsp" ? amt / 3 : unit === "ml" ? amt / 15 : amt;
+        amt = tbsp / SHOP_CITRUS[fruit];
+      } else if (part === "wedge") { amt = (amt || 1) / 6; }
+      else if (part === "slice" || unit === "slice") { amt = (amt || 1) / 8; }
+      unit = ""; k = fruit; label = fruit;
+    }
+
+    var herb = cat === "produce" && !!SHOP_HERBS[k];
+    if (herb) label = "fresh " + k;
+    // "a small handful of parsley" has no number but is still something to buy.
+    if (amt === null && cat === "produce" && /handful|sprig/.test(unit)) amt = servings;
+    if (eachG && unit === "" && amt !== null) { unit = "g"; amt = amt * eachG; }
+
+    return { key: cat + "|" + k, name: k, label: label, cat: cat, unit: unit, amt: amt, herb: herb,
+             drained: drained, tinned: tinnedWord || unit === "tin" };
+  }
+
+  var SHOP_SPOON = { tsp: 1, tbsp: 3 };
+  var SHOP_HANDFUL_G = { "small handful": 15, "handful": 30, "large handful": 45 };
+  var SHOP_HERB_G = { "small handful": 5, "handful": 10, "large handful": 15, "sprig": 1, "few sprigs": 3, "tbsp": 4, "tsp": 1.3 };
+
+  // Merge parts {unit: amount} for one product into the fewest sensible units.
+  function shopReconcile(e) {
+    var p = e.parts, u;
+    function move(from, to, factor) { if (p[from] !== undefined) { p[to] = (p[to] || 0) + p[from] * factor; delete p[from]; } }
+    move("kg", "g", 1000); move("l", "ml", 1000);
+    // spoons -> tsp
+    Object.keys(SHOP_SPOON).forEach(function (sp) { move(sp, "_tsp", SHOP_SPOON[sp]); });
+    if (e.herb) {
+      // Herbs are bought by the pack, so everything becomes grams.
+      Object.keys(SHOP_HERB_G).forEach(function (h) { if (h !== "tbsp" && h !== "tsp") move(h, "g", SHOP_HERB_G[h]); });
+      move("_tsp", "g", SHOP_HERB_G.tsp);
+    }
+    if (p.ml !== undefined && p.g !== undefined) move("ml", "g", 1);
+    if (p._tsp !== undefined && p.ml !== undefined) move("_tsp", "ml", 5);
+    if (p._tsp !== undefined && p.g !== undefined) move("_tsp", "g", 5);
+    if (p.g !== undefined) Object.keys(SHOP_HANDFUL_G).forEach(function (h) { move(h, "g", SHOP_HANDFUL_G[h]); });
+    // tins vs grams of the same tinned thing
+    if (p.tin !== undefined && p.g !== undefined) move("g", "tin", 1 / (e.drained ? 240 : 400));
+    // whole items vs grams
+    var each = SHOP_EACH_G[e.name];
+    if (each && p.g !== undefined && (p[""] !== undefined || SHOP_BUY_WHOLE[e.name])) {
+      if (SHOP_BUY_WHOLE[e.name]) move("g", "", 1 / each);
+      else move("", "g", each);
+    }
+    u = Object.keys(p);
+    return u;
+  }
+
+  function shopRoundG(x) {
+    if (x >= 1000) return fmtAmt(Math.round(x / 100) / 10) + " kg";
+    if (x >= 100) return Math.round(x / 10) * 10 + " g";
+    return Math.max(1, Math.round(x)) + " g";
+  }
+  function shopFmtSpoons(tsp) {
+    if (tsp < 3) return fmtAmt(Math.round(tsp * 4) / 4) + " tsp";
+    return fmtAmt(Math.max(1, Math.round(tsp / 1.5) / 2)) + " tbsp"; // nearest ½ tbsp
+  }
+
+  // Returns { cat: { key: { label, amt } } }
+  function shopBuild(recipeIds) {
+    var entries = {};
+    recipeIds.forEach(function (rid) {
+      var r = RECIPES_BY_ID[rid];
+      if (!r) return;
+      r.ingredients.forEach(function (i) {
+        var c = shopCanon(i, state.servings);
+        var e = entries[c.key];
+        if (!e) e = entries[c.key] = { cat: c.cat, name: c.name, label: c.label, herb: c.herb, parts: {}, notes: {}, drained: false, labels: {} };
+        e.labels[c.label] = (e.labels[c.label] || 0) + 1;
+        if (c.drained) e.drained = true;
+        if (c.amt === null) { if (c.unit) e.notes[c.unit] = true; return; }
+        e.parts[c.unit] = (e.parts[c.unit] || 0) + c.amt;
+      });
+    });
+
+    var groups = {};
+    Object.keys(entries).forEach(function (key) {
+      var e = entries[key];
+      var units = shopReconcile(e);
+      // most common wording wins for the label
+      var label = e.herb ? e.label : Object.keys(e.labels).sort(function (a, b) { return e.labels[b] - e.labels[a]; })[0];
+      var pieces = [];
+      var countOnly = units.length === 1 && units[0] === "";
+      units.forEach(function (u) {
+        var v = e.parts[u];
+        if (u === "") {
+          var n = Math.max(1, Math.ceil(v - 0.15)); // you can't buy half an onion
+          pieces.push(fmtAmt(n));
+          if (countOnly) label = n > 1 ? shopPlural(shopSingular(label)) : shopSingular(label);
+        } else if (u === "g") {
+          if (e.herb) {
+            // Supermarket herb packs are ~30 g.
+            var packs = Math.max(1, Math.ceil(v / 30 - 0.1));
+            pieces.push(packs + " pack" + (packs > 1 ? "s" : ""));
+            label += " (≈ " + Math.max(5, Math.round(v / 5) * 5) + " g needed)";
+          } else pieces.push(shopRoundG(v));
+          if (units.length === 1 && e.cat === "produce" && SHOP_EACH_G[e.name] && !/s$/.test(label)) label = shopPlural(label);
+        }
+        else if (u === "ml") pieces.push(v >= 1000 ? fmtAmt(Math.round(v / 100) / 10) + " l" : Math.round(v / 5) * 5 + " ml");
+        else if (u === "_tsp") pieces.push(shopFmtSpoons(v));
+        else if (u === "tin" || u === "small tin") { var t = Math.max(1, Math.ceil(v - 0.15)); pieces.push(t + " " + u + (t > 1 ? "s" : "")); }
+        else if (u === "clove") {
+          var cl = Math.ceil(v - 0.01);
+          pieces.push(cl + " clove" + (cl > 1 ? "s" : ""));
+          if (cl >= 8) label += " (≈ " + Math.ceil(cl / 10) + " bulb" + (cl > 10 ? "s" : "") + ")";
+        }
+        else pieces.push(fmtAmt(v) + " " + (v > 1 && !/ /.test(u) ? shopPlural(u) : u));
+      });
+      var noteKeys = Object.keys(e.notes);
+      if (!pieces.length && noteKeys.length) pieces.push(noteKeys.indexOf("to taste") !== -1 ? "to taste" : noteKeys[0]);
+      groups[e.cat] = groups[e.cat] || {};
+      groups[e.cat][key] = { label: label.charAt(0).toLowerCase() === label.charAt(0) ? label : label, amt: pieces.join(" + ") };
+    });
+    return groups;
+  }
+
   function renderShopping() {
     var content = document.getElementById("shop-content");
     var recipeIds = currentRecipeIds();
@@ -7957,37 +8250,24 @@
       document.getElementById("shop-progress").textContent = "";
       return;
     }
-    var groups = {}; // cat -> map(key -> {amt, unit, item, scalable, count})
-    recipeIds.forEach(function (rid) {
-      var r = RECIPES_BY_ID[rid];
-      r.ingredients.forEach(function (i) {
-        var key = i.item.toLowerCase() + "|" + (i.amt === null ? i.unit : i.unit);
-        groups[i.cat] = groups[i.cat] || {};
-        var g = groups[i.cat];
-        if (!g[key]) g[key] = { item: i.item, unit: i.unit, amt: i.amt === null ? null : 0, count: 0, scalable: i.amt !== null };
-        if (i.amt !== null) g[key].amt += i.amt * state.servings;
-        g[key].count++;
-      });
-    });
+    var groups = shopBuild(recipeIds); // cat -> map(key -> {label, amt}), see SHOPPING LIST CONSOLIDATION
 
     var total = 0, checkedCount = 0;
     var html = "";
     CAT_ORDER.forEach(function (cat) {
       if (!groups[cat]) return;
-      var keys = Object.keys(groups[cat]).sort(function (a, b) { return groups[cat][a].item.localeCompare(groups[cat][b].item); });
+      var keys = Object.keys(groups[cat]).sort(function (a, b) { return groups[cat][a].label.localeCompare(groups[cat][b].label); });
       html += '<div class="shop-section"><h3>' + CAT_LABEL[cat] + "</h3>";
       keys.forEach(function (key) {
         var g = groups[cat][key];
-        var itemKey = cat + "|" + key;
+        var itemKey = key;
         total++;
         var isChecked = !!state.checked[itemKey];
         if (isChecked) checkedCount++;
-        var amtDisplay = g.scalable ? fmtAmt(g.amt) + (g.unit ? " " + g.unit : "") : (g.unit || "");
-        var countSuffix = g.count > 1 && !g.scalable ? " ×" + g.count : "";
         html += '<label class="shop-item' + (isChecked ? " checked" : "") + '" data-key="' + itemKey.replace(/"/g, "&quot;") + '">' +
           '<input type="checkbox" ' + (isChecked ? "checked" : "") + '>' +
-          '<span class="amt">' + amtDisplay + countSuffix + '</span>' +
-          '<span class="name">' + g.item + '</span></label>';
+          '<span class="amt">' + g.amt + '</span>' +
+          '<span class="name">' + g.label + '</span></label>';
       });
       html += "</div>";
     });
@@ -8024,6 +8304,15 @@
       });
       wrap.appendChild(chip);
     });
+    var sea = document.createElement("button");
+    sea.className = "chip"; sea.type = "button"; sea.textContent = "no fish or seafood";
+    sea.setAttribute("aria-pressed", state.noSeafood ? "true" : "false");
+    sea.addEventListener("click", function () {
+      state.noSeafood = !state.noSeafood;
+      scheduleSave();
+      renderTagChips(); renderRecipeGrid();
+    });
+    wrap.appendChild(sea);
   }
 
   function renderRecipeGrid() {
@@ -8031,6 +8320,7 @@
     var activeList = Object.keys(activeTags).filter(function (t) { return activeTags[t]; });
     var term = searchTerm.trim().toLowerCase();
     var filtered = RECIPES.filter(function (r) {
+      if (!allowedByPrefs(r)) return false;
       if (activeList.length && !activeList.every(function (t) { return r.tags.indexOf(t) !== -1; })) return false;
       if (!term) return true;
       if (r.title.toLowerCase().indexOf(term) !== -1) return true;
@@ -8174,34 +8464,90 @@
       titleText = "Add a dinner";
       subText = "Pick anything – it’ll join your list, no day attached.";
     }
-    var rows = RECIPES.map(function (r) {
-      var rated = state.ratings[r.id] ? ratingStars(r.id, false) : "";
-      return '<button class="picker-row" data-id="' + r.id + '">' +
-        '<span class="swatch" style="background:var(--' + (TAG_COLOR[r.tags[0]] || "border") + ')"></span>' +
-        '<span><span class="title">' + r.title + '</span><br><span class="meta">' + r.prep + '+' + r.cook + ' min' + (r.tags.length ? " · " + r.tags.join(", ") : "") + '</span></span>' +
-        (rated ? '<span class="picker-rating">' + rated + '</span>' : "") +
-        "</button>";
-    }).join("");
+    var pickerTerm = "", pickerFav = false, pickerTags = {};
+    var PICKER_TAGS = ["vegetarian", "quick", "spicy"];
+    function pickerRowsHtml() {
+      var term = pickerTerm.trim().toLowerCase();
+      var tags = Object.keys(pickerTags).filter(function (t) { return pickerTags[t]; });
+      var list = RECIPES.filter(function (r) {
+        if (!allowedByPrefs(r)) return false;
+        if (pickerFav && state.ratings[r.id] !== 5) return false;
+        if (tags.length && !tags.every(function (t) { return r.tags.indexOf(t) !== -1; })) return false;
+        if (!term) return true;
+        if (r.title.toLowerCase().indexOf(term) !== -1) return true;
+        if ((r.cuisine || "").toLowerCase().indexOf(term) !== -1) return true;
+        return r.ingredients.some(function (i) { return i.item.toLowerCase().indexOf(term) !== -1; });
+      });
+      if (!list.length) {
+        return '<p class="empty-state">' + (pickerFav && !term && !tags.length
+          ? "No favourites yet. Rate a dinner 5 stars and it will show up here."
+          : "Nothing matches that.") + "</p>";
+      }
+      return list.map(function (r) {
+        var rated = state.ratings[r.id] ? ratingStars(r.id, false) : "";
+        var locked = typeof isRecipeLocked === "function" && isRecipeLocked(r.id);
+        return '<button class="picker-row' + (locked ? " is-locked" : "") + '" data-id="' + r.id + '">' +
+          '<span class="swatch" style="background:var(--' + (TAG_COLOR[r.tags[0]] || "border") + ')"></span>' +
+          '<span><span class="title">' + (locked ? '<span class="lock-badge" aria-label="Locked">&#128274;</span> ' : '') + r.title + '</span><br><span class="meta">' + r.prep + '+' + r.cook + ' min' + (r.tags.length ? " · " + r.tags.join(", ") : "") + '</span></span>' +
+          (rated ? '<span class="picker-rating">' + rated + '</span>' : "") +
+          "</button>";
+      }).join("");
+    }
+    function pickerChipsHtml() {
+      var chip = function (id, text, on) {
+        return '<button type="button" class="chip" data-chip="' + id + '" aria-pressed="' + (on ? "true" : "false") + '">' + text + "</button>";
+      };
+      return chip("fav", "★ favourites", pickerFav) +
+        PICKER_TAGS.map(function (t) { return chip("tag:" + t, t, !!pickerTags[t]); }).join("") +
+        chip("sea", "no fish or seafood", !!state.noSeafood);
+    }
     pickerModal.innerHTML =
       '<div class="modal-close-row"><button class="icon-btn" id="picker-close-btn" aria-label="Close">✕</button></div>' +
       "<h2>" + titleText + "</h2>" +
       '<p style="color:var(--ink-muted); font-size:13px;">' + subText + "</p>" +
-      '<div class="picker-list">' + rows + "</div>" +
+      '<input type="search" class="search-input" id="picker-search" placeholder="Search dinners or ingredients" style="margin-top:12px; width:100%; box-sizing:border-box;">' +
+      '<div id="picker-chips" style="display:flex; gap:8px; flex-wrap:wrap; margin-top:10px;">' + pickerChipsHtml() + "</div>" +
+      '<div class="picker-list" id="picker-list">' + pickerRowsHtml() + "</div>" +
       '<button class="btn btn-ghost" id="picker-surprise-btn" style="margin-top:14px;">Surprise me</button>';
     pickerBackdrop.hidden = false;
     document.getElementById("picker-close-btn").addEventListener("click", closePicker);
-    pickerModal.querySelectorAll(".picker-row").forEach(function (row) {
-      row.addEventListener("click", function () {
-        applyPick(ctx, row.dataset.id, "pick");
-        onStateChanged();
-        closePicker();
+    function wirePickerRows() {
+      pickerModal.querySelectorAll(".picker-row").forEach(function (row) {
+        row.addEventListener("click", function () {
+          applyPick(ctx, row.dataset.id, "pick");
+          onStateChanged();
+          closePicker();
+        });
       });
+    }
+    function refreshPicker() {
+      document.getElementById("picker-list").innerHTML = pickerRowsHtml();
+      document.getElementById("picker-chips").innerHTML = pickerChipsHtml();
+      wirePickerRows();
+    }
+    wirePickerRows();
+    document.getElementById("picker-search").addEventListener("input", function (e) {
+      pickerTerm = e.target.value;
+      refreshPicker();
+    });
+    document.getElementById("picker-chips").addEventListener("click", function (e) {
+      var btn = e.target.closest("[data-chip]");
+      if (!btn) return;
+      var c = btn.dataset.chip;
+      if (c === "fav") pickerFav = !pickerFav;
+      else if (c === "sea") {
+        state.noSeafood = !state.noSeafood;
+        scheduleSave();
+        renderTagChips(); renderRecipeGrid();
+      } else if (c.indexOf("tag:") === 0) {
+        var t = c.slice(4); pickerTags[t] = !pickerTags[t];
+      }
+      refreshPicker();
     });
     document.getElementById("picker-surprise-btn").addEventListener("click", function () {
       // Never suggest a dish rated 1 star. Fall back to the full list only
       // in the (unlikely) case every single recipe has been rated 1 star.
-      var pool = RECIPES.filter(function (r) { return state.ratings[r.id] !== 1; });
-      if (!pool.length) pool = RECIPES;
+      var pool = suggestPool();
       var pick = pool[Math.floor(Math.random() * pool.length)];
       applyPick(ctx, pick.id, "surprise");
       onStateChanged();

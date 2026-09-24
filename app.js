@@ -21,10 +21,10 @@
       prep: 6, cook: 10,
       ingredients: [
         ing(150, "g", "pork loin steak, sliced into strips", "meat"), ing(2, "tbsp", "hoisin sauce", "store"),
-        ing(1, "tsp", "soy sauce", "store"), ing(1, "", "garlic clove", "produce"),
+        ing(1, "tsp", "soy sauce", "store"), ing(1, "", "garlic clove, finely chopped", "produce"),
         ing(1, "tsp", "grated fresh ginger", "produce"), ing(150, "g", "cooked rice, cold", "store"),
         ing(1, "", "egg", "dairy"), ing(60, "g", "frozen peas", "frozen"),
-        ing(1, "tbsp", "vegetable oil", "store"), ing(1, "", "spring onion", "produce")
+        ing(1, "tbsp", "vegetable oil", "store"), ing(1, "", "spring onion, sliced", "produce")
       ],
       steps: [
         "Slice the pork into thin strips.",
@@ -41,7 +41,7 @@
       ingredients: [
         ing(150, "g", "salmon fillet", "meat"), ing(1.5, "tbsp", "harissa paste", "store"),
         ing(60, "g", "couscous", "store"), ing(80, "ml", "vegetable stock", "store"),
-        ing(0.5, "", "lemon", "produce"), ing(null, "small handful", "fresh parsley", "produce"),
+        ing(0.5, "", "lemon", "produce"), ing(null, "small handful", "fresh parsley, chopped", "produce"),
         ing(1, "tsp", "olive oil", "store")
       ],
       steps: [
@@ -92,7 +92,7 @@
       prep: 8, cook: 12,
       ingredients: [
         ing(200, "g", "chickpeas, drained", "store"), ing(200, "g", "chopped tomatoes", "store"),
-        ing(0.5, "", "onion", "produce"), ing(1, "", "garlic clove", "produce"),
+        ing(0.5, "", "onion, finely chopped", "produce"), ing(1, "", "garlic clove, finely chopped", "produce"),
         ing(1, "tsp", "grated fresh ginger", "produce"), ing(1, "tsp", "garam masala", "spice"),
         ing(0.5, "tsp", "ground cumin", "spice"), ing(null, "large handful", "baby spinach", "produce"),
         ing(60, "g", "basmati rice", "store"), ing(1, "tbsp", "vegetable oil", "store")
@@ -127,8 +127,8 @@
       prep: 8, cook: 12,
       ingredients: [
         ing(120, "g", "paneer, cubed", "dairy"), ing(60, "g", "frozen peas", "frozen"),
-        ing(150, "g", "chopped tomatoes", "store"), ing(0.25, "", "onion", "produce"),
-        ing(1, "", "garlic clove", "produce"), ing(1, "tsp", "grated fresh ginger", "produce"),
+        ing(150, "g", "chopped tomatoes", "store"), ing(0.25, "", "onion, finely chopped", "produce"),
+        ing(1, "", "garlic clove, finely chopped", "produce"), ing(1, "tsp", "grated fresh ginger", "produce"),
         ing(1, "tsp", "garam masala", "spice"), ing(0.25, "tsp", "ground turmeric", "spice"),
         ing(60, "g", "basmati rice", "store"), ing(1.5, "tbsp", "vegetable oil", "store")
       ],
@@ -146,9 +146,9 @@
       prep: 6, cook: 12,
       ingredients: [
         ing(60, "g", "cooking chorizo", "meat"), ing(200, "g", "butter beans, drained", "store"),
-        ing(200, "g", "chopped tomatoes", "store"), ing(0.5, "", "onion", "produce"),
-        ing(1, "", "garlic clove", "produce"), ing(0.5, "tsp", "smoked paprika", "spice"),
-        ing(null, "small handful", "fresh parsley", "produce"), ing(1, "slice", "crusty bread", "bakery")
+        ing(200, "g", "chopped tomatoes", "store"), ing(0.5, "", "onion, finely chopped", "produce"),
+        ing(1, "", "garlic clove, finely chopped", "produce"), ing(0.5, "tsp", "smoked paprika", "spice"),
+        ing(null, "small handful", "fresh parsley, chopped", "produce"), ing(1, "slice", "crusty bread", "bakery")
       ],
       steps: [
         "Slice the chorizo and finely chop the onion and garlic.",
@@ -164,7 +164,7 @@
       ingredients: [
         ing(150, "g", "cod fillet (or other firm white fish)", "meat"), ing(150, "g", "new potatoes", "produce"),
         ing(15, "g", "butter", "dairy"), ing(0.5, "", "lemon", "produce"),
-        ing(null, "small handful", "fresh parsley", "produce"), ing(1, "", "garlic clove", "produce"),
+        ing(null, "small handful", "fresh parsley, chopped", "produce"), ing(1, "", "garlic clove, crushed", "produce"),
         ing(1, "tbsp", "olive oil", "store"), ing(1, "tbsp", "plain flour", "store")
       ],
       steps: [
@@ -196,8 +196,8 @@
       id: "d11", title: "Creamy Garlic Mushroom Tagliatelle", tags: ["vegetarian"], cuisine: "Italy", protein: "plant-based",
       prep: 6, cook: 10,
       ingredients: [
-        ing(80, "g", "tagliatelle", "store"), ing(150, "g", "chestnut mushrooms", "produce"),
-        ing(2, "", "garlic clove", "produce"), ing(80, "ml", "double cream", "dairy"),
+        ing(80, "g", "tagliatelle", "store"), ing(150, "g", "chestnut mushrooms, sliced", "produce"),
+        ing(2, "", "garlic clove, finely chopped", "produce"), ing(80, "ml", "double cream", "dairy"),
         ing(20, "g", "parmesan, grated", "dairy"), ing(15, "g", "butter", "dairy"),
         ing(null, "few sprigs", "fresh thyme", "produce"), ing(1, "tbsp", "olive oil", "store")
       ],
@@ -217,8 +217,8 @@
         ing(150, "g", "lamb mince", "meat"), ing(60, "g", "couscous", "store"),
         ing(80, "ml", "vegetable stock", "store"), ing(0.5, "tsp", "ground cumin", "spice"),
         ing(0.25, "tsp", "ground cinnamon", "spice"), ing(3, "", "dried apricots", "store"),
-        ing(0.25, "", "onion", "produce"), ing(1, "", "garlic clove", "produce"),
-        ing(null, "small handful", "fresh mint", "produce"), ing(1, "tsp", "olive oil", "store")
+        ing(0.25, "", "onion, finely chopped", "produce"), ing(1, "", "garlic clove, finely chopped", "produce"),
+        ing(null, "small handful", "fresh mint, torn", "produce"), ing(1, "tsp", "olive oil", "store")
       ],
       steps: [
         "Put the couscous in a bowl, pour over the hot stock, cover and leave for 5 minutes until absorbed.",
@@ -268,7 +268,7 @@
       ingredients: [
         ing(150, "g", "turkey mince", "meat"), ing(60, "g", "sweetcorn", "frozen"),
         ing(100, "g", "kidney beans, drained", "store"), ing(200, "g", "chopped tomatoes", "store"),
-        ing(0.25, "", "onion", "produce"), ing(1, "", "garlic clove", "produce"),
+        ing(0.25, "", "onion, finely chopped", "produce"), ing(1, "", "garlic clove, finely chopped", "produce"),
         ing(1, "tsp", "chilli powder", "spice"), ing(0.5, "tsp", "ground cumin", "spice"),
         ing(60, "g", "basmati rice", "store"), ing(1, "tsp", "vegetable oil", "store")
       ],
@@ -287,7 +287,7 @@
       ingredients: [
         ing(180, "g", "boneless chicken thighs", "meat"), ing(150, "g", "new potatoes, halved", "produce"),
         ing(2, "tbsp", "shop-bought honey mustard sauce or dressing", "store"),
-        ing(1, "tbsp", "olive oil", "store"), ing(0.5, "", "red onion", "produce"),
+        ing(1, "tbsp", "olive oil", "store"), ing(0.5, "", "red onion, cut into wedges", "produce"),
         ing(null, "few sprigs", "fresh thyme", "produce")
       ],
       steps: [
@@ -319,8 +319,8 @@
       prep: 8, cook: 8,
       ingredients: [
         ing(130, "g", "beef frying strips", "meat"), ing(2, "tbsp", "black bean sauce", "store"),
-        ing(1, "", "garlic clove", "produce"), ing(0.5, "", "pepper", "produce"),
-        ing(1, "", "spring onion", "produce"), ing(70, "g", "egg noodles", "store"),
+        ing(1, "", "garlic clove, finely chopped", "produce"), ing(0.5, "", "pepper, sliced", "produce"),
+        ing(1, "", "spring onion, sliced", "produce"), ing(70, "g", "egg noodles", "store"),
         ing(1, "tbsp", "vegetable oil", "store")
       ],
       steps: [
@@ -337,7 +337,7 @@
       prep: 8, cook: 15,
       ingredients: [
         ing(75, "g", "red lentils", "store"), ing(100, "g", "chopped tomatoes", "store"),
-        ing(0.25, "", "onion", "produce"), ing(1, "", "garlic clove", "produce"),
+        ing(0.25, "", "onion, finely chopped", "produce"), ing(1, "", "garlic clove, finely chopped", "produce"),
         ing(1, "tsp", "grated fresh ginger", "produce"), ing(0.5, "tsp", "ground turmeric", "spice"),
         ing(0.5, "tsp", "ground cumin", "spice"), ing(250, "ml", "vegetable stock", "store"),
         ing(1, "", "flatbread", "bakery"), ing(1, "tbsp", "vegetable oil", "store")
@@ -355,10 +355,10 @@
       id: "d20", title: "Chicken Fajita Bowl", tags: ["quick"], cuisine: "Mexico", protein: "chicken",
       prep: 8, cook: 10,
       ingredients: [
-        ing(150, "g", "chicken breast, sliced", "meat"), ing(0.5, "", "pepper", "produce"),
-        ing(0.5, "", "red onion", "produce"), ing(1.5, "tsp", "fajita seasoning", "spice"),
+        ing(150, "g", "chicken breast, sliced", "meat"), ing(0.5, "", "pepper, sliced", "produce"),
+        ing(0.5, "", "red onion, sliced", "produce"), ing(1.5, "tsp", "fajita seasoning", "spice"),
         ing(0.5, "", "lime", "produce"), ing(60, "g", "basmati rice", "store"),
-        ing(null, "small handful", "fresh coriander", "produce"), ing(1, "tbsp", "vegetable oil", "store")
+        ing(null, "small handful", "fresh coriander, chopped", "produce"), ing(1, "tbsp", "vegetable oil", "store")
       ],
       steps: [
         "Cook the rice according to the packet instructions.",
@@ -372,7 +372,7 @@
       id: "d21", title: "Pork Chop with Apple & Mustard Sauce", tags: [], cuisine: "France", protein: "pork",
       prep: 5, cook: 12,
       ingredients: [
-        ing(180, "g", "pork chop", "meat"), ing(0.5, "", "apple", "produce"),
+        ing(180, "g", "pork chop", "meat"), ing(0.5, "", "apple, thinly sliced", "produce"),
         ing(100, "g", "shop-bought creamy mustard or peppercorn sauce", "store"),
         ing(150, "g", "new potatoes", "produce"), ing(10, "g", "butter", "dairy"),
         ing(1, "tsp", "olive oil", "store")
@@ -390,9 +390,9 @@
       prep: 8, cook: 25,
       ingredients: [
         ing(200, "g", "butternut squash, cubed", "produce"), ing(50, "g", "feta cheese", "dairy"),
-        ing(0.5, "", "red onion", "produce"), ing(1.5, "tbsp", "olive oil", "store"),
+        ing(0.5, "", "red onion, finely chopped", "produce"), ing(1.5, "tbsp", "olive oil", "store"),
         ing(0.5, "tsp", "ground cumin", "spice"), ing(null, "pinch", "chilli flakes", "spice"),
-        ing(null, "small handful", "fresh parsley", "produce"), ing(50, "g", "couscous", "store")
+        ing(null, "small handful", "fresh parsley, chopped", "produce"), ing(50, "g", "couscous", "store")
       ],
       steps: [
         "Preheat the oven to 200°C (fan 180°C).",
@@ -407,8 +407,8 @@
       prep: 6, cook: 15,
       ingredients: [
         ing(2, "", "pork sausages", "meat"), ing(200, "g", "butter beans, drained", "store"),
-        ing(150, "g", "chopped tomatoes", "store"), ing(1, "", "small carrot", "produce"),
-        ing(0.25, "", "onion", "produce"), ing(1, "", "garlic clove", "produce"),
+        ing(150, "g", "chopped tomatoes", "store"), ing(1, "", "small carrot, finely diced", "produce"),
+        ing(0.25, "", "onion, finely diced", "produce"), ing(1, "", "garlic clove, chopped", "produce"),
         ing(null, "few sprigs", "fresh thyme", "produce"), ing(1, "tsp", "olive oil", "store")
       ],
       steps: [
@@ -426,7 +426,7 @@
         ing(150, "g", "white fish fillet (pollock or cod)", "meat"), ing(0.5, "tsp", "ground cumin", "spice"),
         ing(0.5, "tsp", "smoked paprika", "spice"), ing(2, "", "soft tortillas", "bakery"),
         ing(60, "g", "red cabbage, shredded", "produce"), ing(0.5, "", "lime", "produce"),
-        ing(1, "tbsp", "soured cream", "dairy"), ing(null, "small handful", "fresh coriander", "produce"),
+        ing(1, "tbsp", "soured cream", "dairy"), ing(null, "small handful", "fresh coriander, chopped", "produce"),
         ing(1, "tsp", "olive oil", "store")
       ],
       steps: [
@@ -459,10 +459,10 @@
       id: "d26", title: "Halloumi & Roasted Veg Couscous", tags: ["vegetarian"], cuisine: "Cyprus", protein: "plant-based",
       prep: 8, cook: 12,
       ingredients: [
-        ing(100, "g", "halloumi", "dairy"), ing(0.5, "", "courgette", "produce"),
+        ing(100, "g", "halloumi", "dairy"), ing(0.5, "", "courgette, sliced", "produce"),
         ing(8, "", "cherry tomatoes", "produce"), ing(60, "g", "couscous", "store"),
         ing(80, "ml", "vegetable stock", "store"), ing(1, "tbsp", "olive oil", "store"),
-        ing(null, "small handful", "fresh mint", "produce"), ing(0.5, "", "lemon", "produce")
+        ing(null, "small handful", "fresh mint, chopped", "produce"), ing(0.5, "", "lemon", "produce")
       ],
       steps: [
         "Preheat the grill to high, or use a griddle pan.",
@@ -480,7 +480,7 @@
         ing(150, "g", "chicken thigh fillets", "meat"), ing(0.5, "tsp", "ground cumin", "spice"),
         ing(null, "pinch", "ground cinnamon", "spice"), ing(0.5, "tsp", "smoked paprika", "spice"),
         ing(1, "", "flatbread", "bakery"), ing(2, "tbsp", "shop-bought tzatziki or garlic sauce", "store"),
-        ing(0.25, "", "red onion", "produce"), ing(1, "tbsp", "olive oil", "store")
+        ing(0.25, "", "red onion, thinly sliced", "produce"), ing(1, "tbsp", "olive oil", "store")
       ],
       steps: [
         "Slice the chicken into strips and toss with the cumin, cinnamon, paprika, a pinch of salt and the olive oil.",
@@ -494,8 +494,8 @@
       prep: 6, cook: 18,
       ingredients: [
         ing(2, "", "pork sausages", "meat"), ing(150, "g", "green or brown lentils, drained", "store"),
-        ing(150, "g", "chopped tomatoes", "store"), ing(1, "", "small carrot", "produce"),
-        ing(0.25, "", "onion", "produce"), ing(1, "", "garlic clove", "produce"),
+        ing(150, "g", "chopped tomatoes", "store"), ing(1, "", "small carrot, diced", "produce"),
+        ing(0.25, "", "onion, diced", "produce"), ing(1, "", "garlic clove, chopped", "produce"),
         ing(null, "few sprigs", "fresh rosemary", "produce"), ing(1, "tsp", "olive oil", "store")
       ],
       steps: [
@@ -511,7 +511,7 @@
       prep: 6, cook: 12,
       ingredients: [
         ing(150, "g", "pork loin steak, cubed", "meat"), ing(80, "g", "pineapple chunks, tinned", "store"),
-        ing(0.5, "", "pepper", "produce"), ing(150, "g", "shop-bought sweet and sour sauce", "store"),
+        ing(0.5, "", "pepper, sliced", "produce"), ing(150, "g", "shop-bought sweet and sour sauce", "store"),
         ing(1, "tsp", "cornflour", "store"), ing(70, "g", "jasmine rice", "store"),
         ing(1, "tbsp", "vegetable oil", "store")
       ],
@@ -528,9 +528,9 @@
       prep: 6, cook: 20,
       ingredients: [
         ing(200, "g", "cherry tomatoes", "produce"), ing(80, "g", "feta cheese, block", "dairy"),
-        ing(2, "", "garlic clove", "produce"), ing(2, "tbsp", "olive oil", "store"),
+        ing(2, "", "garlic clove, whole", "produce"), ing(2, "tbsp", "olive oil", "store"),
         ing(null, "pinch", "chilli flakes", "spice"), ing(80, "g", "fusilli or penne", "store"),
-        ing(null, "small handful", "fresh basil", "produce")
+        ing(null, "small handful", "fresh basil, torn", "produce")
       ],
       steps: [
         "Preheat the oven to 200°C (fan 180°C).",
@@ -547,8 +547,8 @@
       ingredients: [
         ing(100, "g", "chicken thigh, diced", "meat"), ing(40, "g", "cooking chorizo, sliced", "meat"),
         ing(70, "g", "basmati or long-grain rice", "store"), ing(150, "g", "chopped tomatoes", "store"),
-        ing(0.5, "", "pepper", "produce"), ing(0.25, "", "onion", "produce"),
-        ing(1, "", "garlic clove", "produce"), ing(1, "tsp", "Cajun seasoning", "spice"),
+        ing(0.5, "", "pepper, diced", "produce"), ing(0.25, "", "onion, diced", "produce"),
+        ing(1, "", "garlic clove, chopped", "produce"), ing(1, "tsp", "Cajun seasoning", "spice"),
         ing(200, "ml", "chicken stock", "store")
       ],
       steps: [
@@ -581,7 +581,7 @@
         ing(150, "g", "trout fillet", "meat"), ing(1, "tbsp", "flaked almonds", "store"),
         ing(20, "g", "butter", "dairy"), ing(0.5, "", "lemon", "produce"),
         ing(80, "g", "green beans", "produce"), ing(1, "tbsp", "plain flour", "store"),
-        ing(null, "small handful", "fresh parsley", "produce")
+        ing(null, "small handful", "fresh parsley, chopped", "produce")
       ],
       steps: [
         "Cook the green beans in boiling water for 4–5 minutes until just tender, then drain.",
@@ -596,8 +596,8 @@
       prep: 8, cook: 15,
       ingredients: [
         ing(250, "g", "butternut squash, cubed", "produce"), ing(150, "ml", "coconut milk", "store"),
-        ing(250, "ml", "vegetable stock", "store"), ing(0.25, "", "onion", "produce"),
-        ing(1, "", "garlic clove", "produce"), ing(1, "tsp", "grated fresh ginger", "produce"),
+        ing(250, "ml", "vegetable stock", "store"), ing(0.25, "", "onion, finely chopped", "produce"),
+        ing(1, "", "garlic clove, finely chopped", "produce"), ing(1, "tsp", "grated fresh ginger", "produce"),
         ing(1, "tsp", "mild curry powder", "spice"), ing(1, "slice", "crusty bread", "bakery"),
         ing(1, "tsp", "vegetable oil", "store")
       ],
@@ -630,7 +630,7 @@
       ingredients: [
         ing(130, "g", "beef frying strips", "meat"), ing(120, "g", "tenderstem broccoli", "produce"),
         ing(2, "tbsp", "oyster sauce", "store"), ing(1, "tsp", "soy sauce", "store"),
-        ing(1, "", "garlic clove", "produce"), ing(70, "g", "jasmine rice", "store"),
+        ing(1, "", "garlic clove, finely chopped", "produce"), ing(70, "g", "jasmine rice", "store"),
         ing(1, "tbsp", "vegetable oil", "store")
       ],
       steps: [
@@ -646,8 +646,8 @@
       id: "d37", title: "Halloumi & Vegetable Skewers with Tzatziki", tags: ["vegetarian"], cuisine: "Greece", protein: "plant-based",
       prep: 8, cook: 10,
       ingredients: [
-        ing(100, "g", "halloumi, cubed", "dairy"), ing(0.5, "", "courgette", "produce"),
-        ing(6, "", "cherry tomatoes", "produce"), ing(0.5, "", "pepper", "produce"),
+        ing(100, "g", "halloumi, cubed", "dairy"), ing(0.5, "", "courgette, cubed", "produce"),
+        ing(6, "", "cherry tomatoes", "produce"), ing(0.5, "", "pepper, cubed", "produce"),
         ing(3, "tbsp", "shop-bought tzatziki", "store"), ing(1, "tbsp", "olive oil", "store"),
         ing(1, "", "pitta bread", "bakery")
       ],
@@ -662,7 +662,7 @@
       prep: 6, cook: 12,
       ingredients: [
         ing(1, "", "duck breast (about 150g)", "meat"), ing(2, "tbsp", "plum sauce", "store"),
-        ing(1, "tsp", "soy sauce", "store"), ing(1, "", "spring onion", "produce"),
+        ing(1, "tsp", "soy sauce", "store"), ing(1, "", "spring onion, sliced", "produce"),
         ing(70, "g", "egg noodles", "store"), ing(80, "g", "pak choi or greens", "produce"),
         ing(1, "tsp", "sesame oil", "store")
       ],
@@ -680,7 +680,7 @@
       ingredients: [
         ing(2, "", "pork sausages", "meat"), ing(200, "g", "cannellini beans, drained", "store"),
         ing(150, "g", "chopped tomatoes", "store"), ing(null, "large handful", "kale or cavolo nero", "produce"),
-        ing(0.25, "", "onion", "produce"), ing(1, "", "garlic clove", "produce"),
+        ing(0.25, "", "onion, chopped", "produce"), ing(1, "", "garlic clove, chopped", "produce"),
         ing(1, "tsp", "olive oil", "store")
       ],
       steps: [
@@ -698,7 +698,7 @@
         ing(0.5, "", "small cauliflower", "produce"), ing(150, "g", "chickpeas, drained", "store"),
         ing(1, "tsp", "ground cumin", "spice"), ing(0.5, "tsp", "ground turmeric", "spice"),
         ing(1.5, "tbsp", "olive oil", "store"), ing(0.25, "", "lemon", "produce"),
-        ing(null, "small handful", "fresh coriander", "produce"), ing(1, "tbsp", "tahini", "store")
+        ing(null, "small handful", "fresh coriander, chopped", "produce"), ing(1, "tbsp", "tahini", "store")
       ],
       steps: [
         "Preheat the oven to 200°C (fan 180°C).",
@@ -713,9 +713,9 @@
       prep: 8, cook: 12,
       ingredients: [
         ing(120, "g", "chicken breast, sliced", "meat"), ing(400, "ml", "chicken stock", "store"),
-        ing(1, "", "thumb-sized piece fresh ginger", "produce"), ing(1, "", "garlic clove", "produce"),
+        ing(1, "", "thumb-sized piece fresh ginger, finely sliced", "produce"), ing(1, "", "garlic clove, finely sliced", "produce"),
         ing(1, "tbsp", "soy sauce", "store"), ing(60, "g", "egg noodles", "store"),
-        ing(null, "handful", "pak choi or spinach", "produce"), ing(1, "", "spring onion", "produce")
+        ing(null, "handful", "pak choi or spinach", "produce"), ing(1, "", "spring onion, sliced", "produce")
       ],
       steps: [
         "Finely slice the ginger and garlic.",
@@ -730,7 +730,7 @@
       prep: 6, cook: 8,
       ingredients: [
         ing(150, "g", "beef frying strips", "meat"), ing(3, "tbsp", "shop-bought bulgogi marinade", "store"),
-        ing(1, "", "little gem lettuce", "produce"), ing(1, "", "spring onion", "produce"),
+        ing(1, "", "little gem lettuce", "produce"), ing(1, "", "spring onion, sliced", "produce"),
         ing(0.5, "tsp", "sesame seeds", "store")
       ],
       steps: [
@@ -746,7 +746,7 @@
       ingredients: [
         ing(180, "g", "chicken thigh fillets", "meat"), ing(70, "g", "basmati rice", "store"),
         ing(0.5, "tsp", "ground turmeric", "spice"), ing(null, "pinch", "saffron strands (or extra turmeric)", "spice"),
-        ing(0.5, "", "lemon", "produce"), ing(1, "", "garlic clove", "produce"),
+        ing(0.5, "", "lemon", "produce"), ing(1, "", "garlic clove, crushed", "produce"),
         ing(3, "", "dried apricots", "store"), ing(1.5, "tbsp", "olive oil", "store")
       ],
       steps: [
@@ -761,10 +761,10 @@
       id: "d44", title: "Pork Meatballs in Tomato Sauce with Spaghetti", tags: [], cuisine: "Italy", protein: "pork",
       prep: 5, cook: 15,
       ingredients: [
-        ing(6, "", "shop-bought pork meatballs", "meat"), ing(1, "", "garlic clove", "produce"),
+        ing(6, "", "shop-bought pork meatballs", "meat"), ing(1, "", "garlic clove, finely chopped", "produce"),
         ing(0.5, "tsp", "dried oregano", "spice"), ing(200, "g", "chopped tomatoes", "store"),
         ing(15, "g", "parmesan, grated", "dairy"), ing(80, "g", "spaghetti", "store"),
-        ing(null, "small handful", "fresh basil", "produce"), ing(1, "tbsp", "olive oil", "store")
+        ing(null, "small handful", "fresh basil, torn", "produce"), ing(1, "tbsp", "olive oil", "store")
       ],
       steps: [
         "Heat the olive oil in a frying pan over medium heat and fry the meatballs for 5–6 minutes, turning, until browned all over.",
@@ -795,7 +795,7 @@
       ingredients: [
         ing(180, "g", "chicken thigh fillets", "meat"), ing(1.5, "tbsp", "jerk seasoning", "spice"),
         ing(60, "g", "basmati rice", "store"), ing(100, "ml", "coconut milk", "store"),
-        ing(80, "g", "kidney beans, drained", "store"), ing(1, "", "spring onion", "produce"),
+        ing(80, "g", "kidney beans, drained", "store"), ing(1, "", "spring onion, sliced", "produce"),
         ing(0.25, "", "lime", "produce")
       ],
       steps: [
@@ -809,10 +809,10 @@
       id: "d47", title: "Spiced Sweet Potato & Black Bean Bowl", tags: ["vegetarian", "vegan"], cuisine: "Mexico", protein: "plant-based",
       prep: 8, cook: 15,
       ingredients: [
-        ing(1, "", "medium sweet potato", "produce"), ing(150, "g", "black beans, drained", "store"),
+        ing(1, "", "medium sweet potato, cubed", "produce"), ing(150, "g", "black beans, drained", "store"),
         ing(0.5, "tsp", "ground cumin", "spice"), ing(0.5, "tsp", "smoked paprika", "spice"),
-        ing(0.5, "", "lime", "produce"), ing(0.5, "", "avocado", "produce"),
-        ing(null, "small handful", "fresh coriander", "produce"), ing(1, "tbsp", "olive oil", "store")
+        ing(0.5, "", "lime", "produce"), ing(0.5, "", "avocado, sliced", "produce"),
+        ing(null, "small handful", "fresh coriander, chopped", "produce"), ing(1, "tbsp", "olive oil", "store")
       ],
       steps: [
         "Preheat the oven to 200°C (fan 180°C), or use a microwave to speed things up.",
@@ -827,8 +827,8 @@
       prep: 8, cook: 20,
       ingredients: [
         ing(150, "g", "beef mince", "meat"), ing(200, "g", "chopped tomatoes", "store"),
-        ing(1, "", "small carrot", "produce"), ing(0.25, "", "onion", "produce"),
-        ing(1, "", "garlic clove", "produce"), ing(0.5, "tsp", "dried oregano", "spice"),
+        ing(1, "", "small carrot, finely diced", "produce"), ing(0.25, "", "onion, finely diced", "produce"),
+        ing(1, "", "garlic clove, chopped", "produce"), ing(0.5, "tsp", "dried oregano", "spice"),
         ing(15, "g", "parmesan, grated", "dairy"), ing(80, "g", "pappardelle or tagliatelle", "store"),
         ing(1, "tbsp", "olive oil", "store")
       ],
@@ -881,7 +881,7 @@
       ingredients: [
         ing(150, "g", "firm tofu", "store"), ing(1.5, "tbsp", "cornflour", "store"),
         ing(3, "tbsp", "shop-bought sticky sesame or teriyaki sauce", "store"),
-        ing(1, "tsp", "sesame seeds", "store"), ing(1, "", "spring onion", "produce"),
+        ing(1, "tsp", "sesame seeds", "store"), ing(1, "", "spring onion, sliced", "produce"),
         ing(70, "g", "jasmine rice", "store"), ing(2, "tbsp", "vegetable oil", "store")
       ],
       steps: [
@@ -898,7 +898,7 @@
       ingredients: [
         ing(4, "", "shop-bought lamb koftas", "meat"), ing(1, "tsp", "olive oil", "store"),
         ing(4, "tbsp", "shop-bought tzatziki", "store"), ing(1, "", "flatbread", "bakery"),
-        ing(null, "small handful", "fresh mint", "produce")
+        ing(null, "small handful", "fresh mint, chopped", "produce")
       ],
       steps: [
         "Heat the olive oil in a frying pan over medium-high heat and cook the koftas for 8–10 minutes, turning regularly, until browned all over and cooked through.",
@@ -913,7 +913,7 @@
         ing(180, "g", "boneless chicken thighs, cut into chunks", "meat"), ing(150, "g", "tenderstem broccoli", "produce"),
         ing(1, "tbsp", "gochujang (Korean chilli paste)", "store"), ing(1, "tbsp", "soy sauce", "store"),
         ing(1, "tsp", "honey", "store"), ing(1, "tsp", "sesame oil", "store"),
-        ing(1, "", "garlic clove", "produce"), ing(1, "tsp", "sesame seeds", "store")
+        ing(1, "", "garlic clove, crushed", "produce"), ing(1, "tsp", "sesame seeds", "store")
       ],
       steps: [
         "Preheat the oven to 200°C (fan 180°C).",
@@ -946,7 +946,7 @@
         ing(150, "g", "cod fillet", "meat"), ing(200, "g", "tinned chickpeas, drained", "store"),
         ing(100, "g", "cherry tomatoes", "produce"), ing(1, "tsp", "ras el hanout", "spice"),
         ing(1, "tbsp", "olive oil", "store"), ing(0.5, "", "lemon", "produce"),
-        ing(null, "small handful", "fresh coriander", "produce")
+        ing(null, "small handful", "fresh coriander, chopped", "produce")
       ],
       steps: [
         "Preheat the oven to 200°C (fan 180°C).",
@@ -962,7 +962,7 @@
       ingredients: [
         ing(200, "g", "sweet potato, cubed", "produce"), ing(200, "g", "tinned chickpeas, drained", "store"),
         ing(1.5, "tbsp", "harissa paste", "store"), ing(1, "tbsp", "olive oil", "store"),
-        ing(0.5, "", "red onion, cut into wedges", "produce"), ing(null, "small handful", "fresh coriander", "produce")
+        ing(0.5, "", "red onion, cut into wedges", "produce"), ing(null, "small handful", "fresh coriander, chopped", "produce")
       ],
       steps: [
         "Preheat the oven to 200°C (fan 180°C).",
@@ -1007,7 +1007,7 @@
       ingredients: [
         ing(180, "g", "boneless chicken thighs", "meat"), ing(150, "g", "new potatoes, halved", "produce"),
         ing(1, "tbsp", "olive oil", "store"), ing(0.5, "", "lemon", "produce"),
-        ing(1, "tsp", "dried mixed herbs", "spice"), ing(1, "", "garlic clove", "produce")
+        ing(1, "tsp", "dried mixed herbs", "spice"), ing(1, "", "garlic clove, crushed", "produce")
       ],
       steps: [
         "Preheat the oven to 200°C (fan 180°C).",
@@ -1082,8 +1082,8 @@
       prep: 8, cook: 15,
       ingredients: [
         ing(150, "g", "pork mince", "meat"), ing(1.5, "tbsp", "fish sauce", "store"),
-        ing(1.5, "tbsp", "brown sugar", "store"), ing(1, "", "garlic clove", "produce"),
-        ing(1, "tsp", "grated fresh ginger", "produce"), ing(1, "", "spring onion", "produce"),
+        ing(1.5, "tbsp", "brown sugar", "store"), ing(1, "", "garlic clove, finely chopped", "produce"),
+        ing(1, "tsp", "grated fresh ginger", "produce"), ing(1, "", "spring onion, sliced", "produce"),
         ing(150, "g", "cooked rice", "store")
       ],
       steps: [
@@ -1100,7 +1100,7 @@
         ing(180, "g", "chicken breast, diced", "meat"), ing(30, "g", "roasted peanuts", "store"),
         ing(1, "", "pepper, diced", "produce"), ing(2, "tbsp", "soy sauce", "store"),
         ing(1, "tbsp", "rice vinegar", "store"), ing(1, "tsp", "chilli flakes", "spice"),
-        ing(1, "", "garlic clove", "produce"), ing(1, "tsp", "cornflour", "store"),
+        ing(1, "", "garlic clove, finely chopped", "produce"), ing(1, "tsp", "cornflour", "store"),
         ing(150, "g", "cooked rice", "store")
       ],
       steps: [
@@ -1117,7 +1117,7 @@
       ingredients: [
         ing(100, "g", "dried egg noodles", "store"), ing(2, "", "eggs", "dairy"),
         ing(100, "g", "stir-fry vegetable mix", "produce"), ing(1.5, "tbsp", "soy sauce", "store"),
-        ing(1, "tsp", "sesame oil", "store"), ing(1, "", "garlic clove", "produce")
+        ing(1, "tsp", "sesame oil", "store"), ing(1, "", "garlic clove, finely chopped", "produce")
       ],
       steps: [
         "Cook the noodles according to the packet instructions, then drain.",
@@ -1147,7 +1147,7 @@
       ingredients: [
         ing(180, "g", "pork mince", "meat"), ing(1, "tbsp", "fish sauce", "store"),
         ing(1, "tsp", "soy sauce", "store"), ing(1, "tsp", "brown sugar", "store"),
-        ing(1, "", "red chilli", "produce"), ing(2, "", "garlic cloves", "produce"),
+        ing(1, "", "red chilli, sliced", "produce"), ing(2, "", "garlic cloves, crushed", "produce"),
         ing(null, "handful", "fresh basil leaves", "produce"), ing(1, "", "egg", "dairy"),
         ing(150, "g", "cooked rice", "store")
       ],
@@ -1181,8 +1181,8 @@
       ingredients: [
         ing(180, "g", "chicken breast, diced", "meat"), ing(2, "tbsp", "butter chicken or tikka curry paste", "store"),
         ing(100, "ml", "passata", "store"), ing(2, "tbsp", "single cream or plain yoghurt", "dairy"),
-        ing(1, "", "garlic clove", "produce"), ing(70, "g", "basmati rice", "store"),
-        ing(null, "small handful", "fresh coriander", "produce")
+        ing(1, "", "garlic clove, crushed", "produce"), ing(70, "g", "basmati rice", "store"),
+        ing(null, "small handful", "fresh coriander, chopped", "produce")
       ],
       steps: [
         "Cook the rice according to the packet instructions.",
@@ -1197,7 +1197,7 @@
       prep: 8, cook: 14,
       ingredients: [
         ing(150, "g", "paneer, cubed", "dairy"), ing(150, "g", "baby spinach", "produce"),
-        ing(1, "tbsp", "medium curry powder", "spice"), ing(1, "", "garlic clove", "produce"),
+        ing(1, "tbsp", "medium curry powder", "spice"), ing(1, "", "garlic clove, crushed", "produce"),
         ing(2, "tbsp", "single cream or plain yoghurt", "dairy"), ing(70, "g", "basmati rice", "store"),
         ing(1, "tbsp", "vegetable oil", "store")
       ],
@@ -1214,9 +1214,9 @@
       prep: 8, cook: 15,
       ingredients: [
         ing(200, "g", "tinned chickpeas, drained", "store"), ing(150, "g", "chopped tomatoes", "store"),
-        ing(0.5, "", "onion, diced", "produce"), ing(1, "", "garlic clove", "produce"),
+        ing(0.5, "", "onion, diced", "produce"), ing(1, "", "garlic clove, finely chopped", "produce"),
         ing(1, "tbsp", "medium curry powder", "spice"), ing(0.5, "tsp", "ground cumin", "spice"),
-        ing(70, "g", "basmati rice", "store"), ing(null, "small handful", "fresh coriander", "produce")
+        ing(70, "g", "basmati rice", "store"), ing(null, "small handful", "fresh coriander, chopped", "produce")
       ],
       steps: [
         "Cook the rice according to the packet instructions.",
@@ -1232,7 +1232,7 @@
       ingredients: [
         ing(180, "g", "lamb mince", "meat"), ing(60, "g", "frozen peas", "frozen"),
         ing(150, "g", "chopped tomatoes", "store"), ing(0.5, "", "onion, diced", "produce"),
-        ing(1, "", "garlic clove", "produce"), ing(1, "tbsp", "medium curry powder or garam masala", "spice"),
+        ing(1, "", "garlic clove, finely chopped", "produce"), ing(1, "tbsp", "medium curry powder or garam masala", "spice"),
         ing(70, "g", "basmati rice", "store")
       ],
       steps: [
@@ -1249,7 +1249,7 @@
       ingredients: [
         ing(180, "g", "chicken breast or thigh, sliced", "meat"), ing(2, "tbsp", "tandoori curry paste", "store"),
         ing(2, "tbsp", "plain yoghurt", "dairy"), ing(70, "g", "basmati rice", "store"),
-        ing(null, "small handful", "fresh mint", "produce"), ing(0.5, "", "lemon", "produce")
+        ing(null, "small handful", "fresh mint, chopped", "produce"), ing(0.5, "", "lemon", "produce")
       ],
       steps: [
         "Cook the rice according to the packet instructions, then stir through the chopped mint.",
@@ -1279,7 +1279,7 @@
       ingredients: [
         ing(180, "g", "chicken thigh, sliced", "meat"), ing(1.5, "tbsp", "za'atar", "spice"),
         ing(1, "tbsp", "olive oil", "store"), ing(70, "g", "basmati rice", "store"),
-        ing(0.5, "", "lemon", "produce"), ing(null, "small handful", "fresh parsley", "produce")
+        ing(0.5, "", "lemon", "produce"), ing(null, "small handful", "fresh parsley, chopped", "produce")
       ],
       steps: [
         "Cook the rice according to the packet instructions, then stir through the lemon zest, a squeeze of juice and the chopped parsley.",
@@ -1312,7 +1312,7 @@
         ing(180, "g", "beef mince or steak strips", "meat"), ing(1, "tsp", "chipotle paste", "store"),
         ing(150, "g", "cooked rice", "store"), ing(100, "g", "tinned black beans, drained", "store"),
         ing(60, "g", "sweetcorn", "frozen"), ing(3, "tbsp", "shop-bought salsa", "store"),
-        ing(0.5, "", "avocado", "produce")
+        ing(0.5, "", "avocado, sliced", "produce")
       ],
       steps: [
         "Fry the beef in a hot pan for 4–5 minutes until browned, stirring through the chipotle paste for the final minute.",
@@ -1341,7 +1341,7 @@
       ingredients: [
         ing(2, "", "eggs", "dairy"), ing(150, "g", "shop-bought tomato salsa", "store"),
         ing(40, "g", "tortilla chips", "store"), ing(30, "g", "grated cheddar", "dairy"),
-        ing(null, "small handful", "fresh coriander", "produce")
+        ing(null, "small handful", "fresh coriander, chopped", "produce")
       ],
       steps: [
         "Warm the salsa in a small ovenproof frying pan over medium heat.",
@@ -1356,7 +1356,7 @@
       ingredients: [
         ing(180, "g", "chicken thigh, diced", "meat"), ing(1.5, "tbsp", "curry powder", "spice"),
         ing(150, "ml", "coconut milk", "store"), ing(0.5, "", "onion, diced", "produce"),
-        ing(1, "", "garlic clove", "produce"), ing(70, "g", "rice", "store"),
+        ing(1, "", "garlic clove, finely chopped", "produce"), ing(70, "g", "rice", "store"),
         ing(80, "g", "tinned kidney beans, drained", "store")
       ],
       steps: [
@@ -1373,7 +1373,7 @@
       ingredients: [
         ing(150, "g", "tinned black beans, drained", "store"), ing(150, "g", "cooked rice", "store"),
         ing(0.5, "", "pepper, diced", "produce"), ing(0.25, "", "red onion, diced", "produce"),
-        ing(1, "", "garlic clove", "produce"), ing(0.5, "tsp", "ground cumin", "spice"),
+        ing(1, "", "garlic clove, finely chopped", "produce"), ing(0.5, "tsp", "ground cumin", "spice"),
         ing(0.5, "", "lime", "produce")
       ],
       steps: [
@@ -1388,7 +1388,7 @@
       ingredients: [
         ing(100, "g", "chicken thigh, diced", "meat"), ing(40, "g", "cooking chorizo, sliced", "meat"),
         ing(70, "g", "paella or short-grain rice", "store"), ing(150, "g", "chopped tomatoes", "store"),
-        ing(0.5, "", "pepper, sliced", "produce"), ing(1, "", "garlic clove", "produce"),
+        ing(0.5, "", "pepper, sliced", "produce"), ing(1, "", "garlic clove, finely chopped", "produce"),
         ing(0.5, "tsp", "smoked paprika", "spice"), ing(200, "ml", "chicken stock", "store")
       ],
       steps: [
@@ -1432,7 +1432,7 @@
       prep: 8, cook: 10,
       ingredients: [
         ing(180, "g", "lamb mince", "meat"), ing(1, "tsp", "dried oregano", "spice"),
-        ing(0.5, "tsp", "ground cumin", "spice"), ing(1, "", "garlic clove", "produce"),
+        ing(0.5, "tsp", "ground cumin", "spice"), ing(1, "", "garlic clove, crushed", "produce"),
         ing(70, "g", "basmati rice", "store"), ing(4, "tbsp", "shop-bought tzatziki", "store"),
         ing(80, "g", "cherry tomatoes, halved", "produce")
       ],
@@ -1480,7 +1480,7 @@
       prep: 6, cook: 12,
       ingredients: [
         ing(2, "", "pork sausages, skins removed", "meat"), ing(70, "g", "pasta", "store"),
-        ing(1, "", "garlic clove", "produce"), ing(0.5, "tsp", "chilli flakes", "spice"),
+        ing(1, "", "garlic clove, finely chopped", "produce"), ing(0.5, "tsp", "chilli flakes", "spice"),
         ing(30, "g", "rocket", "produce"), ing(15, "g", "grated parmesan", "dairy")
       ],
       steps: [
@@ -1510,7 +1510,7 @@
       ingredients: [
         ing(70, "g", "spaghetti", "store"), ing(2, "", "garlic cloves, thinly sliced", "produce"),
         ing(0.5, "tsp", "chilli flakes", "spice"), ing(3, "tbsp", "olive oil", "store"),
-        ing(2, "tbsp", "breadcrumbs", "store"), ing(null, "small handful", "fresh parsley", "produce")
+        ing(2, "tbsp", "breadcrumbs", "store"), ing(null, "small handful", "fresh parsley, chopped", "produce")
       ],
       steps: [
         "Cook the spaghetti in salted boiling water according to the packet instructions, then drain, reserving a splash of the cooking water.",
@@ -1606,7 +1606,7 @@
       ingredients: [
         ing(150, "g", "salmon fillet", "meat"), ing(1, "tbsp", "miso paste", "store"),
         ing(15, "g", "butter, softened", "dairy"), ing(1, "tsp", "soy sauce", "store"),
-        ing(70, "g", "jasmine rice", "store"), ing(1, "", "spring onion", "produce")
+        ing(70, "g", "jasmine rice", "store"), ing(1, "", "spring onion, sliced", "produce")
       ],
       steps: [
         "Cook the rice according to the packet instructions.",
@@ -1622,7 +1622,7 @@
       ingredients: [
         ing(150, "g", "beef strips (sirloin or rump)", "meat"), ing(200, "g", "straight-to-wok udon noodles", "store"),
         ing(100, "g", "stir-fry vegetable mix", "produce"), ing(2, "tbsp", "soy sauce", "store"),
-        ing(1, "tsp", "sesame oil", "store"), ing(1, "", "garlic clove", "produce")
+        ing(1, "tsp", "sesame oil", "store"), ing(1, "", "garlic clove, finely chopped", "produce")
       ],
       steps: [
         "Heat a splash of oil in a wok over high heat and stir-fry the beef for 2–3 minutes until browned, then set aside.",
@@ -1654,7 +1654,7 @@
       ingredients: [
         ing(150, "g", "cooked rice, cold", "store"), ing(80, "g", "kimchi, chopped", "store"),
         ing(1, "tbsp", "kimchi juice (from the jar)", "store"), ing(1, "tsp", "sesame oil", "store"),
-        ing(1, "", "egg", "dairy"), ing(1, "", "spring onion", "produce")
+        ing(1, "", "egg", "dairy"), ing(1, "", "spring onion, sliced", "produce")
       ],
       steps: [
         "Heat a splash of oil in a frying pan or wok over high heat and fry the kimchi for 2 minutes.",
@@ -1668,7 +1668,7 @@
       prep: 8, cook: 20,
       ingredients: [
         ing(80, "g", "dried red lentils", "store"), ing(150, "g", "chopped tomatoes", "store"),
-        ing(0.5, "", "onion, diced", "produce"), ing(1, "", "garlic clove", "produce"),
+        ing(0.5, "", "onion, diced", "produce"), ing(1, "", "garlic clove, finely chopped", "produce"),
         ing(1, "tsp", "smoked paprika", "spice"), ing(0.5, "tsp", "ground ginger", "spice"),
         ing(0.5, "tsp", "ground cinnamon", "spice"), ing(0.25, "tsp", "chilli flakes", "spice")
       ],
@@ -1761,7 +1761,7 @@
       ingredients: [
         ing(160, "g", "diced beef stewing steak", "meat"), ing(1, "", "small potato, chunked", "produce"),
         ing(0.5, "", "red pepper, sliced", "produce"), ing(1.5, "tbsp", "sweet paprika", "spice"),
-        ing(200, "ml", "beef stock", "store"), ing(1, "", "garlic clove", "produce")
+        ing(200, "ml", "beef stock", "store"), ing(1, "", "garlic clove, finely chopped", "produce")
       ],
       steps: [
         "Brown the beef in a splash of oil in a saucepan over high heat for 3–4 minutes.",
@@ -1866,7 +1866,7 @@
       ingredients: [
         ing(1, "tin", "chickpeas, drained", "store"), ing(150, "g", "chopped tomatoes", "store"),
         ing(1, "tbsp", "harissa paste", "store"), ing(0.5, "", "red pepper, sliced", "produce"),
-        ing(1, "", "garlic clove", "produce"), ing(1, "slice", "crusty bread", "bakery")
+        ing(1, "", "garlic clove, finely chopped", "produce"), ing(1, "slice", "crusty bread", "bakery")
       ],
       steps: [
         "Fry the red pepper and garlic in a splash of oil over medium heat for 4 minutes.",
@@ -1881,7 +1881,7 @@
       ingredients: [
         ing(150, "g", "lamb mince", "meat"), ing(60, "g", "couscous", "store"),
         ing(1, "tsp", "harissa paste", "store"), ing(0.5, "tsp", "ground cumin", "spice"),
-        ing(0.5, "", "courgette, diced", "produce"), ing(null, "small handful", "fresh coriander", "produce")
+        ing(0.5, "", "courgette, diced", "produce"), ing(null, "small handful", "fresh coriander, chopped", "produce")
       ],
       steps: [
         "Cover the couscous with boiling water, cover and leave for 5 minutes, then fluff with a fork.",
@@ -1958,7 +1958,7 @@
       ingredients: [
         ing(80, "g", "dried red lentils", "store"), ing(150, "ml", "coconut milk", "store"),
         ing(0.5, "tsp", "ground turmeric", "spice"), ing(0.25, "tsp", "chilli flakes", "spice"),
-        ing(1, "", "garlic clove", "produce"), ing(1, "", "flatbread", "bakery")
+        ing(1, "", "garlic clove, finely chopped", "produce"), ing(1, "", "flatbread", "bakery")
       ],
       steps: [
         "Rinse the lentils, then simmer with the turmeric, chilli flakes, garlic and 200ml water for 12 minutes until soft.",
@@ -2046,7 +2046,7 @@
       prep: 7, cook: 15,
       ingredients: [
         ing(150, "g", "chicken thigh, diced", "meat"), ing(70, "g", "rice", "store"),
-        ing(0.5, "tsp", "ground turmeric", "spice"), ing(1, "", "garlic clove", "produce"),
+        ing(0.5, "tsp", "ground turmeric", "spice"), ing(1, "", "garlic clove, finely chopped", "produce"),
         ing(100, "ml", "chicken stock", "store"), ing(60, "g", "cucumber, sliced", "produce")
       ],
       steps: [
@@ -2077,7 +2077,7 @@
       ingredients: [
         ing(80, "g", "dried red lentils", "store"), ing(0.5, "", "onion, diced", "produce"),
         ing(1, "tsp", "ground cumin", "spice"), ing(0.5, "tsp", "ground turmeric", "spice"),
-        ing(0.25, "tsp", "chilli flakes", "spice"), ing(1, "", "garlic clove", "produce")
+        ing(0.25, "tsp", "chilli flakes", "spice"), ing(1, "", "garlic clove, finely chopped", "produce")
       ],
       steps: [
         "Rinse the lentils, then simmer with the turmeric and 300ml water for 12 minutes until soft.",
@@ -2137,8 +2137,8 @@
       prep: 7, cook: 12,
       ingredients: [
         ing(1, "tin", "black beans, drained", "store"), ing(70, "g", "rice", "store"),
-        ing(0.5, "", "onion, diced", "produce"), ing(1, "", "garlic clove", "produce"),
-        ing(0.5, "", "orange, segmented", "produce"), ing(null, "small handful", "fresh coriander", "produce")
+        ing(0.5, "", "onion, diced", "produce"), ing(1, "", "garlic clove, finely chopped", "produce"),
+        ing(0.5, "", "orange, segmented", "produce"), ing(null, "small handful", "fresh coriander, chopped", "produce")
       ],
       steps: [
         "Cook the rice according to the packet instructions.",
@@ -2152,8 +2152,8 @@
       prep: 8, cook: 12,
       ingredients: [
         ing(160, "g", "chicken thigh, diced", "meat"), ing(70, "g", "rice", "store"),
-        ing(1, "", "lime", "produce"), ing(1, "", "garlic clove", "produce"),
-        ing(0.5, "tsp", "smoked paprika", "spice"), ing(null, "small handful", "fresh coriander", "produce")
+        ing(1, "", "lime", "produce"), ing(1, "", "garlic clove, finely chopped", "produce"),
+        ing(0.5, "tsp", "smoked paprika", "spice"), ing(null, "small handful", "fresh coriander, chopped", "produce")
       ],
       steps: [
         "Cook the rice according to the packet instructions.",
@@ -2196,8 +2196,8 @@
       id: "d136", title: "Peruvian-Style Chicken with Green Sauce", tags: ["spicy", "quick"], cuisine: "Peru", protein: "chicken",
       prep: 9, cook: 9,
       ingredients: [
-        ing(160, "g", "chicken breast, sliced", "meat"), ing(null, "handful", "fresh coriander", "produce"),
-        ing(1, "", "garlic clove", "produce"), ing(2, "tbsp", "natural yoghurt", "dairy"),
+        ing(160, "g", "chicken breast, sliced", "meat"), ing(null, "handful", "fresh coriander, finely chopped", "produce"),
+        ing(1, "", "garlic clove, finely chopped", "produce"), ing(2, "tbsp", "natural yoghurt", "dairy"),
         ing(0.25, "tsp", "chilli flakes", "spice"), ing(70, "g", "rice", "store")
       ],
       steps: [
@@ -2469,7 +2469,7 @@
       ingredients: [
         ing(150, "g", "beef mince", "meat"), ing(0.5, "tsp", "ground cumin", "spice"),
         ing(0.5, "tsp", "smoked paprika", "spice"), ing(0.25, "tsp", "chilli flakes", "spice"),
-        ing(60, "g", "couscous", "store"), ing(null, "small handful", "fresh coriander", "produce")
+        ing(60, "g", "couscous", "store"), ing(null, "small handful", "fresh coriander, chopped", "produce")
       ],
       steps: [
         "Cover the couscous with boiling water, cover and leave for 5 minutes, then fluff with a fork.",
@@ -2529,7 +2529,7 @@
       ingredients: [
         ing(250, "g", "potato, diced", "produce"), ing(0.5, "tsp", "ground cumin", "spice"),
         ing(0.5, "tsp", "ground turmeric", "spice"), ing(0.25, "tsp", "chilli flakes", "spice"),
-        ing(1, "", "garlic clove", "produce"), ing(1, "", "flatbread", "bakery")
+        ing(1, "", "garlic clove, finely chopped", "produce"), ing(1, "", "flatbread", "bakery")
       ],
       steps: [
         "Boil the potato for 8 minutes until nearly tender, then drain.",
@@ -2589,7 +2589,7 @@
       ingredients: [
         ing(150, "g", "cod fillet", "meat"), ing(0.5, "", "red pepper, sliced", "produce"),
         ing(1, "tbsp", "flaked almonds", "store"), ing(150, "g", "chopped tomatoes", "store"),
-        ing(1, "", "garlic clove", "produce"), ing(70, "g", "new potatoes", "produce")
+        ing(1, "", "garlic clove, finely chopped", "produce"), ing(70, "g", "new potatoes", "produce")
       ],
       steps: [
         "Boil the new potatoes for 12 minutes until tender, then drain.",
@@ -2694,7 +2694,7 @@
       ingredients: [
         ing(1, "", "chorizo sausage, sliced", "meat"), ing(1, "tin", "butter beans, drained", "store"),
         ing(150, "g", "chopped tomatoes", "store"), ing(0.5, "", "onion, diced", "produce"),
-        ing(1, "", "garlic clove", "produce"), ing(1, "slice", "crusty bread", "bakery")
+        ing(1, "", "garlic clove, finely chopped", "produce"), ing(1, "slice", "crusty bread", "bakery")
       ],
       steps: [
         "Fry the chorizo and onion in a splash of oil over medium heat for 5 minutes until the chorizo releases its oil.",
@@ -2707,7 +2707,7 @@
       prep: 8, cook: 14,
       ingredients: [
         ing(150, "g", "white fish fillet", "meat"), ing(0.5, "", "red pepper, sliced", "produce"),
-        ing(150, "g", "chopped tomatoes", "store"), ing(1, "", "garlic clove", "produce"),
+        ing(150, "g", "chopped tomatoes", "store"), ing(1, "", "garlic clove, finely chopped", "produce"),
         ing(0.5, "tsp", "smoked paprika", "spice"), ing(70, "g", "rice", "store")
       ],
       steps: [
@@ -2723,7 +2723,7 @@
       ingredients: [
         ing(0.5, "", "courgette, diced", "produce"), ing(0.5, "", "red pepper, diced", "produce"),
         ing(150, "g", "chopped tomatoes", "store"), ing(0.5, "", "onion, diced", "produce"),
-        ing(1, "", "garlic clove", "produce"), ing(0.5, "tsp", "dried herbes de Provence or mixed herbs", "spice")
+        ing(1, "", "garlic clove, finely chopped", "produce"), ing(0.5, "tsp", "dried herbes de Provence or mixed herbs", "spice")
       ],
       steps: [
         "Fry the onion, courgette and red pepper in a splash of oil over medium heat for 6 minutes.",
@@ -2783,7 +2783,7 @@
       ingredients: [
         ing(160, "g", "chicken breast, shredded after cooking", "meat"), ing(150, "g", "chopped tomatoes", "store"),
         ing(0.5, "", "onion, sliced", "produce"), ing(1, "tsp", "chipotle paste", "store"),
-        ing(2, "", "soft tortillas", "bakery"), ing(null, "small handful", "fresh coriander", "produce")
+        ing(2, "", "soft tortillas", "bakery"), ing(null, "small handful", "fresh coriander, chopped", "produce")
       ],
       steps: [
         "Poach or fry the chicken until cooked through, about 8 minutes, then shred with two forks.",
@@ -2827,7 +2827,7 @@
       prep: 8, cook: 12,
       ingredients: [
         ing(160, "g", "chicken thigh, diced", "meat"), ing(60, "g", "bulgur wheat", "store"),
-        ing(0.5, "", "lemon", "produce"), ing(1, "", "garlic clove", "produce"),
+        ing(0.5, "", "lemon", "produce"), ing(1, "", "garlic clove, finely chopped", "produce"),
         ing(1, "tsp", "dried oregano", "spice")
       ],
       steps: [
@@ -2993,7 +2993,7 @@
       ingredients: [
         ing(150, "g", "beef sirloin, thinly sliced", "meat"), ing(70, "g", "rice noodles", "store"),
         ing(300, "ml", "beef stock", "store"), ing(1, "", "star anise", "spice"),
-        ing(1, "", "spring onion, sliced", "produce"), ing(null, "small handful", "fresh coriander", "produce")
+        ing(1, "", "spring onion, sliced", "produce"), ing(null, "small handful", "fresh coriander, chopped", "produce")
       ],
       steps: [
         "Soak the rice noodles in boiling water for 5 minutes, then drain.",
@@ -3158,7 +3158,7 @@
       ingredients: [
         ing(150, "g", "kale or spring greens, shredded", "produce"), ing(0.5, "", "onion, sliced", "produce"),
         ing(0.5, "", "carrot, sliced", "produce"), ing(0.25, "tsp", "ground ginger", "spice"),
-        ing(1, "", "garlic clove", "produce"), ing(70, "g", "rice", "store")
+        ing(1, "", "garlic clove, finely chopped", "produce"), ing(70, "g", "rice", "store")
       ],
       steps: [
         "Cook the rice according to the packet instructions.",
@@ -3217,7 +3217,7 @@
       prep: 8, cook: 12,
       ingredients: [
         ing(160, "g", "chicken thigh, diced", "meat"), ing(30, "g", "walnuts, chopped", "store"),
-        ing(1, "", "garlic clove", "produce"), ing(0.5, "tsp", "ground coriander", "spice"),
+        ing(1, "", "garlic clove, finely chopped", "produce"), ing(0.5, "tsp", "ground coriander", "spice"),
         ing(100, "ml", "chicken stock", "store"), ing(70, "g", "rice", "store")
       ],
       steps: [
@@ -3590,7 +3590,7 @@
       prep: 8, cook: 0,
       ingredients: [
         ing(2, "slice", "rye bread", "bakery"), ing(80, "g", "smoked mackerel, flaked", "meat"),
-        ing(1, "tbsp", "soured cream", "dairy"), ing(null, "small handful", "fresh dill", "produce"),
+        ing(1, "tbsp", "soured cream", "dairy"), ing(null, "small handful", "fresh dill, chopped", "produce"),
         ing(60, "g", "cucumber, sliced", "produce")
       ],
       steps: [
@@ -3666,7 +3666,7 @@
       ingredients: [
         ing(70, "g", "rice", "store"), ing(1, "tin", "pigeon peas or black-eyed beans, drained", "store"),
         ing(0.5, "", "red pepper, diced", "produce"), ing(0.5, "tsp", "ground cumin", "spice"),
-        ing(1, "", "garlic clove", "produce")
+        ing(1, "", "garlic clove, finely chopped", "produce")
       ],
       steps: [
         "Fry the red pepper and garlic in a splash of oil over medium heat for 4 minutes.",
@@ -3754,7 +3754,7 @@
         ing(0.5, "tsp", "chilli flakes", "spice"), ing(1, "", "red pepper, sliced", "produce"),
         ing(0.5, "", "white onion, sliced", "produce"), ing(2, "", "garlic cloves, minced", "produce"),
         ing(1, "tbsp", "light soy sauce", "store"), ing(1, "tsp", "Shaoxing wine (or dry sherry)", "store"),
-        ing(2, "tbsp", "vegetable oil", "store"), ing(1, "handful", "fresh coriander", "produce"),
+        ing(2, "tbsp", "vegetable oil", "store"), ing(1, "handful", "fresh coriander, chopped", "produce"),
         ing(150, "g", "cooked rice", "store")
       ],
       steps: [
@@ -3792,7 +3792,7 @@
         ing(1, "", "garlic clove, sliced", "produce"), ing(200, "g", "chopped tomatoes (tinned)", "store"),
         ing(1, "handful", "Kalamata olives", "store"), ing(1, "tbsp", "olive oil", "store"),
         ing(1, "tsp", "dried oregano", "spice"), ing(0.5, "", "lemon", "produce"),
-        ing(1, "handful", "fresh parsley", "produce")
+        ing(1, "handful", "fresh parsley, chopped", "produce")
       ],
       steps: [
         "Preheat the oven to 200°C (180°C fan).",
@@ -3811,7 +3811,7 @@
         ing(200, "g", "chopped tomatoes", "store"), ing(0.5, "", "onion, diced", "produce"),
         ing(1, "", "garlic clove, minced", "produce"), ing(1, "tbsp", "olive oil", "store"),
         ing(0.25, "tsp", "ground cinnamon", "spice"), ing(150, "ml", "beef stock", "store"),
-        ing(20, "g", "grated hard cheese (kefalotyri or parmesan)", "dairy"), ing(1, "handful", "fresh parsley", "produce")
+        ing(20, "g", "grated hard cheese (kefalotyri or parmesan)", "dairy"), ing(1, "handful", "fresh parsley, chopped", "produce")
       ],
       steps: [
         "Heat the olive oil in a saucepan over medium-high heat and brown the beef pieces for 3–4 minutes.",
@@ -3828,7 +3828,7 @@
         ing(400, "g", "butter beans (tinned), drained", "store"), ing(200, "g", "chopped tomatoes", "store"),
         ing(0.5, "", "onion, diced", "produce"), ing(1, "", "garlic clove, minced", "produce"),
         ing(1, "tbsp", "olive oil", "store"), ing(1, "tsp", "dried oregano", "spice"),
-        ing(0.5, "tsp", "sweet paprika", "spice"), ing(1, "handful", "fresh parsley", "produce"),
+        ing(0.5, "tsp", "sweet paprika", "spice"), ing(1, "handful", "fresh parsley, chopped", "produce"),
         ing(1, "slice", "crusty bread, to serve", "bakery")
       ],
       steps: [
@@ -3960,7 +3960,7 @@
         ing(1, "tbsp", "fish sauce", "store"), ing(1, "large handful", "fresh dill, chopped", "produce"),
         ing(2, "", "spring onions, cut into lengths", "produce"), ing(100, "g", "rice noodles (vermicelli)", "store"),
         ing(2, "tbsp", "vegetable oil", "store"), ing(1, "handful", "roasted peanuts, chopped", "store"),
-        ing(1, "handful", "fresh coriander", "produce"), ing(0.5, "", "lime", "produce")
+        ing(1, "handful", "fresh coriander, chopped", "produce"), ing(0.5, "", "lime", "produce")
       ],
       steps: [
         "Toss the fish chunks with the turmeric, ginger, garlic and fish sauce and set aside to marinate briefly.",
@@ -3976,7 +3976,7 @@
       ingredients: [
         ing(120, "g", "firm tofu, cubed", "store"), ing(500, "ml", "vegetable stock", "store"),
         ing(1, "", "star anise", "spice"), ing(1, "", "cinnamon stick", "spice"),
-        ing(1, "tsp", "grated fresh ginger", "produce"), ing(1, "", "garlic clove", "produce"),
+        ing(1, "tsp", "grated fresh ginger", "produce"), ing(1, "", "garlic clove, finely chopped", "produce"),
         ing(1, "tbsp", "soy sauce", "store"), ing(60, "g", "flat rice noodles (pho-style)", "store"),
         ing(50, "g", "beansprouts", "produce"), ing(0.5, "", "red chilli, sliced", "produce"),
         ing(1, "handful", "fresh Thai basil or coriander", "produce"), ing(0.5, "", "lime", "produce")
@@ -4034,7 +4034,7 @@
         ing(1, "tbsp", "sweet paprika", "spice"), ing(0.5, "tsp", "hot paprika", "spice"),
         ing(1, "", "tomato, chopped", "produce"), ing(0.5, "", "green pepper, chopped", "produce"),
         ing(400, "ml", "fish or vegetable stock", "store"), ing(1, "tbsp", "vegetable oil", "store"),
-        ing(1, "handful", "fresh parsley", "produce")
+        ing(1, "handful", "fresh parsley, chopped", "produce")
       ],
       steps: [
         "Heat the oil in a saucepan and sauté the onion for 4–5 minutes until soft.",
@@ -4052,7 +4052,7 @@
         ing(40, "g", "cooked rice", "store"), ing(0.25, "", "onion, finely diced", "produce"),
         ing(1, "", "garlic clove, minced", "produce"), ing(0.5, "tsp", "sweet paprika", "spice"),
         ing(200, "g", "passata", "store"), ing(1, "tsp", "tomato purée", "store"),
-        ing(1, "tbsp", "soured cream", "dairy"), ing(1, "handful", "fresh parsley", "produce")
+        ing(1, "tbsp", "soured cream", "dairy"), ing(1, "handful", "fresh parsley, chopped", "produce")
       ],
       steps: [
         "Preheat the oven to 190°C (170°C fan).",
@@ -4110,7 +4110,7 @@
         ing(0.5, "tsp", "ground turmeric", "spice"), ing(0.5, "tsp", "chaat masala", "spice"),
         ing(1, "", "garlic clove, crushed", "produce"), ing(1, "tsp", "grated fresh ginger", "produce"),
         ing(1, "tbsp", "lemon juice", "produce"), ing(2, "tbsp", "vegetable oil", "store"),
-        ing(0.5, "", "red onion, sliced", "produce"), ing(1, "handful", "fresh coriander", "produce")
+        ing(0.5, "", "red onion, sliced", "produce"), ing(1, "handful", "fresh coriander, chopped", "produce")
       ],
       steps: [
         "Mix the gram flour, cumin, chilli powder, turmeric, garlic, ginger and lemon juice into a thick paste and coat the fish fillet all over.",
@@ -4162,7 +4162,7 @@
       prep: 8, cook: 10,
       ingredients: [
         ing(1, "", "chorizo or spicy pork sausage", "meat"), ing(1, "", "crusty bread roll", "bakery"),
-        ing(1, "handful", "fresh parsley", "produce"), ing(1, "", "garlic clove", "produce"),
+        ing(1, "handful", "fresh parsley, finely chopped", "produce"), ing(1, "", "garlic clove, finely chopped", "produce"),
         ing(1, "tbsp", "red wine vinegar", "store"), ing(3, "tbsp", "olive oil", "store"),
         ing(0.5, "tsp", "dried oregano", "spice"), ing(0.25, "tsp", "chilli flakes", "spice"),
         ing(0.25, "", "red onion, finely sliced", "produce")
@@ -4217,7 +4217,7 @@
         ing(0.5, "", "red pepper, cut into chunks", "produce"), ing(2, "tbsp", "olive oil", "store"),
         ing(1, "", "garlic clove, crushed", "produce"), ing(1, "tsp", "dried thyme", "spice"),
         ing(0.5, "tsp", "smoked paprika", "spice"), ing(1, "tbsp", "lemon juice", "produce"),
-        ing(1, "handful", "fresh parsley", "produce"), ing(2, "", "wooden skewers", "store")
+        ing(1, "handful", "fresh parsley, chopped", "produce"), ing(2, "", "wooden skewers", "store")
       ],
       steps: [
         "Mix the olive oil, garlic, thyme, paprika and lemon juice together and toss with the chicken. Marinate briefly if time allows.",
@@ -4231,7 +4231,7 @@
       prep: 8, cook: 10,
       ingredients: [
         ing(1, "", "trout fillet, about 180g", "meat"), ing(30, "g", "walnuts", "store"),
-        ing(1, "", "garlic clove", "produce"), ing(1, "handful", "fresh coriander or parsley", "produce"),
+        ing(1, "", "garlic clove, finely chopped", "produce"), ing(1, "handful", "fresh coriander or parsley", "produce"),
         ing(1, "tbsp", "red wine vinegar", "store"), ing(2, "tbsp", "olive oil", "store"),
         ing(1, "pinch", "chilli flakes", "spice"), ing(1, "tbsp", "plain flour", "store")
       ],
@@ -4267,7 +4267,7 @@
         ing(80, "g", "sweetcorn kernels", "frozen"), ing(0.5, "", "onion, diced", "produce"),
         ing(0.5, "", "red pepper, diced", "produce"), ing(1, "", "garlic clove, minced", "produce"),
         ing(1, "tsp", "smoked paprika", "spice"), ing(1, "tbsp", "olive oil", "store"),
-        ing(200, "ml", "vegetable stock", "store"), ing(1, "handful", "fresh basil", "produce")
+        ing(200, "ml", "vegetable stock", "store"), ing(1, "handful", "fresh basil, torn", "produce")
       ],
       steps: [
         "Heat the olive oil in a saucepan and sauté the onion, pepper and garlic for 4–5 minutes until softened.",
@@ -4284,7 +4284,7 @@
         ing(1, "", "lemon, juiced", "produce"), ing(1, "tbsp", "Dijon mustard", "store"),
         ing(1, "", "garlic clove, minced", "produce"), ing(0.5, "", "scotch bonnet chilli, finely chopped", "produce"),
         ing(1, "tbsp", "vegetable oil", "store"), ing(150, "g", "cooked rice", "store"),
-        ing(1, "handful", "fresh parsley", "produce")
+        ing(1, "handful", "fresh parsley, chopped", "produce")
       ],
       steps: [
         "Mix the lemon juice, mustard, garlic and chilli together and toss with the chicken and half the sliced onion. Marinate for 10 minutes if time allows.",
@@ -4302,7 +4302,7 @@
         ing(200, "g", "chopped tomatoes", "store"), ing(0.5, "", "onion, diced", "produce"),
         ing(1, "", "garlic clove, minced", "produce"), ing(1, "tsp", "grated fresh ginger", "produce"),
         ing(0.5, "tsp", "chilli powder", "spice"), ing(150, "ml", "beef stock", "store"),
-        ing(150, "g", "cooked rice", "store"), ing(1, "handful", "fresh coriander", "produce")
+        ing(150, "g", "cooked rice", "store"), ing(1, "handful", "fresh coriander, chopped", "produce")
       ],
       steps: [
         "Heat a little oil in a saucepan and brown the beef pieces over medium-high heat for 4–5 minutes.",
@@ -4355,7 +4355,7 @@
         ing(1, "tbsp", "tomato purée", "store"), ing(150, "ml", "chicken stock", "store"),
         ing(1, "", "small potato, diced", "produce"), ing(1, "handful", "green olives", "store"),
         ing(1, "tsp", "dried oregano", "spice"), ing(0.5, "tsp", "ground cumin", "spice"),
-        ing(1, "tbsp", "olive oil", "store"), ing(1, "handful", "fresh coriander", "produce")
+        ing(1, "tbsp", "olive oil", "store"), ing(1, "handful", "fresh coriander, chopped", "produce")
       ],
       steps: [
         "Heat the olive oil in a saucepan and brown the chicken pieces over medium-high heat for 3–4 minutes.",
@@ -5804,7 +5804,7 @@
       id: "d352", title: "Moroccan-Style Fish Tagine with Chermoula", tags: ["quick", "pescatarian"], cuisine: "Morocco", protein: "fish",
       prep: 9, cook: 20,
       ingredients: [
-        ing(160, "g", "white fish fillet (cod or haddock)", "meat"), ing(2, "", "garlic cloves", "produce"),
+        ing(160, "g", "white fish fillet (cod or haddock)", "meat"), ing(2, "", "garlic cloves, finely chopped", "produce"),
         ing(2, "tbsp", "chopped coriander", "produce"), ing(1, "tsp", "ground cumin", "spice"),
         ing(1, "tsp", "paprika", "spice"), ing(0.5, "tsp", "chilli flakes", "spice"),
         ing(1, "", "lemon, juiced", "produce"), ing(1, "tbsp", "olive oil", "store"),
@@ -5969,7 +5969,7 @@
         ing(1, "tbsp", "tamarind paste", "store"), ing(0.5, "", "onion, sliced", "produce"),
         ing(0.5, "", "tomato, chopped", "produce"), ing(0.5, "", "radish (mooli), sliced", "produce"),
         ing(50, "g", "green beans, halved", "produce"), ing(1, "handful", "spinach", "produce"),
-        ing(1, "tbsp", "fish sauce", "store"), ing(1, "", "green chilli", "produce")
+        ing(1, "tbsp", "fish sauce", "store"), ing(1, "", "green chilli, finely chopped", "produce")
       ],
       steps: [
         "Simmer the pork in the water or stock with the onion and tomato for 15 minutes, skimming any foam.",
@@ -6455,8 +6455,8 @@
       id: "d389", title: "Singapore-Style Hainanese Chicken Rice with Ginger-Chilli Sauce", tags: [], cuisine: "Singapore", protein: "chicken",
       prep: 9, cook: 25,
       ingredients: [
-        ing(180, "g", "chicken thigh fillets", "meat"), ing(1, "", "garlic clove", "produce"),
-        ing(20, "g", "fresh ginger", "produce"), ing(1, "", "spring onion, sliced", "produce"),
+        ing(180, "g", "chicken thigh fillets", "meat"), ing(1, "", "garlic clove, finely chopped", "produce"),
+        ing(20, "g", "fresh ginger, finely grated", "produce"), ing(1, "", "spring onion, sliced", "produce"),
         ing(75, "g", "jasmine rice", "store"), ing(300, "ml", "chicken stock", "store"),
         ing(1, "tsp", "sesame oil", "store"), ing(1, "tbsp", "light soy sauce", "store"),
         ing(1, "", "red chilli, finely chopped", "produce"), ing(0.5, "", "lime", "produce"),
@@ -6590,7 +6590,7 @@
         ing(150, "g", "chicken breast", "meat"), ing(100, "g", "waxy potato, diced", "produce"),
         ing(100, "g", "floury potato, diced", "produce"), ing(80, "g", "sweetcorn kernels", "frozen"),
         ing(400, "ml", "chicken stock", "store"), ing(1, "", "spring onion, sliced", "produce"),
-        ing(0.5, "tsp", "dried oregano", "spice"), ing(1, "", "garlic clove", "produce"),
+        ing(0.5, "tsp", "dried oregano", "spice"), ing(1, "", "garlic clove, finely chopped", "produce"),
         ing(1, "tsp", "capers", "store"), ing(1, "tbsp", "soured cream", "dairy"),
         ing(0.25, "", "avocado, sliced", "produce")
       ],
@@ -6928,8 +6928,8 @@
       prep: 9, cook: 8,
       ingredients: [
         ing(200, "g", "tinned broad beans, drained and skins removed", "store"), ing(0.5, "", "small onion, roughly chopped", "produce"),
-        ing(2, "", "garlic cloves", "produce"), ing(15, "g", "fresh coriander", "produce"),
-        ing(15, "g", "fresh parsley", "produce"), ing(1, "tsp", "ground cumin", "spice"),
+        ing(2, "", "garlic cloves, finely chopped", "produce"), ing(15, "g", "fresh coriander, chopped", "produce"),
+        ing(15, "g", "fresh parsley, chopped", "produce"), ing(1, "tsp", "ground cumin", "spice"),
         ing(1, "tsp", "ground coriander", "spice"), ing(0.5, "tsp", "baking powder", "store"),
         ing(2, "tbsp", "plain flour", "store"), ing(3, "tbsp", "vegetable oil, for frying", "store"),
         ing(2, "tbsp", "tahini", "store"), ing(1, "tbsp", "lemon juice", "produce"),

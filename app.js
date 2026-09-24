@@ -7721,8 +7721,21 @@
       Object.keys(panels).forEach(function (k) { panels[k].hidden = (k !== btn.dataset.panel); });
       if (btn.dataset.panel === "shopping") renderShopping();
       if (btn.dataset.panel === "stats") renderStats();
+      try { btn.scrollIntoView({ block: "nearest", inline: "nearest" }); } catch (e) { /* older browsers */ }
     });
   });
+  // Fade the tab row's right edge only while there are tabs off-screen.
+  var tabsNav = document.querySelector(".tabs");
+  function updateTabsFade() {
+    if (!tabsNav) return;
+    tabsNav.classList.toggle("can-scroll-right", tabsNav.scrollLeft + tabsNav.clientWidth < tabsNav.scrollWidth - 2);
+  }
+  if (tabsNav) {
+    tabsNav.addEventListener("scroll", updateTabsFade, { passive: true });
+    window.addEventListener("resize", updateTabsFade);
+    window.addEventListener("load", updateTabsFade);
+    updateTabsFade();
+  }
 
   /* ============================= SERVINGS ============================= */
   document.getElementById("servings-minus").addEventListener("click", function () {

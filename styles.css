@@ -141,7 +141,17 @@
     padding: 10px 4px; cursor: pointer; position: relative; margin-right: 22px; white-space: nowrap; flex-shrink: 0;
   }
   @media (max-width: 480px) {
-    .tab-btn { font-size: 14px; margin-right: 14px; }
+    /* Fit all four tabs on a phone so Stats is never hidden off-screen. */
+    .tabs { gap: 0; justify-content: space-between; }
+    .tab-btn { font-size: 13.5px; margin-right: 0; padding: 10px 2px; }
+    .tab-btn .tab-long { display: none; }
+    .tab-btn .count { font-size: 10px; padding: 1px 5px; margin-left: 4px; }
+  }
+  /* Fallback for very narrow screens: fade the right edge while more tabs
+     sit off-screen, so it's obvious the row scrolls. */
+  .tabs.can-scroll-right {
+    -webkit-mask-image: linear-gradient(to right, #000 80%, transparent);
+    mask-image: linear-gradient(to right, #000 80%, transparent);
   }
   .tab-btn[aria-selected="true"] { color: var(--ink); }
   .tab-btn[aria-selected="true"]::after {

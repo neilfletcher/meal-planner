@@ -1,4 +1,4 @@
-// Firebase configuration for Plate & List.
+// Firebase configuration for Solo Supper.
 //
 // Paste in your own project's web config below (Firebase console > Project
 // settings > General > Your apps > SDK setup and configuration). This object
@@ -26,7 +26,7 @@ var firebaseConfig = {
   var isConfigured = firebaseConfig.apiKey && firebaseConfig.apiKey.indexOf("YOUR_") !== 0;
   if (!isConfigured || typeof firebase === "undefined") {
     if (!isConfigured) {
-      console.info("Plate & List: firebase-config.js still has placeholder values, so sign-in and cross-device sync are off. See README.md to turn them on.");
+      console.info("Solo Supper: firebase-config.js still has placeholder values, so sign-in and cross-device sync are off. See README.md to turn them on.");
     }
     return;
   }

@@ -78,6 +78,7 @@
   h1, h2 { font-family: "Fraunces", Georgia, serif; text-wrap: balance; margin: 0; }
   .num { font-family: "IBM Plex Mono", ui-monospace, monospace; font-variant-numeric: tabular-nums; }
 
+  /* ---------- sign-in gate ---------- */
   .auth-gate { min-height: 70vh; display: flex; align-items: center; justify-content: center; }
   .auth-card {
     background: var(--surface);
@@ -237,6 +238,30 @@
   .retention-callout .cap { font-size: 12.5px; color: var(--ink-muted); max-width: 220px; }
 
   footer { margin-top: 32px; padding-top: 16px; border-top: 1px solid var(--border); font-size: 12px; color: var(--ink-faint); line-height: 1.6; }
+
+  .kpi-row.cols-5 { grid-template-columns: repeat(5, 1fr); }
+  @media (max-width: 720px) { .kpi-row.cols-5 { grid-template-columns: repeat(2, 1fr); } }
+
+  .sub-eyebrow { font-size: 11px; letter-spacing: 0.07em; text-transform: uppercase; color: var(--ink-faint); font-weight: 600; margin: 20px 0 8px; }
+
+  .funnel { display: flex; flex-direction: column; gap: 2px; margin-top: 4px; }
+  .funnel-row-top { display: flex; justify-content: space-between; align-items: baseline; font-size: 13px; margin-bottom: 4px; }
+  .funnel-label { color: var(--ink); }
+  .funnel-value { color: var(--ink-muted); }
+  .funnel-track { height: 10px; background: var(--surface-2); border-radius: 6px; overflow: hidden; }
+  .funnel-fill { height: 100%; background: var(--accent); border-radius: 6px; }
+  .funnel-drop { font-size: 11px; color: var(--ink-faint); text-align: center; margin: 7px 0; }
+
+  .stat-line { display: flex; align-items: baseline; gap: 10px; margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border); flex-wrap: wrap; }
+  .stat-line .value { font-size: 20px; font-weight: 600; }
+  .stat-line .label { font-size: 12.5px; color: var(--ink-muted); }
+
+  .health-card { display: flex; align-items: center; gap: 12px; }
+  .health-dot { width: 12px; height: 12px; border-radius: 50%; background: var(--good); flex: none; }
+  .health-dot.warning { background: var(--warning); }
+  .health-dot.critical { background: var(--critical); }
+  .health-text .value { font-size: 20px; font-weight: 600; }
+  .health-text .label { font-size: 12.5px; color: var(--ink-muted); margin-top: 2px; }
 </style>
 </head>
 <body>
@@ -246,8 +271,8 @@
   <div class="auth-gate" id="authGate">
     <div class="auth-card">
       <h1>Solo Supper</h1>
-      <p>Admin dashboard. Sign in with the Google account this page is locked to.</p>
-      <button class="primary" id="signInBtn" type="button">Sign in with Google</button>
+      <p id="authIntro">Checking sign-in&hellip;</p>
+      <button class="primary" id="signInBtn" type="button" hidden>Sign in with Google</button>
       <p class="auth-msg" id="authMsg" hidden></p>
     </div>
   </div>
@@ -307,6 +332,22 @@
           <div class="empty-state">No traffic data yet</div>
         </div>
         <ul class="top-pages" id="topPages"></ul>
+        <div class="sub-eyebrow">Web vs Android app, last 30 days</div>
+        <div class="retention-row" id="platformRow">
+          <div class="retention-bars" id="platformBars"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="block">
+      <div class="block-head">
+        <div>
+          <div class="eyebrow">Activation funnel</div>
+          <h2>Where people drop off</h2>
+        </div>
+      </div>
+      <div class="card">
+        <div class="funnel" id="funnel"></div>
       </div>
     </section>
 
@@ -322,7 +363,7 @@
           <div class="kpi"><div class="label">Total accounts</div><div class="value num" id="su-total">&mdash;</div><div class="delta">all time</div></div>
           <div class="kpi"><div class="label">New, 7 days</div><div class="value num" id="su-7">&mdash;</div><div class="delta">&nbsp;</div></div>
           <div class="kpi"><div class="label">New, 30 days</div><div class="value num" id="su-30">&mdash;</div><div class="delta">&nbsp;</div></div>
-          <div class="kpi"><div class="label">Sign-in method</div><div class="value" style="font-size:16px;">Google</div><div class="delta">only option today</div></div>
+          <div class="kpi"><div class="label">Multi-device accounts</div><div class="value num" id="su-multidevice">&mdash;</div><div class="delta" id="su-multidevice-pct">&nbsp;</div></div>
         </div>
         <div class="chart-wrap" id="signupsChartWrap">
           <div class="empty-state">No sign-up data yet</div>
@@ -338,10 +379,11 @@
         </div>
       </div>
       <div class="card">
-        <div class="kpi-row cols-3">
+        <div class="kpi-row">
           <div class="kpi"><div class="label">Tracked accounts</div><div class="value num" id="en-tracked">&mdash;</div><div class="delta">have synced a plan</div></div>
           <div class="kpi"><div class="label">Active meal plans</div><div class="value num" id="en-active">&mdash;</div><div class="delta" id="en-active-pct">&nbsp;</div></div>
           <div class="kpi"><div class="label">Using shopping list</div><div class="value num" id="en-shopping">&mdash;</div><div class="delta" id="en-shopping-pct">&nbsp;</div></div>
+          <div class="kpi"><div class="label">Recipes ever tried</div><div class="value num" id="en-library">&mdash;</div><div class="delta" id="en-library-pct">&nbsp;</div></div>
         </div>
         <div class="engagement-lists">
           <div>
@@ -364,12 +406,38 @@
         </div>
       </div>
       <div class="card">
+        <div class="kpi-row">
+          <div class="kpi"><div class="label">Daily active</div><div class="value num" id="st-dau">&mdash;</div><div class="delta">yesterday</div></div>
+          <div class="kpi"><div class="label">Weekly active</div><div class="value num" id="st-wau">&mdash;</div><div class="delta">last 7d</div></div>
+          <div class="kpi"><div class="label">Monthly active</div><div class="value num" id="st-mau">&mdash;</div><div class="delta">last 30d</div></div>
+          <div class="kpi"><div class="label">Stickiness</div><div class="value num" id="st-ratio">&mdash;</div><div class="delta">DAU/MAU</div></div>
+        </div>
         <div class="retention-row" id="retentionRow">
           <div class="retention-bars" id="retentionBars"></div>
           <div class="retention-callout">
             <div class="pct" id="retentionPct">&mdash;</div>
             <div class="cap">of active users in the last 28 days were returning visitors, not first-timers.</div>
           </div>
+        </div>
+        <div class="stat-line">
+          <div class="value num" id="en-dormant">&mdash;</div>
+          <div class="label" id="en-dormant-label">accounts with no activity in 30+ days</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="block">
+      <div class="block-head">
+        <div>
+          <div class="eyebrow">Site health</div>
+          <h2>Is anything broken</h2>
+        </div>
+      </div>
+      <div class="card health-card">
+        <div class="health-dot" id="healthDot"></div>
+        <div class="health-text">
+          <div class="value num" id="healthValue">&mdash;</div>
+          <div class="label" id="healthLabel">client-side errors, last 7 days</div>
         </div>
       </div>
     </section>
@@ -385,14 +453,19 @@
 
 <div class="tooltip" id="tooltip"></div>
 
+<!-- Same Firebase project the site already uses for sign-in and sync. -->
 <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore-compat.js"></script>
 <script src="firebase-config.js"></script>
 
 <script>
 (function () {
   "use strict";
 
+  // Change this if you sign in to the meal-planner app with a different
+  // Google account than the one you use for Claude - it's the only account
+  // this page will show the dashboard to.
   var ALLOWED_EMAIL = "neil.fletcher@gmail.com";
 
   function emptyMetrics() {
@@ -406,7 +479,16 @@
       },
       signups: { totalUsers: 0, newLast7Days: 0, newLast30Days: 0, dailySignups: [] },
       retention: { newVsReturning: { new: 0, returning: 0 }, windowDays: 28 },
-      engagement: { trackedAccounts: 0, activePlanners: 0, usingShoppingList: 0, topCooked: [], topPlanned: [], topFavourited: [] }
+      stickiness: { dau: 0, wau: 0, mau: 0, dauMauPct: 0 },
+      platform: { web: 0, android: 0, configured: false },
+      siteHealth: { exceptions7d: 0 },
+      engagement: {
+        trackedAccounts: 0, activePlanners: 0, usingShoppingList: 0, topCooked: [], topPlanned: [], topFavourited: [],
+        funnel: { signedUp: 0, tracked: 0, builtAPlan: 0, usedShoppingList: 0, confirmedACook: 0 },
+        library: { totalRecipes: 0, everTouched: 0, neverTouchedPct: 0 },
+        dormant: { count: 0, pct: 0, thresholdDays: 30, unknownActivity: 0 },
+        crossDevice: { trackedAccounts: 0, multiDevice: 0, pct: 0 }
+      }
     };
   }
 
@@ -414,8 +496,10 @@
   ["ov-visitors","ov-visitors-sub","ov-signups","ov-signups-sub",
    "ov-returning","ov-returning-sub","syncPill","syncText","waitingBanner","refreshBtn",
    "tr-users","tr-users-30","tr-sessions","tr-sessions-30","tr-views","tr-views-30","tr-engagement",
-   "usersChartWrap","topPages","su-total","su-7","su-30","signupsChartWrap",
-   "en-tracked","en-active","en-active-pct","en-shopping","en-shopping-pct","topCooked","topFavourited",
+   "usersChartWrap","topPages","platformBars","su-total","su-7","su-30","su-multidevice","su-multidevice-pct","signupsChartWrap",
+   "en-tracked","en-active","en-active-pct","en-shopping","en-shopping-pct","en-library","en-library-pct",
+   "en-dormant","en-dormant-label","topCooked","topFavourited","funnel",
+   "st-dau","st-wau","st-mau","st-ratio","healthDot","healthValue","healthLabel",
    "retentionBars","retentionPct","tooltip"].forEach(function (id) {
     els[id] = document.getElementById(id);
   });
@@ -559,6 +643,47 @@
     return d.innerHTML;
   }
 
+  function renderPlatformSplit(platform) {
+    var web = (platform && platform.web) || 0;
+    var android = (platform && platform.android) || 0;
+    var total = web + android;
+    if (!platform || !platform.configured || total === 0) {
+      els["platformBars"].innerHTML = '<div class="empty-state">' +
+        (platform && platform.configured === false
+          ? "Not set up yet - see README for the one GA4 console step"
+          : "No platform data yet") +
+        '</div>';
+      return;
+    }
+    var maxH = 90;
+    var wH = Math.max((web / total) * maxH, 4);
+    var aH = Math.max((android / total) * maxH, 4);
+    els["platformBars"].innerHTML =
+      '<div class="retention-bar-col"><div class="n num">' + fmtNum(web) + '</div><div class="bar returning" style="height:' + wH + 'px"></div><div class="l">Web</div></div>' +
+      '<div class="retention-bar-col"><div class="n num">' + fmtNum(android) + '</div><div class="bar new" style="height:' + aH + 'px"></div><div class="l">Android app</div></div>';
+  }
+
+  function renderFunnel(stages) {
+    if (!stages || !stages.length || !stages[0].value) {
+      els["funnel"].innerHTML = '<div class="empty-state">No funnel data yet</div>';
+      return;
+    }
+    var base = stages[0].value;
+    var html = stages.map(function (s, i) {
+      var pct = base ? Math.round((s.value / base) * 100) : 0;
+      var drop = "";
+      if (i > 0) {
+        var prev = stages[i - 1].value;
+        var stepPct = prev ? Math.round((s.value / prev) * 100) : 0;
+        drop = '<div class="funnel-drop">&darr; ' + stepPct + '% of the previous stage</div>';
+      }
+      return drop +
+        '<div class="funnel-row-top"><span class="funnel-label">' + escapeHtml(s.label) + '</span><span class="funnel-value num">' + fmtNum(s.value) + ' &middot; ' + pct + '%</span></div>' +
+        '<div class="funnel-track"><div class="funnel-fill" style="width:' + Math.max(pct, 3) + '%"></div></div>';
+    }).join("");
+    els["funnel"].innerHTML = html;
+  }
+
   function renderRetention(newVsReturning) {
     var n = (newVsReturning && newVsReturning.new) || 0;
     var r = (newVsReturning && newVsReturning.returning) || 0;
@@ -604,6 +729,7 @@
       return { label: d.date, value: d.users };
     }), { color: "var(--accent)" });
     renderTopPages(data.traffic.topPages);
+    renderPlatformSplit(data.platform);
 
     var su = data.signups;
     els["ov-signups"].textContent = fmtNum(su.newLast7Days);
@@ -621,7 +747,20 @@
     var totalActive = nvr.new + nvr.returning;
     els["ov-returning"].textContent = totalActive ? Math.round((nvr.returning / totalActive) * 100) + "%" : "—";
 
-    var eng = data.engagement || { trackedAccounts: 0, activePlanners: 0, usingShoppingList: 0, topCooked: [], topFavourited: [] };
+    var st = data.stickiness || { dau: 0, wau: 0, mau: 0, dauMauPct: 0 };
+    els["st-dau"].textContent = fmtNum(st.dau);
+    els["st-wau"].textContent = fmtNum(st.wau);
+    els["st-mau"].textContent = fmtNum(st.mau);
+    els["st-ratio"].textContent = st.mau ? st.dauMauPct + "%" : "—";
+
+    var health = data.siteHealth || { exceptions7d: 0 };
+    els["healthValue"].textContent = fmtNum(health.exceptions7d);
+    els["healthDot"].className = "health-dot" + (health.exceptions7d === 0 ? "" : health.exceptions7d <= 3 ? " warning" : " critical");
+    els["healthLabel"].textContent = health.exceptions7d === 0
+      ? "no client-side errors in the last 7 days"
+      : "client-side errors in the last 7 days";
+
+    var eng = data.engagement || {};
     els["en-tracked"].textContent = fmtNum(eng.trackedAccounts);
     els["en-active"].textContent = fmtNum(eng.activePlanners);
     els["en-active-pct"].textContent = eng.trackedAccounts ? Math.round((eng.activePlanners / eng.trackedAccounts) * 100) + "% of tracked accounts" : " ";
@@ -629,6 +768,29 @@
     els["en-shopping-pct"].textContent = eng.activePlanners ? Math.round((eng.usingShoppingList / eng.activePlanners) * 100) + "% of active planners" : " ";
     renderRankedList(els["topCooked"], (eng.topCooked || []).map(function (r) { return { title: r.title, count: r.count }; }), "No confirmed cooks yet");
     renderRankedList(els["topFavourited"], (eng.topFavourited || []).map(function (r) { return { title: r.title, count: r.count }; }), "No 5-star ratings yet");
+
+    var lib = eng.library || { totalRecipes: 0, everTouched: 0, neverTouchedPct: 0 };
+    els["en-library"].textContent = fmtNum(lib.everTouched);
+    els["en-library-pct"].textContent = lib.totalRecipes
+      ? "of " + fmtNum(lib.totalRecipes) + " (" + lib.neverTouchedPct + "% never tried)"
+      : " ";
+
+    var dormant = eng.dormant || { count: 0, pct: 0, thresholdDays: 30 };
+    els["en-dormant"].textContent = fmtNum(dormant.count);
+    els["en-dormant-label"].textContent = "accounts with no activity in " + (dormant.thresholdDays || 30) + "+ days" +
+      (eng.trackedAccounts ? " (" + dormant.pct + "% of tracked accounts)" : "");
+
+    var xd = eng.crossDevice || { trackedAccounts: 0, multiDevice: 0, pct: 0 };
+    els["su-multidevice"].textContent = xd.trackedAccounts ? fmtNum(xd.multiDevice) : "—";
+    els["su-multidevice-pct"].textContent = xd.trackedAccounts ? xd.pct + "% of tracked accounts" : "not set up yet";
+
+    renderFunnel([
+      { label: "Signed up", value: (eng.funnel && eng.funnel.signedUp) || 0 },
+      { label: "Synced an account", value: (eng.funnel && eng.funnel.tracked) || 0 },
+      { label: "Built a plan", value: (eng.funnel && eng.funnel.builtAPlan) || 0 },
+      { label: "Used the shopping list", value: (eng.funnel && eng.funnel.usedShoppingList) || 0 },
+      { label: "Confirmed a cook", value: (eng.funnel && eng.funnel.confirmedACook) || 0 }
+    ]);
   }
 
   applyDashboardData(emptyMetrics());
@@ -651,22 +813,45 @@
   document.getElementById("refreshBtn").addEventListener("click", function () { location.reload(); });
   document.getElementById("signOutBtn").addEventListener("click", function () { window.firebaseAuth.signOut(); });
 
+  // ---------- sign-in gate ----------
   var authGate = document.getElementById("authGate");
   var dashboardRoot = document.getElementById("dashboardRoot");
+  var authIntro = document.getElementById("authIntro");
   var authMsg = document.getElementById("authMsg");
+  var signInBtn = document.getElementById("signInBtn");
 
-  function showAuthMessage(msg) {
-    authMsg.textContent = msg;
+  function showAuthMessage(msg, offerSignOut) {
+    authMsg.innerHTML = "";
+    authMsg.appendChild(document.createTextNode(msg));
+    if (offerSignOut) {
+      authMsg.appendChild(document.createElement("br"));
+      var link = document.createElement("button");
+      link.type = "button";
+      link.className = "ghost";
+      link.style.marginTop = "10px";
+      link.textContent = "Sign out and try another account";
+      link.addEventListener("click", function () { window.firebaseAuth.signOut(); });
+      authMsg.appendChild(link);
+    }
     authMsg.hidden = false;
   }
 
-  document.getElementById("signInBtn").addEventListener("click", function () {
+  function startSignIn() {
     authMsg.hidden = true;
     var provider = new firebase.auth.GoogleAuthProvider();
     window.firebaseAuth.signInWithPopup(provider).catch(function (err) {
-      showAuthMessage("Sign-in failed: " + err.message);
+      // Popups are unreliable in mobile browsers and in-app webviews -
+      // fall back to a full-page redirect rather than just failing there.
+      if (err.code === "auth/popup-blocked" ||
+          err.code === "auth/operation-not-supported-in-this-environment" ||
+          err.code === "auth/cancelled-popup-request") {
+        window.firebaseAuth.signInWithRedirect(provider);
+      } else if (err.code !== "auth/popup-closed-by-user") {
+        showAuthMessage("Sign-in failed: " + err.message, false);
+      }
     });
-  });
+  }
+  signInBtn.addEventListener("click", startSignIn);
 
   window.firebaseAuth.onAuthStateChanged(function (user) {
     if (user && user.email && user.email.toLowerCase() === ALLOWED_EMAIL.toLowerCase()) {
@@ -676,10 +861,15 @@
     } else if (user) {
       dashboardRoot.hidden = true;
       authGate.hidden = false;
-      showAuthMessage("Signed in as " + user.email + ", but this account isn't allowed to view this page.");
+      signInBtn.hidden = true;
+      authIntro.textContent = "Signed in, but not authorised.";
+      showAuthMessage("Signed in as " + user.email + ", but this account isn't allowed to view this page.", true);
     } else {
       dashboardRoot.hidden = true;
       authGate.hidden = false;
+      authIntro.textContent = "Admin dashboard. Sign in with the Google account this page is locked to.";
+      signInBtn.hidden = false;
+      authMsg.hidden = true;
     }
   });
 })();

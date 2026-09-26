@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-26T10:48:55.919Z",
+  "generatedAt": "2026-09-26T10:52:16.880Z",
   "traffic": {
     "last7Days": {
       "users": 111,
@@ -227,5 +227,85 @@
       "returning": 7
     },
     "windowDays": 28
+  },
+  "engagement": {
+    "trackedAccounts": 9,
+    "activePlanners": 7,
+    "usingShoppingList": 1,
+    "topCooked": [
+      {
+        "id": "d1",
+        "title": "Sticky Hoisin Pork with Egg-Fried Rice",
+        "count": 2
+      },
+      {
+        "id": "d2",
+        "title": "Harissa Salmon with Lemon Couscous",
+        "count": 1
+      },
+      {
+        "id": "d281",
+        "title": "Beef Birria Tacos with Consommé",
+        "count": 1
+      },
+      {
+        "id": "d9",
+        "title": "Lemon & Herb Cod with Crushed Potatoes",
+        "count": 1
+      }
+    ],
+    "topPlanned": [
+      {
+        "id": "d2",
+        "title": "Harissa Salmon with Lemon Couscous",
+        "count": 4
+      },
+      {
+        "id": "d1",
+        "title": "Sticky Hoisin Pork with Egg-Fried Rice",
+        "count": 4
+      },
+      {
+        "id": "d5",
+        "title": "Spiced Chickpea & Spinach Curry",
+        "count": 4
+      },
+      {
+        "id": "d3",
+        "title": "Thai Green Curry with Chicken",
+        "count": 3
+      },
+      {
+        "id": "d7",
+        "title": "Quick Matar Paneer",
+        "count": 2
+      },
+      {
+        "id": "d205",
+        "title": "Armenian-Style Lamb & Bulgur Pilaf",
+        "count": 2
+      },
+      {
+        "id": "d4",
+        "title": "Sesame Ginger Beef Stir-Fry",
+        "count": 2
+      },
+      {
+        "id": "d125",
+        "title": "Singapore-Style Chilli Chicken Noodles",
+        "count": 2
+      },
+      {
+        "id": "d10",
+        "title": "Chicken Katsu Curry",
+        "count": 2
+      },
+      {
+        "id": "d95",
+        "title": "Speedy Cottage Pie Mash Cup",
+        "count": 1
+      }
+    ],
+    "topFavourited": []
   }
 }

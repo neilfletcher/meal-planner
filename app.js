@@ -9426,9 +9426,6 @@ function pingDevice(user) {
   var GA_ID = "G-JF54HQGVLT";
   var CONSENT_KEY = "soloSupper.analyticsConsent";
   function analyticsConsent() { return lsGet(CONSENT_KEY); } // "yes" | "no" | null
-    var GA_ID = "G-JF54HQGVLT";
-  var CONSENT_KEY = "soloSupper.analyticsConsent";
-  function analyticsConsent() { return lsGet(CONSENT_KEY); } // "yes" | "no" | null
   window.addEventListener("error", function (e) {
     if (window.gtag) {
       gtag("event", "exception", {
@@ -9443,7 +9440,6 @@ function pingDevice(user) {
       gtag("event", "exception", { description: "unhandled rejection: " + reason, fatal: false });
     }
   });
-  function loadAnalytics() {
   function loadAnalytics() {
     window["ga-disable-" + GA_ID] = false;
     if (window.__ssGaLoaded) return;

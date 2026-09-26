@@ -1,0 +1,19 @@
+{
+  "generatedAt": null,
+  "traffic": {
+    "last7Days": { "users": 0, "newUsers": 0, "sessions": 0, "pageViews": 0, "avgEngagementTimeSec": 0 },
+    "last30Days": { "users": 0, "newUsers": 0, "sessions": 0, "pageViews": 0, "avgEngagementTimeSec": 0 },
+    "dailyUsers": [],
+    "topPages": []
+  },
+  "signups": {
+    "totalUsers": 0,
+    "newLast7Days": 0,
+    "newLast30Days": 0,
+    "dailySignups": []
+  },
+  "retention": {
+    "newVsReturning": { "new": 0, "returning": 0 },
+    "windowDays": 28
+  }
+}

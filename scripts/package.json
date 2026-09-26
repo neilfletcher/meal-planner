@@ -1,0 +1,14 @@
+{
+  "name": "solo-supper-dashboard-data",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Fetches GA4 and Firebase Auth stats for the Solo Supper business dashboard",
+  "main": "fetch-dashboard-data.js",
+  "scripts": {
+    "fetch": "node fetch-dashboard-data.js"
+  },
+  "dependencies": {
+    "@google-analytics/data": "^4.9.0",
+    "firebase-admin": "^12.6.0"
+  }
+}

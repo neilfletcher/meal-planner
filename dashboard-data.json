@@ -1,18 +1,18 @@
 {
-  "generatedAt": "2026-09-26T10:52:16.880Z",
+  "generatedAt": "2026-09-26T15:52:49.850Z",
   "traffic": {
     "last7Days": {
-      "users": 111,
-      "newUsers": 110,
-      "sessions": 151,
-      "pageViews": 200,
+      "users": 113,
+      "newUsers": 111,
+      "sessions": 154,
+      "pageViews": 202,
       "avgEngagementTimeSec": 8
     },
     "last30Days": {
-      "users": 111,
-      "newUsers": 110,
-      "sessions": 151,
-      "pageViews": 200,
+      "users": 113,
+      "newUsers": 111,
+      "sessions": 154,
+      "pageViews": 202,
       "avgEngagementTimeSec": 8
     },
     "dailyUsers": [
@@ -39,6 +39,10 @@
       {
         "date": "2026-09-25",
         "users": 34
+      },
+      {
+        "date": "2026-09-26",
+        "users": 3
       }
     ],
     "topPages": [
@@ -50,7 +54,7 @@
       {
         "path": "/DB-club-records/",
         "title": "Duston Bowmen Records",
-        "views": 30
+        "views": 31
       },
       {
         "path": "/",
@@ -80,7 +84,7 @@
       {
         "path": "/iron-and-draw/",
         "title": "Iron & Draw",
-        "views": 8
+        "views": 9
       },
       {
         "path": "/archery-tracker/",
@@ -223,15 +227,15 @@
   },
   "retention": {
     "newVsReturning": {
-      "new": 107,
-      "returning": 7
+      "new": 108,
+      "returning": 8
     },
     "windowDays": 28
   },
   "engagement": {
     "trackedAccounts": 9,
     "activePlanners": 7,
-    "usingShoppingList": 1,
+    "usingShoppingList": 2,
     "topCooked": [
       {
         "id": "d1",
@@ -241,11 +245,6 @@
       {
         "id": "d2",
         "title": "Harissa Salmon with Lemon Couscous",
-        "count": 1
-      },
-      {
-        "id": "d281",
-        "title": "Beef Birria Tacos with Consommé",
         "count": 1
       },
       {
@@ -271,9 +270,24 @@
         "count": 4
       },
       {
+        "id": "d4",
+        "title": "Sesame Ginger Beef Stir-Fry",
+        "count": 3
+      },
+      {
+        "id": "d125",
+        "title": "Singapore-Style Chilli Chicken Noodles",
+        "count": 3
+      },
+      {
         "id": "d3",
         "title": "Thai Green Curry with Chicken",
         "count": 3
+      },
+      {
+        "id": "d42",
+        "title": "Beef Bulgogi Lettuce Cups",
+        "count": 2
       },
       {
         "id": "d7",
@@ -286,24 +300,9 @@
         "count": 2
       },
       {
-        "id": "d4",
-        "title": "Sesame Ginger Beef Stir-Fry",
+        "id": "d223",
+        "title": "Belgian-Style Beef & Beer Stew (Carbonnade-Inspired)",
         "count": 2
-      },
-      {
-        "id": "d125",
-        "title": "Singapore-Style Chilli Chicken Noodles",
-        "count": 2
-      },
-      {
-        "id": "d10",
-        "title": "Chicken Katsu Curry",
-        "count": 2
-      },
-      {
-        "id": "d95",
-        "title": "Speedy Cottage Pie Mash Cup",
-        "count": 1
       }
     ],
     "topFavourited": []

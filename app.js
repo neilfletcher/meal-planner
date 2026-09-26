@@ -7669,10 +7669,35 @@
       signedInEl.hidden = true;
     }
   }
+function getDeviceId() {
+  try {
+    var id = localStorage.getItem("ssDeviceId");
+    if (!id) {
+      id = "dev_" + Date.now().toString(36) + Math.random().toString(36).slice(2, 10);
+      localStorage.setItem("ssDeviceId", id);
+    }
+    return id;
+  } catch (e) {
+    return null;
+  }
+}
 
+function pingDevice(user) {
+  var deviceId = getDeviceId();
+  if (!deviceId || !window.firebaseDb) return;
+  window.firebaseDb.collection("users").doc(user.uid)
+    .collection("deviceLog").doc("main")
+    .set({
+      ids: firebase.firestore.FieldValue.arrayUnion(deviceId),
+      updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+    }, { merge: true })
+    .catch(function () {});
+}
   function initPersistence() {
     applyState(loadLocal());
-
+  if (window.gtag) {
+    gtag("set", "user_properties", { app_platform: isNativeApp() ? "android_app" : "web" });
+  }
     if (!window.firebaseAuth) {
       // Firebase not configured (see firebase-config.js) - the app still
       // works fully, just local to this device/browser.
@@ -7709,9 +7734,10 @@
     window.firebaseAuth.onAuthStateChanged(function (user) {
       currentUser = user;
       updateAccountUI(user);
-      if (user) {
-        startCloudSync(user);
-      } else {
+  if (user) {
+    startCloudSync(user);
+    pingDevice(user);
+  } else {
         stopCloudSync();
       }
       renderAll();

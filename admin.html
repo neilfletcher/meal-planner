@@ -1,0 +1,688 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Solo Supper – Admin</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+  :root {
+    --bg: #f5f8f3;
+    --surface: #ffffff;
+    --surface-2: #edf1e8;
+    --ink: #1c221d;
+    --ink-muted: #5d6a5f;
+    --ink-faint: #8b9689;
+    --border: #dde5d6;
+    --accent: #3f7d52;
+    --accent-soft: #e4efe4;
+    --gold: #b98a2e;
+    --gold-soft: #f5ecd9;
+    --good: #1f8a6e;
+    --warning: #b98a2e;
+    --critical: #b5432e;
+    --shadow: 0 1px 2px rgba(28, 34, 29, 0.06), 0 6px 20px rgba(28, 34, 29, 0.05);
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #14181a;
+      --surface: #1b201d;
+      --surface-2: #232a24;
+      --ink: #eef3ec;
+      --ink-muted: #a3af9f;
+      --ink-faint: #74827a;
+      --border: #303a2f;
+      --accent: #6cb583;
+      --accent-soft: #223028;
+      --gold: #d9ab55;
+      --gold-soft: #33291a;
+      --good: #57b79b;
+      --warning: #d9ab55;
+      --critical: #d9705a;
+      --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 6px 24px rgba(0, 0, 0, 0.35);
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #14181a;
+    --surface: #1b201d;
+    --surface-2: #232a24;
+    --ink: #eef3ec;
+    --ink-muted: #a3af9f;
+    --ink-faint: #74827a;
+    --border: #303a2f;
+    --accent: #6cb583;
+    --accent-soft: #223028;
+    --gold: #d9ab55;
+    --gold-soft: #33291a;
+    --good: #57b79b;
+    --warning: #d9ab55;
+    --critical: #d9705a;
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 6px 24px rgba(0, 0, 0, 0.35);
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+    padding-inline: 20px;
+    padding-block: 20px 48px;
+  }
+  .wrap { max-width: 1040px; margin: 0 auto; }
+
+  h1, h2 { font-family: "Fraunces", Georgia, serif; text-wrap: balance; margin: 0; }
+  .num { font-family: "IBM Plex Mono", ui-monospace, monospace; font-variant-numeric: tabular-nums; }
+
+  .auth-gate { min-height: 70vh; display: flex; align-items: center; justify-content: center; }
+  .auth-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    box-shadow: var(--shadow);
+    padding: 32px 28px;
+    max-width: 360px;
+    width: 100%;
+    text-align: center;
+  }
+  .auth-card h1 { font-size: 24px; margin-bottom: 8px; }
+  .auth-card p { color: var(--ink-muted); font-size: 14px; line-height: 1.5; margin: 0 0 20px; }
+  .auth-msg { color: var(--critical); font-size: 13px; margin-top: 14px !important; line-height: 1.5; }
+
+  header.top {
+    position: sticky;
+    top: env(safe-area-inset-top, 0px);
+    z-index: 5;
+    background: var(--bg);
+    padding-block: 10px 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 16px;
+    flex-wrap: wrap;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 24px;
+  }
+  header.top .titles h1 { font-size: 26px; font-weight: 600; color: var(--ink); }
+  header.top .titles p { margin: 4px 0 0; color: var(--ink-muted); font-size: 13.5px; }
+  .sync-row { display: flex; align-items: center; gap: 10px; }
+  .sync-pill {
+    font-size: 12px;
+    color: var(--ink-muted);
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    padding: 5px 12px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .sync-pill .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--good); flex: none; }
+  .sync-pill.stale .dot { background: var(--warning); }
+  button.ghost {
+    font: inherit;
+    font-size: 12.5px;
+    color: var(--ink);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 6px 12px;
+    cursor: pointer;
+  }
+  button.ghost:hover { background: var(--surface-2); }
+  button.primary {
+    font: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    color: #fff;
+    background: var(--accent);
+    border: 1px solid var(--accent);
+    border-radius: 8px;
+    padding: 7px 14px;
+    cursor: pointer;
+  }
+  button.primary:hover { filter: brightness(1.06); }
+  button:focus-visible, a:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  .banner {
+    display: none;
+    background: var(--gold-soft);
+    border: 1px solid var(--gold);
+    color: var(--ink);
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-size: 13.5px;
+    margin-bottom: 20px;
+    line-height: 1.5;
+  }
+  .banner.show { display: block; }
+
+  .overview {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 32px;
+  }
+  @media (max-width: 720px) { .overview { grid-template-columns: 1fr; } }
+  .hero-tile {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 16px 18px;
+    box-shadow: var(--shadow);
+  }
+  .hero-tile .label { font-size: 12px; color: var(--ink-muted); text-transform: uppercase; letter-spacing: 0.05em; }
+  .hero-tile .value { font-size: 28px; font-weight: 600; margin-top: 6px; line-height: 1.1; }
+  .hero-tile .sub { font-size: 12.5px; color: var(--ink-faint); margin-top: 4px; }
+
+  section.block { margin-bottom: 36px; }
+  .block-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 14px; flex-wrap: wrap; }
+  .eyebrow { font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); font-weight: 600; }
+  .block-head h2 { font-size: 20px; font-weight: 600; margin-top: 2px; }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 18px 20px;
+    box-shadow: var(--shadow);
+  }
+  .kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 16px; }
+  .kpi-row.cols-3 { grid-template-columns: repeat(3, 1fr); }
+  @media (max-width: 720px) { .kpi-row, .kpi-row.cols-3 { grid-template-columns: repeat(2, 1fr); } }
+  .engagement-lists { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 4px; }
+  @media (max-width: 640px) { .engagement-lists { grid-template-columns: 1fr; } }
+  .kpi { border-right: 1px solid var(--border); padding-right: 14px; }
+  .kpi:last-child { border-right: none; }
+  @media (max-width: 720px) { .kpi { border-right: none; } }
+  .kpi .label { font-size: 12px; color: var(--ink-muted); }
+  .kpi .value { font-size: 22px; font-weight: 600; margin-top: 4px; }
+  .kpi .delta { font-size: 12px; margin-top: 3px; color: var(--ink-faint); }
+
+  .chart-wrap { position: relative; margin-top: 4px; }
+  svg.chart { width: 100%; height: auto; display: block; overflow: visible; }
+  .empty-state {
+    display: flex; align-items: center; justify-content: center;
+    height: 160px; color: var(--ink-faint); font-size: 13px; text-align: center; padding: 0 20px;
+  }
+  .tooltip {
+    position: absolute; pointer-events: none; background: var(--ink); color: var(--bg);
+    font-size: 12px; padding: 5px 9px; border-radius: 6px; transform: translate(-50%, -120%);
+    white-space: nowrap; opacity: 0; transition: opacity 0.1s; z-index: 3;
+  }
+  .tooltip.show { opacity: 1; }
+
+  .top-pages { list-style: none; margin: 18px 0 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+  .top-pages li { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 10px; font-size: 13px; }
+  .top-pages .bar-track { grid-column: 1 / -1; height: 6px; background: var(--surface-2); border-radius: 4px; overflow: hidden; }
+  .top-pages .bar-fill { height: 100%; background: var(--accent); border-radius: 4px; }
+  .top-pages .row-top { display: flex; justify-content: space-between; gap: 10px; }
+  .top-pages .title { color: var(--ink); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .top-pages .views { color: var(--ink-muted); flex: none; }
+
+  .retention-row { display: flex; gap: 24px; align-items: flex-end; margin-top: 6px; flex-wrap: wrap; }
+  .retention-bars { display: flex; gap: 18px; align-items: flex-end; height: 140px; flex: 1; min-width: 200px; }
+  .retention-bar-col { display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 8px; height: 100%; width: 72px; }
+  .retention-bar-col .bar { width: 44px; border-radius: 6px 6px 3px 3px; }
+  .retention-bar-col .bar.new { background: var(--gold); }
+  .retention-bar-col .bar.returning { background: var(--accent); }
+  .retention-bar-col .n { font-size: 13px; font-weight: 600; }
+  .retention-bar-col .l { font-size: 11.5px; color: var(--ink-muted); text-transform: uppercase; letter-spacing: 0.04em; }
+  .retention-callout { flex: none; }
+  .retention-callout .pct { font-size: 34px; font-weight: 600; font-family: "IBM Plex Mono", monospace; color: var(--accent); }
+  .retention-callout .cap { font-size: 12.5px; color: var(--ink-muted); max-width: 220px; }
+
+  footer { margin-top: 32px; padding-top: 16px; border-top: 1px solid var(--border); font-size: 12px; color: var(--ink-faint); line-height: 1.6; }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <div class="auth-gate" id="authGate">
+    <div class="auth-card">
+      <h1>Solo Supper</h1>
+      <p>Admin dashboard. Sign in with the Google account this page is locked to.</p>
+      <button class="primary" id="signInBtn" type="button">Sign in with Google</button>
+      <p class="auth-msg" id="authMsg" hidden></p>
+    </div>
+  </div>
+
+  <div id="dashboardRoot" hidden>
+    <header class="top">
+      <div class="titles">
+        <h1>Solo Supper</h1>
+        <p>Business dashboard</p>
+      </div>
+      <div class="sync-row">
+        <span class="sync-pill" id="syncPill"><span class="dot"></span><span id="syncText">Loading&hellip;</span></span>
+        <button class="ghost" id="refreshBtn" type="button">Refresh</button>
+        <button class="ghost" id="signOutBtn" type="button">Sign out</button>
+      </div>
+    </header>
+
+    <div class="banner" id="waitingBanner">
+      Traffic and sign-up numbers haven't synced yet. Once the GitHub Action in the meal-planner
+      repo has run at least once, this page will fill in automatically &mdash; no need to reload
+      anything here.
+    </div>
+
+    <div class="overview" id="overview">
+      <div class="hero-tile">
+        <div class="label">Visitors, 7 days</div>
+        <div class="value num" id="ov-visitors">&mdash;</div>
+        <div class="sub" id="ov-visitors-sub">&nbsp;</div>
+      </div>
+      <div class="hero-tile">
+        <div class="label">Sign-ups, 7 days</div>
+        <div class="value num" id="ov-signups">&mdash;</div>
+        <div class="sub" id="ov-signups-sub">&nbsp;</div>
+      </div>
+      <div class="hero-tile">
+        <div class="label">Returning users</div>
+        <div class="value num" id="ov-returning">&mdash;</div>
+        <div class="sub" id="ov-returning-sub">last 28 days</div>
+      </div>
+    </div>
+
+    <section class="block">
+      <div class="block-head">
+        <div>
+          <div class="eyebrow">Traffic &amp; engagement</div>
+          <h2>Who's visiting, and what they read</h2>
+        </div>
+      </div>
+      <div class="card">
+        <div class="kpi-row">
+          <div class="kpi"><div class="label">Users, 7d</div><div class="value num" id="tr-users">&mdash;</div><div class="delta" id="tr-users-30">&nbsp;</div></div>
+          <div class="kpi"><div class="label">Sessions, 7d</div><div class="value num" id="tr-sessions">&mdash;</div><div class="delta" id="tr-sessions-30">&nbsp;</div></div>
+          <div class="kpi"><div class="label">Page views, 7d</div><div class="value num" id="tr-views">&mdash;</div><div class="delta" id="tr-views-30">&nbsp;</div></div>
+          <div class="kpi"><div class="label">Avg. engagement</div><div class="value num" id="tr-engagement">&mdash;</div><div class="delta">per session</div></div>
+        </div>
+        <div class="chart-wrap" id="usersChartWrap">
+          <div class="empty-state">No traffic data yet</div>
+        </div>
+        <ul class="top-pages" id="topPages"></ul>
+      </div>
+    </section>
+
+    <section class="block">
+      <div class="block-head">
+        <div>
+          <div class="eyebrow">Sign-ups &amp; accounts</div>
+          <h2>Who's created an account</h2>
+        </div>
+      </div>
+      <div class="card">
+        <div class="kpi-row">
+          <div class="kpi"><div class="label">Total accounts</div><div class="value num" id="su-total">&mdash;</div><div class="delta">all time</div></div>
+          <div class="kpi"><div class="label">New, 7 days</div><div class="value num" id="su-7">&mdash;</div><div class="delta">&nbsp;</div></div>
+          <div class="kpi"><div class="label">New, 30 days</div><div class="value num" id="su-30">&mdash;</div><div class="delta">&nbsp;</div></div>
+          <div class="kpi"><div class="label">Sign-in method</div><div class="value" style="font-size:16px;">Google</div><div class="delta">only option today</div></div>
+        </div>
+        <div class="chart-wrap" id="signupsChartWrap">
+          <div class="empty-state">No sign-up data yet</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="block">
+      <div class="block-head">
+        <div>
+          <div class="eyebrow">Recipes &amp; shopping lists</div>
+          <h2>What people actually cook</h2>
+        </div>
+      </div>
+      <div class="card">
+        <div class="kpi-row cols-3">
+          <div class="kpi"><div class="label">Tracked accounts</div><div class="value num" id="en-tracked">&mdash;</div><div class="delta">have synced a plan</div></div>
+          <div class="kpi"><div class="label">Active meal plans</div><div class="value num" id="en-active">&mdash;</div><div class="delta" id="en-active-pct">&nbsp;</div></div>
+          <div class="kpi"><div class="label">Using shopping list</div><div class="value num" id="en-shopping">&mdash;</div><div class="delta" id="en-shopping-pct">&nbsp;</div></div>
+        </div>
+        <div class="engagement-lists">
+          <div>
+            <div class="eyebrow" style="margin-bottom:8px;">Most cooked</div>
+            <ul class="top-pages" id="topCooked"></ul>
+          </div>
+          <div>
+            <div class="eyebrow" style="margin-bottom:8px;">Most favourited</div>
+            <ul class="top-pages" id="topFavourited"></ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="block">
+      <div class="block-head">
+        <div>
+          <div class="eyebrow">Retention &amp; activity</div>
+          <h2>Are people coming back</h2>
+        </div>
+      </div>
+      <div class="card">
+        <div class="retention-row" id="retentionRow">
+          <div class="retention-bars" id="retentionBars"></div>
+          <div class="retention-callout">
+            <div class="pct" id="retentionPct">&mdash;</div>
+            <div class="cap">of active users in the last 28 days were returning visitors, not first-timers.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      Traffic and sign-up figures sync once a day from Google Analytics and Firebase via a
+      GitHub Action in the meal-planner repo. Times are UTC. This page is only visible to the
+      Google account it's locked to.
+    </footer>
+  </div>
+
+</div>
+
+<div class="tooltip" id="tooltip"></div>
+
+<script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-auth-compat.js"></script>
+<script src="firebase-config.js"></script>
+
+<script>
+(function () {
+  "use strict";
+
+  var ALLOWED_EMAIL = "neil.fletcher@gmail.com";
+
+  function emptyMetrics() {
+    return {
+      generatedAt: null,
+      traffic: {
+        last7Days: { users: 0, newUsers: 0, sessions: 0, pageViews: 0, avgEngagementTimeSec: 0 },
+        last30Days: { users: 0, newUsers: 0, sessions: 0, pageViews: 0, avgEngagementTimeSec: 0 },
+        dailyUsers: [],
+        topPages: []
+      },
+      signups: { totalUsers: 0, newLast7Days: 0, newLast30Days: 0, dailySignups: [] },
+      retention: { newVsReturning: { new: 0, returning: 0 }, windowDays: 28 },
+      engagement: { trackedAccounts: 0, activePlanners: 0, usingShoppingList: 0, topCooked: [], topPlanned: [], topFavourited: [] }
+    };
+  }
+
+  var els = {};
+  ["ov-visitors","ov-visitors-sub","ov-signups","ov-signups-sub",
+   "ov-returning","ov-returning-sub","syncPill","syncText","waitingBanner","refreshBtn",
+   "tr-users","tr-users-30","tr-sessions","tr-sessions-30","tr-views","tr-views-30","tr-engagement",
+   "usersChartWrap","topPages","su-total","su-7","su-30","signupsChartWrap",
+   "en-tracked","en-active","en-active-pct","en-shopping","en-shopping-pct","topCooked","topFavourited",
+   "retentionBars","retentionPct","tooltip"].forEach(function (id) {
+    els[id] = document.getElementById(id);
+  });
+
+  function fmtNum(n) {
+    if (n === null || n === undefined || isNaN(n)) return "—";
+    return Math.round(n).toLocaleString("en-GB");
+  }
+  function fmtDuration(sec) {
+    if (!sec) return "0s";
+    var m = Math.floor(sec / 60);
+    var s = Math.round(sec % 60);
+    return m > 0 ? (m + "m " + s + "s") : (s + "s");
+  }
+  function fmtDelta(current, prior30) {
+    if (!prior30 && prior30 !== 0) return " ";
+    return fmtNum(prior30) + " in 30d";
+  }
+  function relTime(iso) {
+    if (!iso) return null;
+    var then = new Date(iso).getTime();
+    var mins = Math.round((Date.now() - then) / 60000);
+    if (mins < 60) return mins + "m ago";
+    var hrs = Math.round(mins / 60);
+    if (hrs < 48) return hrs + "h ago";
+    return Math.round(hrs / 24) + "d ago";
+  }
+
+  function lineChart(container, points, opts) {
+    var w = 600, h = 160, padL = 4, padR = 4, padT = 10, padB = 20;
+    if (!points || points.length < 2) {
+      container.innerHTML = '<div class="empty-state">Not enough data yet for a trend line</div>';
+      return;
+    }
+    var values = points.map(function (p) { return p.value; });
+    var max = Math.max.apply(null, values.concat([1]));
+    var min = 0;
+    var innerW = w - padL - padR, innerH = h - padT - padB;
+    function x(i) { return padL + (i / (points.length - 1)) * innerW; }
+    function y(v) { return padT + innerH - ((v - min) / (max - min || 1)) * innerH; }
+
+    var linePath = points.map(function (p, i) { return (i === 0 ? "M" : "L") + x(i).toFixed(1) + "," + y(p.value).toFixed(1); }).join(" ");
+    var areaPath = linePath + " L" + x(points.length - 1).toFixed(1) + "," + (padT + innerH) + " L" + x(0).toFixed(1) + "," + (padT + innerH) + " Z";
+
+    var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.setAttribute("viewBox", "0 0 " + w + " " + h);
+    svg.setAttribute("class", "chart");
+    svg.innerHTML =
+      '<line x1="' + padL + '" y1="' + (padT + innerH) + '" x2="' + (w - padR) + '" y2="' + (padT + innerH) + '" stroke="var(--border)" stroke-width="1"/>' +
+      '<path d="' + areaPath + '" fill="' + opts.color + '" opacity="0.12" stroke="none"/>' +
+      '<path d="' + linePath + '" fill="none" stroke="' + opts.color + '" stroke-width="2"/>' +
+      '<circle id="hoverDot" cx="0" cy="0" r="4" fill="' + opts.color + '" stroke="var(--surface)" stroke-width="2" style="opacity:0"/>';
+    container.innerHTML = "";
+    container.appendChild(svg);
+
+    var dot = svg.querySelector("#hoverDot");
+    var tip = els.tooltip;
+    svg.addEventListener("mousemove", function (e) {
+      var rect = svg.getBoundingClientRect();
+      var relX = ((e.clientX - rect.left) / rect.width) * w;
+      var i = Math.round(((relX - padL) / innerW) * (points.length - 1));
+      i = Math.max(0, Math.min(points.length - 1, i));
+      var p = points[i];
+      dot.setAttribute("cx", x(i));
+      dot.setAttribute("cy", y(p.value));
+      dot.style.opacity = "1";
+      tip.textContent = p.label + ": " + fmtNum(p.value) + (opts.suffix || "");
+      var tipX = rect.left + (x(i) / w) * rect.width;
+      tip.style.left = tipX + "px";
+      tip.style.top = (rect.top + (y(p.value) / h) * rect.height + window.scrollY) + "px";
+      tip.classList.add("show");
+    });
+    svg.addEventListener("mouseleave", function () {
+      dot.style.opacity = "0";
+      tip.classList.remove("show");
+    });
+  }
+
+  function barChart(container, points, opts) {
+    var w = 600, h = 160, padT = 10, padB = 20, gap = 3;
+    if (!points || points.every(function (p) { return p.value === 0; })) {
+      container.innerHTML = '<div class="empty-state">No sign-ups recorded yet</div>';
+      return;
+    }
+    var max = Math.max.apply(null, points.map(function (p) { return p.value; }).concat([1]));
+    var innerH = h - padT - padB;
+    var barW = (w - gap * (points.length - 1)) / points.length;
+
+    var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.setAttribute("viewBox", "0 0 " + w + " " + h);
+    svg.setAttribute("class", "chart");
+    var bars = points.map(function (p, i) {
+      var bh = (p.value / max) * innerH;
+      var bx = i * (barW + gap);
+      var by = padT + innerH - bh;
+      return '<rect data-i="' + i + '" x="' + bx.toFixed(1) + '" y="' + by.toFixed(1) + '" width="' + barW.toFixed(1) + '" height="' + Math.max(bh, 1).toFixed(1) + '" rx="1.5" fill="' + opts.color + '"/>';
+    }).join("");
+    svg.innerHTML =
+      '<line x1="0" y1="' + (padT + innerH) + '" x2="' + w + '" y2="' + (padT + innerH) + '" stroke="var(--border)" stroke-width="1"/>' + bars;
+    container.innerHTML = "";
+    container.appendChild(svg);
+
+    var tip = els.tooltip;
+    svg.addEventListener("mousemove", function (e) {
+      var rect = svg.getBoundingClientRect();
+      var relX = ((e.clientX - rect.left) / rect.width) * w;
+      var i = Math.max(0, Math.min(points.length - 1, Math.floor(relX / (barW + gap))));
+      var p = points[i];
+      tip.textContent = p.label + ": " + fmtNum(p.value);
+      tip.style.left = (rect.left + ((i * (barW + gap) + barW / 2) / w) * rect.width) + "px";
+      tip.style.top = (rect.top + window.scrollY + 20) + "px";
+      tip.classList.add("show");
+    });
+    svg.addEventListener("mouseleave", function () { tip.classList.remove("show"); });
+  }
+
+  function renderTopPages(pages) {
+    renderRankedList(els["topPages"], (pages || []).map(function (p) {
+      return { title: p.title || p.path || "(untitled)", count: p.views };
+    }), "No page view data yet");
+  }
+
+  function renderRankedList(container, items, emptyText) {
+    if (!items || items.length === 0) {
+      container.innerHTML = '<li class="empty-state" style="height:auto;padding:12px 0;">' + emptyText + '</li>';
+      return;
+    }
+    var max = Math.max.apply(null, items.map(function (p) { return p.count; }));
+    container.innerHTML = items.slice(0, 6).map(function (p) {
+      var pct = max ? Math.round((p.count / max) * 100) : 0;
+      return '<li>' +
+        '<div class="row-top" style="grid-column:1/-1;"><span class="title">' + escapeHtml(p.title) + '</span><span class="views num">' + fmtNum(p.count) + '</span></div>' +
+        '<div class="bar-track"><div class="bar-fill" style="width:' + pct + '%"></div></div>' +
+        '</li>';
+    }).join("");
+  }
+
+  function escapeHtml(s) {
+    var d = document.createElement("div");
+    d.textContent = s;
+    return d.innerHTML;
+  }
+
+  function renderRetention(newVsReturning) {
+    var n = (newVsReturning && newVsReturning.new) || 0;
+    var r = (newVsReturning && newVsReturning.returning) || 0;
+    var total = n + r;
+    if (total === 0) {
+      els["retentionBars"].innerHTML = '<div class="empty-state">No activity data yet</div>';
+      els["retentionPct"].textContent = "—";
+      return;
+    }
+    var maxH = 110;
+    var nH = Math.max((n / total) * maxH, 4);
+    var rH = Math.max((r / total) * maxH, 4);
+    els["retentionBars"].innerHTML =
+      '<div class="retention-bar-col"><div class="n num">' + fmtNum(n) + '</div><div class="bar new" style="height:' + nH + 'px"></div><div class="l">New</div></div>' +
+      '<div class="retention-bar-col"><div class="n num">' + fmtNum(r) + '</div><div class="bar returning" style="height:' + rH + 'px"></div><div class="l">Returning</div></div>';
+    els["retentionPct"].textContent = Math.round((r / total) * 100) + "%";
+  }
+
+  function applyDashboardData(data) {
+    var hasSynced = !!data.generatedAt;
+    els["waitingBanner"].classList.toggle("show", !hasSynced);
+    var pill = els["syncPill"];
+    if (hasSynced) {
+      pill.classList.remove("stale");
+      els["syncText"].textContent = "Synced " + relTime(data.generatedAt);
+    } else {
+      pill.classList.add("stale");
+      els["syncText"].textContent = "Not synced yet";
+    }
+
+    var t7 = data.traffic.last7Days, t30 = data.traffic.last30Days;
+    els["ov-visitors"].textContent = fmtNum(t7.users);
+    els["ov-visitors-sub"].textContent = fmtNum(t30.users) + " in 30 days";
+    els["tr-users"].textContent = fmtNum(t7.users);
+    els["tr-users-30"].textContent = fmtDelta(t7.users, t30.users);
+    els["tr-sessions"].textContent = fmtNum(t7.sessions);
+    els["tr-sessions-30"].textContent = fmtDelta(t7.sessions, t30.sessions);
+    els["tr-views"].textContent = fmtNum(t7.pageViews);
+    els["tr-views-30"].textContent = fmtDelta(t7.pageViews, t30.pageViews);
+    els["tr-engagement"].textContent = fmtDuration(t7.avgEngagementTimeSec);
+
+    lineChart(els["usersChartWrap"], (data.traffic.dailyUsers || []).map(function (d) {
+      return { label: d.date, value: d.users };
+    }), { color: "var(--accent)" });
+    renderTopPages(data.traffic.topPages);
+
+    var su = data.signups;
+    els["ov-signups"].textContent = fmtNum(su.newLast7Days);
+    els["ov-signups-sub"].textContent = fmtNum(su.totalUsers) + " accounts total";
+    els["su-total"].textContent = fmtNum(su.totalUsers);
+    els["su-7"].textContent = fmtNum(su.newLast7Days);
+    els["su-30"].textContent = fmtNum(su.newLast30Days);
+
+    barChart(els["signupsChartWrap"], (su.dailySignups || []).map(function (d) {
+      return { label: d.date, value: d.count };
+    }), { color: "var(--gold)" });
+
+    renderRetention(data.retention.newVsReturning);
+    var nvr = data.retention.newVsReturning || { new: 0, returning: 0 };
+    var totalActive = nvr.new + nvr.returning;
+    els["ov-returning"].textContent = totalActive ? Math.round((nvr.returning / totalActive) * 100) + "%" : "—";
+
+    var eng = data.engagement || { trackedAccounts: 0, activePlanners: 0, usingShoppingList: 0, topCooked: [], topFavourited: [] };
+    els["en-tracked"].textContent = fmtNum(eng.trackedAccounts);
+    els["en-active"].textContent = fmtNum(eng.activePlanners);
+    els["en-active-pct"].textContent = eng.trackedAccounts ? Math.round((eng.activePlanners / eng.trackedAccounts) * 100) + "% of tracked accounts" : " ";
+    els["en-shopping"].textContent = fmtNum(eng.usingShoppingList);
+    els["en-shopping-pct"].textContent = eng.activePlanners ? Math.round((eng.usingShoppingList / eng.activePlanners) * 100) + "% of active planners" : " ";
+    renderRankedList(els["topCooked"], (eng.topCooked || []).map(function (r) { return { title: r.title, count: r.count }; }), "No confirmed cooks yet");
+    renderRankedList(els["topFavourited"], (eng.topFavourited || []).map(function (r) { return { title: r.title, count: r.count }; }), "No 5-star ratings yet");
+  }
+
+  applyDashboardData(emptyMetrics());
+
+  function loadDashboardData() {
+    fetch("dashboard-data.json?cb=" + Date.now())
+      .then(function (r) {
+        if (!r.ok) throw new Error("HTTP " + r.status);
+        return r.json();
+      })
+      .then(applyDashboardData)
+      .catch(function (err) {
+        els["waitingBanner"].classList.add("show");
+        els["waitingBanner"].textContent = "Couldn't load dashboard-data.json (" + err.message + "). Try Refresh in a moment.";
+        els["syncPill"].classList.add("stale");
+        els["syncText"].textContent = "Not connected";
+      });
+  }
+
+  document.getElementById("refreshBtn").addEventListener("click", function () { location.reload(); });
+  document.getElementById("signOutBtn").addEventListener("click", function () { window.firebaseAuth.signOut(); });
+
+  var authGate = document.getElementById("authGate");
+  var dashboardRoot = document.getElementById("dashboardRoot");
+  var authMsg = document.getElementById("authMsg");
+
+  function showAuthMessage(msg) {
+    authMsg.textContent = msg;
+    authMsg.hidden = false;
+  }
+
+  document.getElementById("signInBtn").addEventListener("click", function () {
+    authMsg.hidden = true;
+    var provider = new firebase.auth.GoogleAuthProvider();
+    window.firebaseAuth.signInWithPopup(provider).catch(function (err) {
+      showAuthMessage("Sign-in failed: " + err.message);
+    });
+  });
+
+  window.firebaseAuth.onAuthStateChanged(function (user) {
+    if (user && user.email && user.email.toLowerCase() === ALLOWED_EMAIL.toLowerCase()) {
+      authGate.hidden = true;
+      dashboardRoot.hidden = false;
+      loadDashboardData();
+    } else if (user) {
+      dashboardRoot.hidden = true;
+      authGate.hidden = false;
+      showAuthMessage("Signed in as " + user.email + ", but this account isn't allowed to view this page.");
+    } else {
+      dashboardRoot.hidden = true;
+      authGate.hidden = false;
+    }
+  });
+})();
+</script>
+</body>
+</html>

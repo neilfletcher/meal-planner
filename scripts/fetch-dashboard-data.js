@@ -1,6 +1,8 @@
-// Pulls traffic, sign-up and retention numbers for the Solo Supper dashboard.
-// Reads GA4 via the Analytics Data API and sign-ups via Firebase Auth,
-// then writes the combined result to dashboard-data.json at the repo root.
+// Pulls traffic, sign-up, retention and in-app engagement numbers for the
+// Solo Supper dashboard. Reads GA4 via the Analytics Data API, sign-ups via
+// Firebase Auth, and recipe/shopping-list usage via Firestore (the same
+// users/{uid}/planner/state documents the app itself syncs), then writes
+// the combined result to dashboard-data.json at the repo root.
 //
 // Required environment variables (set as GitHub Actions secrets):
 //   GA4_PROPERTY_ID          e.g. "123456789" (numeric only, no "properties/" prefix)
@@ -31,7 +33,6 @@ function metricRow(row, metricNames) {
 async function fetchGA4(analyticsClient, propertyId) {
   const property = `properties/${propertyId}`;
 
-  // Headline totals for 7 and 30 day windows.
   const metricNames = ['activeUsers', 'newUsers', 'sessions', 'screenPageViews', 'userEngagementDuration'];
 
   async function totals(startDate) {
@@ -49,7 +50,6 @@ async function fetchGA4(analyticsClient, propertyId) {
   const last7 = await totals('7daysAgo');
   const last30 = await totals('30daysAgo');
 
-  // Daily active users, last 30 days, for the trend chart.
   const [dailyRes] = await analyticsClient.runReport({
     property,
     dateRanges: [{ startDate: '30daysAgo', endDate: 'today' }],
@@ -62,7 +62,6 @@ async function fetchGA4(analyticsClient, propertyId) {
     users: Number(row.metricValues[0].value),
   }));
 
-  // Top pages, last 30 days.
   const [pagesRes] = await analyticsClient.runReport({
     property,
     dateRanges: [{ startDate: '30daysAgo', endDate: 'today' }],
@@ -77,7 +76,6 @@ async function fetchGA4(analyticsClient, propertyId) {
     views: Number(row.metricValues[0].value),
   }));
 
-  // New vs returning, last 28 days - used as the retention signal.
   const [retentionRes] = await analyticsClient.runReport({
     property,
     dateRanges: [{ startDate: '28daysAgo', endDate: 'today' }],
@@ -118,11 +116,7 @@ async function fetchGA4(analyticsClient, propertyId) {
   };
 }
 
-async function fetchFirebaseSignups(serviceAccountKey) {
-  admin.initializeApp({
-    credential: admin.credential.cert(JSON.parse(serviceAccountKey)),
-  });
-
+async function fetchFirebaseSignups() {
   let users = [];
   let pageToken;
   do {
@@ -138,7 +132,6 @@ async function fetchFirebaseSignups(serviceAccountKey) {
   const newLast7Days = creationTimes.filter((t) => now - t <= 7 * dayMs).length;
   const newLast30Days = creationTimes.filter((t) => now - t <= 30 * dayMs).length;
 
-  // Daily sign-up counts for the last 30 days, oldest first.
   const dailyBuckets = {};
   for (let i = 29; i >= 0; i--) {
     const d = new Date(now - i * dayMs).toISOString().slice(0, 10);
@@ -157,24 +150,116 @@ async function fetchFirebaseSignups(serviceAccountKey) {
   };
 }
 
+// Recipe titles live only inside the site's app.js as a big literal array
+// (id/title pairs), not in Firestore. Rather than keep a second copy that
+// can drift out of date, read it straight from the checked-out repo each
+// run and pull out "id": "...", title: "..." pairs with a regex - good
+// enough since the format is machine-generated and consistent.
+function loadRecipeTitles() {
+  const appJsPath = path.join(__dirname, '..', 'app.js');
+  const titles = {};
+  if (!fs.existsSync(appJsPath)) {
+    console.warn(`app.js not found at ${appJsPath} - recipe names will show as raw ids`);
+    return titles;
+  }
+  const source = fs.readFileSync(appJsPath, 'utf8');
+  const pattern = /id:\s*"([^"]+)"\s*,\s*title:\s*"([^"]+)"/g;
+  let match;
+  while ((match = pattern.exec(source)) !== null) {
+    titles[match[1]] = match[2];
+  }
+  return titles;
+}
+
+function tallyIds(entries, idKey) {
+  const counts = {};
+  entries.forEach((entry) => {
+    const id = entry && entry[idKey];
+    if (!id) return;
+    counts[id] = (counts[id] || 0) + 1;
+  });
+  return counts;
+}
+
+function topFromCounts(counts, titles, limit) {
+  return Object.entries(counts)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, limit)
+    .map(([id, count]) => ({ id, title: titles[id] || id, count }));
+}
+
+async function fetchEngagement(titles) {
+  const db = admin.firestore();
+  const snapshot = await db.collectionGroup('planner').get();
+
+  let activePlanners = 0;
+  let usingShoppingList = 0;
+  const cookedCounts = {};
+  const plannedCounts = {};
+  const favouriteCounts = {};
+
+  snapshot.forEach((doc) => {
+    const data = doc.data() || {};
+
+    const plan = Array.isArray(data.plan) ? data.plan : [];
+    const batch = Array.isArray(data.batch) ? data.batch : [];
+    if (plan.some(Boolean) || batch.length > 0) activePlanners += 1;
+
+    const checked = data.checked && typeof data.checked === 'object' ? data.checked : {};
+    if (Object.values(checked).some(Boolean)) usingShoppingList += 1;
+
+    const cookLog = Array.isArray(data.cookLog) ? data.cookLog : [];
+    Object.entries(tallyIds(cookLog, 'id')).forEach(([id, n]) => {
+      cookedCounts[id] = (cookedCounts[id] || 0) + n;
+    });
+
+    const history = Array.isArray(data.history) ? data.history : [];
+    Object.entries(tallyIds(history, 'id')).forEach(([id, n]) => {
+      plannedCounts[id] = (plannedCounts[id] || 0) + n;
+    });
+
+    const ratings = data.ratings && typeof data.ratings === 'object' ? data.ratings : {};
+    Object.entries(ratings).forEach(([id, rating]) => {
+      if (rating === 5) favouriteCounts[id] = (favouriteCounts[id] || 0) + 1;
+    });
+  });
+
+  return {
+    trackedAccounts: snapshot.size,
+    activePlanners,
+    usingShoppingList,
+    topCooked: topFromCounts(cookedCounts, titles, 10),
+    topPlanned: topFromCounts(plannedCounts, titles, 10),
+    topFavourited: topFromCounts(favouriteCounts, titles, 10),
+  };
+}
+
 async function main() {
   const propertyId = requireEnv('GA4_PROPERTY_ID');
   const ga4Key = requireEnv('GA4_SERVICE_ACCOUNT_KEY');
   const firebaseKey = requireEnv('FIREBASE_SERVICE_ACCOUNT_KEY');
 
   const analyticsClient = new BetaAnalyticsDataClient({ credentials: JSON.parse(ga4Key) });
+  admin.initializeApp({
+    credential: admin.credential.cert(JSON.parse(firebaseKey)),
+  });
 
   console.log('Fetching GA4 data...');
   const ga4Data = await fetchGA4(analyticsClient, propertyId);
 
   console.log('Fetching Firebase sign-up data...');
-  const signups = await fetchFirebaseSignups(firebaseKey);
+  const signups = await fetchFirebaseSignups();
+
+  console.log('Fetching recipe engagement data from Firestore...');
+  const titles = loadRecipeTitles();
+  const engagement = await fetchEngagement(titles);
 
   const output = {
     generatedAt: new Date().toISOString(),
     traffic: ga4Data.traffic,
     signups,
     retention: ga4Data.retention,
+    engagement,
   };
 
   const outPath = path.join(__dirname, '..', 'dashboard-data.json');

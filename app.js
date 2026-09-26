@@ -9426,6 +9426,24 @@ function pingDevice(user) {
   var GA_ID = "G-JF54HQGVLT";
   var CONSENT_KEY = "soloSupper.analyticsConsent";
   function analyticsConsent() { return lsGet(CONSENT_KEY); } // "yes" | "no" | null
+    var GA_ID = "G-JF54HQGVLT";
+  var CONSENT_KEY = "soloSupper.analyticsConsent";
+  function analyticsConsent() { return lsGet(CONSENT_KEY); } // "yes" | "no" | null
+  window.addEventListener("error", function (e) {
+    if (window.gtag) {
+      gtag("event", "exception", {
+        description: (e.message || "error") + " @ " + (e.filename || "") + ":" + (e.lineno || ""),
+        fatal: false
+      });
+    }
+  });
+  window.addEventListener("unhandledrejection", function (e) {
+    if (window.gtag) {
+      var reason = e.reason && e.reason.message ? e.reason.message : String(e.reason);
+      gtag("event", "exception", { description: "unhandled rejection: " + reason, fatal: false });
+    }
+  });
+  function loadAnalytics() {
   function loadAnalytics() {
     window["ga-disable-" + GA_ID] = false;
     if (window.__ssGaLoaded) return;

@@ -1,18 +1,18 @@
 {
-  "generatedAt": "2026-09-26T15:52:49.850Z",
+  "generatedAt": "2026-09-27T11:34:17.371Z",
   "traffic": {
     "last7Days": {
-      "users": 113,
-      "newUsers": 111,
-      "sessions": 154,
-      "pageViews": 202,
+      "users": 130,
+      "newUsers": 131,
+      "sessions": 177,
+      "pageViews": 235,
       "avgEngagementTimeSec": 8
     },
     "last30Days": {
-      "users": 113,
-      "newUsers": 111,
-      "sessions": 154,
-      "pageViews": 202,
+      "users": 130,
+      "newUsers": 131,
+      "sessions": 177,
+      "pageViews": 235,
       "avgEngagementTimeSec": 8
     },
     "dailyUsers": [
@@ -38,11 +38,15 @@
       },
       {
         "date": "2026-09-25",
-        "users": 34
+        "users": 38
       },
       {
         "date": "2026-09-26",
-        "users": 3
+        "users": 17
+      },
+      {
+        "date": "2026-09-27",
+        "users": 1
       }
     ],
     "topPages": [
@@ -54,22 +58,27 @@
       {
         "path": "/DB-club-records/",
         "title": "Duston Bowmen Records",
-        "views": 31
+        "views": 41
       },
       {
         "path": "/",
         "title": "Neil Fletcher",
-        "views": 19
+        "views": 21
       },
       {
         "path": "/archery-backstop/",
         "title": "Archery Backstop Build Guide",
-        "views": 19
+        "views": 20
       },
       {
         "path": "/spine-finder/",
         "title": "Spine Finder",
         "views": 18
+      },
+      {
+        "path": "/DB-club-members/",
+        "title": "Duston Bowmen Membership",
+        "views": 15
       },
       {
         "path": "/DB-archery-dashboard/",
@@ -89,12 +98,7 @@
       {
         "path": "/archery-tracker/",
         "title": "Neil Fletcher: Archery Tracker",
-        "views": 6
-      },
-      {
-        "path": "/house/",
-        "title": "Fletcher House Refurnish",
-        "views": 5
+        "views": 8
       }
     ]
   },
@@ -103,10 +107,6 @@
     "newLast7Days": 22,
     "newLast30Days": 22,
     "dailySignups": [
-      {
-        "date": "2026-08-28",
-        "count": 0
-      },
       {
         "date": "2026-08-29",
         "count": 0
@@ -222,15 +222,33 @@
       {
         "date": "2026-09-26",
         "count": 0
+      },
+      {
+        "date": "2026-09-27",
+        "count": 0
       }
     ]
   },
   "retention": {
     "newVsReturning": {
-      "new": 108,
-      "returning": 8
+      "new": 128,
+      "returning": 11
     },
     "windowDays": 28
+  },
+  "stickiness": {
+    "dau": 17,
+    "wau": 130,
+    "mau": 130,
+    "dauMauPct": 13
+  },
+  "platform": {
+    "web": 0,
+    "android": 0,
+    "configured": false
+  },
+  "siteHealth": {
+    "exceptions7d": 0
   },
   "engagement": {
     "trackedAccounts": 9,
@@ -245,6 +263,11 @@
       {
         "id": "d2",
         "title": "Harissa Salmon with Lemon Couscous",
+        "count": 1
+      },
+      {
+        "id": "d4",
+        "title": "Sesame Ginger Beef Stir-Fry",
         "count": 1
       },
       {
@@ -305,6 +328,29 @@
         "count": 2
       }
     ],
-    "topFavourited": []
+    "topFavourited": [],
+    "funnel": {
+      "signedUp": 22,
+      "tracked": 9,
+      "builtAPlan": 7,
+      "usedShoppingList": 2,
+      "confirmedACook": 5
+    },
+    "library": {
+      "totalRecipes": 437,
+      "everTouched": 60,
+      "neverTouchedPct": 86
+    },
+    "dormant": {
+      "count": 0,
+      "pct": 0,
+      "thresholdDays": 30,
+      "unknownActivity": 0
+    },
+    "crossDevice": {
+      "trackedAccounts": 0,
+      "multiDevice": 0,
+      "pct": 0
+    }
   }
 }

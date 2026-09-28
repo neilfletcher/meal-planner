@@ -32,6 +32,7 @@
         "Add the garlic, ginger, hoisin and soy sauce, and toss to coat. Cook for 1 minute, then tip out and set aside.",
         "Wipe out the pan, add a touch more oil if needed, and tip in the cold rice and peas, breaking up any clumps. Stir-fry for 2–3 minutes until hot through.",
         "Push the rice to one side, crack in the egg, and scramble it into the rice as it sets.",
+        "Taste and adjust the seasoning.",
         "Return the pork to the pan, toss everything together, and scatter with sliced spring onion."
       ]
     },
@@ -50,6 +51,7 @@
         "Roast for 10–12 minutes (or grill for 6–8 minutes) until just cooked through and flaking easily.",
         "While the salmon cooks, put the couscous in a bowl and pour over the hot stock. Cover and leave for 5 minutes until absorbed.",
         "Fluff the couscous with a fork, stir through the lemon zest, a squeeze of lemon juice, olive oil and chopped parsley.",
+        "Taste and adjust the seasoning.",
         "Serve the salmon on top of the couscous."
       ]
     },
@@ -84,6 +86,7 @@
         "Heat the vegetable oil in a wok over high heat until smoking, then add the beef and stir-fry for 1–2 minutes until browned. Remove and set aside.",
         "Add the vegetables to the wok and stir-fry for 2–3 minutes until just tender.",
         "Return the beef to the wok with the stir-fry sauce, and toss everything together for 1 minute.",
+        "Taste and adjust the seasoning.",
         "Add the noodles, toss well to combine, and serve immediately."
       ]
     },
@@ -138,6 +141,7 @@
         "Finely chop the onion and garlic. Heat the remaining oil in the same pan and fry the onion for 3 minutes until soft.",
         "Add the garlic, ginger, garam masala and turmeric, and cook for 1 minute until fragrant.",
         "Stir in the chopped tomatoes and simmer for 5 minutes until thickened.",
+        "Taste and adjust the seasoning.",
         "Add the peas and paneer, and simmer for 2–3 minutes until the peas are cooked through. Serve with the rice."
       ]
     },
@@ -189,6 +193,7 @@
         "Flatten the chicken breast slightly, then coat in flour, dip in beaten egg, and press into the panko breadcrumbs to coat all over.",
         "Heat the vegetable oil in a frying pan over medium heat and fry the chicken for 4–5 minutes each side until deep golden and cooked through. Drain on kitchen paper and slice.",
         "Meanwhile, warm the katsu sauce through in a small pan.",
+        "Taste and adjust the seasoning.",
         "Serve the sliced katsu chicken over the rice, spooning the warmed curry sauce over the top."
       ]
     },
@@ -197,7 +202,7 @@
       prep: 6, cook: 10,
       ingredients: [
         ing(80, "g", "tagliatelle", "store"), ing(150, "g", "chestnut mushrooms, sliced", "produce"),
-        ing(2, "", "garlic clove, finely chopped", "produce"), ing(80, "ml", "double cream", "dairy"),
+        ing(2, "", "garlic cloves, finely chopped", "produce"), ing(80, "ml", "double cream", "dairy"),
         ing(20, "g", "parmesan, grated", "dairy"), ing(15, "g", "butter", "dairy"),
         ing(null, "few sprigs", "fresh thyme", "produce"), ing(1, "tbsp", "olive oil", "store")
       ],
@@ -226,6 +231,7 @@
         "Heat the olive oil in a frying pan over medium-high heat and fry the onion for 2 minutes until softened.",
         "Add the lamb mince, breaking it up with a spoon, and fry for 4–5 minutes until browned.",
         "Stir in the garlic, cumin, cinnamon and apricots, and cook for 2 more minutes.",
+        "Taste and adjust the seasoning.",
         "Fluff the couscous with a fork and serve the spiced lamb on top, scattered with torn mint leaves."
       ]
     },
@@ -242,6 +248,7 @@
         "Toss the chicken thighs in the peri-peri sauce to coat.",
         "Heat a frying pan over medium-high heat and cook the chicken for 5–6 minutes each side until charred and cooked through.",
         "While the chicken cooks, toss the broccoli in the olive oil and cook in a separate hot griddle or frying pan for 4–5 minutes, turning, until charred and just tender.",
+        "Taste and adjust the seasoning.",
         "Slice the chicken and serve over the rice with the charred broccoli, finished with a squeeze of lemon."
       ]
     },
@@ -295,6 +302,7 @@
         "Halve the new potatoes and cut the red onion into wedges. Toss both with half the olive oil on a baking tray and roast for 10 minutes.",
         "Meanwhile, toss the chicken thighs through the honey mustard sauce to coat.",
         "Push the potatoes to one side and add the chicken to the tray, scattering with thyme sprigs.",
+        "Taste and adjust the seasoning.",
         "Roast for a further 15–18 minutes until the chicken is cooked through and the potatoes are tender, turning everything halfway."
       ]
     },
@@ -311,6 +319,7 @@
         "Heat the vegetable oil in a frying pan over medium heat and fry the salmon skin-side down for 4 minutes, then flip and cook for 2 minutes more.",
         "Pour the teriyaki sauce into the pan and let it bubble for 1–2 minutes, spooning it over the salmon until glossy.",
         "Meanwhile, steam or blanch the greens for 3–4 minutes until just tender.",
+        "Taste and adjust the seasoning.",
         "Serve the salmon and its glaze over the rice with the greens, scattered with sesame seeds."
       ]
     },
@@ -329,6 +338,7 @@
         "Heat the vegetable oil in a wok over high heat and stir-fry the beef for 1–2 minutes until browned. Remove and set aside.",
         "Add the pepper to the wok and stir-fry for 2 minutes, then add the garlic and cook for 30 seconds.",
         "Return the beef to the wok with the black bean sauce and noodles, and toss everything together for 1–2 minutes until well coated.",
+        "Taste and adjust the seasoning.",
         "Scatter with sliced spring onion and serve."
       ]
     },
@@ -399,6 +409,7 @@
         "Toss the squash and red onion wedges with the olive oil, cumin and chilli flakes on a baking tray.",
         "Roast for 20 minutes, then crumble the feta over the top and roast for a further 5 minutes.",
         "While the vegetables finish roasting, cover the couscous with boiling water and leave for 5 minutes, then fluff with a fork.",
+        "Taste and adjust the seasoning.",
         "Serve the roasted squash and feta over the couscous, scattered with chopped parsley."
       ]
     },
@@ -416,6 +427,7 @@
         "Heat the oil in a saucepan over medium heat and brown the sausages all over, about 4–5 minutes, then remove and slice into thick chunks.",
         "Add the carrot and onion to the same pan and cook for 4 minutes until softening.",
         "Add the garlic and thyme, then stir in the chopped tomatoes and butter beans, and return the sausage to the pan.",
+        "Taste and adjust the seasoning.",
         "Simmer for 8–10 minutes until the sauce has thickened and the sausage is cooked through."
       ]
     },
@@ -470,6 +482,7 @@
         "Slice the halloumi and fry or griddle for 1–2 minutes each side until golden.",
         "Meanwhile, put the couscous in a bowl, pour over the hot stock, cover and leave for 5 minutes.",
         "Fluff the couscous, stir through the remaining olive oil, lemon juice and chopped mint.",
+        "Taste and adjust the seasoning.",
         "Top with the roasted vegetables and grilled halloumi."
       ]
     },
@@ -503,6 +516,7 @@
         "Heat the oil in a saucepan over medium heat and brown the sausages all over, about 5 minutes, then remove and slice.",
         "Add the carrot and onion to the pan and cook for 4–5 minutes until softened.",
         "Add the garlic and rosemary, then stir in the chopped tomatoes and lentils, and return the sausage to the pan.",
+        "Taste and adjust the seasoning.",
         "Simmer for 8–10 minutes until thickened and the sausage is cooked through."
       ]
     },
@@ -520,6 +534,7 @@
         "Cut the pork into bite-sized cubes and toss lightly in the cornflour.",
         "Heat the oil in a wok or frying pan over high heat and fry the pork for 4–5 minutes until browned and cooked through. Remove and set aside.",
         "Add the pepper to the pan and stir-fry for 2 minutes, then add the pineapple chunks and sweet and sour sauce, and simmer for 2 minutes until glossy.",
+        "Taste and adjust the seasoning.",
         "Return the pork to the pan, toss to coat, and serve over the rice."
       ]
     },
@@ -528,7 +543,7 @@
       prep: 6, cook: 20,
       ingredients: [
         ing(200, "g", "cherry tomatoes", "produce"), ing(80, "g", "feta cheese, block", "dairy"),
-        ing(2, "", "garlic clove, whole", "produce"), ing(2, "tbsp", "olive oil", "store"),
+        ing(2, "", "garlic cloves, whole", "produce"), ing(2, "tbsp", "olive oil", "store"),
         ing(null, "pinch", "chilli flakes", "spice"), ing(80, "g", "fusilli or penne", "store"),
         ing(null, "small handful", "fresh basil, torn", "produce")
       ],
@@ -621,6 +636,7 @@
       steps: [
         "Cube the chicken and toss with the yoghurt and the tikka paste to coat. Thread onto a skewer if you have one.",
         "Heat a griddle or frying pan over medium-high heat and cook the chicken for 8–10 minutes, turning regularly, until charred and cooked through.",
+        "Taste and adjust the seasoning.",
         "Warm the flatbread and serve alongside the chicken with the mint yoghurt dip for dipping."
       ]
     },
@@ -639,6 +655,7 @@
         "Heat the oil in a wok over high heat and stir-fry the beef for 1–2 minutes until browned. Remove and set aside.",
         "Add the broccoli to the wok with a splash of water, cover and steam-fry for 2–3 minutes until just tender.",
         "Return the beef to the wok with the garlic, oyster sauce and soy sauce, and toss for 1 minute until glossy.",
+        "Taste and adjust the seasoning.",
         "Serve over the rice."
       ]
     },
@@ -654,6 +671,7 @@
       steps: [
         "Cube the halloumi, courgette and pepper, and thread onto skewers with the cherry tomatoes. Brush with the olive oil.",
         "Heat a griddle pan over medium-high heat and cook the skewers for 8–10 minutes, turning regularly, until charred and the halloumi is golden.",
+        "Taste and adjust the seasoning.",
         "Warm the pitta and serve alongside the skewers with the tzatziki."
       ]
     },
@@ -705,6 +723,7 @@
         "Cut the cauliflower into florets and toss with the chickpeas, cumin, turmeric and olive oil on a baking tray.",
         "Roast for 22–25 minutes, turning halfway, until the cauliflower is tender and lightly charred.",
         "Whisk the tahini with a squeeze of lemon and a splash of water to make a drizzle.",
+        "Taste and adjust the seasoning.",
         "Serve the roasted cauliflower and chickpeas drizzled with the tahini and scattered with coriander."
       ]
     },
@@ -722,6 +741,7 @@
         "Bring the chicken stock to a simmer in a saucepan with the ginger, garlic and soy sauce.",
         "Add the sliced chicken and simmer for 5–6 minutes until cooked through.",
         "Add the noodles and pak choi, and cook for a further 3–4 minutes until the noodles are tender.",
+        "Taste and adjust the seasoning.",
         "Ladle into a bowl and scatter with sliced spring onion."
       ]
     },
@@ -737,6 +757,7 @@
         "Toss the beef through the bulgogi marinade while you prepare everything else.",
         "Separate the lettuce into whole leaves and arrange on a plate.",
         "Heat a frying pan or wok over high heat and stir-fry the beef and its marinade for 2–3 minutes until browned and sticky.",
+        "Taste and adjust the seasoning.",
         "Spoon the beef into the lettuce leaves, scatter with sliced spring onion and sesame seeds, and eat wrapped like a taco."
       ]
     },
@@ -754,6 +775,7 @@
         "Meanwhile, toss the chicken with the crushed garlic, a squeeze of lemon and half the olive oil.",
         "Heat the remaining oil in a frying pan over medium-high heat and cook the chicken for 6–7 minutes each side until golden and cooked through.",
         "Roughly chop the dried apricots and stir through the cooked rice.",
+        "Taste and adjust the seasoning.",
         "Slice the chicken and serve over the saffron rice."
       ]
     },
@@ -819,6 +841,7 @@
         "Cube the sweet potato and toss with the olive oil, cumin and paprika. Roast for 20 minutes, or microwave whole for 6–8 minutes until tender, then dice.",
         "Warm the black beans in a small pan with a splash of water.",
         "Slice the avocado and squeeze over the lime juice.",
+        "Taste and adjust the seasoning.",
         "Build the bowl with the roasted sweet potato, black beans and avocado, scattered with chopped coriander."
       ]
     },
@@ -855,6 +878,7 @@
         "Heat the olive oil in a frying pan over medium-high heat and fry the chicken for 3 minutes each side until golden and cooked through. Remove to a plate.",
         "Add the butter, capers, stock and a squeeze of lemon to the pan, scraping up any bits, and simmer for 1–2 minutes until slightly thickened.",
         "Meanwhile, cook the green beans in boiling water for 4–5 minutes until just tender.",
+        "Taste and adjust the seasoning.",
         "Spoon the caper sauce over the chicken and serve with the green beans."
       ]
     },
@@ -872,6 +896,7 @@
         "Slice the sweet potato into rounds. Coat in the flour, then the milk, then press into the panko breadcrumbs.",
         "Heat the vegetable oil in a frying pan over medium heat and fry the sweet potato rounds for 3–4 minutes each side until golden and tender. Drain on kitchen paper.",
         "Meanwhile, warm the katsu sauce through in a small pan.",
+        "Taste and adjust the seasoning.",
         "Serve the crispy sweet potato over the rice, spooning the warmed curry sauce over the top."
       ]
     },
@@ -889,6 +914,7 @@
         "Pat the tofu dry and cut into cubes, then toss in the cornflour to coat.",
         "Heat the vegetable oil in a frying pan over medium-high heat and fry the tofu for 5–6 minutes, turning occasionally, until golden and crisp on all sides.",
         "Pour the sauce over the tofu and toss for 1–2 minutes until sticky and glossy.",
+        "Taste and adjust the seasoning.",
         "Serve over the rice, scattered with sesame seeds and sliced spring onion."
       ]
     },
@@ -903,6 +929,7 @@
       steps: [
         "Heat the olive oil in a frying pan over medium-high heat and cook the koftas for 8–10 minutes, turning regularly, until browned all over and cooked through.",
         "Warm the flatbread.",
+        "Taste and adjust the seasoning.",
         "Serve the koftas with the flatbread and tzatziki, scattered with a few mint leaves."
       ]
     },
@@ -920,6 +947,7 @@
         "Mix the gochujang, soy sauce, honey, sesame oil and crushed garlic, then toss through the chicken.",
         "Spread the chicken over a lined baking tray and roast for 12 minutes.",
         "Add the broccoli to the tray, tossing it through any juices, and roast for a further 8–10 minutes until the chicken is cooked through and the broccoli is tender.",
+        "Taste and adjust the seasoning.",
         "Scatter with sesame seeds to serve."
       ]
     },
@@ -936,6 +964,7 @@
         "Toss the sausages, apple wedges and red onion with the olive oil on a baking tray.",
         "Roast for 15 minutes.",
         "Turn everything, drizzle with the mustard and scatter over the thyme, then roast for a further 10 minutes until the sausages are browned and cooked through.",
+        "Taste and adjust the seasoning.",
         "Serve straight from the tray."
       ]
     },
@@ -953,6 +982,7 @@
         "Toss the chickpeas and cherry tomatoes with half the oil and the ras el hanout on a baking tray, and roast for 8 minutes.",
         "Rub the cod with the remaining oil, nestle it on top of the chickpeas, and squeeze over the lemon juice.",
         "Roast for a further 10 minutes until the cod flakes easily.",
+        "Taste and adjust the seasoning.",
         "Scatter with coriander to serve."
       ]
     },
@@ -968,6 +998,7 @@
         "Preheat the oven to 200°C (fan 180°C).",
         "Toss the sweet potato with the oil and half the harissa on a baking tray, and roast for 15 minutes.",
         "Add the chickpeas and red onion, tossed through the remaining harissa, and roast for a further 10 minutes until the sweet potato is tender and caramelised at the edges.",
+        "Taste and adjust the seasoning.",
         "Scatter with coriander to serve."
       ]
     },
@@ -984,6 +1015,7 @@
         "Mix the soy sauce, honey and sesame oil, and brush half over the salmon on a lined baking tray.",
         "Add the broccoli to the tray and brush with the remaining glaze.",
         "Roast for 10–12 minutes until the salmon is just cooked through and the broccoli is tender.",
+        "Taste and adjust the seasoning.",
         "Scatter with sesame seeds to serve."
       ]
     },
@@ -1013,6 +1045,7 @@
         "Preheat the oven to 200°C (fan 180°C).",
         "Toss the potatoes with half the oil on a baking tray and roast for 10 minutes.",
         "Toss the chicken with the remaining oil, the dried herbs, crushed garlic and lemon zest, then add to the tray with the potatoes.",
+        "Taste and adjust the seasoning.",
         "Squeeze over the lemon juice and roast for a further 16–18 minutes until the chicken is cooked through and the potatoes are tender."
       ]
     },
@@ -1027,6 +1060,7 @@
       steps: [
         "Preheat the oven to 200°C (fan 180°C).",
         "Toss the potatoes with the oil and smoked paprika on a baking tray, and roast for 12 minutes.",
+        "Taste and adjust the seasoning.",
         "Add the chorizo and pepper to the tray, and roast for a further 13 minutes until the potatoes are tender and the chorizo is crisping at the edges."
       ]
     },
@@ -1042,6 +1076,7 @@
         "Preheat the oven to 200°C (fan 180°C).",
         "Toss the courgette and pepper with the oil on a baking tray and roast for 12 minutes.",
         "Add the halloumi slices to the tray and roast for a further 8 minutes until golden.",
+        "Taste and adjust the seasoning.",
         "Warm the honey with the chilli flakes and drizzle over everything to serve."
       ]
     },
@@ -1058,6 +1093,7 @@
         "Preheat the oven to 200°C (fan 180°C).",
         "Toss the chicken, tomatoes and red onion with the oil and oregano on a baking tray.",
         "Roast for 20–22 minutes until the chicken is cooked through.",
+        "Taste and adjust the seasoning.",
         "Scatter over the feta and olives and roast for a final 3 minutes to warm through."
       ]
     },
@@ -1074,6 +1110,7 @@
         "Brown the pork in a dry pan over high heat for 2–3 minutes, then tip onto a plate.",
         "Add the soy sauce, vinegar, garlic, bay leaf, peppercorns and 3 tbsp water to the pan.",
         "Simmer uncovered for 5 minutes until the sauce has reduced slightly, then return the pork and simmer for 3–4 minutes until cooked through and glazed.",
+        "Taste and adjust the seasoning.",
         "Serve over the rice."
       ]
     },
@@ -1090,6 +1127,7 @@
         "Melt the sugar in a dry saucepan over medium heat until it turns a deep caramel colour, watching closely so it doesn't burn.",
         "Add the pork mince and brown for 3–4 minutes, breaking it up as it cooks.",
         "Stir in the fish sauce, garlic and ginger with a splash of water, and simmer for 5 minutes until sticky.",
+        "Taste and adjust the seasoning.",
         "Serve over the rice, scattered with sliced spring onion."
       ]
     },
@@ -1108,6 +1146,7 @@
         "Heat a splash of oil in a wok over high heat and stir-fry the chicken for 4–5 minutes until browned and cooked through.",
         "Add the pepper, garlic and chilli flakes, and stir-fry for 2 minutes.",
         "Pour in the soy sauce and vinegar, simmer for 1–2 minutes, then stir through the peanuts.",
+        "Taste and adjust the seasoning.",
         "Serve over the rice."
       ]
     },
@@ -1124,6 +1163,7 @@
         "Beat the eggs and scramble in a wok or frying pan over medium heat until just set, then set aside.",
         "Stir-fry the vegetables and garlic for 3 minutes.",
         "Add the noodles and soy sauce, and toss for 1–2 minutes until hot through.",
+        "Taste and adjust the seasoning.",
         "Fold the egg back through and drizzle with sesame oil to serve."
       ]
     },
@@ -1138,6 +1178,7 @@
       steps: [
         "Mix the hoisin, soy sauce, honey and five spice, and coat the pork all over.",
         "Heat a frying pan or griddle over a medium heat (the sugary glaze burns on high) and cook the pork for 4–5 minutes each side, basting with any extra marinade, until glazed and cooked through.",
+        "Taste and adjust the seasoning.",
         "Rest for 2 minutes, then slice and serve with the rice."
       ]
     },
@@ -1156,6 +1197,7 @@
         "Add the pork mince and brown for 4–5 minutes, breaking it up as it cooks.",
         "Stir in the fish sauce, soy sauce and sugar, and cook for 1–2 minutes, then stir through the basil leaves.",
         "Fry the egg separately in a little oil, keeping the yolk runny.",
+        "Taste and adjust the seasoning.",
         "Serve the pork over the rice, topped with the fried egg."
       ]
     },
@@ -1172,6 +1214,7 @@
         "Soak the rice noodles in boiled water according to the packet instructions, then drain.",
         "Pat the tofu dry, then fry in the oil over medium-high heat for 5–6 minutes until golden on all sides.",
         "Whisk the peanut butter, soy sauce, sriracha, lime juice and a splash of hot water into a smooth sauce.",
+        "Taste and adjust the seasoning.",
         "Add the noodles and beansprouts to the pan with the tofu, pour over the sauce, and toss for 1–2 minutes until well coated."
       ]
     },
@@ -1206,6 +1249,7 @@
         "Fry the paneer in the oil over medium-high heat for 3–4 minutes until golden, then set aside.",
         "Fry the crushed garlic and curry powder in the same pan for 1 minute, then add the spinach and cook until wilted.",
         "Blend or roughly mash the spinach mixture, stir in the cream, then return the paneer to the pan and warm through.",
+        "Taste and adjust the seasoning.",
         "Serve over the rice."
       ]
     },
@@ -1223,6 +1267,7 @@
         "Fry the onion and garlic in a splash of oil for 3 minutes until softening.",
         "Stir in the curry powder and cumin, and fry for 1 minute until fragrant.",
         "Add the chickpeas and chopped tomatoes, and simmer for 10 minutes until thickened.",
+        "Taste and adjust the seasoning.",
         "Serve over the rice, scattered with coriander."
       ]
     },
@@ -1240,6 +1285,7 @@
         "Fry the onion and garlic in a splash of oil for 3 minutes.",
         "Add the lamb mince and brown for 4–5 minutes, breaking it up as it cooks.",
         "Stir in the curry powder, then add the chopped tomatoes and simmer for 8 minutes.",
+        "Taste and adjust the seasoning.",
         "Stir through the peas and cook for a final 2 minutes, then serve over the rice."
       ]
     },
@@ -1255,6 +1301,7 @@
         "Cook the rice according to the packet instructions, then stir through the chopped mint.",
         "Mix the tandoori paste with the yoghurt and coat the chicken.",
         "Heat a griddle or frying pan over medium-high heat and cook the chicken for 5–6 minutes, turning occasionally, until charred and cooked through.",
+        "Taste and adjust the seasoning.",
         "Serve over the minted rice with a squeeze of lemon."
       ]
     },
@@ -1270,6 +1317,7 @@
         "Warm the falafel according to the pack instructions.",
         "Warm the flatbread.",
         "Toss the cucumber and cherry tomatoes with the olive oil.",
+        "Taste and adjust the seasoning.",
         "Serve the falafel with the hummus, salad and flatbread."
       ]
     },
@@ -1285,6 +1333,7 @@
         "Cook the rice according to the packet instructions, then stir through the lemon zest, a squeeze of juice and the chopped parsley.",
         "Toss the chicken with the za'atar and olive oil.",
         "Heat a frying pan over medium-high heat and cook the chicken for 6–7 minutes, turning occasionally, until cooked through.",
+        "Taste and adjust the seasoning.",
         "Serve the chicken over the lemon rice."
       ]
     },
@@ -1302,6 +1351,7 @@
         "Toss the turkey with the sumac and olive oil.",
         "Heat a frying pan over medium-high heat and cook the turkey for 3–4 minutes each side until cooked through.",
         "Warm the flatbread and spread with the hummus.",
+        "Taste and adjust the seasoning.",
         "Top with the sliced turkey and drained pickled onion."
       ]
     },
@@ -1317,6 +1367,7 @@
       steps: [
         "Fry the beef in a hot pan for 4–5 minutes until browned, stirring through the chipotle paste for the final minute.",
         "Warm the black beans and sweetcorn together in a small pan.",
+        "Taste and adjust the seasoning.",
         "Build the bowl with the rice, beans and sweetcorn, beef, salsa and sliced avocado."
       ]
     },
@@ -1332,6 +1383,7 @@
         "Roughly mash the black beans with the sweetcorn and smoked paprika.",
         "Spread over one tortilla, scatter with cheese, and top with the second tortilla.",
         "Dry-fry in a large pan over medium heat for 2–3 minutes each side until golden and the cheese has melted.",
+        "Taste and adjust the seasoning.",
         "Cut into wedges and serve with the salsa."
       ]
     },
@@ -1347,6 +1399,7 @@
         "Warm the salsa in a small ovenproof frying pan over medium heat.",
         "Make two wells in the salsa and crack in the eggs.",
         "Scatter over the cheese, cover, and cook gently for 5–6 minutes until the eggs are just set.",
+        "Taste and adjust the seasoning.",
         "Scatter the tortilla chips over the top just before serving, with coriander."
       ]
     },
@@ -1364,6 +1417,7 @@
         "Fry the onion and garlic in a splash of oil for 3 minutes.",
         "Stir in the curry powder and fry for 1 minute, then add the chicken and brown for 3–4 minutes.",
         "Pour in the coconut milk and simmer for 12–15 minutes until the chicken is cooked through and the sauce has thickened.",
+        "Taste and adjust the seasoning.",
         "Serve with the rice and peas."
       ]
     },
@@ -1379,6 +1433,7 @@
       steps: [
         "Fry the pepper, onion and garlic in a splash of oil for 4 minutes until softening.",
         "Stir in the cumin, then add the black beans and a splash of water, and simmer for 5 minutes.",
+        "Taste and adjust the seasoning.",
         "Serve over the rice with a squeeze of lime."
       ]
     },
@@ -1395,6 +1450,7 @@
         "Fry the chorizo in a saucepan for 2 minutes until it releases its oil, then add the chicken and brown for 3–4 minutes.",
         "Add the pepper and garlic, and cook for 2 minutes.",
         "Stir in the rice and smoked paprika, then add the chopped tomatoes and stock.",
+        "Taste and adjust the seasoning.",
         "Bring to a simmer, cover and cook for 15–18 minutes, stirring occasionally, until the rice is tender."
       ]
     },
@@ -1424,6 +1480,7 @@
         "Toss the potato with the oil on a baking tray and roast at 200°C (fan 180°C) for 20 minutes until crisp, turning halfway.",
         "Meanwhile, simmer the chopped tomatoes with the smoked paprika and chilli flakes for 8–10 minutes until thickened.",
         "Fry the egg to your liking.",
+        "Taste and adjust the seasoning.",
         "Serve the potatoes with the spiced tomato sauce spooned over and the fried egg on top."
       ]
     },
@@ -1440,6 +1497,7 @@
         "Cook the rice according to the packet instructions.",
         "Mix the lamb mince with the oregano, cumin and crushed garlic.",
         "Fry over medium-high heat for 6–7 minutes, breaking it up, until browned and cooked through.",
+        "Taste and adjust the seasoning.",
         "Serve over the rice with the tzatziki and cherry tomatoes."
       ]
     },
@@ -1472,6 +1530,7 @@
         "Melt the butter in another pan and fry the onion for 2 minutes, then add the mushrooms and cook for 4–5 minutes until golden.",
         "Stir in the rice and cook for 1 minute, then add the hot stock a ladle at a time, stirring and letting each addition absorb before adding the next, for about 16–18 minutes.",
         "Stir through the peas for the final 3 minutes.",
+        "Taste and adjust the seasoning.",
         "Remove from the heat, stir through the parmesan, and rest for a minute before serving."
       ]
     },
@@ -1532,6 +1591,7 @@
         "Spread one slice of bread with the mustard and layer with the ham and half the cheese, then top with the second slice.",
         "Scatter the remaining cheese over the outside of the sandwich.",
         "Toast in a dry frying pan over medium heat for 3–4 minutes each side until golden and the cheese has melted.",
+        "Taste and adjust the seasoning.",
         "Serve with the salad leaves tossed in the olive oil."
       ]
     },
@@ -1564,6 +1624,7 @@
         "Cook the fries according to the packet instructions.",
         "Fry the sliced sausages in a pan over medium-high heat for 6–8 minutes until browned all over.",
         "Warm the ketchup with the curry powder and smoked paprika in a small pan.",
+        "Taste and adjust the seasoning.",
         "Spoon the curry sauce over the sausages and serve with the fries."
       ]
     },
@@ -1613,6 +1674,7 @@
         "Mash the miso paste into the softened butter with the soy sauce.",
         "Spread over the salmon and place on a lined baking tray.",
         "Roast at 200°C (fan 180°C) for 10–12 minutes until just cooked through.",
+        "Taste and adjust the seasoning.",
         "Serve over the rice, scattered with sliced spring onion."
       ]
     },
@@ -1628,6 +1690,7 @@
         "Heat a splash of oil in a wok over high heat and stir-fry the beef for 2–3 minutes until browned, then set aside.",
         "Add the vegetables and garlic to the wok and stir-fry for 3 minutes.",
         "Add the udon noodles and soy sauce, and toss for 2 minutes to loosen and heat through.",
+        "Taste and adjust the seasoning.",
         "Return the beef to the wok, toss together, and drizzle with sesame oil to serve."
       ]
     },
@@ -1660,6 +1723,7 @@
         "Heat a splash of oil in a frying pan or wok over high heat and fry the kimchi for 2 minutes.",
         "Add the cold rice and kimchi juice, and stir-fry for 4–5 minutes, breaking up any clumps, until hot through and starting to crisp.",
         "Push to one side of the pan, fry the egg in the space, keeping the yolk runny.",
+        "Taste and adjust the seasoning.",
         "Drizzle the rice with sesame oil, top with the egg, and scatter with sliced spring onion."
       ]
     },
@@ -1676,6 +1740,7 @@
         "Rinse the lentils well.",
         "Fry the onion and garlic in a splash of oil for 3–4 minutes until softening.",
         "Stir in the paprika, ginger, cinnamon and chilli flakes, and cook for 1 minute until fragrant.",
+        "Taste and adjust the seasoning.",
         "Add the lentils, chopped tomatoes and 300ml water, and simmer for 15 minutes, stirring occasionally, until the lentils are tender and the stew has thickened."
       ]
     },
@@ -1692,6 +1757,7 @@
         "Cook the rice according to the packet instructions.",
         "Pat the tofu dry and fry in a splash of oil over medium-high heat for 5–6 minutes, turning occasionally, until golden on all sides.",
         "Whisk the peanut butter, soy sauce, sriracha, lime juice and a splash of hot water into a smooth sauce.",
+        "Taste and adjust the seasoning.",
         "Serve the tofu over the rice with the cucumber, drizzled with the peanut sauce."
       ]
     },
@@ -1707,6 +1773,7 @@
         "Boil the diced potato for 8–10 minutes until tender, then drain.",
         "Fry the sausage slices and onion in a splash of oil over medium-high heat for 5–6 minutes until browned.",
         "Stir in the sauerkraut, caraway seeds and boiled potato, and cook for 3–4 minutes until hot through.",
+        "Taste and adjust the seasoning.",
         "Serve with the mustard stirred through or on the side."
       ]
     },
@@ -1737,6 +1804,7 @@
         "Boil the new potatoes for 12 minutes until tender, then drain.",
         "Fry the chicken in a splash of oil over medium-high heat for 6–7 minutes until browned and cooked through.",
         "Stir in the flour, then pour in the stock and simmer for 2 minutes until slightly thickened.",
+        "Taste and adjust the seasoning.",
         "Stir in the soured cream and most of the dill, and serve over the potatoes, scattered with the rest of the dill."
       ]
     },
@@ -1752,6 +1820,7 @@
         "Cook the noodles according to the packet instructions.",
         "Fry the onion in a splash of oil over medium heat for 4 minutes until soft.",
         "Add the chicken and cook for 6–7 minutes until browned.",
+        "Taste and adjust the seasoning.",
         "Take off the heat and stir in the paprika (it burns easily), then add the chopped tomatoes and simmer for 4 minutes, then stir through the soured cream and serve over the noodles."
       ]
     },
@@ -1781,6 +1850,7 @@
       steps: [
         "Fry the sausage and onion in a splash of oil over medium-high heat for 4 minutes.",
         "Add the cabbage, paprika and caraway seeds, and cook for 8–9 minutes, stirring often, until the cabbage has softened.",
+        "Taste and adjust the seasoning.",
         "Stir through the soured cream off the heat and serve."
       ]
     },
@@ -1797,6 +1867,7 @@
         "Fry the onion and red pepper in a splash of oil over medium heat for 5 minutes until softening.",
         "Stir in the cumin and chilli flakes, then add the chopped tomatoes and simmer for 5 minutes until thickened.",
         "Make two wells in the sauce, crack in the eggs, cover and cook for 4–5 minutes until the whites are set.",
+        "Taste and adjust the seasoning.",
         "Serve straight from the pan with the flatbread."
       ]
     },
@@ -1812,6 +1883,7 @@
         "Cook the giant couscous according to the packet instructions, then drain and cool slightly.",
         "Fry the halloumi slices in a dry pan for 1–2 minutes each side until golden.",
         "Toss the couscous with the cucumber, tomatoes, lemon juice and mint.",
+        "Taste and adjust the seasoning.",
         "Top with the fried halloumi to serve."
       ]
     },
@@ -1827,6 +1899,7 @@
         "Toss the chicken with the cumin, paprika and a splash of oil.",
         "Thread onto skewers (or leave loose) and griddle or fry over medium-high heat for 8–9 minutes, turning, until cooked through.",
         "Whisk the tahini with the lemon juice and a splash of water until smooth and drizzly.",
+        "Taste and adjust the seasoning.",
         "Serve the chicken in the flatbread, drizzled with the tahini sauce."
       ]
     },
@@ -1842,6 +1915,7 @@
         "Simmer the lentils in plenty of water for 8 minutes, add the rice and cook for 4 minutes, then add the pasta and cook for a further 8–10 minutes until all are tender. Drain.",
         "Meanwhile, fry the onion in a splash of oil over medium heat for 8–10 minutes until deep golden and crisp.",
         "Warm the chopped tomatoes with the cumin in a small pan for 5 minutes.",
+        "Taste and adjust the seasoning.",
         "Serve the lentil, rice and pasta mix topped with the tomato sauce and crispy onions."
       ]
     },
@@ -1857,6 +1931,7 @@
         "Cook the rice according to the packet instructions.",
         "Fry the onion and beef mince in a splash of oil over medium-high heat for 6–7 minutes, breaking up the mince, until browned.",
         "Stir in the cumin and cinnamon, then add the chopped tomatoes and simmer for 5 minutes.",
+        "Taste and adjust the seasoning.",
         "Serve the spiced beef over the rice."
       ]
     },
@@ -1872,6 +1947,7 @@
         "Fry the red pepper and garlic in a splash of oil over medium heat for 4 minutes.",
         "Stir in the harissa, then add the chickpeas and chopped tomatoes.",
         "Simmer for 8 minutes, stirring occasionally, until thickened.",
+        "Taste and adjust the seasoning.",
         "Serve with the crusty bread for scooping."
       ]
     },
@@ -1887,6 +1963,7 @@
         "Cover the couscous with boiling water, cover and leave for 5 minutes, then fluff with a fork.",
         "Fry the lamb mince and courgette in a splash of oil over medium-high heat for 6–7 minutes, breaking up the mince.",
         "Stir in the harissa and cumin, and cook for 1 minute more.",
+        "Taste and adjust the seasoning.",
         "Serve the spiced lamb over the couscous, scattered with coriander."
       ]
     }
@@ -1904,6 +1981,7 @@
         "Fry the onion and red pepper in a splash of oil over medium heat for 4 minutes.",
         "Add the chicken and cook for 5 minutes until browned.",
         "Stir in the paprika, chilli flakes, chopped tomatoes and rice, then add 150ml water.",
+        "Taste and adjust the seasoning.",
         "Cover and simmer for 15–16 minutes, stirring once, until the rice is tender and the liquid absorbed."
       ]
     },
@@ -1919,6 +1997,7 @@
         "Cook the rice according to the packet instructions.",
         "Simmer the sweet potato in 150ml water for 8 minutes until nearly tender, then add the chopped tomatoes and simmer for 2 minutes. (Tomato's acidity slows raw veg softening, so it goes in second.)",
         "Stir in the peanut butter and chilli flakes until smooth, then simmer for 3 minutes.",
+        "Taste and adjust the seasoning.",
         "Stir in the spinach until wilted and serve over the rice."
       ]
     },
@@ -1934,6 +2013,7 @@
         "Toss the beef with the ginger, cayenne, paprika and a splash of oil.",
         "Griddle or fry over high heat for 3–4 minutes, turning, until charred and cooked to your liking.",
         "Rest for 2 minutes, then slice.",
+        "Taste and adjust the seasoning.",
         "Serve in the flatbread with the shredded cabbage."
       ]
     },
@@ -1949,6 +2029,7 @@
         "Cook the rice according to the packet instructions.",
         "Fry the chicken with the curry powder, turmeric and chilli flakes in a splash of oil over medium-high heat for 5 minutes.",
         "Pour in the coconut milk and simmer for 10 minutes until the chicken is cooked through and the sauce has thickened.",
+        "Taste and adjust the seasoning.",
         "Serve over the rice."
       ]
     },
@@ -1978,6 +2059,7 @@
         "Cook the rice according to the packet instructions, adding the green beans for the last 4 minutes.",
         "Rub the fish with curry powder and turmeric.",
         "Fry in a splash of oil over medium-high heat for 3–4 minutes each side until just cooked through and flaking easily.",
+        "Taste and adjust the seasoning.",
         "Serve over the rice and beans with a squeeze of lime."
       ]
     },
@@ -1993,6 +2075,7 @@
         "Cook the rice according to the packet instructions.",
         "Toss the chicken with the curry powder and a splash of oil, then fry over medium-high heat for 6–7 minutes until cooked through.",
         "Whisk the peanut butter, soy sauce, chilli flakes and a splash of hot water into a smooth sauce.",
+        "Taste and adjust the seasoning.",
         "Serve the chicken over the rice, drizzled with the satay sauce."
       ]
     },
@@ -2008,6 +2091,7 @@
         "Fry the chicken in a splash of oil over high heat for 5 minutes until cooked through, then push to one side.",
         "Add the cold rice, peas, soy sauce and chilli flakes, and stir-fry for 3–4 minutes until hot through.",
         "Push everything to one side, crack in the egg and scramble until just set, then mix through.",
+        "Taste and adjust the seasoning.",
         "Serve hot."
       ]
     },
@@ -2023,6 +2107,7 @@
         "Soak the rice noodles in boiling water for 5 minutes, then drain.",
         "Fry the chicken with the curry powder and chilli flakes in a splash of oil over medium-high heat for 5–6 minutes.",
         "Pour in the coconut milk and 100ml water, and simmer for 3 minutes.",
+        "Taste and adjust the seasoning.",
         "Stir in the noodles and beansprouts, warm through and serve."
       ]
     },
@@ -2038,6 +2123,7 @@
         "Cook the noodles according to the packet instructions, then drain.",
         "Fry the chicken with the curry powder in a splash of oil over high heat for 5–6 minutes until cooked through.",
         "Stir in the ketchup and chilli sauce, then add the noodles and beansprouts and toss for 2 minutes.",
+        "Taste and adjust the seasoning.",
         "Serve hot."
       ]
     },
@@ -2053,6 +2139,7 @@
         "Fry the chicken and garlic in a splash of oil over medium-high heat for 5 minutes.",
         "Stir in the turmeric and rice, then pour in the stock.",
         "Cover and simmer for 14–15 minutes until the rice is tender and the liquid absorbed.",
+        "Taste and adjust the seasoning.",
         "Serve with the sliced cucumber."
       ]
     },
@@ -2068,6 +2155,7 @@
         "Fry the chicken in a splash of oil over medium-high heat for 5 minutes until browned.",
         "Stir in the ginger and cumin, then add the chopped tomatoes and green chilli.",
         "Simmer for 10 minutes until the chicken is cooked through and the sauce has thickened.",
+        "Taste and adjust the seasoning.",
         "Serve with the flatbread."
       ]
     },
@@ -2098,6 +2186,7 @@
         "Mix the beef mince with the cumin, chilli flakes and garlic, and shape into two long kebabs.",
         "Fry or griddle over medium-high heat for 8–9 minutes, turning, until cooked through.",
         "Warm the flatbread.",
+        "Taste and adjust the seasoning.",
         "Serve the kebabs in the flatbread with a dollop of yoghurt."
       ]
     }
@@ -2114,6 +2203,7 @@
         "Mix the mince with the breadcrumbs and egg yolk, and shape into small meatballs.",
         "Fry in a splash of oil over medium heat for 8–9 minutes, turning, until browned and cooked through.",
         "Pour in the stock and soured cream, and simmer for 2 minutes until the sauce comes together.",
+        "Taste and adjust the seasoning.",
         "Serve with the cranberry sauce on the side."
       ]
     },
@@ -2129,6 +2219,7 @@
         "Boil the new potatoes for 12 minutes until tender, then drain.",
         "Meanwhile, fry the salmon skin-side down in the butter over medium heat for 4 minutes, then flip and cook for 3–4 minutes more.",
         "Toss the potatoes with the dill and a squeeze of lemon.",
+        "Taste and adjust the seasoning.",
         "Serve the salmon with the potatoes."
       ]
     },
@@ -2144,6 +2235,7 @@
         "Cook the rice according to the packet instructions.",
         "Fry the onion and garlic in a splash of oil over medium heat for 4 minutes.",
         "Add the black beans and a splash of water, and simmer for 6–7 minutes, mashing some of the beans for a thicker sauce.",
+        "Taste and adjust the seasoning.",
         "Serve over the rice with the orange segments and coriander."
       ]
     },
@@ -2159,6 +2251,7 @@
         "Cook the rice according to the packet instructions.",
         "Toss the chicken with the paprika, garlic and a squeeze of lime juice.",
         "Fry in a splash of oil over medium-high heat for 7–8 minutes until browned and cooked through.",
+        "Taste and adjust the seasoning.",
         "Serve over the rice with the remaining lime and coriander."
       ]
     },
@@ -2174,6 +2267,7 @@
         "Cook the rice according to the packet instructions.",
         "Toss the beef, pepper and onion with the garlic and a splash of oil.",
         "Thread onto skewers (or leave loose) and griddle over high heat for 3–4 minutes each side until charred.",
+        "Taste and adjust the seasoning.",
         "Serve over the rice."
       ]
     },
@@ -2204,6 +2298,7 @@
         "Cook the rice according to the packet instructions.",
         "Fry the chicken in a splash of oil over medium-high heat for 6–7 minutes until cooked through.",
         "Blitz or finely chop the coriander with the garlic, yoghurt and chilli flakes into a sauce.",
+        "Taste and adjust the seasoning.",
         "Serve the chicken over the rice with the green sauce."
       ]
     },
@@ -2219,6 +2314,7 @@
         "Boil the new potatoes for 12 minutes until tender, then drain.",
         "Mix the parsley, garlic, vinegar, chilli flakes and a splash of oil into a chimichurri sauce.",
         "Fry the steak over high heat for 2–3 minutes each side for medium, then rest for 3 minutes.",
+        "Taste and adjust the seasoning.",
         "Slice the steak and serve with the potatoes and chimichurri spooned over."
       ]
     },
@@ -2234,6 +2330,7 @@
         "Fry the onion and beef mince in a splash of oil over medium-high heat for 6–7 minutes, breaking up the mince, until browned.",
         "Stir in the cumin, chilli flakes and raisins, and cook for 2 minutes more.",
         "Warm the flatbread.",
+        "Taste and adjust the seasoning.",
         "Serve the spiced beef spooned over the flatbread."
       ]
     },
@@ -2249,6 +2346,7 @@
         "Boil the new potatoes for 12 minutes until tender, then drain.",
         "Fry the fish in a splash of oil over medium-high heat for 3–4 minutes each side until just cooked through and flaking easily.",
         "Toss the salad leaves and avocado with a squeeze of lemon.",
+        "Taste and adjust the seasoning.",
         "Serve the fish with the potatoes and salad."
       ]
     },
@@ -2264,6 +2362,7 @@
         "Boil the potatoes and green beans together for 10–12 minutes until tender, then drain.",
         "Fry the lamb chops over medium-high heat for 3–4 minutes each side until browned and cooked to your liking.",
         "Stir the mint through the yoghurt.",
+        "Taste and adjust the seasoning.",
         "Serve the chops with the potatoes, beans and minted yoghurt."
       ]
     },
@@ -2279,6 +2378,7 @@
         "Fry the onion in a splash of oil over medium heat for 4 minutes until soft.",
         "Add the beetroot and stock, and simmer for 8 minutes.",
         "Blitz or mash roughly to your preferred texture.",
+        "Taste and adjust the seasoning.",
         "Serve with a dollop of soured cream, dill and the crusty bread."
       ]
     },
@@ -2294,6 +2394,7 @@
         "Cook the rice according to the packet instructions.",
         "Fry the chicken, mushrooms and onion in a splash of oil over medium-high heat for 8–9 minutes until the chicken is cooked through.",
         "Stir in the soured cream and mustard, and warm through for 1 minute.",
+        "Taste and adjust the seasoning.",
         "Serve over the rice."
       ]
     },
@@ -2309,6 +2410,7 @@
         "Coat the chicken in flour, then the beaten egg, then the breadcrumbs.",
         "Fry in a generous splash of oil over medium heat for 3–4 minutes each side until golden and cooked through.",
         "Rest for 1 minute on kitchen paper.",
+        "Taste and adjust the seasoning.",
         "Serve with a squeeze of lemon and the salad leaves."
       ]
     },
@@ -2324,6 +2426,7 @@
         "Boil the potatoes for 12 minutes until tender, then drain and slice while warm.",
         "Meanwhile, warm the sausages in simmering water or fry for 6–7 minutes until hot through.",
         "Whisk the mustard and vinegar with a splash of oil, and toss through the warm potatoes and onion.",
+        "Taste and adjust the seasoning.",
         "Slice the sausages and serve over the potato salad."
       ]
     },
@@ -2339,6 +2442,7 @@
         "Boil the potato for 12 minutes until tender, adding the kale for the final 3 minutes.",
         "Meanwhile, fry the sausage slices over medium-high heat for 6–7 minutes until browned.",
         "Drain and mash the potato and kale with the butter and milk.",
+        "Taste and adjust the seasoning.",
         "Serve the mash topped with the sausage."
       ]
     },
@@ -2354,6 +2458,7 @@
         "Fry the onion in a splash of oil over medium heat for 4 minutes until soft.",
         "Add the stock and peas, and simmer for 6 minutes.",
         "Blitz or mash roughly, then stir in the sausage slices and warm through for 2 minutes.",
+        "Taste and adjust the seasoning.",
         "Serve with the crusty bread."
       ]
     },
@@ -2369,6 +2474,7 @@
         "Fry the onion and beef mince in a splash of oil over medium-high heat for 6–7 minutes, breaking up the mince.",
         "Stir in the curry powder and raisins, then spoon into a small ovenproof dish.",
         "Whisk the egg with the milk and pour over the top.",
+        "Taste and adjust the seasoning.",
         "Bake at 190°C (fan 170°C) for 12–14 minutes until the egg topping is set and golden."
       ]
     },
@@ -2384,6 +2490,7 @@
         "Cook the rice according to the packet instructions.",
         "Toss the chicken with the paprika, chilli flakes, garlic and a squeeze of lemon.",
         "Fry in a splash of oil over medium-high heat for 8–9 minutes until browned and cooked through.",
+        "Taste and adjust the seasoning.",
         "Serve over the rice with the remaining lemon."
       ]
     },
@@ -2414,6 +2521,7 @@
         "Cook the rice according to the packet instructions.",
         "Fry the chicken in a splash of oil over medium-high heat for 6–7 minutes until browned.",
         "Stir in the soy sauce and honey, and cook for 2 minutes until glazed and sticky.",
+        "Taste and adjust the seasoning.",
         "Serve over the rice with the pineapple chunks."
       ]
     }
@@ -2430,6 +2538,7 @@
         "Cook the rice according to the packet instructions.",
         "Fry the pork mince in a splash of oil over high heat for 4 minutes, breaking it up, until browned.",
         "Stir in the chilli bean sauce and soy sauce, then add the tofu and a splash of water and simmer for 4 minutes.",
+        "Taste and adjust the seasoning.",
         "Scatter with spring onion and serve over the rice."
       ]
     },
@@ -2445,6 +2554,7 @@
         "Cook the rice according to the packet instructions.",
         "Place the fish on a plate with the ginger, and steam over a pan of simmering water, covered, for 8–9 minutes until just cooked through.",
         "Scatter with spring onion, drizzle with soy sauce and sesame oil.",
+        "Taste and adjust the seasoning.",
         "Serve over the rice."
       ]
     },
@@ -2460,6 +2570,7 @@
         "Cover the couscous with boiling water, cover and leave for 5 minutes, then fluff with a fork.",
         "Fry the chicken with the cinnamon and cumin in a splash of oil over medium-high heat for 5 minutes.",
         "Add the apricots and chopped tomatoes, and simmer for 8–9 minutes until the chicken is cooked through.",
+        "Taste and adjust the seasoning.",
         "Serve over the couscous."
       ]
     },
@@ -2475,6 +2586,7 @@
         "Cover the couscous with boiling water, cover and leave for 5 minutes, then fluff with a fork.",
         "Mix the mince with the cumin, paprika and chilli flakes, and shape into small oval koftas.",
         "Fry over medium-high heat for 7–8 minutes, turning, until browned and cooked through.",
+        "Taste and adjust the seasoning.",
         "Serve over the couscous, scattered with coriander."
       ]
     },
@@ -2490,6 +2602,7 @@
         "Cook the rice according to the packet instructions.",
         "Fry the curry paste in a splash of oil over medium heat for 1 minute until fragrant.",
         "Add the chicken and cook for 3–4 minutes, then pour in the coconut milk and add the green beans.",
+        "Taste and adjust the seasoning.",
         "Simmer for 6–7 minutes until the chicken is cooked through, then serve over the rice."
       ]
     },
@@ -2505,6 +2618,7 @@
         "Fry the chicken in a splash of oil over high heat for 5 minutes until cooked through.",
         "Add the cold rice and peas, and stir-fry for 3–4 minutes until hot through.",
         "Stir in the pineapple, soy sauce and chilli flakes, and toss for 1 minute.",
+        "Taste and adjust the seasoning.",
         "Serve hot."
       ]
     },
@@ -2520,6 +2634,7 @@
         "Cook the rice according to the packet instructions.",
         "Boil the eggs for 8 minutes, then cool, peel and halve.",
         "Fry the onion in a splash of oil over medium heat for 4 minutes, then stir in the curry powder and turmeric.",
+        "Taste and adjust the seasoning.",
         "Add the chopped tomatoes and simmer for 6 minutes, then nestle in the eggs and warm through before serving over the rice."
       ]
     },
@@ -2535,6 +2650,7 @@
         "Boil the potato for 8 minutes until nearly tender, then drain.",
         "Fry the garlic with the cumin, turmeric and chilli flakes in a splash of oil for 1 minute.",
         "Add the potato and fry for 5 minutes, turning occasionally, until golden and coated in spice.",
+        "Taste and adjust the seasoning.",
         "Serve with the flatbread."
       ]
     },
@@ -2550,6 +2666,7 @@
         "Fry the chicken in a splash of oil over medium-high heat for 6–7 minutes until cooked through.",
         "Shred with two forks, then stir through the barbecue sauce and warm for 2 minutes.",
         "Toss the coleslaw mix with the mayonnaise.",
+        "Taste and adjust the seasoning.",
         "Pile the pulled chicken into the bun with the coleslaw."
       ]
     },
@@ -2565,6 +2682,7 @@
         "Toss the sweet potato wedges with the paprika and a splash of oil, and roast at 200°C (fan 180°C) for 20–25 minutes, turning once, until tender and golden.",
         "Shape the turkey mince into a patty and fry over medium-high heat for 4–5 minutes each side until cooked through.",
         "Toast the bun.",
+        "Taste and adjust the seasoning.",
         "Build the burger with the patty and ketchup, and serve with the wedges."
       ]
     },
@@ -2580,6 +2698,7 @@
         "Fry the garlic in a generous splash of oil over medium heat for 1 minute until fragrant.",
         "Add the mushrooms and paprika, and fry for 6–7 minutes until golden and tender.",
         "Scatter with parsley.",
+        "Taste and adjust the seasoning.",
         "Serve with the crusty bread for mopping up the juices."
       ]
     },
@@ -2595,6 +2714,7 @@
         "Boil the new potatoes for 12 minutes until tender, then drain.",
         "Simmer the red pepper, tomatoes, almonds and garlic for 8 minutes, then blitz or mash into a rough romesco sauce.",
         "Meanwhile, bake the cod at 200°C (fan 180°C) for 12 minutes until just cooked through.",
+        "Taste and adjust the seasoning.",
         "Serve the cod with the romesco sauce and potatoes."
       ]
     },
@@ -2604,12 +2724,13 @@
       ingredients: [
         ing(150, "g", "white fish fillet, cut into strips", "meat"), ing(2, "tbsp", "plain flour", "store"),
         ing(1, "", "egg, beaten", "dairy"), ing(3, "tbsp", "breadcrumbs", "store"),
-        ing(2, "slice", "white bread", "bakery"), ing(1, "tbsp", "tartare sauce or mayonnaise", "store")
+        ing(2, "slices", "white bread", "bakery"), ing(1, "tbsp", "tartare sauce or mayonnaise", "store")
       ],
       steps: [
         "Coat the fish strips in flour, then egg, then breadcrumbs.",
         "Fry in a splash of oil over medium heat for 3–4 minutes each side until golden and cooked through.",
         "Spread the bread with tartare sauce.",
+        "Taste and adjust the seasoning.",
         "Build the sandwich with the fish fingers."
       ]
     },
@@ -2625,6 +2746,7 @@
         "Melt the butter in a saucepan and fry the leek over medium heat for 4 minutes until soft.",
         "Add the potato and stock, and simmer for 10 minutes until the potato is tender.",
         "Blitz or mash until smooth, then stir through the cream.",
+        "Taste and adjust the seasoning.",
         "Serve with the crusty bread."
       ]
     },
@@ -2640,6 +2762,7 @@
         "Cook the rice according to the packet instructions, steaming the pak choi over the top for the last 3 minutes.",
         "Fry the chicken in a splash of oil over medium-high heat for 6–7 minutes until browned and cooked through.",
         "Stir in the soy sauce and honey, and cook for 2 minutes until glazed.",
+        "Taste and adjust the seasoning.",
         "Serve over the rice with the pak choi."
       ]
     },
@@ -2655,6 +2778,7 @@
         "Cook the rice according to the packet instructions.",
         "Mix the soy sauce, ginger and honey together.",
         "Fry the pork over medium-high heat for 2–3 minutes each side, then pour in the sauce and cook for 1 minute until glazed.",
+        "Taste and adjust the seasoning.",
         "Serve over the rice with the shredded cabbage."
       ]
     },
@@ -2670,6 +2794,7 @@
         "Cook the pasta according to the packet instructions.",
         "Fry the chicken and onion in a splash of oil over medium-high heat for 5 minutes.",
         "Add the mushrooms and cook for 3 minutes, then stir in the tomatoes and oregano.",
+        "Taste and adjust the seasoning.",
         "Simmer for 8 minutes until the chicken is cooked through, then serve over the pasta."
       ]
     },
@@ -2685,6 +2810,7 @@
         "Toss the potatoes and cherry tomatoes with a splash of oil on a baking tray, and roast at 200°C (fan 180°C) for 10 minutes.",
         "Add the chicken to the tray and roast for a further 15–18 minutes until cooked through.",
         "Top the chicken with the mozzarella for the final 3 minutes to melt.",
+        "Taste and adjust the seasoning.",
         "Scatter with basil and drizzle with balsamic vinegar to serve."
       ]
     },
@@ -2714,6 +2840,7 @@
         "Cook the rice according to the packet instructions.",
         "Simmer the pepper, tomatoes, garlic and paprika for 8 minutes until thickened.",
         "Nestle in the fish, cover and simmer for 6 minutes until just cooked through.",
+        "Taste and adjust the seasoning.",
         "Serve over the rice."
       ]
     },
@@ -2744,6 +2871,7 @@
         "Melt the butter in a saucepan and fry the onions over medium heat for 12 minutes, stirring often, until deep golden.",
         "Pour in the stock and simmer for 5 minutes.",
         "Toast the bread and top with the cheese, then grill for 2 minutes until melted and bubbling.",
+        "Taste and adjust the seasoning.",
         "Ladle the soup into a bowl and float the cheese toast on top."
       ]
     },
@@ -2759,6 +2887,7 @@
         "Cook the rice according to the packet instructions.",
         "Toss the chicken with the oregano, a squeeze of lemon and a splash of oil.",
         "Fry over medium-high heat for 7–8 minutes until browned and cooked through.",
+        "Taste and adjust the seasoning.",
         "Serve over the rice with the cucumber and a dollop of tzatziki."
       ]
     },
@@ -2774,6 +2903,7 @@
         "Wilt the spinach in a dry pan for 2 minutes, then squeeze out excess water and chop.",
         "Mix the spinach with the feta and egg.",
         "Layer the filo sheets, brushing with oil between each, spoon the filling in and fold into a parcel.",
+        "Taste and adjust the seasoning.",
         "Bake at 200°C (fan 180°C) for 12–14 minutes until golden and crisp."
       ]
     },
@@ -2789,6 +2919,7 @@
         "Poach or fry the chicken until cooked through, about 8 minutes, then shred with two forks.",
         "Fry the onion in a splash of oil over medium heat for 4 minutes.",
         "Stir in the chipotle paste and chopped tomatoes, add the shredded chicken and simmer for 5 minutes.",
+        "Taste and adjust the seasoning.",
         "Serve in the tortillas, scattered with coriander."
       ]
     },
@@ -2804,6 +2935,7 @@
         "Cook the rice according to the packet instructions.",
         "Fry the turkey mince in a splash of oil over medium-high heat for 5 minutes, breaking it up, until browned.",
         "Stir in the paprika and chilli flakes, then add the black beans and chopped tomatoes.",
+        "Taste and adjust the seasoning.",
         "Simmer for 8 minutes and serve over the rice."
       ]
     },
@@ -2819,6 +2951,7 @@
         "Toss the pork with the oregano, a squeeze of lemon and a splash of oil.",
         "Fry or griddle over medium-high heat for 8–9 minutes, turning, until cooked through.",
         "Warm the pitta.",
+        "Taste and adjust the seasoning.",
         "Serve the pork in the pitta with the tzatziki."
       ]
     },
@@ -2834,6 +2967,7 @@
         "Cook the bulgur wheat according to the packet instructions.",
         "Fry the chicken and garlic in a splash of oil over medium-high heat for 8 minutes until browned and cooked through.",
         "Stir in the oregano and a squeeze of lemon.",
+        "Taste and adjust the seasoning.",
         "Serve the chicken over the bulgur."
       ]
     },
@@ -2849,6 +2983,7 @@
         "Cook the bulgur wheat according to the packet instructions.",
         "Mix the mince with the cumin and cinnamon, and shape into small koftas.",
         "Fry over medium-high heat for 7–8 minutes, turning, until browned and cooked through.",
+        "Taste and adjust the seasoning.",
         "Serve over the bulgur, scattered with parsley."
       ]
     },
@@ -2864,6 +2999,7 @@
         "Simmer the lentils in plenty of water for 10 minutes, then add the rice and cook for a further 12 minutes until both are tender. Drain.",
         "Meanwhile, fry the onion in a splash of oil over medium heat for 10 minutes until deep golden and crisp.",
         "Stir the cumin through the lentils and rice.",
+        "Taste and adjust the seasoning.",
         "Serve topped with the crispy onions and salad leaves."
       ]
     },
@@ -2879,6 +3015,7 @@
         "Cook the rice according to the packet instructions.",
         "Mix the gochujang, soy sauce and honey together.",
         "Fry the pork over high heat for 4–5 minutes, then stir in the sauce and cook for 1 minute until glazed.",
+        "Taste and adjust the seasoning.",
         "Serve over the rice with the beansprouts."
       ]
     },
@@ -2894,6 +3031,7 @@
         "Cook the rice according to the packet instructions.",
         "Simmer the kimchi and gochujang paste with the stock for 5 minutes.",
         "Add the tofu and simmer for 5 minutes more until hot through.",
+        "Taste and adjust the seasoning.",
         "Serve over the rice."
       ]
     },
@@ -2909,6 +3047,7 @@
         "Cook the rice with the turmeric according to the packet instructions.",
         "Warm the beans in a splash of oil for 3–4 minutes.",
         "Stir the herbs through the rice.",
+        "Taste and adjust the seasoning.",
         "Serve the herbed rice topped with the warmed beans."
       ]
     },
@@ -2924,6 +3063,7 @@
         "Cook the rice according to the packet instructions.",
         "Fry the lamb mince in a splash of oil over medium-high heat for 5 minutes, breaking it up.",
         "Stir in the turmeric, cinnamon, rinsed lentils and chopped tomatoes, plus 200ml water.",
+        "Taste and adjust the seasoning.",
         "Simmer for 15 minutes, stirring often, until the lentils are soft, then serve over the rice. (Red lentils stand in for yellow split peas, which need about an hour.)"
       ]
     },
@@ -2954,6 +3094,7 @@
         "Cook the rice according to the packet instructions.",
         "Fry the onion and red pepper in a splash of oil over medium heat for 5 minutes.",
         "Add the greens and chilli flakes, and cook for 4–5 minutes until wilted.",
+        "Taste and adjust the seasoning.",
         "Serve over the rice."
       ]
     },
@@ -2969,6 +3110,7 @@
         "Cook the rice according to the packet instructions.",
         "Combine the chicken, soy sauce, vinegar, garlic and bay leaf in a pan with 100ml water.",
         "Simmer for 15 minutes until the chicken is cooked through and the sauce has reduced.",
+        "Taste and adjust the seasoning.",
         "Serve over the rice."
       ]
     },
@@ -2984,6 +3126,7 @@
         "Fry the sausage slices in a splash of oil over medium-high heat for 5–6 minutes until browned.",
         "Add the garlic and fry for 1 minute, then add the cold rice and soy sauce, stir-frying for 3–4 minutes.",
         "Push to one side, crack in the egg and scramble until just set, then mix through.",
+        "Taste and adjust the seasoning.",
         "Serve hot."
       ]
     },
@@ -2999,6 +3142,7 @@
         "Soak the rice noodles in boiling water for 5 minutes, then drain.",
         "Simmer the stock with the star anise for 5 minutes, then remove the star anise.",
         "Add the beef slices to the hot stock and poach for 1–2 minutes until just cooked.",
+        "Taste and adjust the seasoning.",
         "Serve the noodles in the broth with the beef, spring onion and coriander."
       ]
     },
@@ -3014,6 +3158,7 @@
         "Cook the rice according to the packet instructions.",
         "Toss the chicken with the ginger, soy sauce and honey.",
         "Fry over medium-high heat for 7–8 minutes until browned and cooked through.",
+        "Taste and adjust the seasoning.",
         "Serve over the rice with the cucumber."
       ]
     },
@@ -3029,6 +3174,7 @@
         "Fry the chicken in a splash of oil over medium-high heat for 7–8 minutes until browned and cooked through.",
         "Warm the chopped tomatoes in a separate small pan for 4 minutes.",
         "Tear the flatbread onto a plate, top with the chicken and tomato sauce.",
+        "Taste and adjust the seasoning.",
         "Melt the butter and drizzle over, with a dollop of yoghurt on the side."
       ]
     },
@@ -3044,6 +3190,7 @@
         "Fry the onion in a splash of oil over medium heat for 4 minutes until soft.",
         "Rinse the lentils, add to the pan with the cumin, paprika and 400ml water.",
         "Simmer for 12 minutes until the lentils are soft, then blitz or mash until smooth.",
+        "Taste and adjust the seasoning.",
         "Serve with a squeeze of lemon and the crusty bread."
       ]
     },
@@ -3059,6 +3206,7 @@
         "Cook the rice according to the packet instructions.",
         "Toss the chicken with the lime juice, orange juice, garlic and cumin.",
         "Fry over medium-high heat for 8–9 minutes until browned and cooked through.",
+        "Taste and adjust the seasoning.",
         "Serve over the rice."
       ]
     },
@@ -3074,6 +3222,7 @@
         "Cook the rice according to the packet instructions.",
         "Fry the onion and beef mince in a splash of oil over medium-high heat for 6–7 minutes, breaking up the mince.",
         "Stir in the cumin, raisins and chopped tomatoes, and simmer for 5 minutes.",
+        "Taste and adjust the seasoning.",
         "Serve over the rice."
       ]
     },
@@ -3089,6 +3238,7 @@
         "Fry the cabbage and apple in a splash of oil over medium heat for 10 minutes, stirring occasionally, until softened.",
         "Stir in the vinegar and cook for 2 minutes more.",
         "Meanwhile, fry or grill the sausages for 10–12 minutes, turning, until cooked through.",
+        "Taste and adjust the seasoning.",
         "Serve the sausages with the braised cabbage and mustard."
       ]
     },
@@ -3104,6 +3254,7 @@
         "Boil the potatoes for 12 minutes until tender, then drain and slice while warm.",
         "Coat the pork in flour, then egg, then breadcrumbs.",
         "Fry in a generous splash of oil over medium heat for 3–4 minutes each side until golden and cooked through.",
+        "Taste and adjust the seasoning.",
         "Toss the warm potatoes with the mustard and a splash of oil, and serve alongside."
       ]
     },
@@ -3150,6 +3301,7 @@
         "Fry the onion in a splash of oil over medium heat for 5 minutes until soft.",
         "Add the chicken and cook for 5 minutes until browned.",
         "Stir in the paprika, ginger and chilli flakes, then add the chopped tomatoes.",
+        "Taste and adjust the seasoning.",
         "Simmer for 8 minutes until the chicken is cooked through, and serve."
       ]
     },
@@ -3165,6 +3317,7 @@
         "Cook the rice according to the packet instructions.",
         "Fry the onion, carrot and garlic in a splash of oil over medium heat for 6 minutes.",
         "Add the greens and ginger, and cook for 5–6 minutes until wilted and tender.",
+        "Taste and adjust the seasoning.",
         "Serve over the rice."
       ]
     },
@@ -3181,6 +3334,7 @@
         "Sear the beef in a splash of oil over high heat for 1–2 minutes until browned. Tip onto a plate.",
         "Lower the heat, stir in the curry powder, ginger and chilli flakes for 30 seconds, then pour in the coconut milk.",
         "Simmer uncovered for 8–10 minutes, stirring often, until thick and clinging to the spoon.",
+        "Taste and adjust the seasoning.",
         "Return the beef and its juices, toss for 1 minute, then serve over the rice."
       ]
     },
@@ -3196,6 +3350,7 @@
         "Fry the chicken in a splash of oil over high heat for 5 minutes until cooked through, then push to one side.",
         "Add the cold rice, soy sauce, sweet soy sauce and chilli flakes, and stir-fry for 3–4 minutes.",
         "Push everything to one side, crack in the egg and scramble until just set, then mix through.",
+        "Taste and adjust the seasoning.",
         "Serve hot."
       ]
     },
@@ -3211,6 +3366,7 @@
         "Scatter the mozzarella and feta over the flatbread and fold the edges in slightly to make a boat shape.",
         "Bake at 200°C (fan 180°C) for 8 minutes until the cheese has melted.",
         "Crack the egg into the centre and dot with butter, then bake for 3–4 minutes more until the white is just set.",
+        "Taste and adjust the seasoning.",
         "Serve straight away, stirring the yolk through the melted cheese."
       ]
     },
@@ -3226,6 +3382,7 @@
         "Cook the rice according to the packet instructions.",
         "Fry the chicken and garlic in a splash of oil over medium-high heat for 6 minutes until browned.",
         "Stir in the coriander, walnuts and stock, and simmer for 6–7 minutes until the chicken is cooked through and the sauce has thickened.",
+        "Taste and adjust the seasoning.",
         "Serve over the rice."
       ]
     },
@@ -3256,6 +3413,7 @@
         "Part-cook the rice for 8 minutes, then drain.",
         "Meanwhile, fry the beef mince with the cinnamon in a splash of oil for 5 minutes until browned, then mix with the rice and pile into the pepper halves.",
         "Place in a small ovenproof dish, spoon over the chopped tomatoes, cover with foil.",
+        "Taste and adjust the seasoning.",
         "Bake at 190°C (fan 170°C) for 25 minutes until the pepper is tender."
       ]
     },
@@ -3271,6 +3429,7 @@
         "Sear the beef in a splash of oil over high heat for 1–2 minutes until browned but still pink inside. Tip onto a plate.",
         "Add the onion and cook over a medium heat for 4–5 minutes, then pour in the stock and simmer for 5 minutes to reduce a little.",
         "Stir in the beetroot and warm through for 2 minutes, then return the beef for 1 minute.",
+        "Taste and adjust the seasoning.",
         "Serve with a dollop of soured cream."
       ]
     },
@@ -3286,6 +3445,7 @@
         "Part-cook the rice for 8 minutes, then drain.",
         "Fry the onion and pork mince in a splash of oil over medium-high heat for 5 minutes.",
         "Add the cabbage and rice, and cook for 4 minutes until the cabbage softens.",
+        "Taste and adjust the seasoning.",
         "Stir in the chopped tomatoes and simmer for 5 minutes before serving."
       ]
     },
@@ -3316,6 +3476,7 @@
         "Fry the chicken with the cumin in a splash of oil over medium-high heat for 5 minutes.",
         "Add the carrot and chickpeas, and cook for 2 minutes.",
         "Stir in the rice and 150ml water, cover and simmer for 14 minutes until tender.",
+        "Taste and adjust the seasoning.",
         "Serve hot."
       ]
     },
@@ -3358,9 +3519,10 @@
         ing(1, "", "egg", "dairy")
       ],
       steps: [
-        "Fry the onion and beef mince with the paprika in a splash of oil over medium-high heat for 7 minutes.",
+        "Fry the onion and beef mince in a splash of oil over medium-high heat for 7 minutes, stirring in the paprika for the last minute (it burns if fried longer).",
         "Meanwhile, boil the egg for 8 minutes, then cool, peel and quarter.",
         "Warm the sweetcorn through in the pan with the beef for 2 minutes.",
+        "Taste and adjust the seasoning.",
         "Serve the beef and corn topped with the boiled egg."
       ]
     },
@@ -3376,6 +3538,7 @@
         "Cook the rice according to the packet instructions.",
         "Mix the tomato, onion and lime juice into a fresh salsa.",
         "Fry the fish in a splash of oil over medium-high heat for 3–4 minutes each side until just cooked through.",
+        "Taste and adjust the seasoning.",
         "Serve the fish over the rice, topped with the salsa."
       ]
     },
@@ -3391,6 +3554,7 @@
         "Cook the rice according to the packet instructions.",
         "Fry the onion and chicken with the curry powder in a splash of oil over medium heat for 5 minutes.",
         "Add the potato and 150ml water, cover and simmer for 10 minutes until the chicken and potato are tender.",
+        "Taste and adjust the seasoning.",
         "Serve over the rice."
       ]
     },
@@ -3406,6 +3570,7 @@
         "Warm the chickpeas with the curry powder and chilli flakes in a splash of oil for 8 minutes, mashing some as you go.",
         "Warm the flatbread.",
         "Pile the spiced chickpeas onto the flatbread.",
+        "Taste and adjust the seasoning.",
         "Top with the diced cucumber to serve."
       ]
     },
@@ -3421,6 +3586,7 @@
         "Cook the rice according to the packet instructions.",
         "Fry the chicken in a splash of oil over medium-high heat for 5 minutes until browned.",
         "Stir in the chopped tomatoes and chilli flakes, and simmer for 5 minutes.",
+        "Taste and adjust the seasoning.",
         "Stir in the peanut butter until smooth, simmer for 3 minutes, and serve over the rice."
       ]
     },
@@ -3436,6 +3602,7 @@
         "Cook the rice according to the packet instructions.",
         "Warm the black-eyed beans with the paprika and chilli flakes in a splash of oil for 5 minutes.",
         "Stir the beans through the rice.",
+        "Taste and adjust the seasoning.",
         "Serve with the shredded cabbage."
       ]
     },
@@ -3451,6 +3618,7 @@
         "Cook the rice according to the packet instructions.",
         "Fry the chicken with the curry powder in a splash of oil over medium-high heat for 5 minutes.",
         "Add the chopped tomatoes and coconut milk, and simmer for 8–9 minutes until the chicken is cooked through.",
+        "Taste and adjust the seasoning.",
         "Serve over the rice."
       ]
     },
@@ -3464,8 +3632,9 @@
       ],
       steps: [
         "Cook the rice according to the packet instructions.",
-        "Fry the onion and beef mince with the paprika in a splash of oil over medium-high heat for 6 minutes.",
+        "Fry the onion and beef mince in a splash of oil over medium-high heat for 6 minutes, stirring in the paprika for the last minute.",
         "Add the kale and a splash of water, and cook for 5–6 minutes until wilted and tender.",
+        "Taste and adjust the seasoning.",
         "Serve over the rice."
       ]
     },
@@ -3481,6 +3650,7 @@
         "Cook the rice according to the packet instructions.",
         "Simmer the red pepper, chopped tomatoes and chilli flakes for 6 minutes.",
         "Nestle in the fish, cover and simmer for 6–7 minutes until just cooked through.",
+        "Taste and adjust the seasoning.",
         "Serve over the rice."
       ]
     },
@@ -3496,6 +3666,7 @@
         "Cook the rice according to the packet instructions.",
         "Simmer the sweet potato and carrot in 150ml water for 8 minutes until nearly tender, then add the chopped tomatoes and simmer for 2 minutes.",
         "Stir in the peanut butter until smooth, and simmer for 4 minutes.",
+        "Taste and adjust the seasoning.",
         "Serve over the rice."
       ]
     },
@@ -3542,6 +3713,7 @@
         "Squeeze excess moisture from the grated potato.",
         "Melt the butter in a frying pan and press in the potato, cooking over medium heat for 6–7 minutes until golden underneath.",
         "Scatter over the cheese, flip carefully, and cook for 5–6 minutes more until golden and the cheese has melted.",
+        "Taste and adjust the seasoning.",
         "Serve with the salad leaves."
       ]
     },
@@ -3557,6 +3729,7 @@
         "Cook the pasta according to the packet instructions.",
         "Fry the chicken and mushrooms in a splash of oil over medium-high heat for 8 minutes until the chicken is cooked through.",
         "Stir in the cream and mustard, and simmer for 2 minutes until thickened.",
+        "Taste and adjust the seasoning.",
         "Serve over the pasta."
       ]
     },
@@ -3587,6 +3760,7 @@
         "Boil the new potatoes for 12 minutes until tender, then drain.",
         "Mix the pork mince with the breadcrumbs and egg yolk, and shape into small meatballs.",
         "Fry over medium heat for 8–9 minutes, turning, until browned and cooked through.",
+        "Taste and adjust the seasoning.",
         "Serve with the potatoes and cranberry sauce."
       ]
     },
@@ -3594,7 +3768,7 @@
       id: "d229", title: "Danish-Style Open Rye Sandwich (Smørrebrød-Inspired)", tags: ["fish", "quick"], cuisine: "Denmark", protein: "fish",
       prep: 8, cook: 0,
       ingredients: [
-        ing(2, "slice", "rye bread", "bakery"), ing(80, "g", "smoked mackerel, flaked", "meat"),
+        ing(2, "slices", "rye bread", "bakery"), ing(80, "g", "smoked mackerel, flaked", "meat"),
         ing(1, "tbsp", "soured cream", "dairy"), ing(null, "small handful", "fresh dill, chopped", "produce"),
         ing(60, "g", "cucumber, sliced", "produce")
       ],
@@ -3617,6 +3791,7 @@
         "Boil the potato for 12 minutes until tender, then drain and mash with the butter.",
         "Mix the pork mince with the flour and egg, and shape into oval patties.",
         "Fry over medium heat for 4–5 minutes each side until browned and cooked through.",
+        "Taste and adjust the seasoning.",
         "Serve with the mash."
       ]
     },
@@ -3632,6 +3807,7 @@
         "Boil the potatoes and green beans together for 12 minutes until tender, then drain.",
         "Bake the salmon at 200°C (fan 180°C) for 12–14 minutes until just cooked through.",
         "Stir the dill through the soured cream.",
+        "Taste and adjust the seasoning.",
         "Serve the salmon with the potatoes, beans and dill sauce."
       ]
     },
@@ -3647,6 +3823,7 @@
         "Boil the new potatoes for 12 minutes until tender, then drain.",
         "Mix the mint, vinegar and honey into a sauce.",
         "Fry the lamb over medium-high heat for 3–4 minutes each side, then rest for 2 minutes and slice.",
+        "Taste and adjust the seasoning.",
         "Serve the lamb with the potatoes and mint sauce."
       ]
     },
@@ -3662,6 +3839,7 @@
         "Boil the potatoes and green beans together for 12 minutes until tender, then drain.",
         "Fry the pork chops over medium-high heat for 3–4 minutes each side until nearly cooked through.",
         "Stir the maple syrup and mustard together, pour over the chops and cook for 1–2 minutes until glazed.",
+        "Taste and adjust the seasoning.",
         "Serve with the potatoes and beans."
       ]
     },
@@ -3692,6 +3870,7 @@
         "Cook the rice according to the packet instructions.",
         "Toss the pork with the lime juice, garlic and oregano.",
         "Fry over medium-high heat for 7–8 minutes until browned and cooked through.",
+        "Taste and adjust the seasoning.",
         "Serve over the rice."
       ]
     },
@@ -3728,6 +3907,7 @@
         "Add a touch more oil to the wok, add the pork mince and stir-fry for 3–4 minutes, breaking it up, until browned and starting to crisp.",
         "Add the garlic, ginger and crushed Sichuan peppercorns, and stir-fry for 30 seconds until fragrant.",
         "Stir in the chilli bean paste, soy sauce and sugar, and cook for 1 minute.",
+        "Taste and adjust the seasoning.",
         "Return the beans to the wok, toss to coat and cook for a further 1–2 minutes. Serve with the rice."
       ]
     },
@@ -3748,6 +3928,7 @@
         "Add the garlic, ginger and half the spring onion to the pan and stir-fry for 30 seconds.",
         "Add the soy sauces, vinegar, sugar and stock, bring to a simmer and cook for 2 minutes until slightly thickened.",
         "Return the fish to the pan, spoon the sauce over and simmer for 1–2 minutes to heat through.",
+        "Taste and adjust the seasoning.",
         "Scatter with the remaining spring onion and serve with rice."
       ]
     },
@@ -3768,6 +3949,7 @@
         "Add the onion and pepper to the wok and stir-fry for 2–3 minutes until starting to soften.",
         "Add the garlic, cumin seeds and chilli flakes and stir-fry for 30 seconds until fragrant.",
         "Return the lamb to the wok and toss everything together for 1–2 minutes until piping hot.",
+        "Taste and adjust the seasoning.",
         "Scatter with coriander and serve with rice."
       ]
     },
@@ -3805,6 +3987,7 @@
         "Stir in the chopped tomatoes, oregano and olives and simmer for 5 minutes.",
         "Nestle the cod fillet into the sauce and spoon a little sauce over the top.",
         "Transfer to the oven and bake for 12–15 minutes until the fish flakes easily.",
+        "Taste and adjust the seasoning.",
         "Squeeze over the lemon juice and scatter with parsley to serve."
       ]
     },
@@ -3823,6 +4006,7 @@
         "Lower the heat, add the onion and garlic and cook for 3 minutes until softened.",
         "Stir in the chopped tomatoes, cinnamon and stock and bring to a simmer.",
         "Add the orzo and cook for 8–10 minutes, stirring often, until tender and the sauce has thickened. Add a splash of water if it dries out.",
+        "Taste and adjust the seasoning.",
         "Return the beef and its juices for 1–2 minutes, then spoon into a bowl and scatter with the cheese and parsley."
       ]
     },
@@ -3877,6 +4061,7 @@
         "Heat half the oil in a frying pan over high heat and cook the fish for 2–3 minutes per side until blackened and cooked through. Set aside.",
         "Add the remaining oil to the pan and fry the chorizo, onion, pepper and celery for 4–5 minutes until softened.",
         "Stir in the cooked rice and toss well for 2–3 minutes to heat through and pick up the spiced oil.",
+        "Taste and adjust the seasoning.",
         "Serve the dirty rice topped with the blackened fish."
       ]
     },
@@ -3896,6 +4081,7 @@
         "Heat a splash of oil in a frying pan over medium heat and cook the pork for 4–5 minutes per side until deeply browned and cooked through.",
         "Add 1 tbsp of the cider vinegar with the ketchup and hot sauce to the pan, toss to coat, then shred the pork with two forks in the sauce and simmer for 2–3 minutes until sticky.",
         "Meanwhile, toss the shredded cabbage with the mayonnaise, mustard and remaining vinegar to make a quick slaw.",
+        "Taste and adjust the seasoning.",
         "Pile the pulled pork into the bun and top with the vinegar slaw."
       ]
     },
@@ -3915,6 +4101,7 @@
         "Heat the oil in a frying pan or wok over medium-high heat, add the chicken and stir-fry for 5–6 minutes until browned and nearly cooked through.",
         "Add the cabbage and carrot and stir-fry for 2–3 minutes until starting to soften.",
         "Add the rice cakes, remaining sauce and a splash of water, and cook for 4–5 minutes, stirring, until the rice cakes are soft and the chicken is cooked through.",
+        "Taste and adjust the seasoning.",
         "Scatter with spring onion to serve."
       ]
     },
@@ -3934,6 +4121,7 @@
         "Mix the soy sauce, gochugaru, gochujang, garlic, ginger, sugar and water together and pour half over the vegetables.",
         "Lay the mackerel fillet on top, skin-side up, and pour over the remaining sauce.",
         "Bring to a simmer, cover and cook for 10–12 minutes until the vegetables are tender and the fish is cooked through, spooning sauce over occasionally.",
+        "Taste and adjust the seasoning.",
         "Scatter with spring onion and serve with rice."
       ]
     },
@@ -3953,6 +4141,7 @@
         "Heat the vegetable oil in a wok over high heat and stir-fry the pork for 3–4 minutes until browned. Remove and set aside.",
         "Add the carrot and onion to the wok and stir-fry for 2–3 minutes, then add the spinach and wilt for 1 minute. Remove and set aside with the pork.",
         "Toss the drained noodles in the wok with the soy sauce, sesame oil, sugar and garlic for 1–2 minutes until glossy.",
+        "Taste and adjust the seasoning.",
         "Return the pork and vegetables to the wok, toss everything together, and scatter with spring onion and sesame seeds."
       ]
     },
@@ -3972,6 +4161,7 @@
         "Cook the rice noodles according to the packet instructions, then drain and set aside.",
         "Heat the oil in a frying pan over medium-high heat and fry the fish for 4–5 minutes, turning gently, until golden and cooked through.",
         "Add the spring onions and dill to the pan and toss for 1 minute until wilted.",
+        "Taste and adjust the seasoning.",
         "Serve the fish and dill over the rice noodles, scattered with chopped peanuts and coriander, with a squeeze of lime."
       ]
     },
@@ -3992,6 +4182,7 @@
         "Pan-fry the tofu cubes in a little oil for 4–5 minutes until golden on the outside.",
         "Strain the spices out of the stock (or leave them in for extra flavour) and bring it back to a simmer.",
         "Divide the noodles and beansprouts into a bowl, pour over the hot broth, and top with the tofu, sliced chilli and herbs.",
+        "Taste and adjust the seasoning.",
         "Serve with a lime wedge."
       ]
     },
@@ -4084,6 +4275,7 @@
         "Toss the chicken strips in the vegetable oil, then coat thoroughly in the spice mix.",
         "Thread the chicken onto the skewers.",
         "Grill or griddle the skewers over high heat for 4–5 minutes per side until charred and cooked through.",
+        "Taste and adjust the seasoning.",
         "Serve with the raw onion wedges and sliced tomato."
       ]
     },
@@ -4121,6 +4313,7 @@
         "Mix the gram flour, cumin, chilli powder, turmeric, garlic, ginger and lemon juice into a thick paste and coat the fish fillet all over.",
         "Heat the oil in a frying pan over medium-high heat and fry the fish for 3–4 minutes per side until crisp and cooked through.",
         "Sprinkle with the chaat masala as soon as it comes out of the pan.",
+        "Taste and adjust the seasoning.",
         "Serve with the sliced red onion and a scatter of fresh coriander."
       ]
     },
@@ -4140,6 +4333,7 @@
         "Shape into 2 flat, wide patties.",
         "Heat the oil in a frying pan over medium heat and fry the patties for 4–5 minutes per side until well browned and cooked through.",
         "Mix the yoghurt with the mint to make a quick chutney.",
+        "Taste and adjust the seasoning.",
         "Serve the chapli kebabs with the minted yoghurt chutney."
       ]
     },
@@ -4193,6 +4387,7 @@
         "Slice the herring fillets into bite-sized pieces.",
         "Mix the soured cream with the Dijon mustard and chives to make a light dressing.",
         "Toss the herring, potato, apple and red onion with the dressing.",
+        "Taste and adjust the seasoning.",
         "Serve piled onto the rye bread."
       ]
     },
@@ -4228,6 +4423,7 @@
         "Mix the olive oil, garlic, thyme, paprika and lemon juice together and toss with the chicken. Marinate briefly if time allows.",
         "Thread the chicken, onion and pepper alternately onto the skewers.",
         "Grill or griddle over high heat for 5–6 minutes per side until charred and cooked through.",
+        "Taste and adjust the seasoning.",
         "Scatter with chopped parsley before serving."
       ]
     },
@@ -4241,7 +4437,7 @@
         ing(1, "pinch", "chilli flakes", "spice"), ing(1, "tbsp", "plain flour", "store")
       ],
       steps: [
-        "Blitz or finely chop the walnuts, garlic and herbs together with the vinegar and 1 tbsp of the olive oil to make a chunky walnut sauce. Season to taste.",
+        "Blitz or finely chop the walnuts, garlic and herbs together with the vinegar, chilli flakes and 1 tbsp of the olive oil to make a chunky walnut sauce. Season to taste.",
         "Dust the trout fillet lightly in flour.",
         "Heat the remaining oil in a frying pan over medium-high heat and fry the trout, skin-side down, for 3–4 minutes, then flip and cook for 2 minutes more until just cooked through.",
         "Spoon the walnut herb sauce over the trout to serve."
@@ -4283,7 +4479,7 @@
     },
     {
       id: "d268", title: "Senegalese-Style Chicken Yassa with Onions and Lemon", tags: ["quick"], cuisine: "Senegal", protein: "chicken",
-      prep: 9, cook: 20,
+      prep: 9, cook: 28,
       ingredients: [
         ing(180, "g", "chicken thigh", "meat"), ing(1, "", "onion, thinly sliced", "produce"),
         ing(1, "", "lemon, juiced", "produce"), ing(1, "tbsp", "Dijon mustard", "store"),
@@ -4296,6 +4492,7 @@
         "Heat the oil in a frying pan over medium-high heat and brown the chicken, 3–4 minutes per side, then remove and set aside.",
         "Add the remaining onion to the pan and cook over medium heat for 8–10 minutes, stirring often, until soft and golden.",
         "Return the chicken and marinade to the pan, cover and simmer for 8–10 minutes until the chicken is cooked through.",
+        "Taste and adjust the seasoning.",
         "Serve over rice, scattered with parsley."
       ]
     },
@@ -4314,6 +4511,7 @@
         "Lower the heat, add the onion, garlic and ginger and cook for 3–4 minutes until softened.",
         "Stir in the chopped tomatoes, chilli powder and stock and simmer for 8 minutes.",
         "Stir in the peanut butter until dissolved and simmer for 3 minutes until thickened.",
+        "Taste and adjust the seasoning.",
         "Return the beef and its juices for 1–2 minutes, then serve over rice scattered with coriander."
       ]
     },
@@ -4405,6 +4603,7 @@
         "Stir in the tomato, cumin and 100ml water and simmer for 6–8 minutes until thick.",
         "Add the pork with its marinade and simmer for 5–6 minutes, stirring, until cooked through. Add a splash of water if it looks dry.",
         "Meanwhile, cook the rice according to the packet instructions.",
+        "Taste and adjust the seasoning.",
         "Serve the vindaloo over the rice, scattered with coriander."
       ]
     },
@@ -4444,6 +4643,7 @@
         "Stir in the coriander, fennel, pepper and chicken, and cook for 4–5 minutes until browned.",
         "Add the chopped tomato and 100ml water, cover and simmer for 10–12 minutes until the chicken is cooked through and the sauce has thickened.",
         "Meanwhile cook the rice according to the packet instructions.",
+        "Taste and adjust the seasoning.",
         "Serve the chicken over the rice."
       ]
     },
@@ -4465,6 +4665,7 @@
         "Pour in the yoghurt mixture and bring to a gentle simmer, stirring constantly so it doesn't split. Stir in the sugar.",
         "Simmer for 8–10 minutes, stirring often, until slightly thickened.",
         "Meanwhile cook the rice according to the packet instructions.",
+        "Taste and adjust the seasoning.",
         "Serve the kadhi over the rice, scattered with coriander."
       ]
     },
@@ -4484,6 +4685,7 @@
         "Heat the oil in a pan and fry the pork over high heat for 6–8 minutes, turning occasionally, until crisp at the edges and cooked through. Roughly chop.",
         "Meanwhile mix the pineapple, red onion, coriander, a squeeze of lime juice and chilli flakes for the salsa.",
         "Warm the rice.",
+        "Taste and adjust the seasoning.",
         "Serve the shredded pork over the rice, topped with the pineapple salsa and remaining lime wedges."
       ]
     },
@@ -4523,6 +4725,7 @@
         "Meanwhile warm the refried beans in a small pan with a splash of water.",
         "Warm the tortillas in a dry pan.",
         "Fry the eggs in the remaining oil to your liking.",
+        "Taste and adjust the seasoning.",
         "Spread the beans over the tortillas, top with the tomato sauce, fried eggs, cheese and coriander."
       ]
     },
@@ -4541,6 +4744,7 @@
         "Put the chipotle paste, cumin, oregano, garlic, onion, tomato and stock in a pan and simmer for 12–15 minutes until the onion is soft. Mash well or blend for a smoother consommé.",
         "Meanwhile, sear the beef in a hot pan with a splash of oil for 1–2 minutes until browned. Stir it into the consommé for 1 minute, then lift it out and chop roughly.",
         "Dip the tortillas in the fat from the top of the consommé, fill with beef and cheese, fold and fry in a dry pan for 1–2 minutes each side until crisp.",
+        "Taste and adjust the seasoning.",
         "Serve the tacos with the consommé for dipping, lime wedges and coriander."
       ]
     },
@@ -4560,6 +4764,7 @@
         "Heat half the oil and brown the meatballs all over, 4–5 minutes. Remove and set aside.",
         "Add the remaining oil and soften the onion and remaining garlic for 4 minutes, then stir in the paprika, tomatoes and almonds. Simmer for 5 minutes.",
         "Return the meatballs to the sauce, cover and simmer for 8–10 minutes until cooked through.",
+        "Taste and adjust the seasoning.",
         "Serve with the crusty bread."
       ]
     },
@@ -4578,6 +4783,7 @@
         "Soften the onion and garlic in the same pan for 4 minutes.",
         "Add the almonds and torn bread and toast for 1–2 minutes, then pour in the sherry and let it bubble for 1 minute.",
         "Add the stock and bay leaf, return the chicken to the pan, cover and simmer for 15–18 minutes until the chicken is cooked through.",
+        "Taste and adjust the seasoning.",
         "Mash some of the almonds and bread into the sauce with a fork to thicken slightly, stir through the parsley and serve."
       ]
     },
@@ -4597,6 +4803,7 @@
         "Stir in the paprika and cumin and cook for 30 seconds.",
         "Add the tomatoes, butter beans and stock, and simmer for 10 minutes.",
         "Stir in the spinach and cook for 2–3 minutes until wilted.",
+        "Taste and adjust the seasoning.",
         "Serve with the crusty bread."
       ]
     },
@@ -4631,6 +4838,7 @@
         "Mash the potato in the pan to thicken the soup, or blitz briefly with a stick blender.",
         "Meanwhile fry the chorizo slices in a dry pan for 2–3 minutes until crisp. Set half aside for topping.",
         "Add the remaining chorizo and its oil to the soup, then stir in the shredded kale and simmer for 3–4 minutes until tender.",
+        "Taste and adjust the seasoning.",
         "Ladle into a bowl, top with the reserved crispy chorizo and a drizzle of olive oil."
       ]
     },
@@ -4645,7 +4853,7 @@
         ing(1, "tbsp", "vegetable oil", "store"), ing(null, "pinch", "salt", "spice")
       ],
       steps: [
-        "Whisk the eggs with the turmeric and flour until smooth.",
+        "Whisk the eggs with the turmeric, flour and a pinch of salt until smooth.",
         "Stir in all the chopped herbs, spring onions and walnuts.",
         "Heat the oil in a small non-stick pan over medium heat and pour in the mixture.",
         "Cook for 4–5 minutes until the base is set and golden, then flip using a plate, or finish under the grill for 3–4 minutes until fully set.",
@@ -4668,6 +4876,7 @@
         "Add the ground walnuts and toast for 1–2 minutes, then stir in the stock, pomegranate molasses and cinnamon.",
         "Return the chicken to the pan, cover and simmer for 15 minutes until cooked through and the sauce is thick and glossy, adding a pinch of sugar to balance if needed.",
         "Cook the rice according to the packet instructions.",
+        "Taste and adjust the seasoning.",
         "Serve the chicken and sauce over the rice, scattered with pomegranate seeds."
       ]
     },
@@ -4686,6 +4895,7 @@
         "Add the tomato and chilli flakes, and cook for 4–5 minutes until softened and saucy.",
         "Beat the eggs lightly and pour into the pan, stirring gently until just set but still soft, about 2–3 minutes.",
         "Scatter with feta and parsley.",
+        "Taste and adjust the seasoning.",
         "Serve with the crusty bread."
       ]
     },
@@ -4724,6 +4934,7 @@
         "Add the onion and peppers to the pan and cook for 4–5 minutes until softened and starting to char.",
         "Add the garlic, ginger, rosemary and berbere, and cook for 1 minute.",
         "Return the beef to the pan with the tomato, toss together and cook for 2–3 minutes until the beef is cooked through.",
+        "Taste and adjust the seasoning.",
         "Serve with warm flatbread."
       ]
     },
@@ -4743,6 +4954,7 @@
         "Stir in the chopped tomato and cook for 2 minutes.",
         "Whisk the gram flour with a splash of the stock to make a smooth paste, then stir into the pan with the remaining stock.",
         "Simmer for 6–8 minutes, stirring often, until thickened to a smooth, glossy stew.",
+        "Taste and adjust the seasoning.",
         "Serve with warm flatbread for scooping."
       ]
     },
@@ -4761,6 +4973,7 @@
         "Boil the egg for 8 minutes for a firm yolk, then cool, peel and slice.",
         "Warm the pitta and split it open.",
         "Spread hummus inside the pitta and fill with the fried potato, sliced egg and shredded cabbage.",
+        "Taste and adjust the seasoning.",
         "Drizzle with tahini and amba (or mango chutney with lemon) and scatter over the chopped pickled cucumber."
       ]
     },
@@ -4778,6 +4991,7 @@
         "Rub the salmon with the oil and za'atar and place on a tray with the cherry tomatoes.",
         "Bake for 12–14 minutes until the salmon flakes easily and the tomatoes have softened.",
         "Meanwhile mix the tahini with the garlic, a squeeze of lemon juice and enough water to loosen to a drizzling consistency.",
+        "Taste and adjust the seasoning.",
         "Cook the couscous according to the packet instructions and serve alongside the salmon and tomatoes, drizzled with the tahini sauce."
       ]
     },
@@ -4819,19 +5033,21 @@
         "Lower the heat and soften the onion, garlic, ginger and curry leaves for 5 minutes.",
         "Stir in the black pepper, coriander and turmeric and cook for 1 minute.",
         "Pour in the coconut milk and 50ml water and simmer uncovered for 6–8 minutes until thickened.",
+        "Taste and adjust the seasoning.",
         "Return the beef and its juices for 1–2 minutes, then serve with the rice."
       ]
     },
     {
       id: "d297", title: "Swedish Pytt i Panna with Fried Egg", tags: ["quick"], cuisine: "Sweden", protein: "pork",
-      prep: 9, cook: 15,
+      prep: 9, cook: 23,
       ingredients: [
-        ing(150, "g", "cooked potatoes, diced", "produce"), ing(100, "g", "cooked ham, diced", "meat"),
+        ing(150, "g", "potatoes, diced", "produce"), ing(100, "g", "cooked ham, diced", "meat"),
         ing(0.5, "", "onion, diced", "produce"), ing(1, "tbsp", "butter", "dairy"),
         ing(1, "", "egg", "dairy"), ing(2, "tbsp", "chopped pickled beetroot", "store"),
         ing(1, "tbsp", "fresh chives, chopped", "produce")
       ],
       steps: [
+        "Boil the diced potatoes in salted water for 8 minutes until just tender, then drain well and let them steam dry for a minute.",
         "Melt the butter in a frying pan and fry the diced potato for 6–8 minutes until golden and crisp, stirring occasionally.",
         "Add the onion and diced ham and cook for a further 5 minutes until the onion is soft and everything is heated through and lightly crisp.",
         "In a separate small pan, fry the egg to your liking.",
@@ -4874,6 +5090,7 @@
         "Heat the oil in an ovenproof pan and fry the chicken for 3 minutes each side until golden.",
         "Mix the passata with the oregano and spread over the chicken, then top with the mozzarella.",
         "Transfer to the oven and bake for 8–10 minutes until the chicken is cooked through and the cheese is melted and bubbling.",
+        "Taste and adjust the seasoning.",
         "Serve with a side salad."
       ]
     },
@@ -4911,6 +5128,7 @@
         "Meanwhile bring the water to the boil, whisk in the maize meal and cook for 5–6 minutes, stirring, until thick. Stir in the butter.",
         "For the chakalaka, heat the oil and soften the onion, pepper and carrot for 5–6 minutes.",
         "Stir in the curry powder and chilli flakes, cook for 1 minute, then add the tomatoes and simmer for 5 minutes.",
+        "Taste and adjust the seasoning.",
         "Serve the sausage with the pap and chakalaka spooned alongside."
       ]
     },
@@ -4930,6 +5148,7 @@
         "Stir in the ginger, curry powder and turmeric, and cook for 1 minute.",
         "Add the apricot jam, lemon juice, bay leaf and coconut milk, and simmer for 5 minutes.",
         "Add the fish chunks and simmer gently for 6–8 minutes until just cooked through.",
+        "Taste and adjust the seasoning.",
         "Cook the rice according to the packet instructions and serve alongside."
       ]
     },
@@ -4949,19 +5168,21 @@
         "Coat the chicken parcel in flour, then beaten egg, then breadcrumbs.",
         "Heat the oil in an ovenproof pan and brown the chicken on all sides, 3–4 minutes.",
         "Transfer to a 200C (fan 180C) oven for 10–12 minutes until cooked through.",
+        "Taste and adjust the seasoning.",
         "Rest for 2 minutes before cutting, and serve with a green salad."
       ]
     },
     {
       id: "d304", title: "Ukrainian-Style Varenyky (Potato and Cheese Dumplings)", tags: ["vegetarian", "quick"], cuisine: "Ukraine", protein: "plant-based",
-      prep: 10, cook: 12,
+      prep: 10, cook: 25,
       ingredients: [
-        ing(8, "", "ready-made dumpling or wonton wrappers", "bakery"), ing(100, "g", "mashed potato", "produce"),
+        ing(8, "", "ready-made dumpling or wonton wrappers", "bakery"), ing(120, "g", "floury potato, peeled and chopped", "produce"),
         ing(30, "g", "curd cheese", "dairy"), ing(0.5, "", "small onion, finely diced", "produce"),
         ing(1, "tbsp", "butter", "dairy"), ing(1, "tbsp", "soured cream", "dairy"),
         ing(1, "tbsp", "fresh chives, chopped", "produce")
       ],
       steps: [
+        "Boil the potato in salted water for 12–15 minutes until tender, then drain, mash and leave to cool slightly.",
         "Mix the mashed potato with the curd cheese and a little of the diced onion to make the filling.",
         "Place a spoonful of filling in the centre of each wrapper, dampen the edges with water and fold into a half-moon, pressing to seal.",
         "Bring a pan of water to a gentle boil and cook the dumplings for 3–4 minutes until they float and are cooked through.",
@@ -4985,6 +5206,7 @@
         "Add the beef immediately and stir to coat in the caramel for 1–2 minutes. Lift the beef onto a plate.",
         "Add the onion, garlic, thyme and chilli to the pot and cook for 3 minutes.",
         "Stir in the rice, peas and carrot, then pour in the coconut milk and 100ml water.",
+        "Taste and adjust the seasoning.",
         "Cover and simmer for 18–20 minutes until the rice is tender, stirring once halfway through. Stir the beef back in for the last 2 minutes."
       ]
     },
@@ -5019,7 +5241,7 @@
         "Grill or fry the sausages for 12–15 minutes, turning occasionally, until browned and cooked through.",
         "Meanwhile boil the potatoes for 12–15 minutes until tender.",
         "Add the kale to the potato pan for the last 3–4 minutes of cooking to wilt and soften.",
-        "Drain, then mash the potatoes and kale together with the butter, milk and mustard until roughly mashed.",
+        "Drain, then mash the potatoes and kale together with the butter, milk and mustard until roughly mashed, and season with salt and pepper.",
         "Serve the stoemp topped with the sausages."
       ]
     },
@@ -5037,6 +5259,7 @@
         "Simmer the chicory halves in a pan of water for 8–10 minutes until just tender. Drain well and place in an ovenproof dish.",
         "Melt the butter in a small pan, stir in the flour and cook for 1 minute, then gradually whisk in the milk to make a smooth sauce.",
         "Stir in the mustard, nutmeg and half the cheese until melted.",
+        "Taste and adjust the seasoning.",
         "Pour the sauce over the chicory, scatter with the remaining cheese, and bake for 10–12 minutes until golden and bubbling."
       ]
     },
@@ -5055,6 +5278,7 @@
         "Heat half the butter in a pan and fry spoonfuls of the fish mixture for 3–4 minutes each side until golden and cooked through.",
         "Meanwhile melt the remaining butter in another pan and soften the cabbage for 6–8 minutes until tender.",
         "Stir the cream into the cabbage and simmer for 2 minutes until slightly thickened.",
+        "Taste and adjust the seasoning.",
         "Serve the fish cakes with the creamed cabbage, scattered with dill."
       ]
     },
@@ -5124,7 +5348,7 @@
       steps: [
         "Preheat the grill to high.",
         "Toast the bread lightly on both sides.",
-        "Mix the cheddar, mustard, ale or milk and Worcestershire sauce into a thick paste.",
+        "Mix the cheddar, mustard, ale or milk and Worcestershire sauce into a thick paste, and season with black pepper.",
         "Place the tomato halves under the grill for 2–3 minutes to soften slightly.",
         "Spread the cheese mixture thickly over the toast and grill for 3–4 minutes until bubbling and golden.",
         "Serve with the grilled tomatoes."
@@ -5145,6 +5369,7 @@
         "Meanwhile, poach the chicken breast in a pan of gently simmering water for 10–12 minutes until cooked through, then drain, cool slightly and dice.",
         "Mix the mayonnaise, curry powder, mango chutney and lemon juice in a bowl.",
         "Fold the diced chicken and sultanas through the dressing.",
+        "Taste and adjust the seasoning.",
         "Spoon over the warm rice and scatter with flaked almonds and spring onion."
       ]
     },
@@ -5198,6 +5423,7 @@
         "Lay a large sheet of baking paper on a tray and arrange the fennel slices in the centre.",
         "Top with the salmon, lemon slices, cherry tomatoes and dill, then drizzle with olive oil and the wine or water.",
         "Fold and scrunch the paper to seal into a parcel.",
+        "Taste and adjust the seasoning.",
         "Bake for 15 minutes until the salmon is just cooked through, then open carefully and serve."
       ]
     },
@@ -5216,6 +5442,7 @@
         "Warm the lentils in a pan or microwave according to the pack instructions.",
         "Whisk the Dijon mustard, vinegar, olive oil and shallot together for the dressing.",
         "Toss the warm lentils with the rocket, tomatoes and dressing.",
+        "Taste and adjust the seasoning.",
         "Halve the egg and place on top, scattering with parsley to serve."
       ]
     },
@@ -5234,6 +5461,7 @@
         "Fold the shredded cabbage and most of the spring onion through the batter.",
         "Heat the oil in a non-stick frying pan over medium heat, pour in the batter and spread evenly, then lay the bacon on top.",
         "Cook for 4–5 minutes until set and golden underneath, then carefully flip and cook a further 4–5 minutes until the bacon is cooked and the pancake is golden.",
+        "Taste and adjust the seasoning.",
         "Drizzle with brown sauce and mayonnaise, and scatter with bonito flakes and the remaining spring onion."
       ]
     },
@@ -5252,6 +5480,7 @@
         "Heat the oil in a small saucepan or deep frying pan over medium-high heat.",
         "Coat the marinated chicken pieces in the potato starch, shaking off any excess.",
         "Fry in batches for 6–7 minutes, turning, until golden and cooked through, then drain on kitchen paper.",
+        "Taste and adjust the seasoning.",
         "Serve over the shredded cabbage, scattered with sesame seeds and a lemon wedge."
       ]
     },
@@ -5270,6 +5499,7 @@
         "While still warm, stir the rice vinegar and sugar through the rice, then leave to cool slightly.",
         "Cook the edamame in boiling water for 2–3 minutes, then drain.",
         "Spoon the rice into a bowl and arrange the salmon, cucumber, avocado and edamame on top.",
+        "Taste and adjust the seasoning.",
         "Scatter with pickled ginger and shredded nori, and serve with soy sauce for drizzling."
       ]
     },
@@ -5303,6 +5533,7 @@
         "Heat a dry frying pan and fry the halloumi slices for 2–3 minutes each side until golden.",
         "Meanwhile, toss the cucumber, tomato and red onion with the olives, oregano, olive oil and lemon juice.",
         "Arrange the salad on a plate and top with the grilled halloumi.",
+        "Taste and adjust the seasoning.",
         "Serve with crusty bread."
       ]
     },
@@ -5340,6 +5571,7 @@
         "Melt the sugar in a hot pan until caramelised, then add the chicken and brown well on all sides.",
         "Add the onion, pepper and thyme, and cook for 2–3 minutes.",
         "Pour in the stock, cover and simmer for 20–25 minutes until the chicken is tender and the sauce has thickened.",
+        "Taste and adjust the seasoning.",
         "Scatter with spring onion to serve."
       ]
     },
@@ -5358,6 +5590,7 @@
         "Sear the beef strips in a hot pan for 1–2 minutes until browned, then set aside.",
         "Soften the onion, peppers and garlic in the same pan for 3–4 minutes.",
         "Add the tomatoes, cumin, paprika and bay leaf and simmer for 10 minutes until thick.",
+        "Taste and adjust the seasoning.",
         "Return the beef with the olives for 1–2 minutes, remove the bay leaf and serve with the rice."
       ]
     },
@@ -5376,6 +5609,7 @@
         "Mix the garlic, orange juice, lime juice, cumin, oregano and olive oil for the marinade, and coat the pork.",
         "Leave to marinate for 5 minutes while a pan heats.",
         "Sear the pork for 4–5 minutes each side until cooked through and lightly charred, then rest for 2 minutes and slice.",
+        "Taste and adjust the seasoning.",
         "Serve over the rice and black beans, spooning over any pan juices."
       ]
     },
@@ -5395,6 +5629,7 @@
         "Marinate the chicken cubes in the soy sauce, turmeric, coriander and garlic for 5 minutes.",
         "Thread onto skewers and griddle or grill for 8–10 minutes, turning, until charred and cooked through.",
         "Meanwhile, whisk the peanut butter, soy sauce, lime juice, chilli flakes and coconut milk with a splash of hot water into a smooth sauce.",
+        "Taste and adjust the seasoning.",
         "Serve the skewers with the peanut sauce and rice."
       ]
     },
@@ -5429,6 +5664,7 @@
         "Warm the fava beans with a splash of their tin liquid, the garlic and cumin in a small pan for 6–8 minutes, lightly mashing some of the beans.",
         "Stir in the lemon juice and olive oil.",
         "Warm the pitta bread.",
+        "Taste and adjust the seasoning.",
         "Top the beans with the chopped tomato and parsley, and serve with the warm pitta."
       ]
     },
@@ -5465,6 +5701,7 @@
         "Fry the shallot, garlic, sambal and lemongrass paste for 2–3 minutes until fragrant.",
         "Stir in the tamarind paste, turmeric and stock, and simmer for 5 minutes.",
         "Add the fish and green beans, and simmer gently for 6–8 minutes until the fish is just cooked through.",
+        "Taste and adjust the seasoning.",
         "Serve with the rice."
       ]
     },
@@ -5483,6 +5720,7 @@
         "Heat the oil in a wok and fry the Chinese sausage for 2–3 minutes until fragrant.",
         "Push to one side, crack in the egg and scramble briefly, then stir through the sausage.",
         "Add the noodles, garlic, dark and light soy sauce and chilli paste, and toss over high heat for 3–4 minutes.",
+        "Taste and adjust the seasoning.",
         "Add the beansprouts and chives, toss for 1–2 minutes more, and serve immediately."
       ]
     },
@@ -5537,6 +5775,7 @@
         "Fry the onion and mushrooms in the same pan for 4–5 minutes until golden.",
         "Add the garlic, paprika and stock, and simmer for 3–4 minutes.",
         "Stir in the soured cream and mustard, return the beef and warm through for 2 minutes without boiling.",
+        "Taste and adjust the seasoning.",
         "Scatter with parsley and serve with the tagliatelle."
       ]
     },
@@ -5589,6 +5828,7 @@
         "Fry the spam slices for 2–3 minutes each side until browned.",
         "Mix the soy sauce and brown sugar, add to the pan in the last minute and toss to glaze the spam.",
         "Spoon the rice into a bowl and top with the glazed spam.",
+        "Taste and adjust the seasoning.",
         "Scatter with torn nori, sesame seeds and spring onion."
       ]
     },
@@ -5627,6 +5867,7 @@
         "Add the tomato, stock, cumin and chilli flakes, and simmer for 10 minutes.",
         "Return the beef for 1–2 minutes to heat through.",
         "Meanwhile, cook the noodles according to the packet instructions, drain and divide into a bowl.",
+        "Taste and adjust the seasoning.",
         "Ladle the soup over the noodles and scatter with coriander."
       ]
     },
@@ -5818,6 +6059,7 @@
         "Blitz or finely chop the garlic, coriander, cumin, paprika, chilli flakes, lemon juice and oil into a chermoula paste. Coat the fish and set aside.",
         "Boil the potato slices for 5 minutes until nearly tender, then drain (tomato's acidity stops raw potato softening). Layer the potato and pepper in a small pan, pour over the chopped tomatoes and a splash of water, and simmer covered for 5 minutes.",
         "Lay the fish on top, spoon over any remaining chermoula, cover and simmer for 8–10 minutes more until the fish flakes easily.",
+        "Taste and adjust the seasoning.",
         "Scatter with olives and serve straight from the pan."
       ]
     },
@@ -5836,6 +6078,7 @@
         "Soften the onion and celery in a splash of oil over medium heat for 4–5 minutes, then add the garlic and spices and cook for 1 minute.",
         "Add the lentils, chickpeas, tomatoes and stock. Bring to a simmer.",
         "Cook for 18–20 minutes, stirring occasionally, until the lentils are soft and the soup has thickened.",
+        "Taste and adjust the seasoning.",
         "Stir through the coriander and a squeeze of lemon before serving."
       ]
     },
@@ -5854,6 +6097,7 @@
         "Mix the garlic, cumin, paprika, coriander, oil and lemon juice into a paste and rub over the lamb chops. Leave to marinate for 5 minutes if time allows.",
         "Heat a griddle or frying pan over high heat and cook the chops for 3–4 minutes each side, until charred and cooked to your liking.",
         "Rest for 2 minutes while you warm the flatbread.",
+        "Taste and adjust the seasoning.",
         "Toss the tomato, cucumber, red onion and mint together and serve alongside the chops with the flatbread."
       ]
     },
@@ -5889,6 +6133,7 @@
         "Dry-fry the pork mince in a hot pan for 6–7 minutes, breaking it up, until cooked through and lightly browned.",
         "Take off the heat and stir in the shallot, chilli flakes, fish sauce and lime juice.",
         "Fold through the toasted rice powder, mint and coriander.",
+        "Taste and adjust the seasoning.",
         "Spoon into lettuce leaves to serve."
       ]
     },
@@ -5906,6 +6151,7 @@
         "Heat the oil in a wok over high heat and stir-fry the beef and garlic for 2–3 minutes until browned. Push to one side.",
         "Crack in the egg and scramble briefly, then stir through the beef.",
         "Add the noodles, broccoli, soy sauces and sugar. Toss over high heat for 3–4 minutes, letting the noodles catch slightly, until everything is well combined.",
+        "Taste and adjust the seasoning.",
         "Serve immediately."
       ]
     },
@@ -5924,6 +6170,7 @@
         "Mix the yoghurt, lemon juice, tomato puree, paprika, cumin, garlic and oil, and coat the chicken. Marinate for at least 5 minutes.",
         "Thread onto skewers or leave loose, and fry or grill over high heat for 8–10 minutes, turning, until charred and cooked through.",
         "Meanwhile, mix the extra garlic through the extra yoghurt to make a simple garlic sauce.",
+        "Taste and adjust the seasoning.",
         "Serve the chicken with the garlic sauce and warm flatbread."
       ]
     },
@@ -5942,6 +6189,7 @@
         "Heat the oil in a frying pan and fry the fish for 3–4 minutes each side until just cooked. Remove and keep warm.",
         "Whisk the tahini with the lemon juice, garlic and a splash of water until smooth and pourable.",
         "In the same pan, soften the onion and pepper with the chilli and cumin for 4–5 minutes.",
+        "Taste and adjust the seasoning.",
         "Spoon the tahini sauce over the fish, top with the onion and pepper mixture, and scatter with pine nuts and coriander."
       ]
     },
@@ -5961,6 +6209,7 @@
         "Fry the halloumi slices in a dry pan for 2 minutes each side until golden.",
         "Toss the salad leaves, tomato, cucumber, radish and spring onion with the mint.",
         "Whisk the oil, lemon juice, sumac and pomegranate molasses for the dressing, and toss through the salad.",
+        "Taste and adjust the seasoning.",
         "Top with the halloumi and pitta chips to serve."
       ]
     },
@@ -5997,6 +6246,7 @@
         "Heat half the oil in a pan and fry the extra garlic until golden, then stir through the rice until fragrant. Set aside.",
         "Wipe the pan, heat the rest of the oil until very hot, and fry the beef for 1–2 minutes each side until well browned.",
         "In the same pan, fry the egg to your liking.",
+        "Taste and adjust the seasoning.",
         "Plate the garlic rice, beef and fried egg together with the sliced tomato."
       ]
     },
@@ -6016,6 +6266,7 @@
         "Heat the oil in a frying pan and fry the chicken for 4–5 minutes each side until golden and cooked through. Remove and keep warm.",
         "In the same pan, melt the butter and fry the onion and mushrooms for 4–5 minutes until softened.",
         "Add the stock and simmer for 2–3 minutes to reduce slightly, then stir in the soured cream.",
+        "Taste and adjust the seasoning.",
         "Spoon the mushroom sauce over the schnitzel and scatter with parsley."
       ]
     },
@@ -6051,6 +6302,7 @@
         "Add the onion and soften for 2–3 minutes.",
         "Stir in the sauerkraut, cabbage, tomato puree, paprika and bay leaf, then pour in the stock.",
         "Cover and simmer for 18–20 minutes, stirring occasionally, until the cabbage is tender and the stew has thickened.",
+        "Taste and adjust the seasoning.",
         "Return the pork and sausage for the last 4–5 minutes until the pork is cooked through. Remove the bay leaf before serving."
       ]
     },
@@ -6085,6 +6337,7 @@
         "In the same pan, soften the pepper, onion and garlic for 4–5 minutes.",
         "Stir in the tomatoes, harissa and cumin, return the sausage to the pan, and simmer for 8–10 minutes.",
         "Make two wells in the sauce and crack in the eggs. Cover and cook for 4–5 minutes until the eggs are just set.",
+        "Taste and adjust the seasoning.",
         "Scatter with coriander and serve with crusty bread."
       ]
     },
@@ -6102,6 +6355,7 @@
         "Mix the harissa, half the oil and half the lemon juice, and coat the fish.",
         "Grill or fry the fish for 3–4 minutes each side until cooked through.",
         "Meanwhile, toss the tomato, cucumber, onion, olives and parsley with the remaining oil, lemon juice and cumin.",
+        "Taste and adjust the seasoning.",
         "Serve the fish on top of the salad."
       ]
     },
@@ -6137,6 +6391,7 @@
         "Heat the oil in a wok over high heat and stir-fry the garlic for 30 seconds.",
         "Push to one side, crack in the egg, and scramble briefly.",
         "Add the noodles, soy sauces and chilli paste, and toss over high heat for 2–3 minutes.",
+        "Taste and adjust the seasoning.",
         "Add the beansprouts and spring onion, toss for 1 minute until just wilted, and serve immediately."
       ]
     },
@@ -6187,6 +6442,7 @@
         "Lower the heat, add the onion and cook for 6–8 minutes until soft and golden.",
         "Stir in the paprika, caraway and garlic for 1 minute, then add the tomato puree and stock.",
         "Simmer uncovered for 8–10 minutes until reduced and glossy.",
+        "Taste and adjust the seasoning.",
         "Return the beef and its juices for 1–2 minutes, stir through the marjoram and serve with crusty bread."
       ]
     },
@@ -6224,6 +6480,7 @@
         "Add the onion and garlic and soften for 3–4 minutes.",
         "Stir in the tomatoes, stock, ground coriander, thyme and chilli flakes, and simmer for 10 minutes.",
         "Add the rice and simmer for a further 12–15 minutes until the rice is tender.",
+        "Taste and adjust the seasoning.",
         "Stir in the crushed walnuts and finish with fresh coriander."
       ]
     },
@@ -6242,6 +6499,7 @@
         "Add the beans and stock, and simmer for 8–10 minutes.",
         "Mash a few of the beans against the side of the pan to thicken the stew slightly.",
         "Stir in the crushed walnuts, fenugreek, ground coriander and vinegar.",
+        "Taste and adjust the seasoning.",
         "Finish with fresh coriander and serve with cornbread or flatbread."
       ]
     },
@@ -6277,6 +6535,7 @@
         "Stir in the cumin and paprika and cook for 1 minute.",
         "Pour in the coconut milk and simmer for 5 minutes.",
         "Add the fish, cover, and cook gently for 8–10 minutes until it flakes easily.",
+        "Taste and adjust the seasoning.",
         "Finish with lime juice and coriander, and serve over the rice."
       ]
     },
@@ -6295,6 +6554,7 @@
         "Mix the garlic, ginger, ground coriander, paprika, half the lemon juice and the oil into a paste and rub over the lamb.",
         "Marinate for 5 minutes, then grill or fry over high heat for 4–5 minutes each side until charred and cooked to your liking. Rest for 2 minutes.",
         "Meanwhile, toss the tomato, red onion, chilli, coriander and remaining lemon juice for a kachumbari-style salad.",
+        "Taste and adjust the seasoning.",
         "Serve the lamb with the salad."
       ]
     },
@@ -6314,6 +6574,7 @@
         "Add the tomato, turmeric, curry powder and chilli, and cook for 2–3 minutes.",
         "Pour in the coconut milk and simmer for 5 minutes.",
         "Add the fish, cover, and cook gently for 8 minutes until it flakes easily.",
+        "Taste and adjust the seasoning.",
         "Scatter with coriander and serve with rice."
       ]
     },
@@ -6330,6 +6591,7 @@
         "Melt the butter in a pan and fry the onion and mushrooms for 6–8 minutes until golden.",
         "Add the barley and stock, and simmer for 4–5 minutes until warmed through and slightly thickened.",
         "Stir in the soured cream and allspice.",
+        "Taste and adjust the seasoning.",
         "Finish with dill and serve."
       ]
     },
@@ -6379,7 +6641,8 @@
         "Heat a frying pan over medium-high heat and cook the salmon, skin-side down, for 4 minutes.",
         "Flip, brush with the glaze, and cook for 3–4 minutes more until glazed and cooked through.",
         "Meanwhile, steam the green beans for 4–5 minutes and warm the wild rice.",
-        "Serve the salmon over the rice with the green beans, spooning over any extra glaze."
+        "Taste and adjust the seasoning.",
+        "Serve the salmon over the rice with the green beans, spooning over any extra glaze, with the lemon wedge for squeezing."
       ]
     },
     {
@@ -6451,6 +6714,7 @@
         "Pile the smoked beef into the pan and warm through for 2–3 minutes, tossing, until heated and slightly crisped at the edges.",
         "Lightly toast the rye bread.",
         "Spread one slice with mustard, pile on the hot smoked beef, and top with the second slice.",
+        "Taste and adjust the seasoning.",
         "Cut in half and serve with the gherkin on the side."
       ]
     },
@@ -6469,14 +6733,15 @@
         "Put the chicken, half the ginger (bashed) and the garlic into a small pan, cover with the stock and bring to a gentle simmer. Poach for 15–18 minutes until cooked through, then remove the chicken and rest.",
         "Skim a little fat from the poaching liquid and use it to fry the rice for 1 minute, then add the hot poaching liquid and cook according to packet instructions, about 12–15 minutes, until tender.",
         "Meanwhile, finely grate the remaining ginger, mix with the chilli, sesame oil, soy sauce and a squeeze of lime to make the dipping sauce.",
+        "Taste and adjust the seasoning.",
         "Slice the chicken and serve on the rice with the cucumber, spring onion and dipping sauce on the side."
       ]
     },
     {
       id: "d390", title: "Peruvian-Style Aji de Gallina (Creamy Spiced Chicken)", tags: [], cuisine: "Peru", protein: "chicken",
-      prep: 9, cook: 20,
+      prep: 9, cook: 30,
       ingredients: [
-        ing(150, "g", "cooked chicken breast, shredded", "meat"), ing(0.5, "", "onion, diced", "produce"),
+        ing(150, "g", "chicken breast", "meat"), ing(0.5, "", "onion, diced", "produce"),
         ing(1, "", "garlic clove, crushed", "produce"), ing(1, "tbsp", "aji amarillo paste", "store"),
         ing(15, "g", "walnuts, crushed", "store"), ing(1, "", "slice white bread, crusts removed and torn", "bakery"),
         ing(100, "ml", "milk", "dairy"), ing(50, "ml", "chicken stock", "store"),
@@ -6484,11 +6749,13 @@
         ing(3, "", "black olives", "store"), ing(0.5, "", "boiled egg", "dairy")
       ],
       steps: [
-        "Cook the rice according to packet instructions, and boil the egg for 8 minutes, then cool and peel.",
+        "Poach the chicken breast in gently simmering water for 12–15 minutes until cooked through, then shred with two forks.",
+        "Meanwhile, cook the rice according to packet instructions, and boil the egg for 8 minutes, then cool and peel.",
         "Soak the torn bread in the milk for a few minutes to soften.",
         "Heat a little oil in a pan and fry the onion and garlic for 4–5 minutes until soft, then stir in the aji amarillo paste and cook for 1 minute.",
         "Add the soaked bread and milk, the stock, crushed walnuts and cheese, and simmer for 5 minutes, stirring, until thickened into a smooth sauce.",
         "Stir in the shredded chicken and warm through for 3–4 minutes.",
+        "Taste and adjust the seasoning.",
         "Serve over the rice, topped with the olives and boiled egg."
       ]
     },
@@ -6543,8 +6810,9 @@
       steps: [
         "Heat a little oil in a saucepan and fry the onion for 3–4 minutes until soft. Add the garlic, ginger, curry powder and turmeric, and cook for 1 minute.",
         "Add the lamb mince and brown for 4–5 minutes, breaking it up.",
-        "Stir in the tomatoes, potato and stock, cover and simmer for 15–18 minutes until the potato is tender and the sauce has thickened.",
+        "Stir in the potato and stock, cover and simmer for 8 minutes, then add the tomatoes (their acidity stops raw potato softening) and simmer uncovered for 8–10 minutes until the potato is tender and the sauce has thickened.",
         "Slice the top off the bread roll and hollow out most of the middle to make a bowl.",
+        "Taste and adjust the seasoning.",
         "Spoon the curry into the hollowed bread, scatter with coriander, and serve with the reserved bread for dipping."
       ]
     },
@@ -6639,12 +6907,13 @@
         "Add the garlic, ginger, cumin seeds, cloves, cinnamon and cardamom, and cook for 1 minute until fragrant.",
         "Add the chicken and cook for 4–5 minutes until browned.",
         "Stir in the rice to coat in the spices, then pour in the stock. Bring to the boil, cover, reduce the heat and simmer for 15 minutes until the rice is tender and the liquid absorbed.",
+        "Taste and adjust the seasoning.",
         "Fluff with a fork and scatter with coriander to serve."
       ]
     },
     {
       id: "d399", title: "Belgian-Style Flemish Meatballs in Spiced Beer Gravy (Vlaamse Balletjes)", tags: [], cuisine: "Belgium", protein: "beef",
-      prep: 9, cook: 20,
+      prep: 9, cook: 25,
       ingredients: [
         ing(150, "g", "beef mince", "meat"), ing(20, "g", "breadcrumbs", "store"),
         ing(1, "", "egg", "dairy"), ing(0.5, "", "onion, finely diced", "produce"),
@@ -6735,6 +7004,7 @@
         "Heat the oil in a wok over high heat and stir-fry the chicken for 3–4 minutes until cooked through.",
         "Push to one side, crack in the egg and scramble briefly, then add the garlic and noodles and toss together.",
         "Pour in the sauce, add the beansprouts and spring onion, and toss for 1–2 minutes until well coated and hot.",
+        "Taste and adjust the seasoning.",
         "Serve scattered with the crushed peanuts, chilli flakes, and the lime wedge."
       ]
     },
@@ -6753,6 +7023,7 @@
         "Add the sliced onion and simmer for 4–5 minutes until softened.",
         "Add the beef slices and simmer for 3–4 minutes until just cooked through, skimming any froth.",
         "Spoon the hot rice into a bowl and ladle over the beef, onion and sauce.",
+        "Taste and adjust the seasoning.",
         "Top with the spring onion and pickled ginger to serve."
       ]
     },
@@ -6773,6 +7044,7 @@
         "Heat the oil in a frying pan and cook the patties for 3–4 minutes each side until charred and cooked through.",
         "Meanwhile, soak the noodles in boiled water for 4–5 minutes until tender, then drain and rinse in cold water.",
         "Mix the remaining fish sauce and sugar with the rice vinegar, lime juice and a splash of water to make a dipping sauce; stir in the chilli.",
+        "Taste and adjust the seasoning.",
         "Toss the carrot and cucumber briefly through the dipping sauce, then arrange the noodles, lettuce, herbs and pork patties in a bowl, and spoon over the dressing."
       ]
     },
@@ -6792,6 +7064,7 @@
         "Add the remaining oil, then the onion, pepper, carrot, garlic, ginger and chilli, and stir-fry for 3–4 minutes until softened.",
         "Push the vegetables aside, crack in the egg and scramble briefly.",
         "Add the roti strips, curry powder, soy sauce and the cooked chicken to the pan, and toss everything together vigorously for 2–3 minutes until well combined and hot through.",
+        "Taste and adjust the seasoning.",
         "Serve hot, with extra chilli or a wedge of lime if you like."
       ]
     },
@@ -6849,6 +7122,7 @@
         "Heat the oil in a wok and stir-fry the chicken for 3–4 minutes until cooked through.",
         "Add the garlic, carrot, cabbage and green beans, and stir-fry for 2–3 minutes.",
         "Pour in the soy sauce and stock, add the drained noodles, and toss everything together for 2–3 minutes until the noodles have absorbed the liquid and are tender.",
+        "Taste and adjust the seasoning.",
         "Scatter with the spring onion and serve with the lime wedge."
       ]
     },
@@ -6868,6 +7142,7 @@
         "Add the remaining oil to the pan and fry the marinated pork for 5–6 minutes until browned and cooked through.",
         "Pour in the wine and let it bubble for 1–2 minutes, scraping up any bits from the pan.",
         "Return the potatoes to the pan, toss everything together, and stir through the chopped coriander.",
+        "Taste and adjust the seasoning.",
         "Serve with the lemon wedge."
       ]
     },
@@ -6887,6 +7162,7 @@
         "Remove the chicken, shred it, and return it to the pan.",
         "Meanwhile, soak the noodles in boiled water for 4–5 minutes until tender, then drain and place in a bowl.",
         "Ladle the hot soup and shredded chicken over the noodles.",
+        "Taste and adjust the seasoning.",
         "Top with the boiled egg, beansprouts and spring onion, and serve with the lime wedge and chilli sauce on the side."
       ]
     },
@@ -6960,6 +7236,7 @@
         "Lay the filo sheets stacked together, spoon the tuna mixture into the centre and make a small well.",
         "Crack the egg into the well, then fold the pastry over into a semi-circle, sealing the edges with a little water and keeping the egg intact.",
         "Heat the oil in a frying pan and fry the brik for 2 minutes each side until golden and crisp, with the egg still soft inside.",
+        "Taste and adjust the seasoning.",
         "Drain briefly on kitchen paper and serve with the lemon wedge."
       ]
     },
@@ -7012,6 +7289,7 @@
         "Heat a little oil in a pan and fry the onion until soft.",
         "Add the salami and fry for 2 minutes.",
         "Stir in the tomato puree, cook for 1 minute, then add the stock, gherkin, capers and bay leaf. Simmer for 12 minutes, then add the beef and simmer for 1–2 minutes until just cooked.",
+        "Taste and adjust the seasoning.",
         "Ladle into a bowl, top with a slice of lemon, a spoonful of soured cream and a scattering of dill."
       ]
     },
@@ -7030,6 +7308,7 @@
         "Gradually whisk in the stock until smooth and thick, then stir in the chopped beef, mustard and nutmeg. Cook for 2–3 minutes until very thick.",
         "Spread the mixture onto a plate and chill in the freezer for 15 minutes until firm enough to shape.",
         "Roll into 4–5 balls, dip each in beaten egg then breadcrumbs.",
+        "Taste and adjust the seasoning.",
         "Heat the oil in a pan and fry the croquettes for 3–4 minutes, turning, until deep golden and crisp. Serve hot with mustard."
       ]
     },
@@ -7048,6 +7327,7 @@
         "Mix the soy sauce, ketchup, brown sugar, ginger, garlic and pineapple juice for the marinade. Toss the chicken thighs in half of it.",
         "Heat a griddle or frying pan and cook the chicken for 5–6 minutes each side, brushing with the remaining marinade, until sticky and cooked through.",
         "Rest for 2 minutes, then slice.",
+        "Taste and adjust the seasoning.",
         "Warm the rice with the pineapple chunks. Serve the chicken over the pineapple rice, scattered with spring onion and sesame seeds."
       ]
     },
@@ -7084,6 +7364,7 @@
         "Mix the lamb mince with the onion, cumin and pepper.",
         "Place a teaspoon of filling in the centre of each wrapper, dampen the edges with water and pinch closed into small parcels.",
         "Steam the dumplings in a steamer basket over simmering water for 12–14 minutes until the lamb is cooked through.",
+        "Taste and adjust the seasoning.",
         "Drizzle with the melted butter and serve topped with soured cream, a scattering of dill and a pinch of paprika."
       ]
     },
@@ -7117,6 +7398,7 @@
         "Heat the oil in a pan and fry the onion, garlic and chilli flakes for 2–3 minutes until softened.",
         "Add the chopped tomato and cook for 2 minutes until pulpy.",
         "Crumble in the stock cube with a splash of water, then stir in the spinach and cook for 3–4 minutes until wilted.",
+        "Taste and adjust the seasoning.",
         "Fold through the flaked smoked mackerel and warm through for 2 minutes. Serve hot, with rice if you like."
       ]
     },
@@ -7183,6 +7465,7 @@
         "Rinse the freekeh. Heat the oil in a pan and fry the onion for 2–3 minutes until soft.",
         "Add the diced chicken and spices, and cook for 3–4 minutes until the chicken starts to colour.",
         "Stir in the freekeh and stock, bring to a simmer, cover and cook for 15–18 minutes until the freekeh is tender and the liquid absorbed.",
+        "Taste and adjust the seasoning.",
         "Fluff through with a fork, scatter with the toasted almonds and parsley, and finish with a squeeze of lemon."
       ]
     },
@@ -7203,6 +7486,7 @@
         "Heat a splash of oil in a hot wok or frying pan and stir-fry the onion, carrot and pepper for 2–3 minutes until just softened.",
         "Add the squid and stir-fry for 1–2 minutes only, until just opaque (do not overcook or it will turn rubbery).",
         "Pour in the sauce and toss everything together for 1 minute until glossy.",
+        "Taste and adjust the seasoning.",
         "Scatter with spring onion and sesame seeds, and serve with rice."
       ]
     },
@@ -7251,11 +7535,11 @@
         ing(1, "", "chicken breast, sliced", "meat"), ing(0.5, "", "onion, sliced", "produce"),
         ing(1, "tbsp", "sambal oelek or chilli paste", "store"), ing(1, "tsp", "tamarind paste", "store"),
         ing(1, "tsp", "sugar", "store"), ing(0.25, "", "cucumber, sliced", "produce"),
-        ing(1, "", "egg, hard-boiled", "dairy"), ing(15, "g", "roasted peanuts", "store"),
+        ing(1, "", "egg", "dairy"), ing(15, "g", "roasted peanuts", "store"),
         ing(1, "", "lime wedge", "produce")
       ],
       steps: [
-        "Rinse the rice and cook with the coconut milk and a pinch of salt according to the packet timings until tender and fragrant.",
+        "Rinse the rice and cook with the coconut milk and a pinch of salt according to the packet timings until tender and fragrant. Meanwhile, boil the egg for 8 minutes, then cool, peel and halve.",
         "Meanwhile, fry the onion in a little oil until soft, then stir in the sambal, tamarind paste and sugar to make a quick sauce. Simmer for 2–3 minutes.",
         "Add the sliced chicken and cook for 6–7 minutes until cooked through and coated in the sauce.",
         "Serve the coconut rice with the sambal chicken, cucumber slices, halved boiled egg, peanuts and a lime wedge."
@@ -7292,6 +7576,7 @@
         "Heat a splash of oil in a pan and brown the sausage pieces and bacon for 3–4 minutes.",
         "Layer the potatoes and onion over the meat, pour in the stock, and add the thyme and a good grind of pepper.",
         "Cover and simmer gently for 25–30 minutes until the potatoes are tender and the stock has reduced to a thick gravy.",
+        "Taste and adjust the seasoning.",
         "Serve hot straight from the pot with crusty bread."
       ]
     },
@@ -7316,14 +7601,15 @@
     },
     {
       id: "d436", title: "Polish-Style Pierogi Ruskie with Soured Cream and Bacon", tags: [], cuisine: "Poland", protein: "pork",
-      prep: 10, cook: 12,
+      prep: 10, cook: 25,
       ingredients: [
-        ing(10, "", "fresh dumpling or wonton wrappers", "store"), ing(150, "g", "potato, boiled and mashed", "produce"),
+        ing(10, "", "fresh dumpling or wonton wrappers", "store"), ing(150, "g", "potato, peeled and chopped", "produce"),
         ing(50, "g", "curd cheese or cream cheese", "dairy"), ing(0.25, "", "onion, finely chopped", "produce"),
         ing(2, "", "bacon rashers, chopped", "meat"), ing(15, "g", "butter", "dairy"),
         ing(2, "tbsp", "soured cream", "dairy"), ing(1, "tbsp", "chives, chopped", "produce")
       ],
       steps: [
+        "Boil the potato in salted water for 12–15 minutes until tender, then drain, mash and leave to cool slightly.",
         "Mix the mashed potato with the curd cheese and a little of the chopped onion, and season well.",
         "Place a spoonful of the potato mixture in the centre of each wrapper, dampen the edges and fold into half-moons, pressing to seal.",
         "Cook the pierogi in a pan of simmering water for 3–4 minutes until they float, then drain.",

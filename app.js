@@ -241,7 +241,7 @@
         "Cook the rice according to the packet instructions.",
         "Toss the chicken thighs in the peri-peri sauce to coat.",
         "Heat a frying pan over medium-high heat and cook the chicken for 5–6 minutes each side until charred and cooked through.",
-        "While the chicken cooks, blanch or steam the tenderstem broccoli for 3–4 minutes until just tender, then toss in the olive oil.",
+        "While the chicken cooks, toss the broccoli in the olive oil and cook in a separate hot griddle or frying pan for 4–5 minutes, turning, until charred and just tender.",
         "Slice the chicken and serve over the rice with the charred broccoli, finished with a squeeze of lemon."
       ]
     },
@@ -390,7 +390,7 @@
       prep: 8, cook: 25,
       ingredients: [
         ing(200, "g", "butternut squash, cubed", "produce"), ing(50, "g", "feta cheese", "dairy"),
-        ing(0.5, "", "red onion, finely chopped", "produce"), ing(1.5, "tbsp", "olive oil", "store"),
+        ing(0.5, "", "red onion, cut into wedges", "produce"), ing(1.5, "tbsp", "olive oil", "store"),
         ing(0.5, "tsp", "ground cumin", "spice"), ing(null, "pinch", "chilli flakes", "spice"),
         ing(null, "small handful", "fresh parsley, chopped", "produce"), ing(50, "g", "couscous", "store")
       ],
@@ -450,8 +450,8 @@
         "Cook the rice according to the packet instructions.",
         "Dice the potato into small chunks.",
         "Heat a splash of the coconut milk in a saucepan over medium heat, add the curry paste and fry for 1 minute until fragrant.",
-        "Add the beef and potato, and stir to coat, then pour in the remaining coconut milk.",
-        "Simmer for 10–12 minutes until the potato is tender and the beef is cooked through.",
+        "Add the potato and stir to coat, then pour in the remaining coconut milk.",
+        "Simmer for 10–12 minutes until the potato is tender, then add the beef and simmer for 2 minutes until just cooked.",
         "Stir in the fish sauce, taste and adjust seasoning, then serve over the rice scattered with crushed peanuts."
       ]
     },
@@ -807,7 +807,7 @@
     },
     {
       id: "d47", title: "Spiced Sweet Potato & Black Bean Bowl", tags: ["vegetarian", "vegan"], cuisine: "Mexico", protein: "plant-based",
-      prep: 8, cook: 15,
+      prep: 8, cook: 20,
       ingredients: [
         ing(1, "", "medium sweet potato, cubed", "produce"), ing(150, "g", "black beans, drained", "store"),
         ing(0.5, "tsp", "ground cumin", "spice"), ing(0.5, "tsp", "smoked paprika", "spice"),
@@ -1063,17 +1063,17 @@
     },
     {
       id: "d63", title: "Filipino-Style Pork Adobo with Rice", tags: [], cuisine: "Philippines", protein: "pork",
-      prep: 8, cook: 20,
+      prep: 8, cook: 14,
       ingredients: [
-        ing(180, "g", "pork shoulder or loin, cubed", "meat"), ing(2, "tbsp", "soy sauce", "store"),
+        ing(180, "g", "pork loin steak, cut into 2cm cubes", "meat"), ing(2, "tbsp", "soy sauce", "store"),
         ing(2, "tbsp", "white or rice vinegar", "store"), ing(1, "", "garlic clove, crushed", "produce"),
         ing(1, "", "bay leaf", "spice"), ing(0.25, "tsp", "black peppercorns", "spice"),
         ing(150, "g", "cooked rice", "store")
       ],
       steps: [
-        "Brown the pork in a dry pan over medium-high heat for 3–4 minutes.",
-        "Add the soy sauce, vinegar, garlic, bay leaf, peppercorns and a splash of water.",
-        "Bring to a simmer, cover and cook for 12–15 minutes until the pork is tender and the sauce has reduced slightly.",
+        "Brown the pork in a dry pan over high heat for 2–3 minutes, then tip onto a plate.",
+        "Add the soy sauce, vinegar, garlic, bay leaf, peppercorns and 3 tbsp water to the pan.",
+        "Simmer uncovered for 5 minutes until the sauce has reduced slightly, then return the pork and simmer for 3–4 minutes until cooked through and glazed.",
         "Serve over the rice."
       ]
     },
@@ -1129,7 +1129,7 @@
     },
     {
       id: "d67", title: "Char Siu-Style Pork Steaks with Steamed Rice", tags: [], cuisine: "China", protein: "pork",
-      prep: 6, cook: 15,
+      prep: 6, cook: 10,
       ingredients: [
         ing(180, "g", "pork loin steak", "meat"), ing(2, "tbsp", "hoisin sauce", "store"),
         ing(1, "tsp", "soy sauce", "store"), ing(1, "tsp", "honey", "store"),
@@ -1137,7 +1137,7 @@
       ],
       steps: [
         "Mix the hoisin, soy sauce, honey and five spice, and coat the pork all over.",
-        "Heat a frying pan or griddle over medium-high heat and cook the pork for 6–7 minutes each side, basting with any extra marinade, until glazed and cooked through.",
+        "Heat a frying pan or griddle over a medium heat (the sugary glaze burns on high) and cook the pork for 4–5 minutes each side, basting with any extra marinade, until glazed and cooked through.",
         "Rest for 2 minutes, then slice and serve with the rice."
       ]
     },
@@ -1712,16 +1712,16 @@
     },
     {
       id: "d104", title: "Polish-Style Potato & Curd Cheese Bake", tags: ["vegetarian", "quick"], cuisine: "Poland", protein: "plant-based",
-      prep: 8, cook: 14,
+      prep: 8, cook: 20,
       ingredients: [
         ing(250, "g", "potato, sliced thin", "produce"), ing(100, "g", "cottage cheese or curd cheese", "dairy"),
         ing(0.5, "", "onion, sliced", "produce"), ing(1, "tbsp", "soured cream", "dairy"),
         ing(1, "tbsp", "butter", "dairy"), ing(null, "small handful", "chives, chopped", "produce")
       ],
       steps: [
-        "Fry the onion in the butter over medium heat for 5 minutes until soft and golden.",
+        "Boil the potato slices in salted water for 6 minutes until just tender, then drain. Meanwhile, fry the onion in the butter over medium heat for 5 minutes until soft and golden.",
         "Layer the potato slices in a small ovenproof dish with the fried onion and cottage cheese.",
-        "Bake at 200°C (fan 180°C) for 14 minutes until the potato is tender and the top is golden.",
+        "Bake at 200°C (fan 180°C) for 14 minutes until bubbling and golden on top.",
         "Dollop with soured cream and scatter with chives to serve."
       ]
     },
@@ -1751,23 +1751,23 @@
       steps: [
         "Cook the noodles according to the packet instructions.",
         "Fry the onion in a splash of oil over medium heat for 4 minutes until soft.",
-        "Add the chicken and paprika, and cook for 6–7 minutes until the chicken is browned.",
-        "Stir in the chopped tomatoes and simmer for 4 minutes, then stir through the soured cream and serve over the noodles."
+        "Add the chicken and cook for 6–7 minutes until browned.",
+        "Take off the heat and stir in the paprika (it burns easily), then add the chopped tomatoes and simmer for 4 minutes, then stir through the soured cream and serve over the noodles."
       ]
     },
     {
       id: "d107", title: "Hungarian Beef Goulash-Style Stew", tags: [], cuisine: "Hungary", protein: "beef",
       prep: 9, cook: 20,
       ingredients: [
-        ing(160, "g", "beef stewing steak, diced", "meat"), ing(1, "", "small potato, chunked", "produce"),
+        ing(160, "g", "beef rump steak, cut into strips", "meat"), ing(1, "", "small potato, cut into 1.5cm cubes", "produce"),
         ing(0.5, "", "red pepper, sliced", "produce"), ing(1.5, "tbsp", "sweet paprika", "spice"),
-        ing(200, "ml", "beef stock", "store"), ing(1, "", "garlic clove, finely chopped", "produce")
+        ing(250, "ml", "beef stock", "store"), ing(1, "", "garlic clove, finely chopped", "produce")
       ],
       steps: [
-        "Brown the beef in a splash of oil in a saucepan over high heat for 3–4 minutes.",
-        "Add the potato, red pepper and garlic, and cook for 2 minutes.",
-        "Stir in the paprika, then pour in the stock, cover and simmer for 15 minutes until the beef and potato are tender.",
-        "Season and serve in a bowl, with bread if you like."
+        "Sear the beef in a splash of oil in a saucepan over high heat for 1–2 minutes until browned but still pink inside. Tip onto a plate.",
+        "Lower the heat to medium, add the red pepper and garlic, and cook for 2 minutes.",
+        "Stir in the paprika, then add the potato and stock. Cover and simmer for 12–15 minutes until a knife slides easily into the potato.",
+        "Return the beef and its juices and simmer for 1 minute to heat through. Season and serve in a bowl, with bread if you like."
       ]
     },
     {
@@ -1832,14 +1832,14 @@
     },
     {
       id: "d112", title: "Egyptian-Style Koshari Bowl", tags: ["vegetarian", "vegan"], cuisine: "Egypt", protein: "plant-based",
-      prep: 8, cook: 15,
+      prep: 8, cook: 22,
       ingredients: [
         ing(50, "g", "dried brown lentils", "store"), ing(50, "g", "rice", "store"),
         ing(30, "g", "small dried pasta", "store"), ing(150, "g", "chopped tomatoes", "store"),
         ing(0.5, "", "onion, thinly sliced", "produce"), ing(0.5, "tsp", "ground cumin", "spice")
       ],
       steps: [
-        "Cook the lentils, rice and pasta together in plenty of water for 12–15 minutes until all are tender, then drain.",
+        "Simmer the lentils in plenty of water for 8 minutes, add the rice and cook for 4 minutes, then add the pasta and cook for a further 8–10 minutes until all are tender. Drain.",
         "Meanwhile, fry the onion in a splash of oil over medium heat for 8–10 minutes until deep golden and crisp.",
         "Warm the chopped tomatoes with the cumin in a small pan for 5 minutes.",
         "Serve the lentil, rice and pasta mix topped with the tomato sauce and crispy onions."
@@ -1917,7 +1917,7 @@
       ],
       steps: [
         "Cook the rice according to the packet instructions.",
-        "Simmer the sweet potato in the chopped tomatoes with 100ml water for 10 minutes until nearly tender.",
+        "Simmer the sweet potato in 150ml water for 8 minutes until nearly tender, then add the chopped tomatoes and simmer for 2 minutes. (Tomato's acidity slows raw veg softening, so it goes in second.)",
         "Stir in the peanut butter and chilli flakes until smooth, then simmer for 3 minutes.",
         "Stir in the spinach until wilted and serve over the rice."
       ]
@@ -2047,7 +2047,7 @@
       ingredients: [
         ing(150, "g", "chicken thigh, diced", "meat"), ing(70, "g", "rice", "store"),
         ing(0.5, "tsp", "ground turmeric", "spice"), ing(1, "", "garlic clove, finely chopped", "produce"),
-        ing(100, "ml", "chicken stock", "store"), ing(60, "g", "cucumber, sliced", "produce")
+        ing(175, "ml", "chicken stock", "store"), ing(60, "g", "cucumber, sliced", "produce")
       ],
       steps: [
         "Fry the chicken and garlic in a splash of oil over medium-high heat for 5 minutes.",
@@ -2209,7 +2209,7 @@
     },
     {
       id: "d137", title: "Argentinian-Style Chimichurri Steak", tags: ["quick"], cuisine: "Argentina", protein: "beef",
-      prep: 8, cook: 7,
+      prep: 8, cook: 12,
       ingredients: [
         ing(160, "g", "beef sirloin steak", "meat"), ing(null, "handful", "fresh parsley, chopped", "produce"),
         ing(1, "", "garlic clove, crushed", "produce"), ing(1, "tbsp", "red wine vinegar", "store"),
@@ -2239,7 +2239,7 @@
     },
     {
       id: "d139", title: "Australian-Style Barramundi with Salad", tags: ["fish", "quick"], cuisine: "Australia", protein: "fish",
-      prep: 8, cook: 8,
+      prep: 8, cook: 12,
       ingredients: [
         ing(150, "g", "white fish fillet", "meat"), ing(60, "g", "mixed salad leaves", "produce"),
         ing(0.5, "", "avocado, sliced", "produce"), ing(0.5, "", "lemon", "produce"),
@@ -2254,7 +2254,7 @@
     },
     {
       id: "d140", title: "Australian-Style Lamb Chops with Mint", tags: ["quick"], cuisine: "Australia", protein: "lamb",
-      prep: 7, cook: 9,
+      prep: 7, cook: 12,
       ingredients: [
         ing(2, "", "lamb chops", "meat"), ing(null, "handful", "fresh mint, chopped", "produce"),
         ing(1, "tbsp", "natural yoghurt", "dairy"), ing(120, "g", "new potatoes", "produce"),
@@ -2555,14 +2555,14 @@
     },
     {
       id: "d160", title: "American Diner-Style Turkey Burger", tags: ["quick"], cuisine: "USA", protein: "turkey",
-      prep: 8, cook: 12,
+      prep: 8, cook: 25,
       ingredients: [
         ing(150, "g", "turkey mince", "meat"), ing(1, "", "burger bun", "bakery"),
         ing(0.5, "", "sweet potato, cut into wedges", "produce"), ing(0.5, "tsp", "smoked paprika", "spice"),
         ing(1, "tbsp", "tomato ketchup", "store")
       ],
       steps: [
-        "Toss the sweet potato wedges with the paprika and a splash of oil, and roast at 200°C (fan 180°C) for 12 minutes, turning once.",
+        "Toss the sweet potato wedges with the paprika and a splash of oil, and roast at 200°C (fan 180°C) for 20–25 minutes, turning once, until tender and golden.",
         "Shape the turkey mince into a patty and fry over medium-high heat for 4–5 minutes each side until cooked through.",
         "Toast the bun.",
         "Build the burger with the patty and ketchup, and serve with the wedges."
@@ -2854,14 +2854,14 @@
     },
     {
       id: "d180", title: "Lebanese-Style Lentil & Rice (Mujadara)", tags: ["vegetarian", "vegan", "quick"], cuisine: "Lebanon", protein: "plant-based",
-      prep: 7, cook: 15,
+      prep: 7, cook: 22,
       ingredients: [
         ing(60, "g", "dried brown lentils", "store"), ing(50, "g", "rice", "store"),
         ing(1, "", "onion, thinly sliced", "produce"), ing(0.5, "tsp", "ground cumin", "spice"),
         ing(60, "g", "mixed salad leaves", "produce")
       ],
       steps: [
-        "Cook the lentils and rice together in plenty of water for 15 minutes until tender, then drain.",
+        "Simmer the lentils in plenty of water for 10 minutes, then add the rice and cook for a further 12 minutes until both are tender. Drain.",
         "Meanwhile, fry the onion in a splash of oil over medium heat for 10 minutes until deep golden and crisp.",
         "Stir the cumin through the lentils and rice.",
         "Serve topped with the crispy onions and salad leaves."
@@ -2914,17 +2914,17 @@
     },
     {
       id: "d184", title: "Persian-Style Lamb & Split Pea Stew", tags: ["quick"], cuisine: "Iran", protein: "lamb",
-      prep: 8, cook: 16,
+      prep: 8, cook: 22,
       ingredients: [
-        ing(150, "g", "lamb mince", "meat"), ing(40, "g", "dried yellow split peas", "store"),
+        ing(150, "g", "lamb mince", "meat"), ing(40, "g", "dried red lentils", "store"),
         ing(150, "g", "chopped tomatoes", "store"), ing(0.5, "tsp", "ground turmeric", "spice"),
         ing(0.5, "tsp", "ground cinnamon", "spice"), ing(70, "g", "rice", "store")
       ],
       steps: [
         "Cook the rice according to the packet instructions.",
         "Fry the lamb mince in a splash of oil over medium-high heat for 5 minutes, breaking it up.",
-        "Stir in the turmeric, cinnamon, split peas and chopped tomatoes, plus 100ml water.",
-        "Simmer for 10 minutes until the split peas are tender, then serve over the rice."
+        "Stir in the turmeric, cinnamon, rinsed lentils and chopped tomatoes, plus 200ml water.",
+        "Simmer for 15 minutes, stirring often, until the lentils are soft, then serve over the rice. (Red lentils stand in for yellow split peas, which need about an hour.)"
       ]
     },
     {
@@ -3109,17 +3109,18 @@
     },
     {
       id: "d197", title: "Irish-Style Beef & Stout Stew", tags: [], cuisine: "Ireland", protein: "beef",
-      prep: 8, cook: 18,
+      prep: 8, cook: 20,
       ingredients: [
-        ing(160, "g", "beef stewing steak, diced", "meat"), ing(100, "ml", "stout or dark ale", "store"),
-        ing(1, "", "small potato, chunked", "produce"), ing(0.5, "", "onion, diced", "produce"),
+        ing(160, "g", "beef rump steak, cut into strips", "meat"), ing(100, "ml", "stout or dark ale", "store"),
+        ing(1, "", "small potato, cut into 2cm cubes", "produce"), ing(0.5, "", "onion, diced", "produce"),
         ing(100, "ml", "beef stock", "store")
       ],
       steps: [
-        "Brown the beef in a splash of oil over high heat for 3–4 minutes.",
-        "Add the onion and potato, and cook for 2 minutes.",
-        "Pour in the stout and stock, cover and simmer for 15 minutes until the beef is tender.",
-        "Season and serve, with bread if you like."
+        "Boil the potato cubes in salted water for 10–12 minutes until a knife slides in easily, then drain. Cook them separately because the stout's acidity stops raw potato from softening.",
+        "Meanwhile, fry the onion in a splash of oil over a medium heat for 6–8 minutes until soft and golden. Tip onto a plate.",
+        "Turn the heat to high and sear the beef for 1–2 minutes until browned but still pink inside. Add to the onion.",
+        "Pour the stout and stock into the pan and bubble for 4–5 minutes until reduced by about a third.",
+        "Return the beef, onion and potato, heat through for 1 minute, season and serve, with bread if you like."
       ]
     },
     {
@@ -3171,15 +3172,16 @@
       id: "d201", title: "Indonesian-Style Beef Rendang Stew", tags: ["spicy", "quick"], cuisine: "Indonesia", protein: "beef",
       prep: 8, cook: 18,
       ingredients: [
-        ing(160, "g", "beef stewing steak, diced", "meat"), ing(150, "ml", "coconut milk", "store"),
+        ing(160, "g", "beef sirloin, thinly sliced", "meat"), ing(150, "ml", "coconut milk", "store"),
         ing(1, "tsp", "curry powder", "spice"), ing(0.5, "tsp", "ground ginger", "spice"),
         ing(0.25, "tsp", "chilli flakes", "spice"), ing(70, "g", "rice", "store")
       ],
       steps: [
         "Cook the rice according to the packet instructions.",
-        "Fry the beef in a splash of oil over high heat for 3–4 minutes until browned.",
-        "Stir in the curry powder, ginger and chilli flakes, then pour in the coconut milk.",
-        "Cover and simmer for 12–13 minutes until the beef is tender and the sauce has thickened, then serve over the rice."
+        "Sear the beef in a splash of oil over high heat for 1–2 minutes until browned. Tip onto a plate.",
+        "Lower the heat, stir in the curry powder, ginger and chilli flakes for 30 seconds, then pour in the coconut milk.",
+        "Simmer uncovered for 8–10 minutes, stirring often, until thick and clinging to the spoon.",
+        "Return the beef and its juices, toss for 1 minute, then serve over the rice."
       ]
     },
     {
@@ -3244,7 +3246,7 @@
     },
     {
       id: "d206", title: "Armenian-Style Stuffed Pepper Bowl", tags: ["quick"], cuisine: "Armenia", protein: "beef",
-      prep: 9, cook: 15,
+      prep: 9, cook: 35,
       ingredients: [
         ing(1, "", "red pepper, halved and deseeded", "produce"), ing(120, "g", "beef mince", "meat"),
         ing(50, "g", "rice", "store"), ing(0.5, "tsp", "ground cinnamon", "spice"),
@@ -3252,23 +3254,23 @@
       ],
       steps: [
         "Part-cook the rice for 8 minutes, then drain.",
-        "Mix the beef mince with the part-cooked rice and cinnamon, and pile into the pepper halves.",
+        "Meanwhile, fry the beef mince with the cinnamon in a splash of oil for 5 minutes until browned, then mix with the rice and pile into the pepper halves.",
         "Place in a small ovenproof dish, spoon over the chopped tomatoes, cover with foil.",
-        "Bake at 190°C (fan 170°C) for 20 minutes until the pepper is tender and the filling cooked through."
+        "Bake at 190°C (fan 170°C) for 25 minutes until the pepper is tender."
       ]
     },
     {
       id: "d207", title: "Ukrainian-Style Beetroot & Beef Stew", tags: ["quick"], cuisine: "Ukraine", protein: "beef",
-      prep: 8, cook: 16,
+      prep: 8, cook: 14,
       ingredients: [
-        ing(150, "g", "beef stewing steak, diced", "meat"), ing(100, "g", "cooked beetroot, diced", "produce"),
+        ing(150, "g", "beef rump steak, cut into strips", "meat"), ing(100, "g", "cooked beetroot, diced", "produce"),
         ing(0.5, "", "onion, diced", "produce"), ing(200, "ml", "beef stock", "store"),
         ing(2, "tbsp", "soured cream", "dairy")
       ],
       steps: [
-        "Brown the beef in a splash of oil over high heat for 3–4 minutes.",
-        "Add the onion and cook for 3 minutes, then pour in the stock and simmer for 10 minutes.",
-        "Stir in the beetroot and warm through for 2 minutes.",
+        "Sear the beef in a splash of oil over high heat for 1–2 minutes until browned but still pink inside. Tip onto a plate.",
+        "Add the onion and cook over a medium heat for 4–5 minutes, then pour in the stock and simmer for 5 minutes to reduce a little.",
+        "Stir in the beetroot and warm through for 2 minutes, then return the beef for 1 minute.",
         "Serve with a dollop of soured cream."
       ]
     },
@@ -3289,17 +3291,17 @@
     },
     {
       id: "d209", title: "Uzbek-Style Beef Plov Rice", tags: ["quick"], cuisine: "Uzbekistan", protein: "beef",
-      prep: 8, cook: 16,
+      prep: 8, cook: 22,
       ingredients: [
-        ing(150, "g", "beef stewing steak, diced", "meat"), ing(70, "g", "rice", "store"),
+        ing(150, "g", "beef rump steak, cut into 2cm cubes", "meat"), ing(70, "g", "rice", "store"),
         ing(0.5, "", "carrot, grated", "produce"), ing(0.5, "", "onion, sliced", "produce"),
         ing(0.5, "tsp", "ground cumin", "spice"), ing(150, "ml", "beef stock", "store")
       ],
       steps: [
-        "Fry the beef and onion in a splash of oil over high heat for 4 minutes until browned.",
-        "Add the carrot and cumin, and cook for 2 minutes.",
-        "Stir in the rice and stock, cover and simmer for 14–15 minutes until the rice is tender and liquid absorbed.",
-        "Season and serve."
+        "Sear the beef in a splash of oil over high heat for 1–2 minutes until browned. Tip onto a plate.",
+        "Fry the onion over a medium heat for 4 minutes, then add the carrot and cumin and cook for 2 minutes.",
+        "Stir in the rice and stock, cover and simmer for 14–15 minutes until the rice is tender and the liquid absorbed.",
+        "Scatter the beef over the rice, cover, take off the heat and leave for 2 minutes to warm through. Season and serve."
       ]
     },
     {
@@ -3334,7 +3336,7 @@
     },
     {
       id: "d212", title: "Colombian-Style Beef & Potato Stew", tags: ["quick"], cuisine: "Colombia", protein: "beef",
-      prep: 8, cook: 16,
+      prep: 8, cook: 20,
       ingredients: [
         ing(150, "g", "beef mince", "meat"), ing(1, "", "small potato, diced", "produce"),
         ing(0.5, "", "onion, diced", "produce"), ing(150, "g", "chopped tomatoes", "store"),
@@ -3342,8 +3344,8 @@
       ],
       steps: [
         "Fry the onion and beef mince in a splash of oil over medium-high heat for 6 minutes, breaking up the mince.",
-        "Add the potato, cumin and chopped tomatoes, plus 100ml water.",
-        "Simmer for 12 minutes until the potato is tender.",
+        "Add the potato, cumin and 150ml water, cover and simmer for 8 minutes, then add the chopped tomatoes (added later because their acidity stops raw potato softening).",
+        "Simmer for 5 minutes until the potato is tender.",
         "Season and serve."
       ]
     },
@@ -3393,7 +3395,7 @@
       ]
     },
     {
-      id: "d216", title: "Trinidadian-Style Split Pea Fritter Bowl (Doubles-Inspired)", tags: ["vegetarian", "vegan", "spicy", "quick"], cuisine: "Trinidad", protein: "plant-based",
+      id: "d216", title: "Trinidadian-Style Curried Chickpea Flatbread (Doubles-Inspired)", tags: ["vegetarian", "vegan", "spicy", "quick"], cuisine: "Trinidad", protein: "plant-based",
       prep: 8, cook: 12,
       ingredients: [
         ing(1, "tin", "chickpeas, drained", "store"), ing(0.5, "tsp", "curry powder", "spice"),
@@ -3484,7 +3486,7 @@
     },
     {
       id: "d222", title: "Senegalese-Style Peanut & Vegetable Rice (Maafe-Inspired)", tags: ["vegetarian", "vegan", "quick"], cuisine: "Senegal", protein: "plant-based",
-      prep: 8, cook: 14,
+      prep: 8, cook: 16,
       ingredients: [
         ing(2, "tbsp", "peanut butter", "store"), ing(150, "g", "chopped tomatoes", "store"),
         ing(0.5, "", "sweet potato, diced", "produce"), ing(0.5, "", "carrot, sliced", "produce"),
@@ -3492,23 +3494,26 @@
       ],
       steps: [
         "Cook the rice according to the packet instructions.",
-        "Simmer the sweet potato and carrot in the chopped tomatoes with 100ml water for 8 minutes.",
+        "Simmer the sweet potato and carrot in 150ml water for 8 minutes until nearly tender, then add the chopped tomatoes and simmer for 2 minutes.",
         "Stir in the peanut butter until smooth, and simmer for 4 minutes.",
         "Serve over the rice."
       ]
     },
     {
       id: "d223", title: "Belgian-Style Beef & Beer Stew (Carbonnade-Inspired)", tags: ["quick"], cuisine: "Belgium", protein: "beef",
-      prep: 8, cook: 16,
+      prep: 8, cook: 20,
       ingredients: [
-        ing(150, "g", "beef stewing steak, diced", "meat"), ing(0.5, "", "onion, sliced", "produce"),
-        ing(100, "ml", "brown ale or stout", "store"), ing(1, "tsp", "Dijon mustard", "store"),
-        ing(1, "", "small potato, chunked", "produce")
+        ing(150, "g", "beef rump steak, cut into strips", "meat"), ing(0.5, "", "onion, sliced", "produce"),
+        ing(1, "", "small potato, cut into 2cm cubes", "produce"), ing(100, "ml", "brown ale or stout", "store"),
+        ing(100, "ml", "beef stock", "store"), ing(1, "tsp", "Dijon mustard", "store"),
+        ing(1, "tsp", "brown sugar", "store")
       ],
       steps: [
-        "Brown the beef and onion in a splash of oil over high heat for 4 minutes.",
-        "Add the potato, ale and mustard, cover and simmer for 12 minutes until the beef and potato are tender.",
-        "Season and serve."
+        "Boil the potato cubes in salted water for 10–12 minutes until a knife slides in easily, then drain. Cook them separately because the beer's acidity stops raw potato from softening.",
+        "Meanwhile, fry the onion in a splash of oil over a medium heat for 8 minutes until soft and golden. Tip onto a plate.",
+        "Turn the heat to high and sear the beef for 1–2 minutes until browned but still pink inside. Add to the onion.",
+        "Pour the ale, stock, mustard and sugar into the pan and bubble for 4 minutes until slightly reduced and glossy.",
+        "Return the beef, onion and potato, heat through for 1 minute, season and serve."
       ]
     },
     {
@@ -3767,7 +3772,7 @@
       ]
     },
     {
-      id: "d240", title: "Greek Avgolemono Chicken & Rice Soup", tags: ["quick"], cuisine: "Greece", protein: "chicken",
+      id: "d240", title: "Greek Avgolemono Chicken & Orzo Soup", tags: ["quick"], cuisine: "Greece", protein: "chicken",
       prep: 8, cook: 20,
       ingredients: [
         ing(150, "g", "chicken breast, diced", "meat"), ing(500, "ml", "chicken stock", "store"),
@@ -3805,20 +3810,20 @@
     },
     {
       id: "d242", title: "Greek Beef Giouvetsi with Orzo", tags: ["quick"], cuisine: "Greece", protein: "beef",
-      prep: 9, cook: 28,
+      prep: 9, cook: 20,
       ingredients: [
-        ing(150, "g", "beef (braising steak), diced", "meat"), ing(60, "g", "orzo", "store"),
+        ing(150, "g", "beef rump steak, cut into 2cm pieces", "meat"), ing(60, "g", "orzo", "store"),
         ing(200, "g", "chopped tomatoes", "store"), ing(0.5, "", "onion, diced", "produce"),
         ing(1, "", "garlic clove, minced", "produce"), ing(1, "tbsp", "olive oil", "store"),
-        ing(0.25, "tsp", "ground cinnamon", "spice"), ing(150, "ml", "beef stock", "store"),
+        ing(0.25, "tsp", "ground cinnamon", "spice"), ing(200, "ml", "beef stock", "store"),
         ing(20, "g", "hard cheese (kefalotyri or parmesan), grated", "dairy"), ing(1, "handful", "fresh parsley, chopped", "produce")
       ],
       steps: [
-        "Heat the olive oil in a saucepan over medium-high heat and brown the beef pieces for 3–4 minutes.",
-        "Add the onion and garlic and cook for 2–3 minutes until softened.",
-        "Stir in the chopped tomatoes, cinnamon and stock, bring to a simmer, cover and cook for 15–18 minutes until the beef is tender, adding a splash more stock if it dries out.",
-        "Stir in the orzo and cook for a further 8–10 minutes, stirring occasionally, until the orzo is tender and the sauce has thickened.",
-        "Spoon into a bowl, scatter with the grated cheese and parsley."
+        "Heat the olive oil in a saucepan over high heat and sear the beef for 1–2 minutes until browned. Tip onto a plate.",
+        "Lower the heat, add the onion and garlic and cook for 3 minutes until softened.",
+        "Stir in the chopped tomatoes, cinnamon and stock and bring to a simmer.",
+        "Add the orzo and cook for 8–10 minutes, stirring often, until tender and the sauce has thickened. Add a splash of water if it dries out.",
+        "Return the beef and its juices for 1–2 minutes, then spoon into a bowl and scatter with the cheese and parsley."
       ]
     },
     {
@@ -4046,7 +4051,7 @@
     },
     {
       id: "d255", title: "Hungarian Stuffed Peppers with Pork and Rice (Töltött Paprika)", tags: ["quick"], cuisine: "Hungary", protein: "pork",
-      prep: 9, cook: 30,
+      prep: 9, cook: 40,
       ingredients: [
         ing(1, "", "large bell pepper, top cut off and deseeded", "produce"), ing(120, "g", "pork mince", "meat"),
         ing(40, "g", "cooked rice", "store"), ing(0.25, "", "onion, finely diced", "produce"),
@@ -4059,7 +4064,7 @@
         "Mix the pork mince, cooked rice, onion, garlic and paprika together and season well.",
         "Stuff the mixture into the hollowed pepper and stand it upright in a small ovenproof dish.",
         "Mix the passata with the tomato purée and pour around the pepper.",
-        "Cover with foil and bake for 25–30 minutes until the pepper is tender and the filling is cooked through.",
+        "Cover with foil and bake for 35–40 minutes until the pepper is tender and the filling is piping hot and cooked through.",
         "Serve with the tomato sauce spooned over, a dollop of soured cream and a scatter of parsley."
       ]
     },
@@ -4296,20 +4301,20 @@
     },
     {
       id: "d269", title: "Senegalese-Style Beef Mafé Peanut Stew with Rice", tags: ["quick", "spicy"], cuisine: "Senegal", protein: "beef",
-      prep: 9, cook: 25,
+      prep: 9, cook: 18,
       ingredients: [
-        ing(180, "g", "beef (braising steak), diced", "meat"), ing(2, "tbsp", "smooth peanut butter", "store"),
+        ing(180, "g", "beef rump steak, cut into 2cm pieces", "meat"), ing(2, "tbsp", "smooth peanut butter", "store"),
         ing(200, "g", "chopped tomatoes", "store"), ing(0.5, "", "onion, diced", "produce"),
         ing(1, "", "garlic clove, minced", "produce"), ing(1, "tsp", "fresh ginger, grated", "produce"),
         ing(0.5, "tsp", "chilli powder", "spice"), ing(150, "ml", "beef stock", "store"),
         ing(150, "g", "cooked rice", "store"), ing(1, "handful", "fresh coriander, chopped", "produce")
       ],
       steps: [
-        "Heat a little oil in a saucepan and brown the beef pieces over medium-high heat for 4–5 minutes.",
-        "Add the onion, garlic and ginger and cook for 3–4 minutes until softened.",
-        "Stir in the chopped tomatoes, chilli powder and stock, bring to a simmer, cover and cook for 15–18 minutes until the beef is tender.",
-        "Stir in the peanut butter until fully dissolved and simmer, uncovered, for a further 3–4 minutes until thickened.",
-        "Serve over rice, scattered with coriander."
+        "Heat a little oil in a saucepan and sear the beef over high heat for 1–2 minutes until browned. Tip onto a plate.",
+        "Lower the heat, add the onion, garlic and ginger and cook for 3–4 minutes until softened.",
+        "Stir in the chopped tomatoes, chilli powder and stock and simmer for 8 minutes.",
+        "Stir in the peanut butter until dissolved and simmer for 3 minutes until thickened.",
+        "Return the beef and its juices for 1–2 minutes, then serve over rice scattered with coriander."
       ]
     },
     {
@@ -4385,9 +4390,9 @@
     },
     {
       id: "d274", title: "Goan Pork Vindaloo with Rice", tags: ["spicy"], cuisine: "India", protein: "pork",
-      prep: 8, cook: 25,
+      prep: 8, cook: 20,
       ingredients: [
-        ing(180, "g", "pork shoulder, diced", "meat"), ing(2, "tbsp", "vindaloo curry paste", "store"),
+        ing(180, "g", "pork loin steak, cut into 2cm cubes", "meat"), ing(2, "tbsp", "vindaloo curry paste", "store"),
         ing(1, "tbsp", "malt vinegar", "store"), ing(1, "", "onion, sliced", "produce"),
         ing(2, "", "garlic cloves, crushed", "produce"), ing(1, "tsp", "fresh ginger, grated", "produce"),
         ing(1, "tsp", "ground cumin", "spice"), ing(1, "", "tomato, chopped", "produce"),
@@ -4397,8 +4402,8 @@
       steps: [
         "Toss the pork with the vindaloo paste and vinegar in a bowl and set aside to marinate while you prep everything else.",
         "Heat the oil in a pan and fry the onion for 5 minutes until soft, then add the garlic and ginger and cook for 1 minute.",
-        "Add the pork and cook for 3–4 minutes until browned all over.",
-        "Stir in the tomato, cumin and 100ml water. Cover and simmer for 15–18 minutes until the pork is tender, stirring occasionally and topping up with a splash of water if it looks dry.",
+        "Stir in the tomato, cumin and 100ml water and simmer for 6–8 minutes until thick.",
+        "Add the pork with its marinade and simmer for 5–6 minutes, stirring, until cooked through. Add a splash of water if it looks dry.",
         "Meanwhile, cook the rice according to the packet instructions.",
         "Serve the vindaloo over the rice, scattered with coriander."
       ]
@@ -4465,9 +4470,9 @@
     },
     {
       id: "d278", title: "Pork Carnitas Bowl with Pineapple Salsa", tags: ["quick"], cuisine: "Mexico", protein: "pork",
-      prep: 8, cook: 20,
+      prep: 8, cook: 12,
       ingredients: [
-        ing(180, "g", "pork shoulder, diced", "meat"), ing(1, "tsp", "ground cumin", "spice"),
+        ing(180, "g", "pork loin steak, cut into 1.5cm pieces", "meat"), ing(1, "tsp", "ground cumin", "spice"),
         ing(0.5, "tsp", "dried oregano", "spice"), ing(1, "", "orange, juiced", "produce"),
         ing(1, "tbsp", "vegetable oil", "store"), ing(1, "", "garlic clove, crushed", "produce"),
         ing(80, "g", "tinned pineapple chunks, drained and chopped", "store"), ing(0.5, "", "red onion, finely diced", "produce"),
@@ -4476,7 +4481,7 @@
       ],
       steps: [
         "Toss the pork with the cumin, oregano, garlic and orange juice.",
-        "Heat the oil in a pan and fry the pork over medium-high heat for 12–15 minutes, turning occasionally, until browned and cooked through. Shred with two forks.",
+        "Heat the oil in a pan and fry the pork over high heat for 6–8 minutes, turning occasionally, until crisp at the edges and cooked through. Roughly chop.",
         "Meanwhile mix the pineapple, red onion, coriander, a squeeze of lime juice and chilli flakes for the salsa.",
         "Warm the rice.",
         "Serve the shredded pork over the rice, topped with the pineapple salsa and remaining lime wedges."
@@ -4523,9 +4528,9 @@
     },
     {
       id: "d281", title: "Beef Birria Tacos with Consommé", tags: ["spicy"], cuisine: "Mexico", protein: "beef",
-      prep: 9, cook: 30,
+      prep: 9, cook: 25,
       ingredients: [
-        ing(180, "g", "beef shin or brisket, diced", "meat"), ing(1, "tbsp", "chipotle paste", "store"),
+        ing(180, "g", "beef rump steak, thinly sliced", "meat"), ing(1, "tbsp", "chipotle paste", "store"),
         ing(1, "tsp", "ground cumin", "spice"), ing(0.5, "tsp", "dried oregano", "spice"),
         ing(1, "", "garlic clove, crushed", "produce"), ing(0.5, "", "onion, chopped", "produce"),
         ing(1, "", "tomato, chopped", "produce"), ing(300, "ml", "beef stock", "store"),
@@ -4533,11 +4538,10 @@
         ing(1, "", "lime, cut into wedges", "produce"), ing(1, "tbsp", "fresh coriander, chopped", "produce")
       ],
       steps: [
-        "Brown the beef in a hot, dry pan for 3–4 minutes.",
-        "Add the chipotle paste, cumin, oregano, garlic, onion, tomato and stock. Cover and simmer for 20–25 minutes until the beef is tender, topping up with water if needed.",
-        "Shred the beef in the sauce, keeping some of the broth aside as a consommé for dipping.",
-        "Dip the tortillas in a little of the fat from the top of the broth, fill with beef and cheese, fold and fry in a dry pan for 1–2 minutes each side until crisp.",
-        "Serve the tacos with the reserved consommé for dipping, lime wedges and coriander."
+        "Put the chipotle paste, cumin, oregano, garlic, onion, tomato and stock in a pan and simmer for 12–15 minutes until the onion is soft. Mash well or blend for a smoother consommé.",
+        "Meanwhile, sear the beef in a hot pan with a splash of oil for 1–2 minutes until browned. Stir it into the consommé for 1 minute, then lift it out and chop roughly.",
+        "Dip the tortillas in the fat from the top of the consommé, fill with beef and cheese, fold and fry in a dry pan for 1–2 minutes each side until crisp.",
+        "Serve the tacos with the consommé for dipping, lime wedges and coriander."
       ]
     },
     {
@@ -4800,9 +4804,9 @@
     },
     {
       id: "d296", title: "Sri Lankan-Style Black Pepper Beef Curry", tags: ["spicy"], cuisine: "Sri Lanka", protein: "beef",
-      prep: 8, cook: 25,
+      prep: 8, cook: 18,
       ingredients: [
-        ing(180, "g", "stewing beef, diced", "meat"), ing(1, "tbsp", "vegetable oil", "store"),
+        ing(180, "g", "beef sirloin, thinly sliced", "meat"), ing(1, "tbsp", "vegetable oil", "store"),
         ing(0.5, "", "onion, sliced", "produce"), ing(2, "", "garlic cloves, crushed", "produce"),
         ing(1, "tsp", "fresh ginger, grated", "produce"), ing(1, "tsp", "black peppercorns, coarsely crushed", "spice"),
         ing(0.5, "tsp", "ground coriander", "spice"), ing(0.25, "tsp", "turmeric", "spice"),
@@ -4810,12 +4814,12 @@
         ing(100, "g", "basmati rice", "store")
       ],
       steps: [
-        "Heat the oil and brown the beef in batches, 4–5 minutes. Remove and set aside.",
-        "Soften the onion, garlic, ginger and curry leaves in the same pan for 5 minutes.",
-        "Stir in the black pepper, coriander and turmeric, and cook for 1 minute.",
-        "Return the beef to the pan with the coconut milk and 100ml water. Cover and simmer for 18–20 minutes until the beef is tender, stirring occasionally.",
-        "Uncover and simmer for a further 3–4 minutes to thicken slightly.",
-        "Cook the rice according to the packet instructions and serve alongside."
+        "Cook the rice according to the packet instructions.",
+        "Heat the oil over high heat and sear the beef for 1–2 minutes until browned. Tip onto a plate.",
+        "Lower the heat and soften the onion, garlic, ginger and curry leaves for 5 minutes.",
+        "Stir in the black pepper, coriander and turmeric and cook for 1 minute.",
+        "Pour in the coconut milk and 50ml water and simmer uncovered for 6–8 minutes until thickened.",
+        "Return the beef and its juices for 1–2 minutes, then serve with the rice."
       ]
     },
     {
@@ -4837,21 +4841,21 @@
     },
     {
       id: "d298", title: "Swedish Kalops-Style Beef and Root Vegetable Stew", tags: [], cuisine: "Sweden", protein: "beef",
-      prep: 9, cook: 30,
+      prep: 9, cook: 22,
       ingredients: [
-        ing(180, "g", "stewing beef, diced", "meat"), ing(1, "tbsp", "butter", "dairy"),
+        ing(180, "g", "beef rump steak, cut into 2cm cubes", "meat"), ing(1, "tbsp", "butter", "dairy"),
         ing(0.5, "", "onion, chopped", "produce"), ing(1, "", "carrot, sliced", "produce"),
         ing(4, "", "whole allspice berries", "spice"), ing(1, "", "bay leaf", "spice"),
         ing(200, "ml", "beef stock", "store"), ing(1, "tsp", "plain flour", "store"),
-        ing(150, "g", "potatoes, boiled", "produce"), ing(2, "tbsp", "pickled beetroot", "store")
+        ing(150, "g", "potatoes, halved", "produce"), ing(2, "tbsp", "pickled beetroot", "store")
       ],
       steps: [
-        "Melt the butter in a pan and brown the beef in batches, 4–5 minutes. Remove and set aside.",
+        "Boil the potatoes in salted water for 15–18 minutes until tender.",
+        "Meanwhile, melt the butter in a pan over high heat and sear the beef for 1–2 minutes until browned. Tip onto a plate.",
         "Soften the onion and carrot in the same pan for 5 minutes.",
-        "Stir the flour into the vegetables, then gradually add the stock, stirring to avoid lumps.",
-        "Return the beef to the pan with the allspice and bay leaf. Cover and simmer for 20–25 minutes until the beef is tender.",
-        "Meanwhile boil the potatoes until tender.",
-        "Serve the stew with the boiled potatoes and pickled beetroot."
+        "Stir the flour into the vegetables, then gradually add the stock, stirring to avoid lumps. Add the allspice and bay leaf and simmer for 10 minutes until the carrot is tender.",
+        "Return the beef and its juices for 1–2 minutes, then remove the bay leaf.",
+        "Serve with the potatoes and pickled beetroot."
       ]
     },
     {
@@ -4969,7 +4973,7 @@
       id: "d305", title: "Trinidadian-Style Beef Pelau", tags: ["quick"], cuisine: "Trinidad", protein: "beef",
       prep: 9, cook: 25,
       ingredients: [
-        ing(150, "g", "stewing beef, diced", "meat"), ing(1, "tbsp", "brown sugar", "store"),
+        ing(150, "g", "beef rump steak, cut into 2cm cubes", "meat"), ing(1, "tbsp", "brown sugar", "store"),
         ing(1, "tbsp", "vegetable oil", "store"), ing(0.5, "", "onion, chopped", "produce"),
         ing(1, "", "garlic clove, crushed", "produce"), ing(0.5, "tsp", "dried thyme", "spice"),
         ing(1, "", "green chilli, chopped", "produce"), ing(100, "g", "basmati rice", "store"),
@@ -4978,10 +4982,10 @@
       ],
       steps: [
         "Heat the oil in a pot until hot, add the sugar and let it caramelise to a dark brown, 1–2 minutes, watching closely so it doesn't burn.",
-        "Add the beef immediately and stir to coat in the caramel, browning for 2–3 minutes.",
-        "Add the onion, garlic, thyme and chilli, and cook for 3 minutes.",
+        "Add the beef immediately and stir to coat in the caramel for 1–2 minutes. Lift the beef onto a plate.",
+        "Add the onion, garlic, thyme and chilli to the pot and cook for 3 minutes.",
         "Stir in the rice, peas and carrot, then pour in the coconut milk and 100ml water.",
-        "Cover and simmer for 18–20 minutes until the rice and beef are tender, stirring once halfway through."
+        "Cover and simmer for 18–20 minutes until the rice is tender, stirring once halfway through. Stir the beef back in for the last 2 minutes."
       ]
     },
     {
@@ -5056,27 +5060,27 @@
     },
     {
       id: "d310", title: "Norwegian-Style Lapskaus (Beef and Cabbage Stew)", tags: [], cuisine: "Norway", protein: "beef",
-      prep: 9, cook: 28,
+      prep: 9, cook: 25,
       ingredients: [
-        ing(180, "g", "stewing beef, diced", "meat"), ing(1, "tbsp", "butter", "dairy"),
+        ing(180, "g", "beef rump steak, cut into 2cm cubes", "meat"), ing(1, "tbsp", "butter", "dairy"),
         ing(0.5, "", "onion, chopped", "produce"), ing(1, "", "carrot, sliced", "produce"),
-        ing(1, "", "potato, diced", "produce"), ing(80, "g", "white cabbage, shredded", "produce"),
+        ing(1, "", "potato, cut into 1.5cm cubes", "produce"), ing(80, "g", "white cabbage, shredded", "produce"),
         ing(250, "ml", "beef stock", "store"), ing(1, "", "bay leaf", "spice"),
         ing(1, "tbsp", "fresh parsley, chopped", "produce")
       ],
       steps: [
-        "Melt the butter in a pot and brown the beef for 4–5 minutes. Remove and set aside.",
+        "Melt the butter in a pot over high heat and sear the beef for 1–2 minutes until browned. Tip onto a plate.",
         "Soften the onion and carrot in the same pot for 5 minutes.",
-        "Return the beef to the pot with the potato, stock and bay leaf. Cover and simmer for 15 minutes.",
-        "Add the cabbage and simmer for a further 8–10 minutes until the beef and vegetables are tender.",
-        "Season to taste and scatter with parsley to serve."
+        "Add the potato, stock and bay leaf, cover and simmer for 10 minutes.",
+        "Add the cabbage and simmer for 6–8 minutes until the potato and cabbage are tender.",
+        "Return the beef and its juices for 1–2 minutes, season and scatter with parsley to serve."
       ]
     },
     {
       id: "d311", title: "Lancashire Hotpot with Lamb and Sliced Potatoes", tags: [], cuisine: "UK", protein: "lamb",
       prep: 10, cook: 35,
       ingredients: [
-        ing(180, "g", "lamb neck or leg, diced", "meat"), ing(1, "", "onion, sliced", "produce"),
+        ing(180, "g", "lamb leg steak, diced", "meat"), ing(1, "", "onion, sliced", "produce"),
         ing(1, "", "carrot, sliced", "produce"), ing(2, "", "potatoes, thinly sliced", "produce"),
         ing(150, "ml", "lamb or chicken stock", "store"), ing(1, "tsp", "Worcestershire sauce", "store"),
         ing(1, "tsp", "fresh thyme leaves", "produce"), ing(15, "g", "butter, melted", "dairy"),
@@ -5084,10 +5088,10 @@
       ],
       steps: [
         "Preheat the oven to 180C (fan 160C).",
-        "In an ovenproof dish, brown the lamb in a little butter over high heat, then remove.",
+        "In an ovenproof dish, brown the lamb in a little butter over high heat for 2 minutes, then remove.",
         "Layer the onion, carrot and lamb in the dish, tucking in the thyme and seasoning as you go, then pour over the stock and Worcestershire sauce.",
         "Arrange the sliced potatoes on top in overlapping layers and brush with the melted butter.",
-        "Cover with foil and bake for 25 minutes, then uncover and bake a further 10 minutes until the potatoes are golden and the lamb is tender."
+        "Cover with foil and bake for 25 minutes, then uncover and bake a further 10 minutes until the potatoes are golden and tender."
       ]
     },
     {
@@ -5146,7 +5150,7 @@
     },
     {
       id: "d315", title: "Duck Confit-Style Duck Leg with Sautéed Potatoes", tags: [], cuisine: "France", protein: "duck",
-      prep: 6, cook: 30,
+      prep: 6, cook: 45,
       ingredients: [
         ing(1, "", "duck leg (about 200g)", "meat"), ing(2, "", "potatoes, diced", "produce"),
         ing(2, "", "garlic cloves, crushed", "produce"), ing(1, "tsp", "fresh thyme leaves", "produce"),
@@ -5155,17 +5159,17 @@
       steps: [
         "Preheat the oven to 190C (fan 170C).",
         "Score the duck skin, season well with salt and place skin-side down in a cold ovenproof frying pan.",
-        "Set over low-medium heat for 5 minutes to render the fat and crisp the skin, then transfer the pan to the oven and roast for 25 minutes until cooked through and crisp.",
+        "Set over low-medium heat for 5 minutes to render the fat and crisp the skin, then transfer the pan to the oven and roast for 40 minutes until tender and crisp.",
         "Meanwhile, parboil the diced potatoes for 5 minutes, then drain.",
         "Fry the potatoes in a little of the rendered duck fat with the garlic and thyme for 8–10 minutes until golden.",
         "Rest the duck for 3 minutes before serving with the potatoes."
       ]
     },
     {
-      id: "d316", title: "Beef Bourguignon-Style Braised Beef with Mushrooms", tags: [], cuisine: "France", protein: "beef",
-      prep: 9, cook: 35,
+      id: "d316", title: "Beef Bourguignon-Style Beef with Mushrooms", tags: [], cuisine: "France", protein: "beef",
+      prep: 9, cook: 25,
       ingredients: [
-        ing(180, "g", "beef stewing steak, diced", "meat"), ing(1, "", "rasher smoked bacon, chopped", "meat"),
+        ing(180, "g", "beef rump steak, cut into 2cm cubes", "meat"), ing(1, "", "rasher smoked bacon, chopped", "meat"),
         ing(1, "", "small onion, sliced", "produce"), ing(1, "", "carrot, sliced", "produce"),
         ing(60, "g", "chestnut mushrooms, halved", "produce"), ing(1, "", "garlic clove, crushed", "produce"),
         ing(150, "ml", "red wine", "store"), ing(100, "ml", "beef stock", "store"),
@@ -5173,12 +5177,11 @@
         ing(1, "", "bay leaf", "spice"), ing(10, "g", "butter", "dairy")
       ],
       steps: [
-        "Brown the beef and bacon in the butter over high heat, then remove and set aside.",
-        "Soften the onion, carrot and garlic in the same pan for 3–4 minutes.",
-        "Return the beef and bacon, then add the wine, stock, tomato purée, thyme and bay leaf.",
-        "Cover and simmer gently for 25 minutes, stirring occasionally.",
-        "Add the mushrooms and simmer uncovered for a further 8–10 minutes until the beef is tender and the sauce has thickened.",
-        "Remove the bay leaf, season and serve."
+        "Melt the butter over high heat and sear the beef for 1–2 minutes until browned. Tip onto a plate.",
+        "Fry the bacon and mushrooms in the same pan for 4 minutes until golden. Add to the beef.",
+        "Soften the onion, carrot and garlic for 4 minutes.",
+        "Add the wine, stock, tomato purée, thyme and bay leaf and simmer uncovered for 12–15 minutes until the carrot is tender and the sauce has reduced by half.",
+        "Return the beef, bacon and mushrooms for 1–2 minutes. Remove the bay leaf, season and serve."
       ]
     },
     {
@@ -5272,7 +5275,7 @@
     },
     {
       id: "d322", title: "Cypriot Kleftiko-Style Lamb with Lemon and Oregano", tags: [], cuisine: "Cyprus", protein: "lamb",
-      prep: 8, cook: 35,
+      prep: 8, cook: 40,
       ingredients: [
         ing(180, "g", "lamb leg steak, cut into chunks", "meat"), ing(1, "", "potato, cut into wedges", "produce"),
         ing(2, "", "garlic cloves, sliced", "produce"), ing(1, "", "lemon, juiced", "produce"),
@@ -5280,10 +5283,10 @@
         ing(1, "", "bay leaf", "spice"), ing(null, "to taste", "salt and pepper", "spice")
       ],
       steps: [
-        "Preheat the oven to 180C (fan 160C).",
+        "Preheat the oven to 200C (fan 180C). Parboil the potato wedges in salted water for 8 minutes, then drain (the lemon juice stops raw potato softening).",
         "Toss the lamb and potato wedges with the garlic, lemon juice, oregano, olive oil, bay leaf and seasoning in an ovenproof dish.",
         "Add a small splash of water and cover tightly with foil.",
-        "Roast for 30 minutes, then uncover and roast for a further 5–8 minutes until the lamb is tender and the potatoes are golden."
+        "Roast for 20 minutes, then uncover and roast for a further 10 minutes until the lamb is cooked and the potatoes are tender and golden."
       ]
     },
     {
@@ -5341,10 +5344,10 @@
       ]
     },
     {
-      id: "d326", title: "Cuban-Style Ropa Vieja Shredded Beef", tags: [], cuisine: "Cuba", protein: "beef",
-      prep: 9, cook: 30,
+      id: "d326", title: "Cuban-Style Ropa Vieja-Inspired Beef and Peppers", tags: [], cuisine: "Cuba", protein: "beef",
+      prep: 9, cook: 18,
       ingredients: [
-        ing(180, "g", "beef skirt or flank steak, thinly sliced", "meat"), ing(1, "", "onion, sliced", "produce"),
+        ing(180, "g", "beef rump steak, thinly sliced", "meat"), ing(1, "", "onion, sliced", "produce"),
         ing(0.5, "", "each red and green pepper, sliced", "produce"), ing(1, "", "garlic clove, crushed", "produce"),
         ing(200, "g", "tinned chopped tomatoes", "store"), ing(0.5, "tsp", "ground cumin", "spice"),
         ing(0.5, "tsp", "smoked paprika", "spice"), ing(1, "", "bay leaf", "spice"),
@@ -5352,10 +5355,10 @@
       ],
       steps: [
         "Cook the rice according to the packet instructions.",
-        "Brown the beef strips in a hot pan, then set aside.",
+        "Sear the beef strips in a hot pan for 1–2 minutes until browned, then set aside.",
         "Soften the onion, peppers and garlic in the same pan for 3–4 minutes.",
-        "Add the tomatoes, cumin, paprika, bay leaf and beef, cover and simmer for 20–25 minutes until the beef is tender.",
-        "Stir in the olives and shred the beef with two forks, then serve with the rice."
+        "Add the tomatoes, cumin, paprika and bay leaf and simmer for 10 minutes until thick.",
+        "Return the beef with the olives for 1–2 minutes, remove the bay leaf and serve with the rice."
       ]
     },
     {
@@ -5565,7 +5568,7 @@
       ],
       steps: [
         "Cook the rice according to the packet instructions.",
-        "Shape the beef mince into a patty, season and fry for 3–4 minutes each side until cooked to preference, then keep warm.",
+        "Shape the beef mince into a patty, season and fry for 4–5 minutes each side until cooked through, then keep warm.",
         "In the same pan, fry the mushrooms in the butter for 2–3 minutes.",
         "Add the stock and soy sauce, thicken with a cornflour and water slurry, and simmer for 2–3 minutes into a gravy.",
         "Fry the egg sunny-side up in a separate pan.",
@@ -5593,7 +5596,7 @@
       id: "d340", title: "Uzbek-Style Lamb Shashlik Skewers", tags: ["quick"], cuisine: "Uzbekistan", protein: "lamb",
       prep: 9, cook: 10,
       ingredients: [
-        ing(150, "g", "lamb shoulder, cubed", "meat"), ing(0.5, "", "onion, grated", "produce"),
+        ing(150, "g", "lamb leg steak, cut into 2.5cm cubes", "meat"), ing(0.5, "", "onion, grated", "produce"),
         ing(1, "tsp", "ground cumin", "spice"), ing(1, "tsp", "coriander seeds, crushed", "spice"),
         ing(0.5, "tsp", "paprika", "spice"), ing(1, "tbsp", "olive oil", "store"),
         ing(1, "", "flatbread", "bakery"), ing(0.25, "", "onion, thinly sliced, for serving", "produce"),
@@ -5609,7 +5612,7 @@
     },
     {
       id: "d341", title: "Uzbek-Style Lagman Noodle Soup with Beef", tags: [], cuisine: "Uzbekistan", protein: "beef",
-      prep: 9, cook: 20,
+      prep: 9, cook: 18,
       ingredients: [
         ing(150, "g", "beef sirloin, cut into strips", "meat"), ing(100, "g", "udon noodles", "store"),
         ing(0.5, "", "onion, sliced", "produce"), ing(1, "", "carrot, sliced", "produce"),
@@ -5622,7 +5625,7 @@
         "Brown the beef strips in a hot pan, then set aside.",
         "Soften the onion, carrot, pepper and garlic in the same pan for 4–5 minutes.",
         "Add the tomato, stock, cumin and chilli flakes, and simmer for 10 minutes.",
-        "Return the beef and simmer a further 5 minutes until tender.",
+        "Return the beef for 1–2 minutes to heat through.",
         "Meanwhile, cook the noodles according to the packet instructions, drain and divide into a bowl.",
         "Ladle the soup over the noodles and scatter with coriander."
       ]
@@ -5665,7 +5668,7 @@
     },
     {
       id: "d344", title: "Swiss Cheese Fondue for One", tags: ["quick", "vegetarian"], cuisine: "Switzerland", protein: "plant-based",
-      prep: 8, cook: 8,
+      prep: 8, cook: 15,
       ingredients: [
         ing(80, "g", "Gruyère, grated", "dairy"), ing(40, "g", "Emmental, grated", "dairy"),
         ing(1, "tsp", "cornflour", "store"), ing(60, "ml", "white wine or apple juice", "store"),
@@ -5674,7 +5677,7 @@
         ing(1, "slice", "crusty bread, cubed", "bakery")
       ],
       steps: [
-        "Rub the inside of a small pan with the cut garlic clove.",
+        "Boil the potato in salted water for 12–15 minutes until tender, then drain and cut into chunks. Meanwhile, rub the inside of a small pan with the cut garlic clove.",
         "Warm the wine or apple juice gently over low heat.",
         "Toss the grated cheeses with the cornflour, then add gradually to the pan, stirring constantly until melted and smooth.",
         "Stir in the lemon juice and a pinch of nutmeg.",
@@ -5704,14 +5707,14 @@
       ingredients: [
         ing(150, "g", "white fish fillet", "meat"), ing(50, "g", "plain flour", "store"),
         ing(80, "ml", "sparkling water", "store"), ing(1, "", "baking potato, cut into chips", "produce"),
-        ing(2, "tbsp", "vegetable oil", "store"), ing(1, "tbsp", "malt vinegar", "store"),
+        ing(2, "tbsp", "vegetable oil", "store"), ing(100, "ml", "vegetable oil, for shallow frying", "store"), ing(1, "tbsp", "malt vinegar", "store"),
         ing(1, "", "lemon wedge", "produce"), ing(1, "tbsp", "tartare sauce or mayonnaise", "store")
       ],
       steps: [
         "Preheat the oven to 200C (fan 180C).",
         "Toss the potato chips with the oil and seasoning, and oven-bake for about 20 minutes, turning once, until golden and crisp.",
         "Whisk the flour with the sparkling water into a light batter, and season.",
-        "Dip the fish in the batter and fry in hot oil for 4–5 minutes, turning once, until golden and cooked through.",
+        "Dip the fish in the batter and shallow-fry in the frying oil for 4–5 minutes, turning once, until golden and cooked through.",
         "Drain and serve with the chips, malt vinegar, lemon wedge and tartare sauce."
       ]
     },
@@ -5782,10 +5785,10 @@
       ]
     },
     {
-      id: "d351", title: "Braised Pork with Gremolata (Milanese Ossobuco-Style)", tags: [], cuisine: "Italy", protein: "pork",
-      prep: 9, cook: 30,
+      id: "d351", title: "Pork with Gremolata (Milanese Ossobuco-Style)", tags: [], cuisine: "Italy", protein: "pork",
+      prep: 9, cook: 22,
       ingredients: [
-        ing(180, "g", "pork shoulder steak", "meat"), ing(1, "tbsp", "plain flour", "store"),
+        ing(180, "g", "pork loin steak", "meat"), ing(1, "tbsp", "plain flour", "store"),
         ing(1, "tbsp", "olive oil", "store"), ing(0.5, "", "onion, diced", "produce"),
         ing(0.5, "", "carrot, diced", "produce"), ing(1, "", "celery stick, diced", "produce"),
         ing(100, "g", "tinned chopped tomatoes", "store"), ing(100, "ml", "chicken stock", "store"),
@@ -5793,16 +5796,16 @@
         ing(1, "", "lemon, zested", "produce"), ing(1, "tbsp", "parsley, chopped", "produce")
       ],
       steps: [
-        "Dust the pork in flour and season. Heat the oil in a pan over medium-high heat and brown the pork on both sides, then remove.",
+        "Dust the pork in flour and season. Heat the oil in a pan over medium-high heat and brown the pork for 2 minutes each side, then remove.",
         "Add the onion, carrot and celery to the pan and soften for 4–5 minutes.",
-        "Return the pork to the pan with the tomatoes, stock and wine. Bring to a simmer, cover and cook gently for 25 minutes, until the pork is tender.",
+        "Add the tomatoes, stock and wine and simmer uncovered for 8 minutes. Return the pork, cover and cook gently for 6–8 minutes until just cooked through.",
         "Meanwhile, mix the garlic, lemon zest and parsley together for the gremolata.",
         "Scatter the gremolata over the pork just before serving."
       ]
     },
     {
       id: "d352", title: "Moroccan-Style Fish Tagine with Chermoula", tags: ["quick", "fish"], cuisine: "Morocco", protein: "fish",
-      prep: 9, cook: 20,
+      prep: 9, cook: 22,
       ingredients: [
         ing(160, "g", "white fish fillet (cod or haddock)", "meat"), ing(2, "", "garlic cloves, finely chopped", "produce"),
         ing(2, "tbsp", "coriander, chopped", "produce"), ing(1, "tsp", "ground cumin", "spice"),
@@ -5813,7 +5816,7 @@
       ],
       steps: [
         "Blitz or finely chop the garlic, coriander, cumin, paprika, chilli flakes, lemon juice and oil into a chermoula paste. Coat the fish and set aside.",
-        "Layer the sliced potato and pepper in a small pan, pour over the chopped tomatoes and a splash of water, and simmer covered for 8–10 minutes until the potato is nearly tender.",
+        "Boil the potato slices for 5 minutes until nearly tender, then drain (tomato's acidity stops raw potato softening). Layer the potato and pepper in a small pan, pour over the chopped tomatoes and a splash of water, and simmer covered for 5 minutes.",
         "Lay the fish on top, spoon over any remaining chermoula, cover and simmer for 8–10 minutes more until the fish flakes easily.",
         "Scatter with olives and serve straight from the pan."
       ]
@@ -5963,19 +5966,19 @@
     },
     {
       id: "d361", title: "Filipino-Style Sinigang na Baboy (Sour Pork & Vegetable Soup)", tags: [], cuisine: "Philippines", protein: "pork",
-      prep: 9, cook: 25,
+      prep: 9, cook: 18,
       ingredients: [
-        ing(150, "g", "pork shoulder, cubed", "meat"), ing(400, "ml", "water or light stock", "store"),
+        ing(150, "g", "pork tenderloin, thinly sliced", "meat"), ing(400, "ml", "water or light stock", "store"),
         ing(1, "tbsp", "tamarind paste", "store"), ing(0.5, "", "onion, sliced", "produce"),
         ing(0.5, "", "tomato, chopped", "produce"), ing(0.5, "", "radish (mooli), sliced", "produce"),
         ing(50, "g", "green beans, halved", "produce"), ing(1, "handful", "spinach", "produce"),
         ing(1, "tbsp", "fish sauce", "store"), ing(1, "", "green chilli, finely chopped", "produce")
       ],
       steps: [
-        "Simmer the pork in the water or stock with the onion and tomato for 15 minutes, skimming any foam.",
+        "Simmer the onion and tomato in the water or stock for 8 minutes.",
         "Stir in the tamarind paste until dissolved.",
         "Add the radish and green beans, and simmer for a further 6–8 minutes until tender.",
-        "Stir in the spinach and chilli, and season with fish sauce.",
+        "Add the pork and simmer for 3–4 minutes until cooked through. Stir in the spinach and chilli, and season with fish sauce.",
         "Serve hot in a deep bowl."
       ]
     },
@@ -6037,18 +6040,18 @@
       id: "d365", title: "Polish-Style Bigos (Hunter's Stew) with Pork and Sausage", tags: [], cuisine: "Poland", protein: "pork",
       prep: 9, cook: 25,
       ingredients: [
-        ing(100, "g", "pork shoulder, diced", "meat"), ing(60, "g", "smoked sausage, sliced", "meat"),
+        ing(100, "g", "pork loin steak, diced", "meat"), ing(60, "g", "smoked sausage, sliced", "meat"),
         ing(150, "g", "sauerkraut, drained", "store"), ing(80, "g", "white cabbage, shredded", "produce"),
         ing(0.5, "", "onion, sliced", "produce"), ing(1, "", "bay leaf", "spice"),
         ing(1, "tsp", "paprika", "spice"), ing(1, "tbsp", "tomato puree", "store"),
         ing(100, "ml", "stock", "store"), ing(1, "tbsp", "vegetable oil", "store")
       ],
       steps: [
-        "Heat the oil in a pan and brown the pork and sausage for 4–5 minutes.",
+        "Heat the oil in a pan and brown the pork and sausage for 2–3 minutes, then tip onto a plate.",
         "Add the onion and soften for 2–3 minutes.",
         "Stir in the sauerkraut, cabbage, tomato puree, paprika and bay leaf, then pour in the stock.",
         "Cover and simmer for 18–20 minutes, stirring occasionally, until the cabbage is tender and the stew has thickened.",
-        "Remove the bay leaf before serving."
+        "Return the pork and sausage for the last 4–5 minutes until the pork is cooked through. Remove the bay leaf before serving."
       ]
     },
     {
@@ -6104,7 +6107,7 @@
     },
     {
       id: "d369", title: "Singapore-Style Bak Kut Teh (Peppery Pork Rib Soup)", tags: [], cuisine: "Singapore", protein: "pork",
-      prep: 8, cook: 35,
+      prep: 8, cook: 75,
       ingredients: [
         ing(200, "g", "pork ribs", "meat"), ing(3, "", "garlic cloves, whole", "produce"),
         ing(1, "tsp", "white peppercorns, lightly crushed", "spice"), ing(1, "", "star anise", "spice"),
@@ -6115,7 +6118,7 @@
       steps: [
         "Toast the peppercorns, star anise and cinnamon in a dry pot over medium heat for 1 minute until fragrant.",
         "Add the stock, garlic, pork ribs and both soy sauces.",
-        "Bring to a simmer, cover, and cook gently for 30–35 minutes until the pork is very tender, skimming occasionally.",
+        "Bring to a simmer, cover, and cook gently for 60–75 minutes until the pork is very tender, skimming occasionally and topping up with water if needed.",
         "Taste and adjust the seasoning, then scatter with spring onion and coriander to serve."
       ]
     },
@@ -6155,7 +6158,7 @@
     },
     {
       id: "d372", title: "Peruvian-Style Beef Anticuchos with Aji Panca", tags: ["quick", "spicy"], cuisine: "Peru", protein: "beef",
-      prep: 8, cook: 10,
+      prep: 8, cook: 18,
       ingredients: [
         ing(150, "g", "beef rump or sirloin, cubed", "meat"), ing(1, "tbsp", "aji panca paste (or smoked paprika and chilli paste)", "store"),
         ing(1, "", "garlic clove, crushed", "produce"), ing(0.5, "tsp", "ground cumin", "spice"),
@@ -6163,28 +6166,28 @@
         ing(0.5, "", "corn on the cob, halved", "produce"), ing(1, "", "small potato, boiled and sliced", "produce")
       ],
       steps: [
-        "Mix the aji panca paste (or paprika and chilli paste), garlic, cumin, vinegar and oil into a marinade and coat the beef. Marinate for 5 minutes.",
+        "Boil the potato and corn in salted water for 12–15 minutes until tender, then drain and slice the potato. Meanwhile, mix the aji panca paste (or paprika and chilli paste), garlic, cumin, vinegar and oil into a marinade and coat the beef. Marinate for 5 minutes.",
         "Thread the beef onto skewers.",
         "Grill or fry over high heat for 2–3 minutes each side until charred and cooked to your liking.",
-        "Boil the corn and potato until tender, and serve alongside the skewers."
+        "Serve the skewers with the corn and potato."
       ]
     },
     {
       id: "d373", title: "Austrian-Style Beef Goulash (Saftgulasch)", tags: [], cuisine: "Austria", protein: "beef",
-      prep: 9, cook: 35,
+      prep: 9, cook: 20,
       ingredients: [
-        ing(150, "g", "beef shin or braising steak, diced", "meat"), ing(1, "", "onion, sliced", "produce"),
+        ing(150, "g", "beef rump steak, cut into strips", "meat"), ing(1, "", "onion, sliced", "produce"),
         ing(1, "tbsp", "sweet paprika", "spice"), ing(0.5, "tsp", "caraway seeds", "spice"),
         ing(1, "", "garlic clove, chopped", "produce"), ing(1, "tbsp", "tomato puree", "store"),
         ing(200, "ml", "beef stock", "store"), ing(0.5, "tsp", "dried marjoram", "spice"),
         ing(1, "tbsp", "vegetable oil", "store"), ing(1, "", "crusty bread roll, to serve", "bakery")
       ],
       steps: [
-        "Heat the oil in a pan and brown the beef in batches, then remove.",
-        "Add the onion and soften for 5–6 minutes until golden.",
-        "Stir in the paprika, caraway and garlic, cooking for 1 minute, then add the tomato puree, stock and beef.",
-        "Cover and simmer gently for 30 minutes, stirring occasionally, until the beef is tender.",
-        "Stir through the marjoram and serve with crusty bread."
+        "Heat the oil over high heat and sear the beef for 1–2 minutes until browned. Tip onto a plate.",
+        "Lower the heat, add the onion and cook for 6–8 minutes until soft and golden.",
+        "Stir in the paprika, caraway and garlic for 1 minute, then add the tomato puree and stock.",
+        "Simmer uncovered for 8–10 minutes until reduced and glossy.",
+        "Return the beef and its juices for 1–2 minutes, stir through the marjoram and serve with crusty bread."
       ]
     },
     {
@@ -6209,7 +6212,7 @@
       id: "d375", title: "Georgian-Style Kharcho Soup (Spiced Beef & Rice Soup)", tags: [], cuisine: "Georgia", protein: "beef",
       prep: 8, cook: 25,
       ingredients: [
-        ing(120, "g", "beef mince or diced stewing beef", "meat"), ing(40, "g", "rice", "store"),
+        ing(120, "g", "beef mince", "meat"), ing(40, "g", "rice", "store"),
         ing(0.5, "", "onion, diced", "produce"), ing(1, "", "garlic clove, chopped", "produce"),
         ing(150, "g", "tinned chopped tomatoes", "store"), ing(20, "g", "walnuts, crushed", "store"),
         ing(400, "ml", "beef stock", "store"), ing(0.5, "tsp", "ground coriander", "spice"),
@@ -6217,7 +6220,7 @@
         ing(1, "tbsp", "coriander, chopped", "produce")
       ],
       steps: [
-        "Brown the beef in a pan over medium-high heat for 4–5 minutes.",
+        "Brown the mince in a pan over medium-high heat for 4–5 minutes, breaking it up as it cooks.",
         "Add the onion and garlic and soften for 3–4 minutes.",
         "Stir in the tomatoes, stock, ground coriander, thyme and chilli flakes, and simmer for 10 minutes.",
         "Add the rice and simmer for a further 12–15 minutes until the rice is tender.",
@@ -6381,19 +6384,19 @@
     },
     {
       id: "d385", title: "Norwegian-Style Fårikål (Lamb and Cabbage Stew)", tags: [], cuisine: "Norway", protein: "lamb",
-      prep: 9, cook: 35,
+      prep: 9, cook: 22,
       ingredients: [
-        ing(180, "g", "lamb shoulder, diced", "meat"), ing(200, "g", "white cabbage, cut into wedges", "produce"),
+        ing(180, "g", "lamb leg steak, cut into 2cm cubes", "meat"), ing(200, "g", "white cabbage, cut into wedges", "produce"),
         ing(1, "tsp", "whole black peppercorns", "spice"), ing(1, "", "bay leaf", "spice"),
         ing(300, "ml", "chicken or lamb stock", "store"), ing(15, "g", "butter", "dairy"),
         ing(1, "tsp", "plain flour", "store"), ing(200, "g", "potatoes, peeled and quartered", "produce"),
         ing(null, "to taste", "salt", "spice")
       ],
       steps: [
-        "Peel and quarter the potatoes and boil in salted water for 15–18 minutes until tender.",
-        "Meanwhile, in a small saucepan, layer the lamb and cabbage wedges, sprinkling the peppercorns between layers, and tuck in the bay leaf.",
-        "Pour over the stock, bring to a simmer, cover and cook gently for 30–35 minutes until the lamb is tender.",
-        "Melt the butter in a small pan, stir in the flour to make a paste, then whisk in a ladleful of the cooking liquid; stir this back into the stew to thicken slightly.",
+        "Boil the potatoes in salted water for 15–18 minutes until tender.",
+        "Meanwhile, put the cabbage wedges, peppercorns and bay leaf in a small saucepan, pour over the stock, cover and simmer for 12–15 minutes until the cabbage is tender.",
+        "While the cabbage cooks, sear the lamb in a hot pan with a little of the butter for 2–3 minutes until browned but still pink inside, then add it to the cabbage for the last 2 minutes.",
+        "Melt the rest of the butter in the lamb pan, stir in the flour to make a paste, then whisk in a ladleful of the cooking liquid; stir this back into the stew to thicken slightly.",
         "Season with salt and serve the lamb and cabbage with the boiled potatoes alongside."
       ]
     },
@@ -6481,7 +6484,7 @@
         ing(3, "", "black olives", "store"), ing(0.5, "", "boiled egg", "dairy")
       ],
       steps: [
-        "Cook the rice according to packet instructions.",
+        "Cook the rice according to packet instructions, and boil the egg for 8 minutes, then cool and peel.",
         "Soak the torn bread in the milk for a few minutes to soften.",
         "Heat a little oil in a pan and fry the onion and garlic for 4–5 minutes until soft, then stir in the aji amarillo paste and cook for 1 minute.",
         "Add the soaked bread and milk, the stock, crushed walnuts and cheese, and simmer for 5 minutes, stirring, until thickened into a smooth sauce.",
@@ -6493,7 +6496,7 @@
       id: "d391", title: "Australian-Style Beef & Gravy Pie with Mash and Peas", tags: [], cuisine: "Australia", protein: "beef",
       prep: 9, cook: 25,
       ingredients: [
-        ing(150, "g", "beef steak, diced", "meat"), ing(0.5, "", "onion, diced", "produce"),
+        ing(150, "g", "beef rump steak, diced", "meat"), ing(0.5, "", "onion, diced", "produce"),
         ing(200, "ml", "beef stock", "store"), ing(1, "tsp", "Worcestershire sauce", "store"),
         ing(1, "tsp", "tomato puree", "store"), ing(1, "tsp", "plain flour", "store"),
         ing(80, "g", "ready-rolled puff pastry", "bakery"), ing(200, "g", "potatoes, peeled and chopped", "produce"),
@@ -6503,8 +6506,8 @@
       steps: [
         "Preheat the oven to 200°C (fan 180°C). Cut the puff pastry into a small lid shape and bake on a lined tray for 12–15 minutes until golden and puffed; set aside.",
         "Meanwhile, boil the potatoes for the mash for 15–18 minutes until tender.",
-        "Heat a little oil in a saucepan, brown the beef for 3–4 minutes, then add the onion and cook for 3 minutes until softened.",
-        "Stir in the flour, tomato puree and Worcestershire sauce, then pour in the stock. Simmer for 8–10 minutes until thickened and the beef is tender.",
+        "Heat a little oil in a saucepan, sear the beef over high heat for 1–2 minutes, then tip onto a plate. Add the onion and cook for 3 minutes until softened.",
+        "Stir in the flour, tomato puree and Worcestershire sauce, then pour in the stock. Simmer for 8–10 minutes until thickened, then return the beef for 1–2 minutes.",
         "Cook the peas in boiling water for 2–3 minutes, then drain. Mash the potatoes with the butter and milk and season.",
         "Spoon the beef and gravy over the mash, top with the pastry lid, and serve with the peas."
       ]
@@ -6530,26 +6533,26 @@
       id: "d393", title: "South African-Style Bunny Chow with Spiced Lamb Curry", tags: ["spicy"], cuisine: "South Africa", protein: "lamb",
       prep: 9, cook: 25,
       ingredients: [
-        ing(150, "g", "lamb or lamb mince, diced", "meat"), ing(0.5, "", "onion, diced", "produce"),
+        ing(150, "g", "lamb mince", "meat"), ing(0.5, "", "onion, diced", "produce"),
         ing(1, "", "garlic clove, crushed", "produce"), ing(1, "tsp", "fresh ginger, grated", "produce"),
         ing(1.5, "tbsp", "curry powder", "spice"), ing(0.5, "tsp", "ground turmeric", "spice"),
-        ing(100, "g", "tinned chopped tomatoes", "store"), ing(1, "", "small potato, diced", "produce"),
+        ing(100, "g", "tinned chopped tomatoes", "store"), ing(1, "", "small potato, cut into 1cm dice", "produce"),
         ing(100, "ml", "lamb or vegetable stock", "store"), ing(1, "", "small crusty bread roll", "bakery"),
         ing(1, "tbsp", "fresh coriander, chopped", "produce")
       ],
       steps: [
         "Heat a little oil in a saucepan and fry the onion for 3–4 minutes until soft. Add the garlic, ginger, curry powder and turmeric, and cook for 1 minute.",
-        "Add the lamb and brown for 4–5 minutes.",
-        "Stir in the tomatoes, potato and stock, cover and simmer for 15–18 minutes until the lamb and potato are tender and the sauce has thickened.",
+        "Add the lamb mince and brown for 4–5 minutes, breaking it up.",
+        "Stir in the tomatoes, potato and stock, cover and simmer for 15–18 minutes until the potato is tender and the sauce has thickened.",
         "Slice the top off the bread roll and hollow out most of the middle to make a bowl.",
         "Spoon the curry into the hollowed bread, scatter with coriander, and serve with the reserved bread for dipping."
       ]
     },
     {
       id: "d394", title: "Georgian-Style Chakapuli (Lamb and Herb Stew)", tags: [], cuisine: "Georgia", protein: "lamb",
-      prep: 9, cook: 30,
+      prep: 9, cook: 16,
       ingredients: [
-        ing(180, "g", "lamb shoulder, diced", "meat"), ing(3, "", "spring onions, chopped", "produce"),
+        ing(180, "g", "lamb leg steak, cut into 2cm cubes", "meat"), ing(3, "", "spring onions, chopped", "produce"),
         ing(2, "", "garlic cloves, sliced", "produce"), ing(1, "tbsp", "fresh tarragon, chopped", "produce"),
         ing(1, "tbsp", "fresh coriander, chopped", "produce"), ing(1, "tbsp", "fresh dill, chopped", "produce"),
         ing(2, "tbsp", "white wine vinegar", "store"), ing(1, "tsp", "plum jam", "store"),
@@ -6557,11 +6560,10 @@
         ing(0.5, "", "green chilli, sliced", "produce"), ing(1, "", "crusty bread roll", "bakery")
       ],
       steps: [
-        "Heat a splash of oil in a saucepan and brown the lamb for 4–5 minutes.",
+        "Heat a splash of oil in a saucepan over high heat and sear the lamb for 2–3 minutes until browned but still pink inside. Tip onto a plate.",
         "Add the spring onions and garlic and cook for 2 minutes.",
-        "Stir in the vinegar, plum jam, bay leaf and chilli, then pour in enough stock to just cover the lamb.",
-        "Cover and simmer gently for 25–30 minutes until the lamb is tender.",
-        "Stir through the tarragon, coriander and dill in the final few minutes of cooking, and season to taste.",
+        "Stir in the vinegar, plum jam, bay leaf, chilli and stock and simmer for 6–8 minutes to reduce a little.",
+        "Return the lamb and its juices with the tarragon, coriander and dill, and simmer for 2 minutes. Season to taste.",
         "Serve in a bowl with the crusty bread."
       ]
     },
@@ -6662,21 +6664,21 @@
       ]
     },
     {
-      id: "d400", title: "Finnish-Style Karjalanpaisti (Slow-Cooked Beef and Pork Stew)", tags: [], cuisine: "Finland", protein: "beef",
-      prep: 9, cook: 35,
+      id: "d400", title: "Finnish-Style Karjalanpaisti (Beef and Pork Stew)", tags: [], cuisine: "Finland", protein: "beef",
+      prep: 9, cook: 22,
       ingredients: [
-        ing(90, "g", "stewing beef, diced", "meat"), ing(90, "g", "pork shoulder, diced", "meat"),
+        ing(90, "g", "beef rump steak, cut into 2cm cubes", "meat"), ing(90, "g", "pork loin steak, cut into 2cm cubes", "meat"),
         ing(1, "", "onion, sliced", "produce"), ing(1, "", "carrot, sliced", "produce"),
         ing(1, "tsp", "whole black peppercorns", "spice"), ing(1, "", "bay leaf", "spice"),
         ing(250, "ml", "beef stock", "store"), ing(15, "g", "butter", "dairy"),
-        ing(150, "g", "potatoes, boiled, to serve", "produce"), ing(null, "to taste", "salt", "spice")
+        ing(150, "g", "potatoes, halved", "produce"), ing(null, "to taste", "salt", "spice")
       ],
       steps: [
-        "Heat the butter in a saucepan and brown the beef and pork for 4–5 minutes.",
+        "Boil the potatoes in salted water for 15–18 minutes until tender.",
+        "Meanwhile, heat the butter in a saucepan over high heat and sear the beef and pork for 2–3 minutes until browned. Tip onto a plate.",
         "Add the onion and carrot and cook for 3 minutes.",
-        "Add the peppercorns, bay leaf and stock, bring to a simmer, cover and cook gently for 30–35 minutes until the meat is tender.",
-        "Meanwhile, boil the potatoes in salted water for 15–18 minutes until tender.",
-        "Season the stew with salt, remove the bay leaf, and serve with the boiled potatoes."
+        "Add the peppercorns, bay leaf and stock and simmer uncovered for 10 minutes until the carrot is tender and the liquid has reduced a little.",
+        "Return the meat and its juices and simmer for 2–3 minutes until the pork is cooked through. Season with salt, remove the bay leaf and serve with the potatoes."
       ]
     },
     {
@@ -6881,7 +6883,7 @@
         ing(1, "", "lime wedge", "produce"), ing(1, "tsp", "chilli sauce or sambal", "store")
       ],
       steps: [
-        "Put the chicken, stock, turmeric, garlic, ginger and lemongrass into a saucepan, bring to a simmer and cook for 15 minutes until the chicken is cooked through.",
+        "Boil the egg for 8 minutes, then cool and peel. Put the chicken, stock, turmeric, garlic, ginger and lemongrass into a saucepan, bring to a simmer and cook for 15 minutes until the chicken is cooked through.",
         "Remove the chicken, shred it, and return it to the pan.",
         "Meanwhile, soak the noodles in boiled water for 4–5 minutes until tender, then drain and place in a bowl.",
         "Ladle the hot soup and shredded chicken over the noodles.",
@@ -6981,7 +6983,7 @@
       id: "d417", title: "Argentinian-Style Locro Corn, Bean and Pork Stew", tags: [], cuisine: "Argentina", protein: "pork",
       prep: 9, cook: 25,
       ingredients: [
-        ing(100, "g", "pork shoulder, diced small", "meat"), ing(40, "g", "chorizo, sliced", "meat"),
+        ing(100, "g", "pork loin steak, diced small", "meat"), ing(40, "g", "chorizo, sliced", "meat"),
         ing(0.5, "", "onion, chopped", "produce"), ing(1, "", "garlic clove, crushed", "produce"),
         ing(100, "g", "butternut squash, diced", "produce"), ing(100, "g", "tinned sweetcorn", "store"),
         ing(100, "g", "tinned butter beans, drained", "store"), ing(200, "ml", "chicken stock", "store"),
@@ -6989,10 +6991,10 @@
         ing(1, "", "spring onion, sliced", "produce"), ing(null, "pinch", "chilli flakes", "spice")
       ],
       steps: [
-        "Heat a splash of oil in a pan and brown the pork and chorizo for 3–4 minutes.",
+        "Heat a splash of oil in a pan and brown the pork and chorizo for 2–3 minutes, then tip onto a plate.",
         "Add the onion and garlic and soften for 2 minutes, then stir in the paprika and cumin and cook for 30 seconds.",
         "Add the squash, sweetcorn, beans and stock. Simmer for 20–25 minutes until the squash is tender and the stew has thickened.",
-        "Season to taste and scatter with spring onion and chilli flakes to serve."
+        "Return the pork and chorizo for the last 4–5 minutes until the pork is cooked through. Season to taste and scatter with spring onion and chilli flakes to serve."
       ]
     },
     {
@@ -7008,8 +7010,8 @@
       ],
       steps: [
         "Heat a little oil in a pan and fry the onion until soft.",
-        "Add the beef and salami and brown for 2–3 minutes.",
-        "Stir in the tomato puree, cook for 1 minute, then add the stock, gherkin, capers and bay leaf. Simmer for 15 minutes until the beef is tender.",
+        "Add the salami and fry for 2 minutes.",
+        "Stir in the tomato puree, cook for 1 minute, then add the stock, gherkin, capers and bay leaf. Simmer for 12 minutes, then add the beef and simmer for 1–2 minutes until just cooked.",
         "Ladle into a bowl, top with a slice of lemon, a spoonful of soured cream and a scattering of dill."
       ]
     },
@@ -7171,7 +7173,7 @@
       id: "d428", title: "Lebanese-Style Freekeh Pilaf with Spiced Chicken", tags: [], cuisine: "Lebanon", protein: "chicken",
       prep: 8, cook: 20,
       ingredients: [
-        ing(1, "", "chicken breast, diced", "meat"), ing(75, "g", "freekeh", "store"),
+        ing(1, "", "chicken breast, diced", "meat"), ing(75, "g", "cracked freekeh", "store"),
         ing(0.5, "", "onion, chopped", "produce"), ing(1, "tbsp", "toasted flaked almonds", "store"),
         ing(0.5, "tsp", "ground cinnamon", "spice"), ing(0.5, "tsp", "ground allspice", "spice"),
         ing(1, "tbsp", "olive oil", "store"), ing(200, "ml", "chicken stock", "store"),
@@ -7261,9 +7263,9 @@
     },
     {
       id: "d433", title: "Persian-Style Ghormeh Sabzi Herb & Lamb Stew", tags: [], cuisine: "Iran", protein: "lamb",
-      prep: 10, cook: 30,
+      prep: 10, cook: 20,
       ingredients: [
-        ing(120, "g", "lamb shoulder, diced", "meat"), ing(20, "g", "parsley, chopped", "produce"),
+        ing(120, "g", "lamb leg steak, cut into 2cm cubes", "meat"), ing(20, "g", "parsley, chopped", "produce"),
         ing(20, "g", "coriander, chopped", "produce"), ing(1, "", "spring onion, chopped", "produce"),
         ing(50, "g", "spinach, chopped", "produce"), ing(0.5, "", "onion, chopped", "produce"),
         ing(100, "g", "tinned red kidney beans, drained", "store"), ing(0.5, "tsp", "turmeric", "spice"),
@@ -7271,10 +7273,10 @@
         ing(1, "tbsp", "vegetable oil", "store")
       ],
       steps: [
-        "Heat the oil in a pan and fry the onion until soft, then add the lamb and turmeric and brown for 3–4 minutes.",
-        "Add the stock and lemon juice, bring to a simmer, cover and cook for 20 minutes.",
-        "Meanwhile, fry the chopped herbs and spinach in a little oil for 3–4 minutes until darkened and fragrant, then stir into the stew along with the kidney beans.",
-        "Simmer for a further 10 minutes until the lamb is tender and the sauce has thickened. Season to taste and serve with rice."
+        "Heat the oil in a pan over high heat, add the lamb and turmeric and sear for 2–3 minutes until browned but still pink inside. Tip onto a plate.",
+        "Fry the onion until soft, then add the herbs and spinach and fry for 3–4 minutes until darkened and fragrant.",
+        "Add the stock, lemon juice and kidney beans and simmer for 10 minutes until thickened.",
+        "Return the lamb and its juices for 2 minutes. Season to taste and serve with rice."
       ]
     },
     {
@@ -7669,35 +7671,10 @@
       signedInEl.hidden = true;
     }
   }
-function getDeviceId() {
-  try {
-    var id = localStorage.getItem("ssDeviceId");
-    if (!id) {
-      id = "dev_" + Date.now().toString(36) + Math.random().toString(36).slice(2, 10);
-      localStorage.setItem("ssDeviceId", id);
-    }
-    return id;
-  } catch (e) {
-    return null;
-  }
-}
 
-function pingDevice(user) {
-  var deviceId = getDeviceId();
-  if (!deviceId || !window.firebaseDb) return;
-  window.firebaseDb.collection("users").doc(user.uid)
-    .collection("deviceLog").doc("main")
-    .set({
-      ids: firebase.firestore.FieldValue.arrayUnion(deviceId),
-      updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-    }, { merge: true })
-    .catch(function () {});
-}
   function initPersistence() {
     applyState(loadLocal());
-  if (window.gtag) {
-    gtag("set", "user_properties", { app_platform: isNativeApp() ? "android_app" : "web" });
-  }
+
     if (!window.firebaseAuth) {
       // Firebase not configured (see firebase-config.js) - the app still
       // works fully, just local to this device/browser.
@@ -7734,10 +7711,9 @@ function pingDevice(user) {
     window.firebaseAuth.onAuthStateChanged(function (user) {
       currentUser = user;
       updateAccountUI(user);
-  if (user) {
-    startCloudSync(user);
-    pingDevice(user);
-  } else {
+      if (user) {
+        startCloudSync(user);
+      } else {
         stopCloudSync();
       }
       renderAll();
@@ -9426,20 +9402,6 @@ function pingDevice(user) {
   var GA_ID = "G-JF54HQGVLT";
   var CONSENT_KEY = "soloSupper.analyticsConsent";
   function analyticsConsent() { return lsGet(CONSENT_KEY); } // "yes" | "no" | null
-  window.addEventListener("error", function (e) {
-    if (window.gtag) {
-      gtag("event", "exception", {
-        description: (e.message || "error") + " @ " + (e.filename || "") + ":" + (e.lineno || ""),
-        fatal: false
-      });
-    }
-  });
-  window.addEventListener("unhandledrejection", function (e) {
-    if (window.gtag) {
-      var reason = e.reason && e.reason.message ? e.reason.message : String(e.reason);
-      gtag("event", "exception", { description: "unhandled rejection: " + reason, fatal: false });
-    }
-  });
   function loadAnalytics() {
     window["ga-disable-" + GA_ID] = false;
     if (window.__ssGaLoaded) return;

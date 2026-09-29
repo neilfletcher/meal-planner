@@ -1,19 +1,19 @@
 {
-  "generatedAt": "2026-09-28T13:08:22.633Z",
+  "generatedAt": "2026-09-29T12:17:50.876Z",
   "traffic": {
     "last7Days": {
-      "users": 118,
-      "newUsers": 118,
-      "sessions": 172,
-      "pageViews": 241,
-      "avgEngagementTimeSec": 12
+      "users": 111,
+      "newUsers": 108,
+      "sessions": 160,
+      "pageViews": 249,
+      "avgEngagementTimeSec": 19
     },
     "last30Days": {
-      "users": 135,
-      "newUsers": 137,
-      "sessions": 191,
-      "pageViews": 261,
-      "avgEngagementTimeSec": 11
+      "users": 138,
+      "newUsers": 140,
+      "sessions": 202,
+      "pageViews": 295,
+      "avgEngagementTimeSec": 16
     },
     "dailyUsers": [
       {
@@ -46,10 +46,14 @@
       },
       {
         "date": "2026-09-27",
-        "users": 5
+        "users": 6
       },
       {
         "date": "2026-09-28",
+        "users": 4
+      },
+      {
+        "date": "2026-09-29",
         "users": 1
       }
     ],
@@ -62,22 +66,22 @@
       {
         "path": "/DB-club-records/",
         "title": "Duston Bowmen Records",
-        "views": 51
+        "views": 55
       },
       {
         "path": "/DB-club-members/",
         "title": "Duston Bowmen Membership",
-        "views": 26
+        "views": 47
       },
       {
         "path": "/",
         "title": "Neil Fletcher",
-        "views": 24
+        "views": 25
       },
       {
         "path": "/archery-backstop/",
         "title": "Archery Backstop Build Guide",
-        "views": 20
+        "views": 21
       },
       {
         "path": "/spine-finder/",
@@ -87,7 +91,12 @@
       {
         "path": "/DB-archery-dashboard/",
         "title": "Archery Tracker",
-        "views": 13
+        "views": 14
+      },
+      {
+        "path": "/archery-tracker/",
+        "title": "Neil Fletcher: Archery Tracker",
+        "views": 12
       },
       {
         "path": "/meal-planner/",
@@ -98,11 +107,6 @@
         "path": "/iron-and-draw/",
         "title": "Iron & Draw",
         "views": 9
-      },
-      {
-        "path": "/archery-tracker/",
-        "title": "Neil Fletcher: Archery Tracker",
-        "views": 8
       }
     ]
   },
@@ -111,10 +115,6 @@
     "newLast7Days": 21,
     "newLast30Days": 22,
     "dailySignups": [
-      {
-        "date": "2026-08-30",
-        "count": 0
-      },
       {
         "date": "2026-08-31",
         "count": 0
@@ -230,21 +230,25 @@
       {
         "date": "2026-09-28",
         "count": 0
+      },
+      {
+        "date": "2026-09-29",
+        "count": 0
       }
     ]
   },
   "retention": {
     "newVsReturning": {
-      "new": 134,
-      "returning": 12
+      "new": 137,
+      "returning": 13
     },
     "windowDays": 28
   },
   "stickiness": {
-    "dau": 5,
-    "wau": 118,
-    "mau": 135,
-    "dauMauPct": 4
+    "dau": 4,
+    "wau": 111,
+    "mau": 138,
+    "dauMauPct": 3
   },
   "platform": {
     "web": 0,
@@ -272,6 +276,11 @@
       {
         "id": "d4",
         "title": "Sesame Ginger Beef Stir-Fry",
+        "count": 1
+      },
+      {
+        "id": "d223",
+        "title": "Belgian-Style Beef & Beer Stew (Carbonnade-Inspired)",
         "count": 1
       },
       {

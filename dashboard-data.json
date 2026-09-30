@@ -1,19 +1,19 @@
 {
-  "generatedAt": "2026-09-29T12:17:50.876Z",
+  "generatedAt": "2026-09-30T12:03:40.153Z",
   "traffic": {
     "last7Days": {
-      "users": 111,
-      "newUsers": 108,
-      "sessions": 160,
-      "pageViews": 249,
-      "avgEngagementTimeSec": 19
+      "users": 113,
+      "newUsers": 111,
+      "sessions": 165,
+      "pageViews": 258,
+      "avgEngagementTimeSec": 39
     },
     "last30Days": {
-      "users": 138,
-      "newUsers": 140,
-      "sessions": 202,
-      "pageViews": 295,
-      "avgEngagementTimeSec": 16
+      "users": 156,
+      "newUsers": 160,
+      "sessions": 237,
+      "pageViews": 361,
+      "avgEngagementTimeSec": 28
     },
     "dailyUsers": [
       {
@@ -54,34 +54,43 @@
       },
       {
         "date": "2026-09-29",
-        "users": 1
+        "users": 21
+      },
+      {
+        "date": "2026-09-30",
+        "users": 3
       }
     ],
     "topPages": [
       {
         "path": "/",
         "title": "Solo Supper",
-        "views": 73
-      },
-      {
-        "path": "/DB-club-records/",
-        "title": "Duston Bowmen Records",
-        "views": 55
+        "views": 75
       },
       {
         "path": "/DB-club-members/",
         "title": "Duston Bowmen Membership",
-        "views": 47
+        "views": 72
+      },
+      {
+        "path": "/DB-club-records/",
+        "title": "Duston Bowmen Records",
+        "views": 64
       },
       {
         "path": "/",
         "title": "Neil Fletcher",
-        "views": 25
+        "views": 26
+      },
+      {
+        "path": "/DB-join/",
+        "title": "Join Duston Bowmen",
+        "views": 24
       },
       {
         "path": "/archery-backstop/",
         "title": "Archery Backstop Build Guide",
-        "views": 21
+        "views": 22
       },
       {
         "path": "/spine-finder/",
@@ -91,22 +100,17 @@
       {
         "path": "/DB-archery-dashboard/",
         "title": "Archery Tracker",
-        "views": 14
+        "views": 16
       },
       {
         "path": "/archery-tracker/",
         "title": "Neil Fletcher: Archery Tracker",
-        "views": 12
+        "views": 14
       },
       {
         "path": "/meal-planner/",
         "title": "Plate & List",
         "views": 10
-      },
-      {
-        "path": "/iron-and-draw/",
-        "title": "Iron & Draw",
-        "views": 9
       }
     ]
   },
@@ -115,10 +119,6 @@
     "newLast7Days": 21,
     "newLast30Days": 22,
     "dailySignups": [
-      {
-        "date": "2026-08-31",
-        "count": 0
-      },
       {
         "date": "2026-09-01",
         "count": 0
@@ -234,21 +234,25 @@
       {
         "date": "2026-09-29",
         "count": 0
+      },
+      {
+        "date": "2026-09-30",
+        "count": 0
       }
     ]
   },
   "retention": {
     "newVsReturning": {
-      "new": 137,
+      "new": 155,
       "returning": 13
     },
     "windowDays": 28
   },
   "stickiness": {
-    "dau": 4,
-    "wau": 111,
-    "mau": 138,
-    "dauMauPct": 3
+    "dau": 21,
+    "wau": 113,
+    "mau": 156,
+    "dauMauPct": 13
   },
   "platform": {
     "web": 0,
@@ -291,14 +295,14 @@
     ],
     "topPlanned": [
       {
-        "id": "d2",
-        "title": "Harissa Salmon with Lemon Couscous",
-        "count": 4
-      },
-      {
         "id": "d1",
         "title": "Sticky Hoisin Pork with Egg-Fried Rice",
-        "count": 4
+        "count": 6
+      },
+      {
+        "id": "d2",
+        "title": "Harissa Salmon with Lemon Couscous",
+        "count": 5
       },
       {
         "id": "d5",
@@ -308,6 +312,16 @@
       {
         "id": "d4",
         "title": "Sesame Ginger Beef Stir-Fry",
+        "count": 4
+      },
+      {
+        "id": "d3",
+        "title": "Thai Green Curry with Chicken",
+        "count": 4
+      },
+      {
+        "id": "d7",
+        "title": "Quick Matar Paneer",
         "count": 3
       },
       {
@@ -316,18 +330,8 @@
         "count": 3
       },
       {
-        "id": "d3",
-        "title": "Thai Green Curry with Chicken",
-        "count": 3
-      },
-      {
         "id": "d42",
         "title": "Beef Bulgogi Lettuce Cups",
-        "count": 2
-      },
-      {
-        "id": "d7",
-        "title": "Quick Matar Paneer",
         "count": 2
       },
       {
@@ -351,7 +355,7 @@
     },
     "library": {
       "totalRecipes": 437,
-      "everTouched": 60,
+      "everTouched": 62,
       "neverTouchedPct": 86
     },
     "dormant": {

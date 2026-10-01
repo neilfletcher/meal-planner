@@ -1,18 +1,18 @@
 {
-  "generatedAt": "2026-09-30T12:03:40.153Z",
+  "generatedAt": "2026-10-01T12:36:43.558Z",
   "traffic": {
     "last7Days": {
-      "users": 113,
-      "newUsers": 111,
+      "users": 110,
+      "newUsers": 106,
       "sessions": 165,
-      "pageViews": 258,
-      "avgEngagementTimeSec": 39
+      "pageViews": 256,
+      "avgEngagementTimeSec": 37
     },
     "last30Days": {
-      "users": 156,
+      "users": 157,
       "newUsers": 160,
-      "sessions": 237,
-      "pageViews": 361,
+      "sessions": 244,
+      "pageViews": 372,
       "avgEngagementTimeSec": 28
     },
     "dailyUsers": [
@@ -58,24 +58,28 @@
       },
       {
         "date": "2026-09-30",
-        "users": 3
+        "users": 4
+      },
+      {
+        "date": "2026-10-01",
+        "users": 1
       }
     ],
     "topPages": [
       {
-        "path": "/",
-        "title": "Solo Supper",
-        "views": 75
-      },
-      {
         "path": "/DB-club-members/",
         "title": "Duston Bowmen Membership",
-        "views": 72
+        "views": 79
+      },
+      {
+        "path": "/",
+        "title": "Solo Supper",
+        "views": 76
       },
       {
         "path": "/DB-club-records/",
         "title": "Duston Bowmen Records",
-        "views": 64
+        "views": 67
       },
       {
         "path": "/",
@@ -119,10 +123,6 @@
     "newLast7Days": 21,
     "newLast30Days": 22,
     "dailySignups": [
-      {
-        "date": "2026-09-01",
-        "count": 0
-      },
       {
         "date": "2026-09-02",
         "count": 0
@@ -238,21 +238,25 @@
       {
         "date": "2026-09-30",
         "count": 0
+      },
+      {
+        "date": "2026-10-01",
+        "count": 0
       }
     ]
   },
   "retention": {
     "newVsReturning": {
-      "new": 155,
-      "returning": 13
+      "new": 156,
+      "returning": 14
     },
     "windowDays": 28
   },
   "stickiness": {
-    "dau": 21,
-    "wau": 113,
-    "mau": 156,
-    "dauMauPct": 13
+    "dau": 4,
+    "wau": 110,
+    "mau": 157,
+    "dauMauPct": 3
   },
   "platform": {
     "web": 0,
@@ -264,7 +268,7 @@
   },
   "engagement": {
     "trackedAccounts": 9,
-    "activePlanners": 7,
+    "activePlanners": 6,
     "usingShoppingList": 1,
     "topCooked": [
       {
@@ -285,6 +289,11 @@
       {
         "id": "d223",
         "title": "Belgian-Style Beef & Beer Stew (Carbonnade-Inspired)",
+        "count": 1
+      },
+      {
+        "id": "d125",
+        "title": "Singapore-Style Chilli Chicken Noodles",
         "count": 1
       },
       {
@@ -349,7 +358,7 @@
     "funnel": {
       "signedUp": 22,
       "tracked": 9,
-      "builtAPlan": 7,
+      "builtAPlan": 6,
       "usedShoppingList": 1,
       "confirmedACook": 5
     },

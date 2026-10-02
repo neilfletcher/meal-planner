@@ -1,18 +1,18 @@
 {
-  "generatedAt": "2026-10-01T12:36:43.558Z",
+  "generatedAt": "2026-10-02T12:02:03.779Z",
   "traffic": {
     "last7Days": {
-      "users": 110,
-      "newUsers": 106,
-      "sessions": 165,
-      "pageViews": 256,
-      "avgEngagementTimeSec": 37
+      "users": 84,
+      "newUsers": 80,
+      "sessions": 143,
+      "pageViews": 230,
+      "avgEngagementTimeSec": 43
     },
     "last30Days": {
-      "users": 157,
-      "newUsers": 160,
-      "sessions": 244,
-      "pageViews": 372,
+      "users": 159,
+      "newUsers": 162,
+      "sessions": 255,
+      "pageViews": 384,
       "avgEngagementTimeSec": 28
     },
     "dailyUsers": [
@@ -58,18 +58,22 @@
       },
       {
         "date": "2026-09-30",
-        "users": 4
+        "users": 5
       },
       {
         "date": "2026-10-01",
-        "users": 1
+        "users": 2
+      },
+      {
+        "date": "2026-10-02",
+        "users": 2
       }
     ],
     "topPages": [
       {
         "path": "/DB-club-members/",
         "title": "Duston Bowmen Membership",
-        "views": 79
+        "views": 85
       },
       {
         "path": "/",
@@ -79,12 +83,12 @@
       {
         "path": "/DB-club-records/",
         "title": "Duston Bowmen Records",
-        "views": 67
+        "views": 72
       },
       {
         "path": "/",
         "title": "Neil Fletcher",
-        "views": 26
+        "views": 27
       },
       {
         "path": "/DB-join/",
@@ -120,13 +124,9 @@
   },
   "signups": {
     "totalUsers": 22,
-    "newLast7Days": 21,
+    "newLast7Days": 0,
     "newLast30Days": 22,
     "dailySignups": [
-      {
-        "date": "2026-09-02",
-        "count": 0
-      },
       {
         "date": "2026-09-03",
         "count": 0
@@ -242,21 +242,25 @@
       {
         "date": "2026-10-01",
         "count": 0
+      },
+      {
+        "date": "2026-10-02",
+        "count": 0
       }
     ]
   },
   "retention": {
     "newVsReturning": {
-      "new": 156,
+      "new": 158,
       "returning": 14
     },
     "windowDays": 28
   },
   "stickiness": {
-    "dau": 4,
-    "wau": 110,
-    "mau": 157,
-    "dauMauPct": 3
+    "dau": 2,
+    "wau": 84,
+    "mau": 159,
+    "dauMauPct": 1
   },
   "platform": {
     "web": 0,

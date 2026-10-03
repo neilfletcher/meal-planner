@@ -1,19 +1,19 @@
 {
-  "generatedAt": "2026-10-02T12:02:03.779Z",
+  "generatedAt": "2026-10-03T11:13:59.681Z",
   "traffic": {
     "last7Days": {
-      "users": 84,
-      "newUsers": 80,
-      "sessions": 143,
-      "pageViews": 230,
-      "avgEngagementTimeSec": 43
+      "users": 53,
+      "newUsers": 48,
+      "sessions": 108,
+      "pageViews": 182,
+      "avgEngagementTimeSec": 61
     },
     "last30Days": {
-      "users": 159,
-      "newUsers": 162,
-      "sessions": 255,
-      "pageViews": 384,
-      "avgEngagementTimeSec": 28
+      "users": 163,
+      "newUsers": 166,
+      "sessions": 263,
+      "pageViews": 393,
+      "avgEngagementTimeSec": 30
     },
     "dailyUsers": [
       {
@@ -62,18 +62,22 @@
       },
       {
         "date": "2026-10-01",
-        "users": 2
+        "users": 4
       },
       {
         "date": "2026-10-02",
         "users": 2
+      },
+      {
+        "date": "2026-10-03",
+        "users": 4
       }
     ],
     "topPages": [
       {
         "path": "/DB-club-members/",
         "title": "Duston Bowmen Membership",
-        "views": 85
+        "views": 88
       },
       {
         "path": "/",
@@ -83,17 +87,17 @@
       {
         "path": "/DB-club-records/",
         "title": "Duston Bowmen Records",
-        "views": 72
+        "views": 73
+      },
+      {
+        "path": "/DB-join/",
+        "title": "Join Duston Bowmen",
+        "views": 29
       },
       {
         "path": "/",
         "title": "Neil Fletcher",
         "views": 27
-      },
-      {
-        "path": "/DB-join/",
-        "title": "Join Duston Bowmen",
-        "views": 24
       },
       {
         "path": "/archery-backstop/",
@@ -127,10 +131,6 @@
     "newLast7Days": 0,
     "newLast30Days": 22,
     "dailySignups": [
-      {
-        "date": "2026-09-03",
-        "count": 0
-      },
       {
         "date": "2026-09-04",
         "count": 0
@@ -246,20 +246,24 @@
       {
         "date": "2026-10-02",
         "count": 0
+      },
+      {
+        "date": "2026-10-03",
+        "count": 0
       }
     ]
   },
   "retention": {
     "newVsReturning": {
-      "new": 158,
+      "new": 162,
       "returning": 14
     },
     "windowDays": 28
   },
   "stickiness": {
     "dau": 2,
-    "wau": 84,
-    "mau": 159,
+    "wau": 53,
+    "mau": 163,
     "dauMauPct": 1
   },
   "platform": {

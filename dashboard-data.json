@@ -1,18 +1,18 @@
 {
-  "generatedAt": "2026-10-03T11:13:59.681Z",
+  "generatedAt": "2026-10-04T11:53:48.798Z",
   "traffic": {
     "last7Days": {
-      "users": 53,
-      "newUsers": 48,
-      "sessions": 108,
-      "pageViews": 182,
-      "avgEngagementTimeSec": 61
+      "users": 35,
+      "newUsers": 31,
+      "sessions": 86,
+      "pageViews": 158,
+      "avgEngagementTimeSec": 70
     },
     "last30Days": {
       "users": 163,
       "newUsers": 166,
-      "sessions": 263,
-      "pageViews": 393,
+      "sessions": 266,
+      "pageViews": 397,
       "avgEngagementTimeSec": 30
     },
     "dailyUsers": [
@@ -70,14 +70,14 @@
       },
       {
         "date": "2026-10-03",
-        "users": 4
+        "users": 5
       }
     ],
     "topPages": [
       {
         "path": "/DB-club-members/",
         "title": "Duston Bowmen Membership",
-        "views": 88
+        "views": 90
       },
       {
         "path": "/",
@@ -87,7 +87,7 @@
       {
         "path": "/DB-club-records/",
         "title": "Duston Bowmen Records",
-        "views": 73
+        "views": 75
       },
       {
         "path": "/DB-join/",
@@ -131,10 +131,6 @@
     "newLast7Days": 0,
     "newLast30Days": 22,
     "dailySignups": [
-      {
-        "date": "2026-09-04",
-        "count": 0
-      },
       {
         "date": "2026-09-05",
         "count": 0
@@ -250,6 +246,10 @@
       {
         "date": "2026-10-03",
         "count": 0
+      },
+      {
+        "date": "2026-10-04",
+        "count": 0
       }
     ]
   },
@@ -261,10 +261,10 @@
     "windowDays": 28
   },
   "stickiness": {
-    "dau": 2,
-    "wau": 53,
+    "dau": 5,
+    "wau": 35,
     "mau": 163,
-    "dauMauPct": 1
+    "dauMauPct": 3
   },
   "platform": {
     "web": 0,

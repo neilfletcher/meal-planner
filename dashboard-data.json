@@ -1,18 +1,18 @@
 {
-  "generatedAt": "2026-10-04T11:53:48.798Z",
+  "generatedAt": "2026-10-05T13:50:50.591Z",
   "traffic": {
     "last7Days": {
-      "users": 35,
-      "newUsers": 31,
-      "sessions": 86,
-      "pageViews": 158,
-      "avgEngagementTimeSec": 70
+      "users": 33,
+      "newUsers": 30,
+      "sessions": 83,
+      "pageViews": 144,
+      "avgEngagementTimeSec": 72
     },
     "last30Days": {
-      "users": 163,
-      "newUsers": 166,
-      "sessions": 266,
-      "pageViews": 397,
+      "users": 165,
+      "newUsers": 168,
+      "sessions": 273,
+      "pageViews": 404,
       "avgEngagementTimeSec": 30
     },
     "dailyUsers": [
@@ -71,13 +71,26 @@
       {
         "date": "2026-10-03",
         "users": 5
+      },
+      {
+        "date": "2026-10-04",
+        "users": 3
+      },
+      {
+        "date": "2026-10-05",
+        "users": 2
       }
     ],
     "topPages": [
       {
         "path": "/DB-club-members/",
         "title": "Duston Bowmen Membership",
-        "views": 90
+        "views": 94
+      },
+      {
+        "path": "/DB-club-records/",
+        "title": "Duston Bowmen Records",
+        "views": 77
       },
       {
         "path": "/",
@@ -85,14 +98,9 @@
         "views": 76
       },
       {
-        "path": "/DB-club-records/",
-        "title": "Duston Bowmen Records",
-        "views": 75
-      },
-      {
         "path": "/DB-join/",
         "title": "Join Duston Bowmen",
-        "views": 29
+        "views": 30
       },
       {
         "path": "/",
@@ -131,10 +139,6 @@
     "newLast7Days": 0,
     "newLast30Days": 22,
     "dailySignups": [
-      {
-        "date": "2026-09-05",
-        "count": 0
-      },
       {
         "date": "2026-09-06",
         "count": 0
@@ -250,21 +254,25 @@
       {
         "date": "2026-10-04",
         "count": 0
+      },
+      {
+        "date": "2026-10-05",
+        "count": 0
       }
     ]
   },
   "retention": {
     "newVsReturning": {
-      "new": 162,
+      "new": 164,
       "returning": 14
     },
     "windowDays": 28
   },
   "stickiness": {
-    "dau": 5,
-    "wau": 35,
-    "mau": 163,
-    "dauMauPct": 3
+    "dau": 3,
+    "wau": 33,
+    "mau": 165,
+    "dauMauPct": 2
   },
   "platform": {
     "web": 0,

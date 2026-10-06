@@ -1,18 +1,18 @@
 {
-  "generatedAt": "2026-10-05T13:50:50.591Z",
+  "generatedAt": "2026-10-06T12:54:48.789Z",
   "traffic": {
     "last7Days": {
       "users": 33,
       "newUsers": 30,
-      "sessions": 83,
-      "pageViews": 144,
-      "avgEngagementTimeSec": 72
+      "sessions": 75,
+      "pageViews": 112,
+      "avgEngagementTimeSec": 64
     },
     "last30Days": {
-      "users": 165,
-      "newUsers": 168,
-      "sessions": 273,
-      "pageViews": 404,
+      "users": 166,
+      "newUsers": 169,
+      "sessions": 277,
+      "pageViews": 410,
       "avgEngagementTimeSec": 30
     },
     "dailyUsers": [
@@ -78,19 +78,23 @@
       },
       {
         "date": "2026-10-05",
-        "users": 2
+        "users": 4
+      },
+      {
+        "date": "2026-10-06",
+        "users": 1
       }
     ],
     "topPages": [
       {
         "path": "/DB-club-members/",
         "title": "Duston Bowmen Membership",
-        "views": 94
+        "views": 95
       },
       {
         "path": "/DB-club-records/",
         "title": "Duston Bowmen Records",
-        "views": 77
+        "views": 80
       },
       {
         "path": "/",
@@ -105,7 +109,7 @@
       {
         "path": "/",
         "title": "Neil Fletcher",
-        "views": 27
+        "views": 28
       },
       {
         "path": "/archery-backstop/",
@@ -139,10 +143,6 @@
     "newLast7Days": 0,
     "newLast30Days": 22,
     "dailySignups": [
-      {
-        "date": "2026-09-06",
-        "count": 0
-      },
       {
         "date": "2026-09-07",
         "count": 0
@@ -258,20 +258,24 @@
       {
         "date": "2026-10-05",
         "count": 0
+      },
+      {
+        "date": "2026-10-06",
+        "count": 0
       }
     ]
   },
   "retention": {
     "newVsReturning": {
-      "new": 164,
+      "new": 165,
       "returning": 14
     },
     "windowDays": 28
   },
   "stickiness": {
-    "dau": 3,
+    "dau": 4,
     "wau": 33,
-    "mau": 165,
+    "mau": 166,
     "dauMauPct": 2
   },
   "platform": {

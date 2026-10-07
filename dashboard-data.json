@@ -1,18 +1,18 @@
 {
-  "generatedAt": "2026-10-06T12:54:48.789Z",
+  "generatedAt": "2026-10-07T12:48:53.716Z",
   "traffic": {
     "last7Days": {
-      "users": 33,
-      "newUsers": 30,
-      "sessions": 75,
-      "pageViews": 112,
-      "avgEngagementTimeSec": 64
+      "users": 15,
+      "newUsers": 12,
+      "sessions": 49,
+      "pageViews": 69,
+      "avgEngagementTimeSec": 91
     },
     "last30Days": {
-      "users": 166,
-      "newUsers": 169,
-      "sessions": 277,
-      "pageViews": 410,
+      "users": 167,
+      "newUsers": 170,
+      "sessions": 281,
+      "pageViews": 418,
       "avgEngagementTimeSec": 30
     },
     "dailyUsers": [
@@ -82,19 +82,19 @@
       },
       {
         "date": "2026-10-06",
-        "users": 1
+        "users": 3
       }
     ],
     "topPages": [
       {
         "path": "/DB-club-members/",
         "title": "Duston Bowmen Membership",
-        "views": 95
+        "views": 98
       },
       {
         "path": "/DB-club-records/",
         "title": "Duston Bowmen Records",
-        "views": 80
+        "views": 83
       },
       {
         "path": "/",
@@ -129,7 +129,7 @@
       {
         "path": "/archery-tracker/",
         "title": "Neil Fletcher: Archery Tracker",
-        "views": 14
+        "views": 15
       },
       {
         "path": "/meal-planner/",
@@ -143,10 +143,6 @@
     "newLast7Days": 0,
     "newLast30Days": 22,
     "dailySignups": [
-      {
-        "date": "2026-09-07",
-        "count": 0
-      },
       {
         "date": "2026-09-08",
         "count": 0
@@ -262,20 +258,24 @@
       {
         "date": "2026-10-06",
         "count": 0
+      },
+      {
+        "date": "2026-10-07",
+        "count": 0
       }
     ]
   },
   "retention": {
     "newVsReturning": {
-      "new": 165,
+      "new": 166,
       "returning": 14
     },
     "windowDays": 28
   },
   "stickiness": {
-    "dau": 4,
-    "wau": 33,
-    "mau": 166,
+    "dau": 3,
+    "wau": 15,
+    "mau": 167,
     "dauMauPct": 2
   },
   "platform": {

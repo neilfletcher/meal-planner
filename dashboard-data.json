@@ -1,18 +1,18 @@
 {
-  "generatedAt": "2026-10-07T12:48:53.716Z",
+  "generatedAt": "2026-10-08T12:57:34.390Z",
   "traffic": {
     "last7Days": {
-      "users": 15,
-      "newUsers": 12,
-      "sessions": 49,
-      "pageViews": 69,
-      "avgEngagementTimeSec": 91
+      "users": 12,
+      "newUsers": 9,
+      "sessions": 36,
+      "pageViews": 47,
+      "avgEngagementTimeSec": 38
     },
     "last30Days": {
       "users": 167,
       "newUsers": 170,
-      "sessions": 281,
-      "pageViews": 418,
+      "sessions": 283,
+      "pageViews": 421,
       "avgEngagementTimeSec": 30
     },
     "dailyUsers": [
@@ -89,17 +89,17 @@
       {
         "path": "/DB-club-members/",
         "title": "Duston Bowmen Membership",
-        "views": 98
+        "views": 99
       },
       {
         "path": "/DB-club-records/",
         "title": "Duston Bowmen Records",
-        "views": 83
+        "views": 84
       },
       {
         "path": "/",
         "title": "Solo Supper",
-        "views": 76
+        "views": 77
       },
       {
         "path": "/DB-join/",
@@ -143,10 +143,6 @@
     "newLast7Days": 0,
     "newLast30Days": 22,
     "dailySignups": [
-      {
-        "date": "2026-09-08",
-        "count": 0
-      },
       {
         "date": "2026-09-09",
         "count": 0
@@ -262,6 +258,10 @@
       {
         "date": "2026-10-07",
         "count": 0
+      },
+      {
+        "date": "2026-10-08",
+        "count": 0
       }
     ]
   },
@@ -273,10 +273,10 @@
     "windowDays": 28
   },
   "stickiness": {
-    "dau": 3,
-    "wau": 15,
+    "dau": 0,
+    "wau": 12,
     "mau": 167,
-    "dauMauPct": 2
+    "dauMauPct": 0
   },
   "platform": {
     "web": 0,
@@ -288,7 +288,7 @@
   },
   "engagement": {
     "trackedAccounts": 9,
-    "activePlanners": 6,
+    "activePlanners": 7,
     "usingShoppingList": 1,
     "topCooked": [
       {
@@ -336,7 +336,7 @@
       {
         "id": "d5",
         "title": "Spiced Chickpea & Spinach Curry",
-        "count": 4
+        "count": 5
       },
       {
         "id": "d4",
@@ -378,14 +378,14 @@
     "funnel": {
       "signedUp": 22,
       "tracked": 9,
-      "builtAPlan": 6,
+      "builtAPlan": 7,
       "usedShoppingList": 1,
       "confirmedACook": 5
     },
     "library": {
       "totalRecipes": 437,
-      "everTouched": 62,
-      "neverTouchedPct": 86
+      "everTouched": 65,
+      "neverTouchedPct": 85
     },
     "dormant": {
       "count": 0,

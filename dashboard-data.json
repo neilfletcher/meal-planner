@@ -1,18 +1,18 @@
 {
-  "generatedAt": "2026-10-08T12:57:34.390Z",
+  "generatedAt": "2026-10-09T12:43:37.294Z",
   "traffic": {
     "last7Days": {
-      "users": 12,
-      "newUsers": 9,
-      "sessions": 36,
-      "pageViews": 47,
-      "avgEngagementTimeSec": 38
+      "users": 11,
+      "newUsers": 8,
+      "sessions": 29,
+      "pageViews": 40,
+      "avgEngagementTimeSec": 31
     },
     "last30Days": {
       "users": 167,
       "newUsers": 170,
-      "sessions": 283,
-      "pageViews": 421,
+      "sessions": 284,
+      "pageViews": 424,
       "avgEngagementTimeSec": 30
     },
     "dailyUsers": [
@@ -83,6 +83,10 @@
       {
         "date": "2026-10-06",
         "users": 3
+      },
+      {
+        "date": "2026-10-08",
+        "users": 1
       }
     ],
     "topPages": [
@@ -109,7 +113,7 @@
       {
         "path": "/",
         "title": "Neil Fletcher",
-        "views": 28
+        "views": 29
       },
       {
         "path": "/archery-backstop/",
@@ -122,14 +126,14 @@
         "views": 18
       },
       {
+        "path": "/archery-tracker/",
+        "title": "Neil Fletcher: Archery Tracker",
+        "views": 17
+      },
+      {
         "path": "/DB-archery-dashboard/",
         "title": "Archery Tracker",
         "views": 16
-      },
-      {
-        "path": "/archery-tracker/",
-        "title": "Neil Fletcher: Archery Tracker",
-        "views": 15
       },
       {
         "path": "/meal-planner/",
@@ -143,10 +147,6 @@
     "newLast7Days": 0,
     "newLast30Days": 22,
     "dailySignups": [
-      {
-        "date": "2026-09-09",
-        "count": 0
-      },
       {
         "date": "2026-09-10",
         "count": 0
@@ -262,6 +262,10 @@
       {
         "date": "2026-10-08",
         "count": 0
+      },
+      {
+        "date": "2026-10-09",
+        "count": 0
       }
     ]
   },
@@ -273,10 +277,10 @@
     "windowDays": 28
   },
   "stickiness": {
-    "dau": 0,
-    "wau": 12,
+    "dau": 1,
+    "wau": 11,
     "mau": 167,
-    "dauMauPct": 0
+    "dauMauPct": 1
   },
   "platform": {
     "web": 0,

@@ -800,10 +800,14 @@
         return '<div class="mini-bar"><span class="mini-val">' + (m || "") + '</span><span class="mini-fill' + (i === todayIdx ? " is-today" : "") + '" style="height:' + Math.round(m / max * 64) + 'px"></span><span class="mini-day">' + DOW_NAMES[i].charAt(0) + "</span></div>";
       }).join("") + "</div>" : "") +
       "</section>";
+    html += '<section class="aside-card"><div class="aside-head"><h2>Leftovers</h2></div>' +
+      '<p class="aside-more">What the opened packs leave once this week is cooked.</p>' + leftoversHtml(ids, 6) + "</section>";
     el.innerHTML = html;
     document.getElementById("aside-shop-btn").addEventListener("click", function () { document.getElementById("tab-shopping-btn").click(); });
   }
 
+  document.getElementById("lowwaste-fill-btn").addEventListener("click", lowWasteFillWeek);
+  document.getElementById("batch-lowwaste-btn").addEventListener("click", lowWasteBatch);
   document.getElementById("fill-week-btn").addEventListener("click", function () {
     if (state.plan.every(Boolean)) { toast("Every day already has a dinner."); return; }
     var undoSnap = JSON.stringify(syncPayload());
@@ -1104,6 +1108,298 @@
     return groups;
   }
 
+  /* ============================= LOW-WASTE PLANNING ============================= */
+  // Cooking for one, the waste is rarely the recipe: it is the rest of the
+  // pack. PACKS lists how the ingredients that cause most waste are sold in a
+  // typical UK supermarket, and how badly a leftover hurts (perish: 0 keeps
+  // for ages, 1 a few days once opened, 2 goes off fast). wasteReport() rounds
+  // a set of dinners up to whole packs and measures what would be left over;
+  // planLowWaste() picks dinners that use those packs up.
+  //   unit: what the pack is measured in ("g", "ml", "" for whole items,
+  //   "tin", "rasher", "slice"); size: how much is in one pack; tinG: grams
+  //   that make up one tin when a recipe gives grams (drained beans ~240 g).
+  var PACKS = {
+    // meat and fish
+    "chicken thigh": { unit: "g", size: 500, perish: 2, sold: "500 g pack" },
+    "chicken breast": { unit: "g", size: 300, perish: 2, sold: "pack of 2" },
+    "beef mince": { unit: "g", size: 500, perish: 2, sold: "500 g pack" },
+    "pork mince": { unit: "g", size: 500, perish: 2, sold: "500 g pack" },
+    "lamb mince": { unit: "g", size: 500, perish: 2, sold: "500 g pack" },
+    "turkey mince": { unit: "g", size: 500, perish: 2, sold: "500 g pack" },
+    "white fish fillet": { unit: "g", size: 260, perish: 2.5, sold: "pack of 2" },
+    "cod fillet": { unit: "g", size: 260, perish: 2.5, sold: "pack of 2" },
+    "salmon fillet": { unit: "g", size: 240, perish: 2.5, sold: "pack of 2" },
+    "trout fillet": { unit: "g", size: 240, perish: 2.5, sold: "pack of 2" },
+    "smoked mackerel fillet": { unit: "g", size: 200, perish: 1.5, sold: "200 g pack" },
+    "beef rump steak": { unit: "g", size: 225, perish: 2, sold: "single steak" },
+    "beef sirloin": { unit: "g", size: 225, perish: 2, sold: "single steak" },
+    "beef frying strips": { unit: "g", size: 300, perish: 2, sold: "300 g pack" },
+    "pork loin steak": { unit: "g", size: 300, perish: 2, sold: "pack of 2" },
+    "pork loin": { unit: "g", size: 400, perish: 2, sold: "400 g pack" },
+    "lamb leg steak": { unit: "g", size: 300, perish: 2, sold: "pack of 2" },
+    "pork sausage": { unit: "", size: 6, perish: 1.5, sold: "pack of 6" },
+    "pork chop": { unit: "", size: 2, perish: 2, sold: "pack of 2" },
+    "smoked sausage": { unit: "g", size: 250, perish: 1, sold: "250 g ring" },
+    "cooking chorizo": { unit: "g", size: 225, perish: 1, sold: "225 g pack" },
+    "streaky bacon": { unit: "rasher", size: 8, perish: 1.5, sold: "pack of 8" },
+    "ham": { unit: "slice", size: 6, perish: 1.5, sold: "pack of 6" },
+    // dairy and eggs
+    "soured cream": { unit: "ml", size: 150, perish: 2, sold: "150 ml pot" },
+    "double cream": { unit: "ml", size: 300, perish: 2, sold: "300 ml pot" },
+    "natural yoghurt": { unit: "g", size: 500, perish: 1.5, sold: "500 g pot" },
+    "milk": { unit: "ml", size: 1000, perish: 1, sold: "1 litre" },
+    "feta": { unit: "g", size: 200, perish: 1.5, sold: "200 g block" },
+    "halloumi": { unit: "g", size: 225, perish: 1.5, sold: "225 g block" },
+    "paneer": { unit: "g", size: 225, perish: 1.5, sold: "225 g block" },
+    "mozzarella": { unit: "g", size: 125, perish: 2, sold: "125 g ball" },
+    "cheddar": { unit: "g", size: 250, perish: 0.4, sold: "250 g block" },
+    "egg": { unit: "", size: 6, perish: 0.4, sold: "box of 6" },
+    // fresh produce
+    "coriander": { unit: "g", size: 30, perish: 2, sold: "30 g pack" },
+    "parsley": { unit: "g", size: 30, perish: 2, sold: "30 g pack" },
+    "dill": { unit: "g", size: 20, perish: 2, sold: "20 g pack" },
+    "mint": { unit: "g", size: 30, perish: 2, sold: "30 g pack" },
+    "basil": { unit: "g", size: 30, perish: 2, sold: "30 g pack" },
+    "chives": { unit: "g", size: 20, perish: 2, sold: "20 g pack" },
+    "spring onion": { unit: "", size: 8, perish: 1.2, sold: "bunch of 8" },
+    "spinach": { unit: "g", size: 200, perish: 2, sold: "200 g bag" },
+    "baby spinach": { unit: "g", size: 200, perish: 2, sold: "200 g bag" },
+    "mixed salad leaves": { unit: "g", size: 100, perish: 2, sold: "100 g bag" },
+    "beansprouts": { unit: "g", size: 300, perish: 2.5, sold: "300 g bag" },
+    "green beans": { unit: "g", size: 200, perish: 1.5, sold: "200 g pack" },
+    "tenderstem broccoli": { unit: "g", size: 200, perish: 1.5, sold: "200 g pack" },
+    "kale": { unit: "g", size: 200, perish: 1.5, sold: "200 g bag" },
+    "pak choi": { unit: "g", size: 200, perish: 1.5, sold: "pack of 2" },
+    "chestnut mushroom": { unit: "g", size: 250, perish: 1.5, sold: "250 g punnet" },
+    "cherry tomato": { unit: "g", size: 250, perish: 1, sold: "250 g punnet" },
+    "new potato": { unit: "g", size: 750, perish: 0.4, sold: "750 g bag" },
+    "cooked beetroot": { unit: "g", size: 250, perish: 1, sold: "pack of 4" },
+    "cucumber": { unit: "", size: 1, perish: 1, sold: "whole" },
+    "red pepper": { unit: "", size: 1, perish: 0.8, sold: "whole" },
+    "green pepper": { unit: "", size: 1, perish: 0.8, sold: "whole" },
+    "pepper": { unit: "", size: 1, perish: 0.8, sold: "whole" },
+    "courgette": { unit: "", size: 1, perish: 0.8, sold: "whole" },
+    "avocado": { unit: "", size: 1, perish: 1.5, sold: "whole" },
+    "lemon": { unit: "", size: 1, perish: 0.5, sold: "whole" },
+    "lime": { unit: "", size: 1, perish: 0.5, sold: "whole" },
+    "tomato": { unit: "", size: 1, perish: 0.6, sold: "whole" },
+    "onion": { unit: "", size: 1, perish: 0.3, sold: "whole" },
+    "red onion": { unit: "", size: 1, perish: 0.3, sold: "whole" },
+    "leek": { unit: "", size: 1, perish: 0.5, sold: "whole" },
+    "sweet potato": { unit: "", size: 1, perish: 0.4, sold: "whole" },
+    "white cabbage": { unit: "", size: 1, perish: 0.5, sold: "whole" },
+    "butternut squash": { unit: "", size: 1, perish: 0.6, sold: "whole" },
+    // tins, cartons and chilled store-cupboard things
+    "chopped tomato": { unit: "tin", size: 1, tinG: 400, perish: 1, sold: "400 g tin" },
+    "chickpeas": { unit: "tin", size: 1, tinG: 240, perish: 1, sold: "400 g tin" },
+    "black beans": { unit: "tin", size: 1, tinG: 240, perish: 1, sold: "400 g tin" },
+    "butter beans": { unit: "tin", size: 1, tinG: 240, perish: 1, sold: "400 g tin" },
+    "kidney beans": { unit: "tin", size: 1, tinG: 240, perish: 1, sold: "400 g tin" },
+    "cannellini beans": { unit: "tin", size: 1, tinG: 240, perish: 1, sold: "400 g tin" },
+    "black-eyed beans": { unit: "tin", size: 1, tinG: 240, perish: 1, sold: "400 g tin" },
+    "coconut milk": { unit: "ml", size: 400, perish: 1.5, sold: "400 ml tin" },
+    "passata": { unit: "ml", size: 500, perish: 1, sold: "500 g carton" },
+    "pineapple chunks": { unit: "g", size: 227, perish: 1, sold: "227 g tin" },
+    "cooked rice": { unit: "g", size: 250, perish: 1, sold: "250 g pouch" },
+    "firm tofu": { unit: "g", size: 280, perish: 1.5, sold: "280 g block" },
+    // bread
+    "flatbread": { unit: "", size: 4, perish: 0.6, sold: "pack of 4" },
+    "pitta bread": { unit: "", size: 6, perish: 0.5, sold: "pack of 6" },
+    "burger bun": { unit: "", size: 4, perish: 0.6, sold: "pack of 4" },
+    "crusty bread roll": { unit: "", size: 4, perish: 0.6, sold: "pack of 4" },
+    "soft tortilla": { unit: "", size: 8, perish: 0.3, sold: "pack of 8" }
+  };
+  var SPOON_ML = { tsp: 5, tbsp: 15 };
+
+  // One ingredient's amount, in the unit its pack is sold in (or null).
+  function inPackUnit(c, p) {
+    var a = c.amt, u = c.unit;
+    if (a === null || a === undefined) return null;
+    if (u === "kg") { u = "g"; a *= 1000; }
+    if (u === "l") { u = "ml"; a *= 1000; }
+    if (p.unit === u) return a;
+    var each = SHOP_EACH_G[c.name];
+    if (p.unit === "g") {
+      if (c.herb && SHOP_HERB_G[u] !== undefined) return a * SHOP_HERB_G[u];
+      if (SHOP_HANDFUL_G[u] !== undefined) return a * SHOP_HANDFUL_G[u];
+      if (SPOON_ML[u]) return a * SPOON_ML[u];
+      if (u === "ml") return a;
+      if (u === "" && each) return a * each;
+      return null;
+    }
+    if (p.unit === "ml") {
+      if (SPOON_ML[u]) return a * SPOON_ML[u];
+      if (u === "g") return a;
+      return null;
+    }
+    if (p.unit === "") {
+      if (u === "g" && each) return a / each;
+      return null;
+    }
+    if (p.unit === "tin") {
+      if (u === "g") return a / (c.drained ? 240 : (p.tinG || 400));
+      if (u === "ml") return a / 400;
+      if (u === "small tin") return a / 2;
+      return null;
+    }
+    return null;
+  }
+
+  // Per-recipe needs of packed ingredients, cached per servings setting.
+  var needsCache = {}, needsServings = null;
+  function recipeNeeds(id) {
+    if (needsServings !== state.servings) { needsCache = {}; needsServings = state.servings; }
+    if (needsCache[id]) return needsCache[id];
+    var r = RECIPES_BY_ID[id], out = {};
+    if (r) {
+      r.ingredients.forEach(function (i) {
+        var c = shopCanon(i, state.servings);
+        var p = PACKS[c.name];
+        if (!p) {
+          // Any other fresh ingredient: opening it for one dinner probably
+          // leaves some behind; sharing it with another dinner halves that.
+          var w = UNLISTED_PERISH[c.cat];
+          if (w && !UNLISTED_KEEPS.test(c.name)) { out["?" + c.name] = 1; UNLISTED_W[c.name] = c.herb ? 2 : w; }
+          return;
+        }
+        SHOP_PACK_CAT[c.name] = c.cat;
+        var v = inPackUnit(c, p);
+        if (v === null || !(v > 0)) return;
+        out[c.name] = (out[c.name] || 0) + v;
+      });
+    }
+    needsCache[id] = out;
+    return out;
+  }
+  var UNLISTED_PERISH = { meat: 2, dairy: 1.2, produce: 1, bakery: 0.6 };
+  var UNLISTED_KEEPS = /^(garlic|ginger|celery|carrot|potato|shallot|apple|orange|green chilli|red chilli|scotch bonnet chilli|lemongrass|lettuce leaf|curry leaves|butter|parmesan)$/;
+  var UNLISTED_W = {};
+  function addNeeds(total, id) {
+    var n = recipeNeeds(id);
+    Object.keys(n).forEach(function (k) { total[k] = (total[k] || 0) + n[k]; });
+    return total;
+  }
+  function wasteOf(total) {
+    var w = 0, staples = state.staples || {};
+    Object.keys(total).forEach(function (k) {
+      if (k.charAt(0) === "?") { w += (UNLISTED_W[k.slice(1)] || 1) * 0.5 / total[k]; return; }
+      var p = PACKS[k];
+      if (staples[(SHOP_PACK_CAT[k] || "") + "|" + k]) return;
+      var packs = Math.max(1, Math.ceil(total[k] / p.size - 0.08));
+      var spare = Math.max(0, packs * p.size - total[k]);
+      w += (spare / p.size) * p.perish;
+    });
+    return w;
+  }
+  // Category of each packed ingredient, so cupboard staples can be skipped.
+  var SHOP_PACK_CAT = {};
+
+  // What a set of dinners leaves over, biggest problems first.
+  function wasteReport(ids) {
+    var total = {};
+    ids.forEach(function (id) { addNeeds(total, id); });
+    var items = [];
+    Object.keys(total).forEach(function (k) {
+      if (k.charAt(0) === "?") return;
+      var p = PACKS[k];
+      var packs = Math.max(1, Math.ceil(total[k] / p.size - 0.08));
+      var spare = Math.max(0, packs * p.size - total[k]);
+      var frac = spare / p.size;
+      if (frac >= 0.2 && p.perish >= 0.5) items.push({ name: k, spare: spare, frac: frac, pack: p, need: total[k], packs: packs, cost: frac * p.perish });
+    });
+    items.sort(function (a, b) { return b.cost - a.cost; });
+    return { score: wasteOf(total), items: items, used: Object.keys(total).length };
+  }
+  function fmtSpare(it) {
+    var u = it.pack.unit, v = it.spare, n = it.name;
+    if (u === "g") return (v >= 100 ? Math.round(v / 10) * 10 : Math.max(5, Math.round(v / 5) * 5)) + " g " + n;
+    if (u === "ml") return Math.round(v / 10) * 10 + " ml " + n;
+    if (u === "tin") return fmtAmt(Math.round(v * 4) / 4) + " tin of " + n;
+    if (u === "rasher") return Math.round(v) + " rasher" + (Math.round(v) === 1 ? "" : "s") + " of " + n;
+    if (u === "slice") return Math.round(v) + " slice" + (Math.round(v) === 1 ? "" : "s") + " of " + n;
+    var q = fmtAmt(Math.round(v * 4) / 4);
+    return q + " " + (v > 1.2 ? shopPlural(n) : n);
+  }
+  function leftoversHtml(ids, limit) {
+    var rep = wasteReport(ids);
+    if (!rep.used) return "";
+    var items = rep.items.slice(0, limit || 6);
+    var verdict = rep.score < 1.5 ? "Very little left over" : rep.score < 4 ? "A few things left over" : "Quite a lot left over";
+    return '<div class="leftovers">' +
+      '<div class="leftovers-head"><span class="leftovers-verdict' + (rep.score < 1.5 ? " is-good" : "") + '">' + ico(rep.score < 1.5 ? "check" : "basket") + verdict + "</span></div>" +
+      (items.length
+        ? '<ul class="leftovers-list">' + items.map(function (it) {
+          return "<li><span>" + esc(fmtSpare(it)) + '</span><span class="leftovers-pack">' + esc(it.pack.sold) + "</span></li>";
+        }).join("") + "</ul>"
+        : '<p class="leftovers-note">Everything you open gets used up.</p>') +
+      "</div>";
+  }
+
+  // Greedy low-waste picker: start from a dinner, keep adding whichever
+  // candidate leaves the least in opened packs, with a nudge towards variety.
+  // Several random starts; the best finished set wins.
+  function planLowWaste(fixedIds, n) {
+    var pool = suggestPool(freeRecipePool(RECIPES)).filter(function (r) { return !r.custom; });
+    if (!pool.length || n <= 0) return [];
+    var best = null;
+    for (var attempt = 0; attempt < 8; attempt++) {
+      var chosen = [], total = {};
+      fixedIds.forEach(function (id) { addNeeds(total, id); });
+      var cuisines = {}, proteins = {}, spicy = 0, vegan = 0;
+      fixedIds.forEach(function (id) { var r = RECIPES_BY_ID[id]; if (r) { cuisines[r.cuisine] = (cuisines[r.cuisine] || 0) + 1; proteins[r.protein] = (proteins[r.protein] || 0) + 1; } });
+      for (var k = 0; k < n; k++) {
+        var sample = shuffle(pool.slice()).slice(0, 140);
+        var pickR = null, pickScore = Infinity, base = wasteOf(total);
+        sample.forEach(function (r) {
+          if (chosen.indexOf(r.id) !== -1 || fixedIds.indexOf(r.id) !== -1) return;
+          var t = Object.assign({}, total);
+          addNeeds(t, r.id);
+          var s = wasteOf(t) - base;
+          s += (cuisines[r.cuisine] || 0) * 0.6;
+          s += Math.max(0, (proteins[r.protein] || 0) - 1) * 0.5;
+          if (r.tags.indexOf("spicy") !== -1) s += Math.max(0, spicy - 1) * 0.5;
+          if (r.tags.indexOf("vegan") !== -1) s += Math.max(0, vegan - 1) * 0.4;
+          if (state.ratings[r.id] >= 4) s -= 0.3;
+          s += Math.random() * 0.35;
+          if (s < pickScore) { pickScore = s; pickR = r; }
+        });
+        if (!pickR) break;
+        chosen.push(pickR.id);
+        addNeeds(total, pickR.id);
+        cuisines[pickR.cuisine] = (cuisines[pickR.cuisine] || 0) + 1;
+        proteins[pickR.protein] = (proteins[pickR.protein] || 0) + 1;
+        if (pickR.tags.indexOf("spicy") !== -1) spicy++;
+        if (pickR.tags.indexOf("vegan") !== -1) vegan++;
+      }
+      var finalScore = wasteOf(total);
+      if (!best || finalScore < best.score) best = { ids: chosen, score: finalScore };
+    }
+    return best ? best.ids : [];
+  }
+
+  function lowWasteFillWeek() {
+    var empty = [];
+    for (var d = 0; d < 7; d++) if (!state.plan[d]) empty.push(d);
+    if (!empty.length) { toast("Every day already has a dinner. Clear a few to fill them with less waste."); return; }
+    var undoSnap = JSON.stringify(syncPayload());
+    var picks = planLowWaste(state.plan.filter(Boolean), empty.length);
+    picks.forEach(function (id, i) { state.plan[empty[i]] = id; logHistory(id, "lowwaste"); });
+    state.newWeekNotice = false;
+    onStateChanged();
+    var rep = wasteReport(state.plan.filter(Boolean));
+    toast(rep.items.length ? "Week filled to use up packs. A few bits left over: see the list." : "Week filled. Everything you open gets used.", "Undo", function () { applyState(JSON.parse(undoSnap)); onStateChanged(); });
+  }
+  function lowWasteBatch() {
+    var input = document.getElementById("batch-count-input");
+    var n = Math.min(30, Math.max(1, parseInt(input.value, 10) || 4));
+    input.value = n;
+    var undoSnap = JSON.stringify(syncPayload());
+    var picks = planLowWaste(state.batch.map(function (b) { return b.id; }), n);
+    picks.forEach(function (id) { state.batch.push({ uid: newUid(), id: id, cookedAt: null }); logHistory(id, "lowwaste"); });
+    onStateChanged();
+    toast(picks.length + " dinners picked to share their packs.", "Undo", function () { applyState(JSON.parse(undoSnap)); onStateChanged(); });
+  }
+
   function setShopBar(frac) {
     var bar = document.getElementById("shop-bar");
     if (bar) bar.firstElementChild.style.width = Math.round(frac * 100) + "%";
@@ -1159,6 +1455,11 @@
           return '<div class="shop-item staple-row"><span class="amt">' + x.g.amt + '</span><span class="name">' + x.g.label + '</span>' +
             '<button type="button" class="btn btn-ghost btn-sm" data-unstaple="' + x.key.replace(/"/g, "&quot;") + '">Need it</button></div>';
         }).join("") + "</details>";
+    }
+    if (!shopCupboardMode) {
+      html += '<section class="shop-section shop-leftovers"><h3>What you will have left</h3>' +
+        '<p class="settings-note">Packs are rounded up to how the shops sell them. Use the Low-waste button on This week to plan around these.</p>' +
+        leftoversHtml(recipeIds, 10) + "</section>";
     }
     content.innerHTML = html;
     document.getElementById("shop-progress").textContent = shopCupboardMode ? "Tap what you always have in" : checkedCount + " of " + total + " ticked off";
@@ -1674,7 +1975,7 @@
       }
 
       var viaCounts = countBy(validHistory, function (h) { return h.via; });
-      var viaLabel = { pick: "Chosen by hand", fill: "Filled automatically", surprise: "Surprise me" };
+      var viaLabel = { pick: "Chosen by hand", fill: "Filled automatically", surprise: "Surprise me", lowwaste: "Low-waste fill", copy: "Copied from last week" };
       var viaEntries = topEntries(viaCounts, 3).map(function (e) {
         return { key: e.key, count: e.count, label: viaLabel[e.key] || capitalise(e.key) };
       });
@@ -1975,8 +2276,10 @@
       document.getElementById("banner-close-btn").addEventListener("click", function () { state.newWeekNotice = false; onStateChanged(); });
     } else if (!state.plan.some(Boolean)) {
       el.innerHTML = '<div class="banner-card banner-hero"><div><strong>Plan your week in one tap.</strong>' +
-        '<p>Get seven dinners picked for you, then swap any you don\'t fancy. Or tap a day below to choose yourself.</p></div>' +
-        '<div class="banner-actions"><button type="button" class="btn btn-primary" id="banner-fill-btn">Fill my week</button></div></div>';
+        '<p>Low-waste picks dinners that share their packs, so the half bag of spinach from Monday goes into Thursday. Or fill it at random, or tap a day to choose yourself.</p></div>' +
+        '<div class="banner-actions"><button type="button" class="btn btn-primary" id="banner-lowwaste-btn">Low-waste week</button>' +
+        '<button type="button" class="btn btn-outline banner-btn-light" id="banner-fill-btn">Fill at random</button></div></div>';
+      document.getElementById("banner-lowwaste-btn").addEventListener("click", lowWasteFillWeek);
       document.getElementById("banner-fill-btn").addEventListener("click", fillWeek);
     } else {
       el.innerHTML = "";

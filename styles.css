@@ -534,3 +534,16 @@ h1, h2, h3, .brand, .footer-line, .fact-big, .step-n, .ns-n, .meta4 dd, .art-cui
 .glance-big, .recipe-card .title, .picker-row .title, .cook-step, .cook-num, .cook-title, .banner-card strong, .aside-head h2,
 .brand-name, .thumb-art, .steps li::before, .step-num, .wc-val + * { font-weight: 500; }
 h1, .display, .display-l, .display-m, .week-range { letter-spacing: -0.02em; }
+
+/* ---------- low-waste leftovers ---------- */
+.leftovers { display: flex; flex-direction: column; gap: 10px; }
+.leftovers-verdict { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; color: var(--ink-2); }
+.leftovers-verdict.is-good { color: var(--olive); }
+.leftovers-verdict .i { width: 16px; height: 16px; }
+.leftovers-list { list-style: none; margin: 0; padding: 0; }
+.leftovers-list li { display: flex; justify-content: space-between; gap: 12px; padding: 9px 0; border-top: 1px solid var(--board); font-size: 14.5px; }
+.leftovers-pack { font-family: var(--mono); font-size: 12px; color: var(--ink-3); white-space: nowrap; }
+.leftovers-note { font-size: 14px; color: var(--ink-2); }
+.shop-leftovers { margin-top: 36px; }
+.banner-hero .banner-btn-light { background: transparent; color: var(--on-night); border-color: #3A4540; }
+.banner-hero .banner-btn-light:hover { border-color: var(--on-night); }

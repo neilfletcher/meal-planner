@@ -97,7 +97,8 @@
               <button type="button" class="mode-btn" id="mode-days-btn" aria-pressed="true">Plan by day</button>
               <button type="button" class="mode-btn" id="mode-batch-btn" aria-pressed="false">Just pick dinners</button>
             </div>
-            <button class="btn btn-ink" id="fill-week-btn">Fill empty days</button>
+            <button class="btn btn-primary" id="lowwaste-fill-btn" title="Fill empty days with dinners that share their packs">Low-waste fill</button>
+            <button class="btn btn-ink" id="fill-week-btn">Fill at random</button>
             <button class="btn btn-outline" id="clear-week-btn">Clear week</button>
           </div>
         </div>
@@ -116,6 +117,7 @@
             <label class="batch-count-label"><span class="visually-hidden">Number of dinners to add</span>
               <input type="number" id="batch-count-input" min="1" max="30" value="4" class="batch-count-input">
             </label>
+            <button class="btn btn-primary" id="batch-lowwaste-btn" title="Pick dinners that share their packs">Low-waste pick</button>
             <button class="btn btn-ink" id="batch-surprise-btn">Surprise me</button>
             <button class="btn btn-outline" id="batch-add-btn">Add a dinner</button>
             <button class="btn btn-ghost" id="batch-clear-btn">Clear list</button>

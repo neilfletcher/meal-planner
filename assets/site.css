@@ -21,7 +21,7 @@
   --on-night-2: #CDD2CB;
   --on-night-3: #9AA198;
   --lift: 0 1px 0 rgba(26, 33, 29, 0.04), 0 24px 48px -24px rgba(20, 26, 23, 0.28);
-  --serif: "Instrument Serif", "Iowan Old Style", Georgia, serif;
+  --serif: "Newsreader", "Iowan Old Style", Georgia, serif;
   --sans: "Geist", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --mono: "Geist Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
   --wrap: 2200px;
@@ -38,7 +38,7 @@ body {
 }
 img { max-width: 100%; height: auto; display: block; }
 a { color: inherit; }
-h1, h2, h3 { font-family: var(--serif); font-weight: 400; margin: 0; letter-spacing: -0.01em; text-wrap: balance; }
+h1, h2, h3 { font-family: var(--serif); font-weight: 500; margin: 0; letter-spacing: -0.01em; text-wrap: balance; }
 p { margin: 0; }
 em { font-style: italic; }
 ::selection { background: var(--tomato); color: var(--tomato-ink); }
@@ -53,9 +53,9 @@ em { font-style: italic; }
 .mono { font-family: var(--mono); font-variant-numeric: tabular-nums; }
 .small { font-size: 14px; }
 .muted { color: var(--ink-3); }
-.display { font-size: clamp(52px, 7vw, 128px); line-height: 0.96; letter-spacing: -0.025em; }
-.display-l { font-size: clamp(42px, 5.2vw, 74px); line-height: 0.98; letter-spacing: -0.02em; }
-.display-m { font-size: clamp(40px, 5vw, 66px); line-height: 0.98; }
+.display { font-size: clamp(46px, 6vw, 104px); line-height: 1; letter-spacing: -0.025em; }
+.display-l { font-size: clamp(38px, 4.4vw, 64px); line-height: 1.02; letter-spacing: -0.02em; }
+.display-m { font-size: clamp(36px, 4.2vw, 58px); line-height: 1.02; }
 .accent { color: var(--tomato); }
 .lead { font-size: clamp(18px, 1.5vw, 22px); line-height: 1.5; color: var(--ink-2); max-width: 620px; }
 .lead-light { color: var(--on-night-2); }
@@ -134,7 +134,7 @@ em { font-style: italic; }
 .section-tight { padding-top: 40px; }
 .section-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 16px 24px; }
 .section-head-text { display: flex; flex-direction: column; gap: 12px; max-width: 720px; }
-.section-head h2 { font-size: clamp(38px, 4.6vw, 60px); line-height: 1; }
+.section-head h2 { font-size: clamp(32px, 3.6vw, 52px); line-height: 1.05; }
 .section-lead { color: var(--ink-2); max-width: 640px; margin-top: -12px; }
 
 .scroll-x { overflow-x: auto; scrollbar-width: thin; padding-bottom: 6px; }
@@ -316,7 +316,7 @@ em { font-style: italic; }
 h1 em, h2 em, .display em, .accent { font-style: normal; color: inherit; }
 .hero2 { display: grid; grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.4fr); gap: clamp(32px, 4vw, 72px); align-items: center; padding: 32px 0 0 var(--gutter); max-width: calc(var(--wrap) + 400px); margin: 0 auto; }
 .hero2-text { display: flex; flex-direction: column; gap: 24px; padding: 24px 0; }
-.hero2-text .display { font-size: clamp(48px, 5.6vw, 104px); }
+.hero2-text .display { font-size: clamp(44px, 4.8vw, 88px); }
 .hero2-mosaic { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); grid-template-rows: repeat(2, minmax(0, 1fr)); gap: 8px; height: min(84vh, 880px); min-height: 520px; }
 .tile { position: relative; display: block; overflow: hidden; border-radius: 4px; text-decoration: none; color: #fff; background: var(--board); }
 .tile-big { grid-column: span 2; grid-row: span 2; }
@@ -357,3 +357,10 @@ h1 em, h2 em, .display em, .accent { font-style: normal; color: inherit; }
   .coll-tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 560px) { .coll-tiles { grid-template-columns: 1fr; } .tile-coll { aspect-ratio: 16 / 10; } }
+
+/* Headings: Newsreader at a medium weight, sturdier and easier to read than a single-weight display face */
+h1, h2, h3, .brand, .footer-line, .fact-big, .step-n, .ns-n, .meta4 dd, .art-cuisine, .art-protein + *, .tile-title, .week-title,
+.coll-name, .cu-name, .rcard-title, .cuisine-cloud a, .info .title, .day-label .dom, .week-range, .stat-value, .stat-tile .stat-value,
+.glance-big, .recipe-card .title, .picker-row .title, .cook-step, .cook-num, .cook-title, .banner-card strong, .aside-head h2,
+.brand-name, .thumb-art, .steps li::before, .step-num, .wc-val + * { font-weight: 500; }
+h1, .display, .display-l, .display-m, .week-range { letter-spacing: -0.02em; }

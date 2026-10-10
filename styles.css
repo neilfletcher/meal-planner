@@ -22,7 +22,7 @@
   --on-night-2: #CDD2CB;
   --on-night-3: #9AA198;
   --lift: 0 1px 0 rgba(26, 33, 29, 0.04), 0 24px 48px -24px rgba(20, 26, 23, 0.32);
-  --serif: "Instrument Serif", "Iowan Old Style", Georgia, serif;
+  --serif: "Newsreader", "Iowan Old Style", Georgia, serif;
   --sans: "Geist", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --mono: "Geist Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
   --nav-h: 0px;
@@ -38,7 +38,7 @@ body {
   -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
   padding-bottom: calc(var(--nav-h) + env(safe-area-inset-bottom, 0px));
 }
-h1, h2, h3 { font-family: var(--serif); font-weight: 400; margin: 0; letter-spacing: -0.01em; text-wrap: balance; }
+h1, h2, h3 { font-family: var(--serif); font-weight: 500; margin: 0; letter-spacing: -0.01em; text-wrap: balance; }
 p { margin: 0; }
 a { color: inherit; }
 img { max-width: 100%; }
@@ -153,7 +153,7 @@ button, input, select, textarea { font-family: inherit; color: inherit; }
 .planner-toolbar { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 18px 20px; margin-bottom: 24px; }
 #days-toolbar[hidden], #batch-toolbar[hidden], #day-list[hidden], #batch-list[hidden] { display: none; }
 .week-heading { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
-.week-range { font-size: clamp(38px, 4.4vw, 58px); line-height: 1; }
+.week-range { font-size: clamp(34px, 3.8vw, 50px); line-height: 1.05; }
 .week-sub { color: var(--ink-2); font-size: 15px; }
 .toolbar-actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
 .mode-toggle { display: inline-flex; padding: 4px; border-radius: 999px; background: var(--board); }
@@ -254,7 +254,7 @@ button, input, select, textarea { font-family: inherit; color: inherit; }
 .aside-board { background: var(--board); border-color: var(--board); }
 .glance { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
 .glance > div { display: flex; flex-direction: column; }
-.glance-big { font-family: var(--serif); font-size: 40px; line-height: 1; }
+.glance-big { font-family: var(--serif); font-size: 34px; line-height: 1; white-space: nowrap; }
 .glance-small { font-size: 13px; color: var(--ink-2); }
 .mini-bars { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 8px; align-items: end; height: 108px; border-bottom: 1px solid var(--line-strong); padding-bottom: 0; position: relative; margin-bottom: 18px; }
 .mini-bar { display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 4px; height: 100%; position: relative; }
@@ -527,3 +527,10 @@ body.modal-open { overflow: hidden; }
 
 /* plain headings, no accent words */
 h1 em, h2 em { font-style: normal; }
+
+/* Headings: Newsreader at a medium weight, sturdier and easier to read than a single-weight display face */
+h1, h2, h3, .brand, .footer-line, .fact-big, .step-n, .ns-n, .meta4 dd, .art-cuisine, .art-protein + *, .tile-title, .week-title,
+.coll-name, .cu-name, .rcard-title, .cuisine-cloud a, .info .title, .day-label .dom, .week-range, .stat-value, .stat-tile .stat-value,
+.glance-big, .recipe-card .title, .picker-row .title, .cook-step, .cook-num, .cook-title, .banner-card strong, .aside-head h2,
+.brand-name, .thumb-art, .steps li::before, .step-num, .wc-val + * { font-weight: 500; }
+h1, .display, .display-l, .display-m, .week-range { letter-spacing: -0.02em; }

@@ -27,7 +27,7 @@
     <nav class="tabs" role="tablist" aria-label="Planner">
       <button class="tab-btn" role="tab" id="tab-planner-btn" aria-selected="true" data-panel="planner">
         <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>
-        <span class="tab-label">This week</span><span class="count" id="planner-count"></span>
+        <span class="tab-label">Your week</span><span class="count" id="planner-count"></span>
       </button>
       <button class="tab-btn" role="tab" id="tab-shopping-btn" aria-selected="false" data-panel="shopping">
         <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h16l-1.5 10h-13z"/><path d="M8 9l4-5 4 5"/></svg>
@@ -89,6 +89,10 @@
       <div class="planner-main">
         <div class="planner-toolbar" id="days-toolbar">
           <div class="week-heading">
+            <div class="week-toggle" role="group" aria-label="Which week">
+              <button type="button" class="week-tab" id="week-this-btn" aria-pressed="true">This week</button>
+              <button type="button" class="week-tab" id="week-next-btn" aria-pressed="false">Next week</button>
+            </div>
             <span class="eyebrow" id="week-eyebrow">This week</span>
             <h1 class="week-range" id="week-range"></h1>
           </div>

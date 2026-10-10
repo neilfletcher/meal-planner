@@ -1,178 +1,32 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en-GB">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="color-scheme" content="light dark">
-<title>Solo Supper</title>
-<meta name="description" content="A week of ten-minute-prep dinners for one, with a shopping list built from what you've planned.">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Solo Supper: dinners for one, planned for the week</title>
+<meta name="description" content="437 original recipes written for one person, a weekly meal planner and a shopping list that adds itself up. Dinner for one, sorted.">
+<link rel="canonical" href="https://neilfletcher.github.io/meal-planner/">
+<meta property="og:site_name" content="Solo Supper">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Solo Supper: dinners for one, planned for the week">
+<meta property="og:description" content="437 original recipes written for one person, a weekly meal planner and a shopping list that adds itself up. Dinner for one, sorted.">
+<meta property="og:url" content="https://neilfletcher.github.io/meal-planner/">
+<meta property="og:image" content="https://neilfletcher.github.io/meal-planner/img/recipes/d9.webp">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#F7F5F0">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&family=Public+Sans:wght@400;500;600;700&display=swap">
-<link rel="stylesheet" href="styles.css">
-
-<!-- Google Analytics loads only after the visitor agrees (see initConsent in app.js). -->
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&amp;family=Geist:wght@400;500;600;700&amp;family=Geist+Mono:wght@400;500;600&amp;display=swap">
+<link rel="stylesheet" href="assets/site.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"Solo Supper","url":"https://neilfletcher.github.io/meal-planner/"}</script>
 </head>
-<body>
-
-<header class="app-header">
-  <div class="brand-mark">
-    <div class="brand-row">
-      <span class="logomark" aria-hidden="true">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="1.6"/>
-          <circle cx="14.6" cy="13.6" r="3.1" fill="currentColor"/>
-        </svg>
-      </span>
-      <h1>Solo Supper</h1>
-    </div>
-    <p class="tagline">Ten-minute-prep dinners for one, planned a week out, with the shopping sorted for you.</p>
-  </div>
-
-  <div class="header-controls">
-    <div class="servings-control">
-      <span class="label">Cooking for</span>
-      <div class="stepper">
-        <button type="button" id="servings-minus" aria-label="Fewer people">&minus;</button>
-        <output id="servings-value">1</output>
-        <button type="button" id="servings-plus" aria-label="More people">&plus;</button>
-      </div>
-    </div>
-
-    <div class="account-control" id="account-control">
-      <div id="account-signed-out">
-        <button type="button" class="btn btn-sm" id="google-signin-btn">
-          <svg width="16" height="16" viewBox="0 0 48 48" aria-hidden="true">
-            <path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3c-1.6 4.7-6.1 8-11.3 8-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.1 8 3l6-6C34.6 5.1 29.6 3 24 3 12.4 3 3 12.4 3 24s9.4 21 21 21 21-9.4 21-21c0-1.4-.1-2.8-.4-4.5z"/>
-            <path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.6 15.1 18.9 12 24 12c3.1 0 5.8 1.1 8 3l6-6C34.6 5.1 29.6 3 24 3 16.3 3 9.7 7.3 6.3 14.7z"/>
-            <path fill="#4CAF50" d="M24 45c5.5 0 10.4-1.9 14-5.1l-6.5-5.5C29.5 36.1 26.9 37 24 37c-5.2 0-9.6-3.3-11.3-8l-6.6 5.1C9.6 40.6 16.3 45 24 45z"/>
-            <path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.3-2.2 4.3-4.1 5.7l6.5 5.5C41.5 36 45 30.5 45 24c0-1.4-.1-2.8-.4-4.5z"/>
-          </svg>
-          Sign in with Google
-        </button>
-      </div>
-      <div id="account-signed-in" hidden>
-        <img id="account-avatar" class="account-avatar" alt="">
-        <div class="account-info">
-          <span class="account-name" id="account-name"></span>
-          <span class="account-sync" id="account-sync"></span>
-        </div>
-        <button type="button" class="icon-btn" id="signout-btn" aria-label="Sign out" title="Sign out">&#9211;</button>
-      </div>
-    </div>
-    <button type="button" class="icon-btn settings-btn" id="settings-btn" aria-label="Settings" title="Settings">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>
-    </button>
-  </div>
-</header>
-
-<nav class="tabs" role="tablist">
-  <button class="tab-btn" role="tab" id="tab-planner-btn" aria-selected="true" data-panel="planner">This week<span class="count" id="planner-count"></span></button>
-  <button class="tab-btn" role="tab" id="tab-shopping-btn" aria-selected="false" data-panel="shopping">Shopping<span class="tab-long"> list</span><span class="count" id="shopping-count"></span></button>
-  <button class="tab-btn" role="tab" id="tab-recipes-btn" aria-selected="false" data-panel="recipes">Recipes<span class="count" id="recipes-count"></span></button>
-  <button class="tab-btn" role="tab" id="tab-stats-btn" aria-selected="false" data-panel="stats">Stats</button>
-</nav>
-
-<main>
-  <section class="panel" id="panel-planner">
-    <div class="mode-toggle" role="group" aria-label="Planning mode">
-      <button type="button" class="mode-btn" id="mode-days-btn" aria-pressed="true">Plan by day</button>
-      <button type="button" class="mode-btn" id="mode-batch-btn" aria-pressed="false">Just pick dinners</button>
-    </div>
-
-    <div class="planner-toolbar" id="days-toolbar">
-      <div>
-        <h2>This week's dinners</h2>
-        <div class="week-range" id="week-range"></div>
-      </div>
-      <div class="toolbar-actions">
-        <button class="btn btn-sm" id="fill-week-btn">Fill empty days</button>
-        <button class="btn btn-ghost btn-sm" id="clear-week-btn">Clear week</button>
-      </div>
-    </div>
-    <div id="planner-banner"></div>
-    <div class="day-list" id="day-list"></div>
-
-    <div class="planner-toolbar" id="batch-toolbar" hidden>
-      <div>
-        <h2>Dinners to get through</h2>
-        <div class="week-range" id="batch-range">Not tied to any day &ndash; cook them whenever suits.</div>
-      </div>
-      <div class="toolbar-actions batch-actions">
-        <label class="batch-count-label">
-          <input type="number" id="batch-count-input" min="1" max="30" value="4" class="batch-count-input" aria-label="Number of dinners to add">
-        </label>
-        <button class="btn btn-sm" id="batch-surprise-btn">Surprise me</button>
-        <button class="btn btn-ghost btn-sm" id="batch-add-btn">+ Add a dinner</button>
-        <button class="btn btn-ghost btn-sm" id="batch-clear-btn">Clear list</button>
-      </div>
-    </div>
-    <div class="day-list" id="batch-list" hidden></div>
-  </section>
-
-  <section class="panel" id="panel-shopping" hidden>
-    <div class="shop-header">
-      <h2>Shopping list</h2>
-      <span class="shop-progress" id="shop-progress"></span>
-      <div class="shop-tools">
-        <button type="button" class="btn btn-ghost btn-sm" id="shop-share-btn">Share</button>
-        <button type="button" class="btn btn-ghost btn-sm" id="shop-cupboard-btn" aria-pressed="false">Cupboard</button>
-      </div>
-    </div>
-    <div id="shop-content"></div>
-  </section>
-
-  <section class="panel" id="panel-recipes" hidden>
-    <div class="paywall-banner" id="paywall-banner" hidden>
-      <span></span>
-      <button class="btn btn-primary" id="paywall-banner-btn">Unlock all recipes</button>
-    </div>
-    <div class="recipe-filters">
-      <input type="search" class="search-input" id="recipe-search" placeholder="Search recipes or ingredients">
-      <div id="tag-chips" style="display:flex; gap:8px; flex-wrap:wrap;"></div>
-      <button type="button" class="btn btn-sm" id="add-recipe-btn">+ Add your own recipe</button>
-    </div>
-    <div class="recipe-grid" id="recipe-grid"></div>
-  </section>
-
-  <section class="panel" id="panel-stats" hidden>
-    <div id="stats-content"></div>
-  </section>
-</main>
-
-<footer>Four hundred and thirty-seven original dinners, the best part of two years of Sundays, each written for one and ready in ten minutes of prep. Recipes stay put; your week is yours to rearrange.</footer>
-
-<div class="modal-backdrop" id="recipe-modal-backdrop" hidden>
-  <div class="modal" id="recipe-modal" role="dialog" aria-modal="true" aria-label="Recipe"></div>
-</div>
-
-<div class="modal-backdrop" id="picker-modal-backdrop" hidden>
-  <div class="modal" id="picker-modal" role="dialog" aria-modal="true" aria-label="Pick a dinner"></div>
-</div>
-
-<div class="modal-backdrop" id="paywall-modal-backdrop" hidden>
-  <div class="modal" id="paywall-modal" role="dialog" aria-modal="true" aria-label="Unlock"></div>
-</div>
-
-<div class="modal-backdrop" id="settings-modal-backdrop" hidden>
-  <div class="modal" id="settings-modal" role="dialog" aria-modal="true" aria-label="Settings"></div>
-</div>
-
-<div class="modal-backdrop" id="custom-modal-backdrop" hidden>
-  <div class="modal" id="custom-modal" role="dialog" aria-modal="true" aria-label="Your own recipe"></div>
-</div>
-
-<div class="cook-overlay" id="cook-overlay" role="dialog" aria-modal="true" aria-label="Cooking mode" hidden></div>
-<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
-<div class="consent-banner" id="consent-banner" role="region" aria-label="Usage statistics" hidden></div>
-
-<!-- Firebase (Google Sign-In + cross-device sync). See README.md to set this up;
-     the app works fine locally on one device even before you configure it. -->
-<script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore-compat.js"></script>
-<script src="firebase-config.js"></script>
-
-<script src="app.js"></script>
-
+<body class="">
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-header"><div class="wrap site-header-row"><a class="brand" href=""><svg class="logo-mark" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="1.4"/><circle cx="14.6" cy="13.6" r="3.1" class="logo-dot"/></svg><span>Solo Supper</span></a><button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Menu"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h16M4 16h16"/></svg></button><nav class="site-nav" id="site-nav" aria-label="Main"><a href="recipes/">Recipes</a><a href="collections/">Collections</a><a href="cuisines/">Cuisines</a><a href="plan/">The planner</a></nav><div class="site-header-actions"><a class="btn btn-ink" href="plan/" data-planner-cta>Plan your week</a></div></div></header>
+<main id="main"><section class="wrap hero"><div class="hero-text"><span class="eyebrow">Dinners for one, planned a week out</span><h1 class="display">Supper for one, <em class="accent">sorted</em> for the week.</h1><p class="lead">437 original recipes written for a single portion, about ten minutes of prep each, and a shopping list that builds itself from the week you plan.</p><div class="btn-row"><a class="btn btn-primary btn-lg" href="plan/">Plan this week <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a><a class="btn btn-outline btn-lg" href="recipes/">Browse recipes</a></div><p class="small muted">Free to use. Sign in with Google to keep your week in sync across devices.</p></div><div class="hero-grid"><figure class="hero-fig"><a href="recipes/lemon-and-herb-cod-with-crushed-potatoes/"><img class="hero-img ratio-45" src="img/recipes/d9.webp" alt="Lemon &amp; Herb Cod with Crushed Potatoes" width="720" height="540" fetchpriority="high"></a><figcaption><span>Lemon &amp; Herb Cod with Crushed Potatoes</span><span>21 min</span></figcaption></figure><figure class="hero-fig"><a href="recipes/harissa-salmon-with-lemon-couscous/"><img class="hero-img ratio-11" src="img/recipes/d2.webp" alt="Harissa Salmon with Lemon Couscous" width="720" height="540" loading="lazy" decoding="async"></a><figcaption><span>Harissa Salmon with Lemon Couscous</span><span>17 min</span></figcaption></figure><figure class="hero-fig"><a href="recipes/beetroot-and-goats-cheese-orzo/"><img class="hero-img ratio-11" src="img/recipes/d14.webp" alt="Beetroot &amp; Goat&#39;s Cheese Orzo" width="720" height="540" loading="lazy" decoding="async"></a><figcaption><span>Beetroot &amp; Goat&#39;s Cheese Orzo</span><span>16 min</span></figcaption></figure></div></section><section class="facts"><div class="wrap facts-row"><div class="fact"><span class="fact-big">437</span><span class="fact-small">original recipes, all free to read</span></div><div class="fact"><span class="fact-big">64</span><span class="fact-small">countries in the book</span></div><div class="fact"><span class="fact-big">1</span><span class="fact-small">portion, every recipe, no halving</span></div><div class="fact"><span class="fact-big">1 list</span><span class="fact-small">for the whole week, added up for you</span></div></div></section><section class="wrap section"><div class="section-head"><div class="section-head-text"><span class="eyebrow">How a week looks</span><h2>Seven dinners. <em>One</em> shop.</h2></div><a class="text-link" href="plan/">Open the planner</a></div><p class="section-lead">Fill the week yourself, or let Solo Supper do it and swap anything you do not fancy. The shopping list adds it all up, so half a lemon on Monday and half on Friday becomes one lemon.</p><div class="scroll-x"><ol class="week-strip"><li><span class="eyebrow">MON</span><a href="recipes/sticky-hoisin-pork-with-egg-fried-rice/"><img class="week-img" src="img/recipes/d1.webp" alt="Sticky Hoisin Pork with Egg-Fried Rice" width="720" height="540" loading="lazy" decoding="async"><span class="week-title">Sticky Hoisin Pork with Egg-Fried Rice</span></a><span class="mono small muted">16 min</span></li><li><span class="eyebrow">TUE</span><a href="recipes/thai-green-curry-with-chicken/"><img class="week-img" src="img/recipes/d3.webp" alt="Thai Green Curry with Chicken" width="720" height="540" loading="lazy" decoding="async"><span class="week-title">Thai Green Curry with Chicken</span></a><span class="mono small muted">18 min</span></li><li><span class="eyebrow">WED</span><a href="recipes/spiced-chickpea-and-spinach-curry/"><img class="week-img" src="img/recipes/d5.webp" alt="Spiced Chickpea &amp; Spinach Curry" width="720" height="540" loading="lazy" decoding="async"><span class="week-title">Spiced Chickpea &amp; Spinach Curry</span></a><span class="mono small muted">20 min</span></li><li><span class="eyebrow">THU</span><a href="recipes/teriyaki-salmon-with-sesame-greens/"><img class="week-img" src="img/recipes/d17.webp" alt="Teriyaki Salmon with Sesame Greens" width="720" height="540" loading="lazy" decoding="async"><span class="week-title">Teriyaki Salmon with Sesame Greens</span></a><span class="mono small muted">14 min</span></li><li><span class="eyebrow">FRI</span><a href="recipes/one-pan-chorizo-and-butter-bean-stew/"><img class="week-img" src="img/recipes/d8.webp" alt="One-Pan Chorizo &amp; Butter Bean Stew" width="720" height="540" loading="lazy" decoding="async"><span class="week-title">One-Pan Chorizo &amp; Butter Bean Stew</span></a><span class="mono small muted">18 min</span></li><li><span class="eyebrow">SAT</span><a href="recipes/moroccan-spiced-lamb-with-couscous/"><img class="week-img" src="img/recipes/d12.webp" alt="Moroccan-Spiced Lamb with Couscous" width="720" height="540" loading="lazy" decoding="async"><span class="week-title">Moroccan-Spiced Lamb with Couscous</span></a><span class="mono small muted">18 min</span></li><li><span class="eyebrow">SUN</span><a href="recipes/baked-feta-pasta/"><img class="week-img" src="img/recipes/d30.webp" alt="Baked Feta Pasta" width="720" height="540" loading="lazy" decoding="async"><span class="week-title">Baked Feta Pasta</span></a><span class="mono small muted">26 min</span></li></ol></div></section><section class="wrap section"><div class="section-head"><div class="section-head-text"><span class="eyebrow">Collections</span><h2>What are you in the mood for?</h2></div><a class="text-link" href="collections/">All collections</a></div><div class="coll-grid"><a class="coll-card" href="collections/quick-dinners-for-one/"><img class="coll-img" src="img/recipes/d1.webp" alt="Sticky Hoisin Pork with Egg-Fried Rice" width="720" height="540" loading="lazy" decoding="async"><span class="coll-body"><span class="coll-text"><span class="coll-name">Under 20 minutes</span><span class="small muted">Stir-fries, tacos and fast curries &middot; 192 recipes</span></span><span class="coll-arrow"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></span></a><a class="coll-card" href="collections/vegetarian-dinners-for-one/"><img class="coll-img" src="img/recipes/d19.webp" alt="Spiced Red Lentil Dahl with Flatbread" width="720" height="540" loading="lazy" decoding="async"><span class="coll-body"><span class="coll-text"><span class="coll-name">Vegetarian</span><span class="small muted">Dahls, traybakes and pasta &middot; 90 recipes</span></span><span class="coll-arrow"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></span></a><a class="coll-card" href="collections/fish-dinners-for-one/"><img class="coll-img" src="img/recipes/d17.webp" alt="Teriyaki Salmon with Sesame Greens" width="720" height="540" loading="lazy" decoding="async"><span class="coll-body"><span class="coll-text"><span class="coll-name">Fish</span><span class="small muted">Salmon, cod, trout and prawns &middot; 65 recipes</span></span><span class="coll-arrow"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></span></a><a class="coll-card" href="collections/spicy-dinners-for-one/"><img class="coll-img" src="img/recipes/d3.webp" alt="Thai Green Curry with Chicken" width="720" height="540" loading="lazy" decoding="async"><span class="coll-body"><span class="coll-text"><span class="coll-name">Bring the heat</span><span class="small muted">Curries, peri-peri and harissa &middot; 96 recipes</span></span><span class="coll-arrow"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></span></a><a class="coll-card" href="collections/pasta-and-noodles-for-one/"><img class="coll-img" src="img/recipes/d30.webp" alt="Baked Feta Pasta" width="720" height="540" loading="lazy" decoding="async"><span class="coll-body"><span class="coll-text"><span class="coll-name">Pasta and noodles</span><span class="small muted">Orzo, tagliatelle and egg noodles &middot; 39 recipes</span></span><span class="coll-arrow"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></span></a><a class="coll-card" href="collections/curries-for-one/"><img class="coll-img" src="img/recipes/d25.webp" alt="Beef Massaman-Style Curry" width="720" height="540" loading="lazy" decoding="async"><span class="coll-body"><span class="coll-text"><span class="coll-name">Curries</span><span class="small muted">Dahls, tikka, katsu and Thai curries &middot; 25 recipes</span></span><span class="coll-arrow"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></span></a></div></section><section class="wrap section"><div class="section-head"><div class="section-head-text"><span class="eyebrow">How it works</span><h2>Five minutes on Sunday. <em>Ten</em> each night.</h2></div></div><ol class="steps3"><li><span class="step-n">1</span><h3>Pick your week</h3><p>Choose dinners day by day, or press Fill and swap the ones you would not cook.</p></li><li><span class="step-n">2</span><h3>Shop once</h3><p>One list, grouped by aisle, quantities added up. Tick things off as you go and hide what is already in the cupboard.</p></li><li><span class="step-n">3</span><h3>Cook for one</h3><p>Every recipe is written for a single portion, so there is no maths and nothing languishing in the fridge.</p></li></ol></section><section class="wrap section"><div class="night-band"><div class="night-text"><span class="eyebrow eyebrow-yolk">The planner</span><h2 class="display-m">Plan the week. <em>Shop once.</em></h2><p class="lead lead-light">The recipes are only half of it. The planner turns them into a week of dinners and one shopping list.</p><ul class="ticks"><li><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span>Plan by day, or just pick a handful of dinners</span></li><li><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span>A shopping list built from your week, grouped by aisle</span></li><li><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span>Cooking mode with step-by-step timers</span></li><li><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span>Ratings, favourites and your own recipes</span></li><li><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span>Sync between your phone and laptop with Google sign-in</span></li></ul><div class="btn-row"><a class="btn btn-primary btn-lg" href="plan/">Open the planner <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div></div><img class="night-img" src="img/recipes/d8.webp" alt="One-Pan Chorizo &amp; Butter Bean Stew" width="720" height="540" loading="lazy" decoding="async"></div></section></main>
+<footer class="site-footer"><div class="wrap"><div class="footer-grid"><div class="footer-brand"><a class="brand brand-light" href=""><svg class="logo-mark" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="1.4"/><circle cx="14.6" cy="13.6" r="3.1" class="logo-dot"/></svg><span>Solo Supper</span></a><p class="footer-line">Good dinners, sized for <em>one</em>.</p></div><nav class="footer-col" aria-label="Recipes"><span class="eyebrow">Recipes</span><a href="collections/quick-dinners-for-one/">Quick dinners for one</a><a href="collections/vegetarian-dinners-for-one/">Vegetarian for one</a><a href="collections/fish-dinners-for-one/">Fish for one</a><a href="recipes/">All recipes</a></nav><nav class="footer-col" aria-label="Planner"><span class="eyebrow">Planner</span><a href="plan/">Plan your week</a><a href="cuisines/">Cuisines</a><a href="collections/">Collections</a></nav><nav class="footer-col" aria-label="About"><span class="eyebrow">About</span><a href="mailto:apps@trooperlooper.co.uk">Contact</a><a href="https://neilfletcher.github.io/TrooLoo-privacy/privacy.html">Privacy</a><a href="#cookie-settings">Cookie settings</a></nav></div><div class="footer-base"><span>&copy; 2026 Solo Supper</span><span>Every recipe written for one. Scaled for two when someone stays over.</span></div></div></footer>
+<div class="consent" id="consent" role="region" aria-label="Usage statistics" hidden></div>
+<script src="assets/site.js" defer></script>
 </body>
 </html>

@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en-GB" data-base="../">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#FFFFFF">
+<title>Your week | Solo Supper</title>
+<meta name="description" content="Plan a week of dinners for one, with a shopping list that adds itself up.">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="../styles.css">
+
+<!-- Google Analytics loads only after the visitor agrees (see initConsent in app.js). -->
+</head>
+<body>
+
+<header class="app-header">
+  <div class="app-bar">
+    <a class="brand" href="../" aria-label="Solo Supper home">
+      <svg class="logo-mark" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="1.4"/><circle cx="14.6" cy="13.6" r="3.1" class="logo-dot"/></svg>
+      <span class="brand-name">Solo Supper</span>
+    </a>
+
+    <nav class="tabs" role="tablist" aria-label="Planner">
+      <button class="tab-btn" role="tab" id="tab-planner-btn" aria-selected="true" data-panel="planner">
+        <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>
+        <span class="tab-label">This week</span><span class="count" id="planner-count"></span>
+      </button>
+      <button class="tab-btn" role="tab" id="tab-shopping-btn" aria-selected="false" data-panel="shopping">
+        <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h16l-1.5 10h-13z"/><path d="M8 9l4-5 4 5"/></svg>
+        <span class="tab-label">Shopping<span class="tab-long"> list</span></span><span class="count" id="shopping-count"></span>
+      </button>
+      <button class="tab-btn" role="tab" id="tab-recipes-btn" aria-selected="false" data-panel="recipes">
+        <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3zM5 17a3 3 0 0 1 3-3h11"/></svg>
+        <span class="tab-label">Recipes</span><span class="count" id="recipes-count"></span>
+      </button>
+      <button class="tab-btn" role="tab" id="tab-stats-btn" aria-selected="false" data-panel="stats">
+        <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 20V11M12 20V5M19 20v-6"/></svg>
+        <span class="tab-label">Your kitchen</span>
+      </button>
+    </nav>
+
+    <div class="header-controls">
+      <div class="servings-control">
+        <span class="label">Cooking for</span>
+        <div class="stepper">
+          <button type="button" id="servings-minus" aria-label="Fewer people"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/></svg></button>
+          <output id="servings-value">1</output>
+          <button type="button" id="servings-plus" aria-label="More people"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button>
+        </div>
+      </div>
+
+      <div class="account-control" id="account-control">
+        <div id="account-signed-out">
+          <button type="button" class="btn btn-outline btn-sm" id="google-signin-btn">
+            <svg width="16" height="16" viewBox="0 0 48 48" aria-hidden="true">
+              <path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3c-1.6 4.7-6.1 8-11.3 8-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.1 8 3l6-6C34.6 5.1 29.6 3 24 3 12.4 3 3 12.4 3 24s9.4 21 21 21 21-9.4 21-21c0-1.4-.1-2.8-.4-4.5z"/>
+              <path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.6 15.1 18.9 12 24 12c3.1 0 5.8 1.1 8 3l6-6C34.6 5.1 29.6 3 24 3 16.3 3 9.7 7.3 6.3 14.7z"/>
+              <path fill="#4CAF50" d="M24 45c5.5 0 10.4-1.9 14-5.1l-6.5-5.5C29.5 36.1 26.9 37 24 37c-5.2 0-9.6-3.3-11.3-8l-6.6 5.1C9.6 40.6 16.3 45 24 45z"/>
+              <path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.3-2.2 4.3-4.1 5.7l6.5 5.5C41.5 36 45 30.5 45 24c0-1.4-.1-2.8-.4-4.5z"/>
+            </svg>
+            <span class="signin-text">Sign in</span>
+          </button>
+        </div>
+        <div id="account-signed-in" hidden>
+          <img id="account-avatar" class="account-avatar" alt="">
+          <div class="account-info">
+            <span class="account-name" id="account-name"></span>
+            <span class="account-sync" id="account-sync"></span>
+          </div>
+          <button type="button" class="icon-btn" id="signout-btn" aria-label="Sign out" title="Sign out">
+            <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 4h3a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-3M10 17l5-5-5-5M15 12H4"/></svg>
+          </button>
+        </div>
+      </div>
+      <button type="button" class="icon-btn settings-btn" id="settings-btn" aria-label="Settings" title="Settings">
+        <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main class="app-main">
+  <section class="panel" id="panel-planner" role="tabpanel" aria-labelledby="tab-planner-btn">
+    <div class="planner-layout">
+      <div class="planner-main">
+        <div class="planner-toolbar" id="days-toolbar">
+          <div class="week-heading">
+            <span class="eyebrow" id="week-eyebrow">This week</span>
+            <h1 class="week-range" id="week-range"></h1>
+          </div>
+          <div class="toolbar-actions">
+            <div class="mode-toggle" role="group" aria-label="Planning mode">
+              <button type="button" class="mode-btn" id="mode-days-btn" aria-pressed="true">Plan by day</button>
+              <button type="button" class="mode-btn" id="mode-batch-btn" aria-pressed="false">Just pick dinners</button>
+            </div>
+            <button class="btn btn-ink" id="fill-week-btn">Fill empty days</button>
+            <button class="btn btn-outline" id="clear-week-btn">Clear week</button>
+          </div>
+        </div>
+
+        <div class="planner-toolbar" id="batch-toolbar" hidden>
+          <div class="week-heading">
+            <span class="eyebrow">Not tied to any day</span>
+            <h1 class="week-range">Dinners to <em>get through</em></h1>
+            <p class="week-sub" id="batch-range">Cook them whenever suits.</p>
+          </div>
+          <div class="toolbar-actions batch-actions">
+            <div class="mode-toggle" role="group" aria-label="Planning mode">
+              <button type="button" class="mode-btn" id="mode-days-btn-2" aria-pressed="false" data-mode-proxy="mode-days-btn">Plan by day</button>
+              <button type="button" class="mode-btn" aria-pressed="true" disabled>Just pick dinners</button>
+            </div>
+            <label class="batch-count-label"><span class="visually-hidden">Number of dinners to add</span>
+              <input type="number" id="batch-count-input" min="1" max="30" value="4" class="batch-count-input">
+            </label>
+            <button class="btn btn-ink" id="batch-surprise-btn">Surprise me</button>
+            <button class="btn btn-outline" id="batch-add-btn">Add a dinner</button>
+            <button class="btn btn-ghost" id="batch-clear-btn">Clear list</button>
+          </div>
+        </div>
+
+        <div id="planner-banner"></div>
+        <div class="day-list" id="day-list"></div>
+        <div class="day-list" id="batch-list" hidden></div>
+      </div>
+      <aside class="planner-aside" id="planner-aside" aria-label="This week at a glance"></aside>
+    </div>
+  </section>
+
+  <section class="panel" id="panel-shopping" role="tabpanel" aria-labelledby="tab-shopping-btn" hidden>
+    <div class="panel-narrow">
+      <div class="shop-header">
+        <div class="week-heading">
+          <span class="eyebrow shop-progress" id="shop-progress"></span>
+          <h1 class="week-range">Shopping <em>list</em></h1>
+        </div>
+        <div class="shop-tools">
+          <button type="button" class="btn btn-outline" id="shop-cupboard-btn" aria-pressed="false">Cupboard</button>
+          <button type="button" class="btn btn-ink" id="shop-share-btn">Share list</button>
+        </div>
+      </div>
+      <div class="shop-bar" id="shop-bar" aria-hidden="true"><span></span></div>
+      <div id="shop-content"></div>
+    </div>
+  </section>
+
+  <section class="panel" id="panel-recipes" role="tabpanel" aria-labelledby="tab-recipes-btn" hidden>
+    <div class="paywall-banner" id="paywall-banner" hidden>
+      <span></span>
+      <button class="btn btn-primary" id="paywall-banner-btn">Unlock all recipes</button>
+    </div>
+    <div class="recipes-head">
+      <div class="week-heading">
+        <span class="eyebrow">All written for one</span>
+        <h1 class="week-range">Recipes</h1>
+      </div>
+      <label class="search">
+        <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.3-4.3"/></svg>
+        <input type="search" class="search-input" id="recipe-search" placeholder="Search a dish or an ingredient you have" aria-label="Search recipes">
+      </label>
+    </div>
+    <div class="recipe-filters">
+      <div id="tag-chips" class="chip-row"></div>
+      <button type="button" class="btn btn-outline" id="add-recipe-btn">Add your own recipe</button>
+    </div>
+    <div class="recipe-grid" id="recipe-grid"></div>
+  </section>
+
+  <section class="panel" id="panel-stats" role="tabpanel" aria-labelledby="tab-stats-btn" hidden>
+    <div id="stats-content"></div>
+  </section>
+</main>
+
+<footer class="app-footer">
+  <a href="../recipes/">All recipes</a>
+  <a href="../collections/">Collections</a>
+  <a href="https://neilfletcher.github.io/TrooLoo-privacy/privacy.html">Privacy</a>
+  <span>Every recipe written for one, ready in about ten minutes of prep.</span>
+</footer>
+
+<div class="modal-backdrop" id="recipe-modal-backdrop" hidden>
+  <div class="modal modal-recipe" id="recipe-modal" role="dialog" aria-modal="true" aria-label="Recipe"></div>
+</div>
+
+<div class="modal-backdrop" id="picker-modal-backdrop" hidden>
+  <div class="modal" id="picker-modal" role="dialog" aria-modal="true" aria-label="Pick a dinner"></div>
+</div>
+
+<div class="modal-backdrop" id="paywall-modal-backdrop" hidden>
+  <div class="modal" id="paywall-modal" role="dialog" aria-modal="true" aria-label="Unlock"></div>
+</div>
+
+<div class="modal-backdrop" id="settings-modal-backdrop" hidden>
+  <div class="modal" id="settings-modal" role="dialog" aria-modal="true" aria-label="Settings"></div>
+</div>
+
+<div class="modal-backdrop" id="custom-modal-backdrop" hidden>
+  <div class="modal" id="custom-modal" role="dialog" aria-modal="true" aria-label="Your own recipe"></div>
+</div>
+
+<div class="cook-overlay" id="cook-overlay" role="dialog" aria-modal="true" aria-label="Cooking mode" hidden></div>
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+<div class="consent-banner" id="consent-banner" role="region" aria-label="Usage statistics" hidden></div>
+
+<!-- Firebase (Google Sign-In + cross-device sync). See README.md to set this up;
+     the app works fine locally on one device even before you configure it. -->
+<script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore-compat.js"></script>
+<script src="../recipes-data.js"></script>
+<script src="../firebase-config.js"></script>
+<script src="../app.js"></script>
+
+</body>
+</html>

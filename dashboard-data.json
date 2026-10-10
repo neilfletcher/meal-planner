@@ -1,19 +1,19 @@
 {
-  "generatedAt": "2026-10-09T12:43:37.294Z",
+  "generatedAt": "2026-10-10T12:02:28.709Z",
   "traffic": {
     "last7Days": {
-      "users": 11,
-      "newUsers": 8,
-      "sessions": 29,
-      "pageViews": 40,
-      "avgEngagementTimeSec": 31
+      "users": 22,
+      "newUsers": 19,
+      "sessions": 41,
+      "pageViews": 70,
+      "avgEngagementTimeSec": 26
     },
     "last30Days": {
-      "users": 167,
-      "newUsers": 170,
-      "sessions": 284,
-      "pageViews": 424,
-      "avgEngagementTimeSec": 30
+      "users": 178,
+      "newUsers": 181,
+      "sessions": 300,
+      "pageViews": 459,
+      "avgEngagementTimeSec": 29
     },
     "dailyUsers": [
       {
@@ -87,23 +87,32 @@
       {
         "date": "2026-10-08",
         "users": 1
+      },
+      {
+        "date": "2026-10-10",
+        "users": 13
       }
     ],
     "topPages": [
+      {
+        "path": "/DB-club-records/",
+        "title": "Duston Bowmen Records",
+        "views": 101
+      },
       {
         "path": "/DB-club-members/",
         "title": "Duston Bowmen Membership",
         "views": 99
       },
       {
-        "path": "/DB-club-records/",
-        "title": "Duston Bowmen Records",
-        "views": 84
-      },
-      {
         "path": "/",
         "title": "Solo Supper",
-        "views": 77
+        "views": 78
+      },
+      {
+        "path": "/archery-tracker/",
+        "title": "Neil Fletcher: Archery Tracker",
+        "views": 33
       },
       {
         "path": "/DB-join/",
@@ -126,14 +135,9 @@
         "views": 18
       },
       {
-        "path": "/archery-tracker/",
-        "title": "Neil Fletcher: Archery Tracker",
-        "views": 17
-      },
-      {
         "path": "/DB-archery-dashboard/",
         "title": "Archery Tracker",
-        "views": 16
+        "views": 17
       },
       {
         "path": "/meal-planner/",
@@ -147,10 +151,6 @@
     "newLast7Days": 0,
     "newLast30Days": 22,
     "dailySignups": [
-      {
-        "date": "2026-09-10",
-        "count": 0
-      },
       {
         "date": "2026-09-11",
         "count": 0
@@ -266,21 +266,25 @@
       {
         "date": "2026-10-09",
         "count": 0
+      },
+      {
+        "date": "2026-10-10",
+        "count": 0
       }
     ]
   },
   "retention": {
     "newVsReturning": {
-      "new": 166,
+      "new": 177,
       "returning": 14
     },
     "windowDays": 28
   },
   "stickiness": {
-    "dau": 1,
-    "wau": 11,
-    "mau": 167,
-    "dauMauPct": 1
+    "dau": 0,
+    "wau": 22,
+    "mau": 178,
+    "dauMauPct": 0
   },
   "platform": {
     "web": 0,
@@ -293,7 +297,7 @@
   "engagement": {
     "trackedAccounts": 9,
     "activePlanners": 7,
-    "usingShoppingList": 1,
+    "usingShoppingList": 2,
     "topCooked": [
       {
         "id": "d1",
@@ -383,12 +387,12 @@
       "signedUp": 22,
       "tracked": 9,
       "builtAPlan": 7,
-      "usedShoppingList": 1,
+      "usedShoppingList": 2,
       "confirmedACook": 5
     },
     "library": {
       "totalRecipes": 437,
-      "everTouched": 65,
+      "everTouched": 67,
       "neverTouchedPct": 85
     },
     "dormant": {

@@ -524,3 +524,6 @@ body.modal-open { overflow: hidden; }
 @media (max-width: 760px) { .app-footer span { margin-left: 0; } }
 
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition: none !important; animation: none !important; } }
+
+/* plain headings, no accent words */
+h1 em, h2 em { font-style: normal; }

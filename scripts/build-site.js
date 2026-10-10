@@ -290,67 +290,73 @@ function sectionHead(eyebrow, h2, linkHref, linkText) {
 /* ------------------------------------------------------------ home page */
 (function buildHome() {
   var rel = "";
-  var week = ["d1", "d3", "d5", "d17", "d8", "d12", "d30"].map(function (id) { return BY_ID[id]; });
-  var days = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
-  var heroMain = BY_ID.d9, heroA = BY_ID.d2, heroB = BY_ID.d14;
-  var homeCollections = ["quick-dinners-for-one", "vegetarian-dinners-for-one", "fish-dinners-for-one", "spicy-dinners-for-one", "pasta-and-noodles-for-one", "curries-for-one"]
+  var pick = function (ids) { return ids.map(function (id) { return BY_ID[id]; }).filter(Boolean); };
+  var mosaic = pick(["d9", "d3", "d2", "d14", "d19"]);
+  var tonight = pick(["d1", "d17", "d5", "d12", "d22", "d30", "d8", "d4"]);
+  var week = pick(["d6", "d25", "d11", "d2", "d15", "d27", "d19"]);
+  var days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+  var homeCollections = ["quick-dinners-for-one", "vegetarian-dinners-for-one", "fish-dinners-for-one", "curries-for-one", "pasta-and-noodles-for-one", "spicy-dinners-for-one"]
     .map(function (s) { return COLLECTIONS.filter(function (c) { return c.slug === s; })[0]; });
-  var fig = function (r, ratio, eager) {
-    return '<figure class="hero-fig"><a href="recipes/' + r.slug + '/">' + recipeImg(r, rel, "hero-img ratio-" + ratio, null, eager) + "</a>" +
-      '<figcaption><span>' + esc(r.title) + "</span><span>" + total(r) + " min</span></figcaption></figure>";
+  var counts = {};
+  RECIPES.forEach(function (r) { counts[r.cuisine] = (counts[r.cuisine] || 0) + 1; });
+  var cuisinesByCount = CUISINES.slice().sort(function (a, b) { return counts[b] - counts[a] || a.localeCompare(b); });
+
+  var tile = function (r, cls, eager) {
+    return '<a class="tile ' + cls + '" href="recipes/' + r.slug + '/">' + recipeImg(r, rel, "tile-img", null, eager) +
+      '<span class="tile-cap"><span class="tile-title">' + esc(r.title) + '</span><span class="tile-meta">' + esc(r.cuisine) + " &middot; " + total(r) + " min</span></span></a>";
   };
+
   var body =
-    '<section class="wrap hero">' +
-    '<div class="hero-text">' +
-    '<span class="eyebrow">Dinners for one, planned a week out</span>' +
-    '<h1 class="display">Supper for one, <em class="accent">sorted</em> for the week.</h1>' +
-    '<p class="lead">' + RECIPES.length + " original recipes written for a single portion, about ten minutes of prep each, and a shopping list that builds itself from the week you plan.</p>" +
+    '<section class="hero2">' +
+    '<div class="hero2-text">' +
+    '<h1 class="display">Dinner for one, planned for the week.</h1>' +
+    '<p class="lead">' + RECIPES.length + " recipes written for a single portion, from " + CUISINES.length + " countries. Pick your week, get one shopping list, and cook each night in about ten minutes of prep.</p>" +
     '<div class="btn-row"><a class="btn btn-primary btn-lg" href="plan/">Plan this week ' + ICON.arrow + "</a>" +
     '<a class="btn btn-outline btn-lg" href="recipes/">Browse recipes</a></div>' +
-    '<p class="small muted">Free to use. Sign in with Google to keep your week in sync across devices.</p>' +
+    '<p class="small muted">Free to use. Sign in with Google to keep your week on every device.</p>' +
     "</div>" +
-    '<div class="hero-grid">' + fig(heroMain, "45", true) + fig(heroA, "11") + fig(heroB, "11") + "</div>" +
+    '<div class="hero2-mosaic">' + mosaic.map(function (r, i) { return tile(r, i === 0 ? "tile-big" : "", i < 3); }).join("") + "</div>" +
     "</section>" +
 
-    '<section class="facts"><div class="wrap facts-row">' +
-    '<div class="fact"><span class="fact-big">' + RECIPES.length + '</span><span class="fact-small">original recipes, all free to read</span></div>' +
-    '<div class="fact"><span class="fact-big">' + CUISINES.length + '</span><span class="fact-small">countries in the book</span></div>' +
-    '<div class="fact"><span class="fact-big">1</span><span class="fact-small">portion, every recipe, no halving</span></div>' +
-    '<div class="fact"><span class="fact-big">1 list</span><span class="fact-small">for the whole week, added up for you</span></div>' +
-    "</div></section>" +
+    '<section class="wrap section">' +
+    sectionHead("", "Cook something tonight", "recipes/", "All " + RECIPES.length + " recipes") +
+    '<div class="rgrid rgrid-big">' + tonight.map(function (r) { return card(r, rel); }).join("") + "</div></section>" +
 
     '<section class="wrap section">' +
-    sectionHead("How a week looks", "Seven dinners. <em>One</em> shop.", "plan/", "Open the planner") +
-    '<p class="section-lead">Fill the week yourself, or let Solo Supper do it and swap anything you do not fancy. The shopping list adds it all up, so half a lemon on Monday and half on Friday becomes one lemon.</p>' +
+    sectionHead("", "What are you in the mood for?", "collections/", "All collections") +
+    '<div class="coll-tiles">' + homeCollections.map(function (c) {
+      var hero = BY_ID[c.hero] && BY_ID[c.hero].photo ? BY_ID[c.hero] : c.recipes.filter(function (r) { return r.photo; })[0] || c.recipes[0];
+      return '<a class="tile tile-coll" href="collections/' + c.slug + '/">' + recipeImg(hero, rel, "tile-img") +
+        '<span class="tile-cap"><span class="tile-title tile-title-l">' + esc(c.name) + '</span><span class="tile-meta">' + c.recipes.length + " recipes</span></span></a>";
+    }).join("") + "</div></section>" +
+
+    '<section class="wrap section">' +
+    sectionHead("", "A week of dinners, one shop", "plan/", "Open the planner") +
+    '<p class="section-lead">This is what a filled week looks like. Swap anything you do not fancy, and the shopping list adds it all up, so half a lemon on Monday and half on Friday becomes one lemon.</p>' +
     '<div class="scroll-x"><ol class="week-strip">' + week.map(function (r, i) {
-      return '<li><span class="eyebrow">' + days[i] + '</span><a href="recipes/' + r.slug + '/">' + recipeImg(r, rel, "week-img") + '<span class="week-title">' + esc(r.title) + "</span></a>" +
-        '<span class="mono small muted">' + total(r) + " min</span></li>";
+      return '<li><span class="week-day">' + days[i] + '</span><a href="recipes/' + r.slug + '/">' + recipeImg(r, rel, "week-img") + '<span class="week-title">' + esc(r.title) + "</span></a>" +
+        '<span class="mono small muted">' + total(r) + " min &middot; " + esc(r.cuisine) + "</span></li>";
     }).join("") + "</ol></div></section>" +
 
-    '<section class="wrap section">' +
-    sectionHead("Collections", "What are you in the mood for?", "collections/", "All collections") +
-    '<div class="coll-grid">' + homeCollections.map(function (c) { return collCard(c, rel); }).join("") + "</div></section>" +
-
-    '<section class="wrap section">' +
-    sectionHead("How it works", "Five minutes on Sunday. <em>Ten</em> each night.") +
-    '<ol class="steps3">' +
-    '<li><span class="step-n">1</span><h3>Pick your week</h3><p>Choose dinners day by day, or press Fill and swap the ones you would not cook.</p></li>' +
-    '<li><span class="step-n">2</span><h3>Shop once</h3><p>One list, grouped by aisle, quantities added up. Tick things off as you go and hide what is already in the cupboard.</p></li>' +
-    '<li><span class="step-n">3</span><h3>Cook for one</h3><p>Every recipe is written for a single portion, so there is no maths and nothing languishing in the fridge.</p></li>' +
-    "</ol></section>" +
-
     '<section class="wrap section"><div class="night-band">' +
-    '<div class="night-text"><span class="eyebrow eyebrow-yolk">The planner</span>' +
-    '<h2 class="display-m">Plan the week. <em>Shop once.</em></h2>' +
-    '<p class="lead lead-light">The recipes are only half of it. The planner turns them into a week of dinners and one shopping list.</p>' +
-    '<ul class="ticks">' +
-    ["Plan by day, or just pick a handful of dinners", "A shopping list built from your week, grouped by aisle", "Cooking mode with step-by-step timers", "Ratings, favourites and your own recipes", "Sync between your phone and laptop with Google sign-in"]
-      .map(function (t) { return "<li>" + ICON.check + "<span>" + t + "</span></li>"; }).join("") + "</ul>" +
+    '<div class="night-text">' +
+    '<h2 class="display-m">How the planner works</h2>' +
+    '<ol class="night-steps">' +
+    '<li><span class="ns-n">1</span><div><h3>Pick your week</h3><p>Choose dinners day by day, or press Fill and swap the ones you would not cook.</p></div></li>' +
+    '<li><span class="ns-n">2</span><div><h3>Shop once</h3><p>One list, grouped by aisle, with quantities added up. Hide what is already in the cupboard.</p></div></li>' +
+    '<li><span class="ns-n">3</span><div><h3>Cook for one</h3><p>Every recipe is a single portion, with a step-by-step cooking mode and timers.</p></div></li>' +
+    "</ol>" +
     '<div class="btn-row"><a class="btn btn-primary btn-lg" href="plan/">Open the planner ' + ICON.arrow + "</a></div>" +
-    "</div>" + recipeImg(BY_ID.d8, rel, "night-img") + "</div></section>";
+    "</div>" + recipeImg(BY_ID.d8, rel, "night-img") + "</div></section>" +
+
+    '<section class="wrap section">' +
+    sectionHead("", CUISINES.length + " countries in the book", "cuisines/", "All cuisines") +
+    '<ul class="cuisine-cloud">' + cuisinesByCount.map(function (c) {
+      return '<li><a href="cuisines/' + CUISINE_SLUG[c] + '/">' + esc(demonym(c)) + ' <span class="mono">' + counts[c] + "</span></a></li>";
+    }).join("") + "</ul></section>";
 
   out("index.html", page({
-    rel: rel, path: "", active: "home",
+    rel: rel, path: "", active: "home", bodyClass: "page-home",
     title: "Solo Supper: dinners for one, planned for the week",
     description: RECIPES.length + " original recipes written for one person, a weekly meal planner and a shopping list that adds itself up. Dinner for one, sorted.",
     image: "img/recipes/d9.webp",

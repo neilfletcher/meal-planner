@@ -1,6 +1,6 @@
 # Solo Supper
 
-Dinners for one, planned a week out. Four hundred and thirty-seven single-portion recipes, a weekly planner, and a shopping list that adds itself up and scales to how many people you are cooking for.
+Dinners for one, planned a week out. Over four hundred single-portion recipes, a weekly planner, and a shopping list that adds itself up and scales to how many people you are cooking for.
 
 The site has two halves:
 

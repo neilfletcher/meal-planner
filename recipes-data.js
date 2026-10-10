@@ -7624,6 +7624,100 @@ window.SOLO_RECIPES = (function () {
         "Meanwhile, stir the crushed garlic into the yoghurt and season. Melt the butter in a small pan with the chilli flakes until sizzling and red.",
         "Drain the dumplings, spoon over the garlic yoghurt, drizzle with the chilli butter and scatter with dried mint."
       ]
+    },
+    {
+      id: "d438", title: "Romanian Mici with Mustard and Crispy Potatoes", tags: [], cuisine: "Romania", protein: "beef",
+      prep: 10, cook: 15,
+      ingredients: [
+        ing(75, "g", "beef mince", "meat"), ing(75, "g", "pork mince", "meat"),
+        ing(1, "", "garlic clove, crushed", "produce"), ing(0.5, "tsp", "dried thyme", "spice"),
+        ing(0.5, "tsp", "smoked paprika", "spice"), ing(0.25, "tsp", "bicarbonate of soda", "store"),
+        ing(1, "tbsp", "beef stock or water", "store"), ing(150, "g", "new potatoes, halved", "produce"),
+        ing(1, "tbsp", "vegetable oil", "store"), ing(1, "tbsp", "yellow mustard", "store"),
+        ing(1, "", "pickled pepper or gherkin", "store"), ing(null, "pinch", "salt and pepper", "spice")
+      ],
+      steps: [
+        "Boil the halved potatoes in salted water for 10 minutes until just tender, then drain.",
+        "Meanwhile, mix both minces with the garlic, thyme, paprika, bicarbonate of soda, stock and a good pinch of salt and pepper. Knead for a minute until sticky, then shape into three short, fat sausages.",
+        "Heat half the oil in a frying pan or griddle over a medium-high heat and cook the mici for 8–10 minutes, turning often, until browned and cooked through.",
+        "Push them to one side, add the rest of the oil and the drained potatoes, and fry for 4–5 minutes until golden and crisp at the edges.",
+        "Serve the mici with the potatoes, a spoonful of mustard and the pickled pepper on the side."
+      ]
+    },
+    {
+      id: "d439", title: "Tochitură with Polenta and a Fried Egg", tags: [], cuisine: "Romania", protein: "pork",
+      prep: 8, cook: 15,
+      ingredients: [
+        ing(150, "g", "pork shoulder or loin, diced", "meat"), ing(50, "g", "smoked sausage, sliced", "meat"),
+        ing(1, "", "garlic clove, sliced", "produce"), ing(0.5, "tsp", "sweet paprika", "spice"),
+        ing(2, "tbsp", "passata", "store"), ing(50, "ml", "white wine or stock", "store"),
+        ing(50, "g", "quick-cook polenta", "store"), ing(200, "ml", "water", "store"),
+        ing(10, "g", "butter", "dairy"), ing(1, "", "egg", "dairy"),
+        ing(20, "g", "feta, crumbled", "dairy"), ing(1, "tbsp", "vegetable oil", "store"),
+        ing(null, "pinch", "salt and pepper", "spice")
+      ],
+      steps: [
+        "Heat the oil in a frying pan over a high heat and brown the pork for 4–5 minutes. Add the sausage and fry for 2 minutes more.",
+        "Stir in the garlic and paprika for 30 seconds, then add the passata and wine. Simmer for 8 minutes until the sauce coats the meat.",
+        "Meanwhile, bring the water to the boil with a pinch of salt, whisk in the polenta and cook, stirring, for 3–5 minutes until thick. Stir in the butter.",
+        "Push the meat to one side of the pan, crack in the egg and fry until the white is set.",
+        "Spoon the polenta onto a plate, top with the tochitură and the egg, and scatter with the crumbled cheese."
+      ]
+    },
+    {
+      id: "d440", title: "Ciorbă de Perișoare (Sour Meatball Soup)", tags: [], cuisine: "Romania", protein: "pork",
+      prep: 10, cook: 18,
+      ingredients: [
+        ing(120, "g", "pork mince", "meat"), ing(1, "tbsp", "long-grain rice", "store"),
+        ing(0.5, "", "onion, finely chopped", "produce"), ing(1, "", "small carrot, diced", "produce"),
+        ing(0.5, "", "red pepper, diced", "produce"), ing(1, "tbsp", "tomato purée", "store"),
+        ing(450, "ml", "chicken stock", "store"), ing(1, "tbsp", "lemon juice", "produce"),
+        ing(null, "small handful", "fresh dill or lovage, chopped", "produce"), ing(1, "tbsp", "soured cream", "dairy"),
+        ing(1, "tsp", "vegetable oil", "store"), ing(null, "pinch", "salt and pepper", "spice")
+      ],
+      steps: [
+        "Mix the pork mince with the rice, half the onion and a pinch of salt and pepper, then roll into 8 small meatballs.",
+        "Heat the oil in a saucepan and soften the rest of the onion, the carrot and the pepper for 3 minutes. Stir in the tomato purée.",
+        "Pour in the stock and bring to a simmer. Drop in the meatballs and simmer gently for 15 minutes until they and the rice inside are cooked through.",
+        "Stir in the lemon juice, then taste and adjust the seasoning so the broth is pleasantly sour.",
+        "Ladle into a bowl and finish with the dill and a spoonful of soured cream."
+      ]
+    },
+    {
+      id: "d441", title: "Mămăligă with Cheese, Soured Cream and a Fried Egg", tags: ["vegetarian", "quick"], cuisine: "Romania", protein: "plant-based",
+      prep: 5, cook: 10,
+      ingredients: [
+        ing(60, "g", "quick-cook polenta", "store"), ing(250, "ml", "water", "store"),
+        ing(15, "g", "butter", "dairy"), ing(60, "g", "feta, crumbled", "dairy"),
+        ing(2, "tbsp", "soured cream", "dairy"), ing(1, "", "egg", "dairy"),
+        ing(1, "", "spring onion, sliced", "produce"), ing(1, "tsp", "vegetable oil", "store"),
+        ing(null, "pinch", "salt and pepper", "spice")
+      ],
+      steps: [
+        "Bring the water to the boil with a pinch of salt. Whisk in the polenta and cook, stirring, for 3–5 minutes until thick and smooth. Stir in the butter and half the cheese.",
+        "Meanwhile, heat the oil in a small frying pan and fry the egg until the white is set and the yolk still runny.",
+        "Spoon the polenta onto a plate and make a dip in the middle.",
+        "Fill it with the soured cream, scatter over the rest of the cheese and the spring onion, then top with the fried egg and a grind of black pepper."
+      ]
+    },
+    {
+      id: "d442", title: "Tocăniță de Ciuperci (Mushroom Stew) with Polenta", tags: ["vegetarian", "vegan"], cuisine: "Romania", protein: "plant-based",
+      prep: 8, cook: 15,
+      ingredients: [
+        ing(200, "g", "chestnut mushrooms, quartered", "produce"), ing(0.5, "", "onion, sliced", "produce"),
+        ing(1, "", "garlic clove, crushed", "produce"), ing(1, "tbsp", "tomato purée", "store"),
+        ing(0.5, "tsp", "sweet paprika", "spice"), ing(0.5, "tsp", "dried thyme", "spice"),
+        ing(100, "ml", "vegetable stock", "store"), ing(1.5, "tbsp", "olive oil", "store"),
+        ing(50, "g", "quick-cook polenta", "store"), ing(200, "ml", "water", "store"),
+        ing(null, "small handful", "fresh parsley or dill, chopped", "produce"), ing(null, "pinch", "salt and pepper", "spice")
+      ],
+      steps: [
+        "Heat 1 tbsp of the oil in a frying pan over a medium-high heat and fry the onion for 3 minutes. Add the mushrooms and fry for 5 minutes until browned.",
+        "Stir in the garlic, paprika, thyme and tomato purée for 1 minute, then pour in the stock. Simmer for 6–8 minutes until saucy.",
+        "Meanwhile, bring the water to the boil with a pinch of salt, whisk in the polenta and cook, stirring, for 3–5 minutes until thick. Stir in the rest of the oil.",
+        "Taste the stew and adjust the seasoning.",
+        "Spoon the polenta onto a plate, top with the mushroom stew and scatter with the herbs."
+      ]
     }
 
   ];

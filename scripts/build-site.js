@@ -60,7 +60,7 @@ var DEMONYM = {
   "Ukraine": "Ukrainian", "Uzbekistan": "Uzbek", "Colombia": "Colombian", "Chile": "Chilean",
   "Trinidad": "Trinidadian", "Ghana": "Ghanaian", "Kenya": "Kenyan", "Senegal": "Senegalese", "Belgium": "Belgian",
   "Switzerland": "Swiss", "Finland": "Finnish", "Denmark": "Danish", "Norway": "Norwegian",
-  "New Zealand": "New Zealand", "Canada": "Canadian", "Puerto Rico": "Puerto Rican"
+  "New Zealand": "New Zealand", "Canada": "Canadian", "Puerto Rico": "Puerto Rican", "Romania": "Romanian"
 };
 function demonym(c) { return DEMONYM[c] || c; }
 
@@ -202,6 +202,7 @@ function head(o) {
     '<meta property="og:image" content="' + esc(img) + '">\n' +
     '<meta name="twitter:card" content="summary_large_image">\n' +
     '<meta name="theme-color" content="#F7F5F0">\n' +
+    '<meta name="color-scheme" content="light">\n' +
     '<link rel="icon" href="' + o.rel + 'favicon.svg" type="image/svg+xml">\n' +
     '<link rel="preconnect" href="https://fonts.googleapis.com">\n<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n' +
     '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&amp;family=Geist:wght@400;500;600;700&amp;family=Geist+Mono:wght@400;500;600&amp;display=swap">\n' +

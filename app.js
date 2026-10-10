@@ -9506,7 +9506,18 @@
     for (var i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) % 360;
     return h;
   }
+  // Photos of the finished dish live in img/recipes/<id>.webp. The list below
+  // is rewritten by recipe-images/_source/build.py whenever new photos are
+  // added; a recipe without a photo keeps the coloured cuisine banner.
+  var RECIPE_PHOTOS = "d1,d2,d3,d4,d5,d6,d7,d8,d9,d10,d11,d12,d13,d14,d15,d16,d17,d18,d19,d20,d21,d22,d23,d24,d25,d26,d27,d28,d29,d30,d31,d32,d33,d34,d35,d36,d37,d38,d39,d40,d41,d42,d43,d44,d45,d46,d47,d48,d49,d50,d51,d52,d53,d54,d55,d56,d57,d58,d59,d60,d61,d62,d63,d64,d65,d66,d68,d69,d70,d72,d73,d74,d75,d76,d77,d78,d79,d80,d81,d82,d83,d84,d85,d86,d87,d88,d89,d90,d91,d92,d93,d94,d95,d96,d97,d98,d99,d100"; // RECIPE_PHOTOS_LINE
+  var PHOTO_SET = {};
+  RECIPE_PHOTOS.split(",").forEach(function (id) { if (id) PHOTO_SET[id] = true; });
   function recipeArt(r, big) {
+    if (PHOTO_SET[r.id]) {
+      return '<div class="recipe-photo' + (big ? " recipe-photo-big" : "") + '">' +
+        '<img src="img/recipes/' + r.id + '.webp" alt="' + esc(r.title) + '" loading="lazy" decoding="async">' +
+        '<span class="photo-cuisine">' + esc(r.cuisine) + "</span></div>";
+    }
     return '<div class="recipe-art' + (big ? " recipe-art-big" : "") + '" style="--h:' + cuisineHue(r.cuisine) + '" aria-hidden="true">' +
       '<span class="art-text"><span class="art-cuisine">' + esc(r.custom ? "Your recipe" : r.cuisine) + '</span>' +
       '<span class="art-protein">' + esc(r.protein === "plant-based" ? "plant-based" : r.protein) + "</span></span>" +

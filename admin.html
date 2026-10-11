@@ -335,6 +335,25 @@
       </div>
     </div>
 
+    <section class="block" id="liveBlock">
+      <div class="block-head">
+        <div>
+          <div class="eyebrow">Live, straight from the database</div>
+          <h2>Sign-ups and subscriptions right now</h2>
+        </div>
+        <button class="ghost" id="liveReload" type="button">Update</button>
+      </div>
+      <div class="card">
+        <div class="kpi-row">
+          <div class="kpi"><div class="label">Signed up</div><div class="value num" id="lv-accounts">&mdash;</div><div class="delta" id="lv-new">&nbsp;</div></div>
+          <div class="kpi"><div class="label">Paying subscribers</div><div class="value num" id="lv-paying">&mdash;</div><div class="delta" id="lv-split">&nbsp;</div></div>
+          <div class="kpi"><div class="label">On free trial</div><div class="value num" id="lv-trial">&mdash;</div><div class="delta" id="lv-ended">&nbsp;</div></div>
+          <div class="kpi"><div class="label">Free Pro</div><div class="value num" id="lv-free">&mdash;</div><div class="delta">gift codes and grants</div></div>
+        </div>
+        <div class="delta" id="lv-at" style="font-size:12px;color:var(--ink-faint);">&nbsp;</div>
+      </div>
+    </section>
+
     <section class="block">
       <div class="block-head">
         <div>
@@ -897,6 +916,29 @@
     }).catch(function (e) { tb.innerHTML = '<tr><td colspan="5" class="gc-used">Couldn\'t load codes: ' + gcEsc(e.message) + "</td></tr>"; });
   }
   document.getElementById("gcReload").addEventListener("click", loadCodes);
+
+  // ---------- live sign-ups and subscriptions ----------
+  var liveTimer = null;
+  function setText(id, t) { document.getElementById(id).textContent = t; }
+  function loadLive() {
+    setText("lv-at", "Updating\u2026");
+    adminApi({ action: "liveCounts" }).then(function (j) {
+      var c = j.counts;
+      setText("lv-accounts", c.accounts);
+      setText("lv-new", c.newToday + " in the last 24 hours, " + c.new7 + " in 7 days");
+      setText("lv-paying", c.paying);
+      setText("lv-split", c.monthly + " monthly, " + c.annual + " yearly" + (c.cancelling ? ", " + c.cancelling + " cancelling" : "") + (c.everPaid > c.paying ? "; " + c.everPaid + " ever subscribed" : ""));
+      setText("lv-trial", c.onTrial);
+      setText("lv-ended", c.trialEnded + " trials ended without paying");
+      setText("lv-free", c.freePro);
+      setText("lv-at", "Updated " + new Date(j.at).toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" }) + ". Updates every minute while this page is open.");
+    }).catch(function (e) { setText("lv-at", "Couldn't load live counts: " + e.message); });
+  }
+  document.getElementById("liveReload").addEventListener("click", loadLive);
+  function startLive() {
+    loadLive();
+    if (!liveTimer) liveTimer = setInterval(function () { if (!document.hidden) loadLive(); }, 60000);
+  }
   document.getElementById("gcMake").addEventListener("click", function () {
     var btn = this, box = document.getElementById("gcNew");
     var months = parseInt(document.getElementById("gcMonths").value, 10);
@@ -976,6 +1018,7 @@
       dashboardRoot.hidden = false;
       loadDashboardData();
       loadCodes();
+      startLive();
     } else if (user) {
       dashboardRoot.hidden = true;
       authGate.hidden = false;

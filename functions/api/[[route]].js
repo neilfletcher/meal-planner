@@ -8,12 +8,12 @@
  *   POST /api/portal          -> Stripe customer portal URL (manage or cancel)
  *   POST /api/redeem          { code } -> applies a gift code
  *   POST /api/delete-account  deletes the account and everything stored with it
- *   POST /api/admin           admin only: gift codes and granting Pro
+ *   POST /api/admin           admin only: gift codes, granting Pro, live counts
  *   POST /api/stripe-webhook  Stripe tells us about subscriptions
  *
  * Signed-in calls send "Authorization: Bearer <Firebase ID token>".
  */
-import { verifyIdToken, projectId, getDoc, mergeDoc, deleteDoc, commit, listCollection, findUserByEmail, deleteAuthUser, httpError } from "../_shared/google.js";
+import { verifyIdToken, projectId, getDoc, mergeDoc, deleteDoc, commit, listCollection, listAuthUsers, findUserByEmail, deleteAuthUser, httpError } from "../_shared/google.js";
 import { stripe, priceFor, verifyWebhook, subscriptionFields } from "../_shared/stripe.js";
 import { proState, addMonths, TRIAL_DAYS } from "../_shared/entitlement.js";
 
@@ -194,6 +194,26 @@ async function admin(request, env) {
     var dash = await getDoc(env, "admin/dashboard");
     if (!dash || !dash.data.json) return json({ dashboard: null });
     return json({ dashboard: JSON.parse(dash.data.json), updatedAt: dash.data.updatedAt || 0 });
+  }
+
+  if (body.action === "liveCounts") {
+    var lists = await Promise.all([listAuthUsers(env), listCollection(env, "entitlements", null, 50000)]);
+    var auth = lists[0], ents = lists[1];
+    var since = function (ms) { return auth.users.filter(function (u) { return u.createdAt > now - ms; }).length; };
+    var c = { accounts: auth.total, newToday: since(DAY), new7: since(7 * DAY), new30: since(30 * DAY),
+      paying: 0, monthly: 0, annual: 0, cancelling: 0, everPaid: 0, onTrial: 0, freePro: 0, trialEnded: 0 };
+    ents.forEach(function (row) {
+      var e = row.data, st = proState(e, now);
+      if (e.stripeSub) c.everPaid++;
+      if (st.source === "stripe") {
+        c.paying++;
+        if (e.stripeInterval === "year") c.annual++; else c.monthly++;
+        if (e.stripeCancelAtPeriodEnd) c.cancelling++;
+      } else if (st.source === "trial") c.onTrial++;
+      else if (st.source === "gift" || st.source === "grant") c.freePro++;
+      else if (st.source === "trial-ended") c.trialEnded++;
+    });
+    return json({ counts: c, at: now });
   }
 
   if (body.action === "listCodes") {

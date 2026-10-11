@@ -217,6 +217,20 @@ export async function findUserByEmail(env, email) {
   return u ? { uid: u.localId, email: u.email || email } : null;
 }
 
+// Every sign-in account (uid and createdAt), up to 50,000.
+export async function listAuthUsers(env) {
+  var out = [], total = 0;
+  for (var offset = 0; offset < 50000; offset += 500) {
+    var r = await gfetch(env, idt(env, "query"), { method: "POST", body: JSON.stringify({ returnUserInfo: true, limit: "500", offset: String(offset) }) });
+    if (!r.ok) throw httpError(502, "Listing accounts failed: " + (await r.text()).slice(0, 200));
+    var body = await r.json();
+    total = parseInt(body.recordsCount, 10) || 0;
+    (body.userInfo || []).forEach(function (u) { out.push({ uid: u.localId, createdAt: parseInt(u.createdAt, 10) || 0 }); });
+    if (!body.userInfo || body.userInfo.length < 500) break;
+  }
+  return { total: Math.max(total, out.length), users: out };
+}
+
 export async function deleteAuthUser(env, uid) {
   var r = await gfetch(env, idt(env, "delete"), { method: "POST", body: JSON.stringify({ localId: uid }) });
   if (!r.ok) throw httpError(502, "Deleting the sign-in account failed: " + (await r.text()).slice(0, 200));

@@ -77,6 +77,7 @@ globalThis.fetch = async (url, init = {}) => {
     const body = JSON.parse(init.body);
     if (url.endsWith(":lookup")) { const uid = Object.keys(authUsers).find((u) => authUsers[u] === body.email[0]); return res(uid ? { users: [{ localId: uid, email: authUsers[uid] }] } : {}); }
     if (url.endsWith(":delete")) { deletedAuth.push(body.localId); return res({}); }
+    if (url.endsWith(":query")) { const all = Object.keys(authUsers).map((u, i) => ({ localId: u, createdAt: String(Date.now() - (i ? 10 : 0) * 86400000) })); return res({ recordsCount: String(all.length), userInfo: all.slice(+body.offset, +body.offset + +body.limit) }); }
   }
   if (url.startsWith("https://api.stripe.com/v1/")) {
     const p = url.slice("https://api.stripe.com/v1/".length).split("?")[0];
@@ -204,6 +205,17 @@ ok(r.status === 200 && r.body.entitlement.until === null && r.body.entitlement.s
 const [, , code3] = (await call("admin", { token: tAdmin, body: { action: "createCodes", count: 3, months: 1 } })).body.codes;
 const ra = await Promise.all([call("redeem", { token: await idToken("u5", "e@x.com"), body: { code: code3 } }), call("redeem", { token: await idToken("u6", "f@x.com"), body: { code: code3 } })]);
 ok(ra.filter((x) => x.status === 200).length === 1, "only one of two simultaneous redemptions wins");
+
+// live counts
+writeDoc("entitlements/p1", { stripeSub: enc("sub_p1"), stripeStatus: enc("active"), stripeInterval: enc("year"), stripePeriodEnd: enc(Date.now() + 30 * 86400000) });
+writeDoc("entitlements/p2", { stripeSub: enc("sub_p2"), stripeStatus: enc("active"), stripeInterval: enc("month"), stripeCancelAtPeriodEnd: enc(true), stripePeriodEnd: enc(Date.now() + 9 * 86400000) });
+writeDoc("entitlements/p3", { stripeSub: enc("sub_p3"), stripeStatus: enc("canceled"), trialEndsAt: enc(1) });
+r = await call("admin", { token: tAdmin, body: { action: "liveCounts" } });
+{ const c = r.body.counts || {};
+  ok(r.status === 200 && c.accounts === 2 && c.newToday === 1 && c.new30 === 2, "live counts: sign-in accounts");
+  ok(c.paying === 2 && c.annual === 1 && c.monthly === 1 && c.cancelling === 1 && c.everPaid >= 3 && c.trialEnded >= 1, "live counts: subscriptions"); }
+r = await call("admin", { token: t2, body: { action: "liveCounts" } });
+ok(r.status === 403, "live counts are admin only");
 
 // dashboard numbers
 r = await call("admin", { token: tAdmin, body: { action: "dashboard" } });

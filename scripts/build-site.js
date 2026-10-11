@@ -27,7 +27,7 @@ var ROOT = path.resolve(__dirname, "..");
 var SITE_URL = (process.env.SITE_URL || "https://solosupper.co.uk").replace(/\/+$/, "");
 var GA_ID = "G-JF54HQGVLT";
 var PRIVACY_URL = "https://neilfletcher.github.io/TrooLoo-privacy/privacy.html";
-var CONTACT_EMAIL = "apps@trooperlooper.co.uk";
+var CONTACT_EMAIL = "hello@solosupper.co.uk";
 var YEAR = new Date().getFullYear();
 
 /* ------------------------------------------------------------------ data */

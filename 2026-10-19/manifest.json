@@ -1,0 +1,212 @@
+{
+  "week": "2026-10-19",
+  "generatedAt": "2026-10-11T21:26:21.518Z",
+  "mediaBase": "https://social-media.solo-supper.pages.dev/2026-10-19/",
+  "notes": [
+    "Copy written by Gemini (gemini-3.8-flash).",
+    "Video: Veo veo-3.1-fast-generate-preview."
+  ],
+  "posts": [
+    {
+      "key": "pin-mon",
+      "channel": "pinterest",
+      "kind": "pin",
+      "day": "2026-10-19",
+      "dueAt": "2026-10-19T19:00:00.000Z",
+      "title": "Brazilian-Style Black Bean & Rice Bowl for One in 22 Minutes",
+      "text": "Cook this Brazilian-style black bean and rice bowl for one person in 22 minutes. Seasoned black beans served over rice with fresh orange segments and coriander make a quick evening meal without food waste. Full recipe and shopping list at solosupper.co.uk. Pictures made with AI.",
+      "link": "https://solosupper.co.uk/recipes/brazilian-style-black-bean-and-rice-bowl/?utm_source=pinterest&utm_medium=social&utm_campaign=autopilot&utm_content=pin-mon",
+      "media": [
+        "pin-mon-b8f09752.jpg"
+      ],
+      "cover": null,
+      "recipe": "d132",
+      "recipes": null,
+      "buffer": {
+        "id": "6acbff528e8dd50ffc57ed8a",
+        "dueAt": "2026-10-19T19:00:00.000Z",
+        "queuedAt": "2026-10-11T21:27:46.647Z"
+      }
+    },
+    {
+      "key": "pin-tue",
+      "channel": "pinterest",
+      "kind": "pin",
+      "day": "2026-10-20",
+      "dueAt": "2026-10-20T19:00:00.000Z",
+      "title": "Italian-Style Chicken Cacciatore for One in 23 Minutes",
+      "text": "A quick chicken cacciatore for one person, ready in 23 minutes. Diced chicken thigh simmered with chestnut mushrooms, tomatoes and oregano, served over pasta for a simple midweek dinner. Full recipe and shopping list at solosupper.co.uk. Pictures made with AI.",
+      "link": "https://solosupper.co.uk/recipes/italian-style-chicken-cacciatore/?utm_source=pinterest&utm_medium=social&utm_campaign=autopilot&utm_content=pin-tue",
+      "media": [
+        "pin-tue-37cb0357.jpg"
+      ],
+      "cover": null,
+      "recipe": "d167",
+      "recipes": null,
+      "buffer": {
+        "id": "6acbff53ea568e911a40a5b4",
+        "dueAt": "2026-10-20T19:00:00.000Z",
+        "queuedAt": "2026-10-11T21:27:47.357Z"
+      }
+    },
+    {
+      "key": "ig-tue",
+      "channel": "instagram",
+      "kind": "carousel",
+      "day": "2026-10-20",
+      "dueAt": "2026-10-20T17:30:00.000Z",
+      "title": "Italian-Style Chicken Cacciatore",
+      "text": "This chicken cacciatore makes a warm, reliable midweek supper for one. Cooking just for yourself often leaves odd ingredients behind, but this recipe opens a pack of chestnut mushrooms using 100g. The partner recipe later in the week, French-style chicken chasseur, uses the rest of the mushrooms so nothing sits forgotten in the vegetable drawer.\n\nFull recipe and shopping list via the link in our bio. Pictures made with AI.\n\n#solosupper #cookingforone #singleportions #chickendinner #nowaste",
+      "link": "https://solosupper.co.uk/recipes/italian-style-chicken-cacciatore/?utm_source=instagram&utm_medium=social&utm_campaign=autopilot&utm_content=ig-tue",
+      "media": [
+        "carousel-1-0a3cf589.jpg",
+        "carousel-2-1ec2633d.jpg",
+        "carousel-3-5fe367ae.jpg",
+        "carousel-4-57dc309a.jpg",
+        "carousel-5-3f059eb2.jpg"
+      ],
+      "cover": null,
+      "recipe": "d167",
+      "recipes": null,
+      "buffer": {
+        "id": "6acc0030fa026cfb8117105f",
+        "dueAt": "2026-10-20T17:30:00.000Z",
+        "queuedAt": "2026-10-11T21:31:28.261Z"
+      }
+    },
+    {
+      "key": "pin-wed",
+      "channel": "pinterest",
+      "kind": "usepin",
+      "day": "2026-10-21",
+      "dueAt": "2026-10-21T19:00:00.000Z",
+      "title": "Remaining cod fillets in the pack to use up?",
+      "text": "Ideas to use up cod fillets so nothing is wasted. Try Sicilian-Style Pan-Fried Cod with Capers and Raisins, Lemon & Herb Cod with Crushed Potatoes, or Trinidadian-Style Buljol Saltfish Salad with Fried Bake. Full recipe and shopping list at solosupper.co.uk. Pictures made with AI.",
+      "link": "https://solosupper.co.uk/use-up/rest-of-a-pack-of-cod-fillets/?utm_source=pinterest&utm_medium=social&utm_campaign=autopilot&utm_content=pin-wed",
+      "media": [
+        "pin-wed-abd6bba6.jpg"
+      ],
+      "cover": null,
+      "recipe": null,
+      "recipes": [
+        "d350",
+        "d9",
+        "d397"
+      ],
+      "buffer": {
+        "id": "6acbff54a9411fbcc55cf2cf",
+        "dueAt": "2026-10-21T19:00:00.000Z",
+        "queuedAt": "2026-10-11T21:27:49.006Z"
+      }
+    },
+    {
+      "key": "pin-thu",
+      "channel": "pinterest",
+      "kind": "pin",
+      "day": "2026-10-22",
+      "dueAt": "2026-10-22T19:00:00.000Z",
+      "title": "Sausage & Lentil One-Pot for One in 24 Minutes",
+      "text": "A comforting sausage and lentil one-pot for one person, ready in 24 minutes. Pork sausages browned with carrot, onion, green lentils and tomatoes for a simple, warming supper without leftovers. Full recipe and shopping list at solosupper.co.uk. Pictures made with AI.",
+      "link": "https://solosupper.co.uk/recipes/sausage-and-lentil-one-pot/?utm_source=pinterest&utm_medium=social&utm_campaign=autopilot&utm_content=pin-thu",
+      "media": [
+        "pin-thu-45ad3d73.jpg"
+      ],
+      "cover": null,
+      "recipe": "d28",
+      "recipes": null,
+      "buffer": {
+        "id": "6acbff55a9411fbcc55cf2fa",
+        "dueAt": "2026-10-22T19:00:00.000Z",
+        "queuedAt": "2026-10-11T21:27:49.645Z"
+      }
+    },
+    {
+      "key": "ig-fri",
+      "channel": "instagram",
+      "kind": "reel",
+      "day": "2026-10-23",
+      "dueAt": "2026-10-23T17:30:00.000Z",
+      "title": "Cuban-Style Picadillo Beef Hash",
+      "text": "A quick Cuban-style picadillo beef hash for one person, ready in 23 minutes. Minced beef cooked with onion, cumin, raisins and chopped tomatoes, served over rice for a balanced supper with no leftover ingredients to throw away.\n\nFull recipe and shopping list via the link in our bio. Pictures made with AI.\n\n#solosupper #cookingforone #quickdinner #midweeksupper #picadillo",
+      "link": "https://solosupper.co.uk/recipes/cuban-style-picadillo-beef-hash/?utm_source=instagram&utm_medium=social&utm_campaign=autopilot&utm_content=ig-fri",
+      "media": [
+        "reel-c5119d0d.mp4"
+      ],
+      "cover": "reel-cover-8a10b2f4.jpg",
+      "recipe": "d194",
+      "recipes": null,
+      "buffer": {
+        "id": "6acc0031fa026cfb81171089",
+        "dueAt": "2026-10-23T17:30:00.000Z",
+        "queuedAt": "2026-10-11T21:31:29.231Z"
+      }
+    },
+    {
+      "key": "pin-fri",
+      "channel": "pinterest",
+      "kind": "videopin",
+      "day": "2026-10-23",
+      "dueAt": "2026-10-23T19:00:00.000Z",
+      "title": "Cuban-Style Picadillo Beef Hash for One in 23 Minutes",
+      "text": "Make this Cuban-style picadillo beef hash for one person in 23 minutes. Beef mince simmered with tomatoes, cumin and sweet raisins, served over plain rice for a simple midweek dinner. Full recipe and shopping list at solosupper.co.uk. Pictures made with AI.",
+      "link": "https://solosupper.co.uk/recipes/cuban-style-picadillo-beef-hash/?utm_source=pinterest&utm_medium=social&utm_campaign=autopilot&utm_content=pin-fri",
+      "media": [
+        "reel-c5119d0d.mp4"
+      ],
+      "cover": "reel-cover-8a10b2f4.jpg",
+      "recipe": "d194",
+      "recipes": null,
+      "buffer": {
+        "id": "6acc00318e8dd50ffc581bb6",
+        "dueAt": "2026-10-23T19:00:00.000Z",
+        "queuedAt": "2026-10-11T21:31:29.861Z"
+      }
+    },
+    {
+      "key": "pin-sat",
+      "channel": "pinterest",
+      "kind": "usepin",
+      "day": "2026-10-24",
+      "dueAt": "2026-10-24T19:00:00.000Z",
+      "title": "Part of a bag of mixed salad leaves left over?",
+      "text": "Simple dinners for one that use up mixed salad leaves. Choose between Swiss-Style Cheese & Potato Bake (Rösti-Inspired), Austrian-Style Chicken Schnitzel, or Croque Monsieur-Style Ham & Cheese Toastie with Salad. Full recipe and shopping list at solosupper.co.uk. Pictures made with AI.",
+      "link": "https://solosupper.co.uk/use-up/use-up-mixed-salad-leaves/?utm_source=pinterest&utm_medium=social&utm_campaign=autopilot&utm_content=pin-sat",
+      "media": [
+        "pin-sat-657bd6f6.jpg"
+      ],
+      "cover": null,
+      "recipe": null,
+      "recipes": [
+        "d225",
+        "d143",
+        "d92"
+      ],
+      "buffer": {
+        "id": "6acbff56a9411fbcc55cf326",
+        "dueAt": "2026-10-24T19:00:00.000Z",
+        "queuedAt": "2026-10-11T21:27:50.955Z"
+      }
+    },
+    {
+      "key": "pin-sun",
+      "channel": "pinterest",
+      "kind": "pin",
+      "day": "2026-10-25",
+      "dueAt": "2026-10-25T20:00:00.000Z",
+      "title": "Nigerian-Style Efo Riro Spinach & Turkey Stew for One in 29 Minutes",
+      "text": "A spicy Nigerian-style efo riro stew for one person, ready in 29 minutes. Diced turkey breast cooked in a blended pepper and scotch bonnet sauce with plenty of chopped spinach. Full recipe and shopping list at solosupper.co.uk. Pictures made with AI.",
+      "link": "https://solosupper.co.uk/recipes/nigerian-style-efo-riro-spinach-and-turkey-stew/?utm_source=pinterest&utm_medium=social&utm_campaign=autopilot&utm_content=pin-sun",
+      "media": [
+        "pin-sun-9433149b.jpg"
+      ],
+      "cover": null,
+      "recipe": "d257",
+      "recipes": null,
+      "buffer": {
+        "id": "6acbff577db619a2914ab4d7",
+        "dueAt": "2026-10-25T20:00:00.000Z",
+        "queuedAt": "2026-10-11T21:27:51.597Z"
+      }
+    }
+  ]
+}

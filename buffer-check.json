@@ -1,0 +1,94 @@
+{
+  "checkedAt": "2026-10-11T20:58:03.185Z",
+  "channels": [
+    {
+      "id": "6acbe9d1778b240e2fdbda57",
+      "name": "solo.supper",
+      "service": "instagram"
+    },
+    {
+      "id": "6acbe97f778b240e2fdbd86e",
+      "name": "solosupper",
+      "service": "pinterest",
+      "boards": [
+        "Dinners for one"
+      ]
+    }
+  ],
+  "createPostInput": [
+    "aiAssisted",
+    "assets",
+    "channelId",
+    "draftId",
+    "dueAt",
+    "ideaId",
+    "metadata",
+    "mode",
+    "needsApproval",
+    "saveToDraft",
+    "schedulingType",
+    "source",
+    "tagIds",
+    "text"
+  ],
+  "metadataInput": [
+    "bluesky",
+    "facebook",
+    "google",
+    "instagram",
+    "linkedin",
+    "mastodon",
+    "pinterest",
+    "substack",
+    "threads",
+    "tiktok",
+    "twitter",
+    "youtube"
+  ],
+  "pinterestInput": [
+    "boardServiceId",
+    "title",
+    "url"
+  ],
+  "instagramInput": [
+    "firstComment",
+    "geolocation",
+    "isAiGenerated",
+    "link",
+    "shouldShareToFeed",
+    "stickerFields",
+    "type"
+  ],
+  "instagramTypes": [
+    "carousel",
+    "event",
+    "ghost_post",
+    "offer",
+    "post",
+    "reel",
+    "short",
+    "story",
+    "thread",
+    "whats_new"
+  ],
+  "imageInput": [
+    "metadata",
+    "thumbnailUrl",
+    "url"
+  ],
+  "videoInput": [
+    "metadata",
+    "thumbnailUrl",
+    "url"
+  ],
+  "modes": [
+    "addToQueue",
+    "customScheduled",
+    "shareNext",
+    "shareNow"
+  ],
+  "schedulingTypes": [
+    "automatic",
+    "notification"
+  ]
+}

@@ -1,0 +1,193 @@
+{
+  "week": "2026-10-12",
+  "generatedAt": "2026-10-11T21:52:30.028Z",
+  "mediaBase": "https://social-media.solo-supper.pages.dev/2026-10-12/",
+  "notes": [
+    "Copy written by Gemini (gemini-3.8-flash).",
+    "Video 1: Veo veo-3.1-fast-generate-preview.",
+    "Video 2: Veo veo-3.1-fast-generate-preview.",
+    "Video 3: Veo veo-3.1-fast-generate-preview."
+  ],
+  "posts": [
+    {
+      "key": "pin-mon",
+      "channel": "pinterest",
+      "kind": "pin",
+      "day": "2026-10-12",
+      "dueAt": "2026-10-12T19:00:00.000Z",
+      "title": "Bacalhau à Brás Salt Cod for One in 24 Minutes",
+      "text": "Make this Portuguese-style Bacalhau à Brás with tender white fish, crisp potato matchsticks and eggs for one person in 24 minutes. A simple supper finished with black olives and fresh parsley. Full recipe and shopping list at solosupper.co.uk. Pictures made with AI.",
+      "link": "https://solosupper.co.uk/recipes/bacalhau-a-bras-style-salt-cod-with-potato-and-egg/?utm_source=pinterest&utm_medium=social&utm_campaign=autopilot&utm_content=pin-mon",
+      "media": [
+        "pin-mon-aa61368a.jpg"
+      ],
+      "cover": null,
+      "recipe": "d285",
+      "recipes": null
+    },
+    {
+      "key": "ig-mon",
+      "channel": "instagram",
+      "kind": "carousel",
+      "day": "2026-10-12",
+      "dueAt": "2026-10-12T17:30:00.000Z",
+      "title": "Japanese-Style Ginger Pork (Shogayaki)",
+      "text": "Japanese-style ginger pork over rice, ready in 23 minutes. Cooking for one often leaves spare meat behind, but this recipe opens a two-pack of pork loin steak, using the first 150g steak today. The second steak is saved for a Swiss-style cordon bleu later in the week, so nothing goes to waste.\n\nFull recipe and shopping list via the link in our bio. Pictures made with AI.\n\n#solodinner #cookingforone #quicksupper #porkrecipe",
+      "link": "https://solosupper.co.uk/recipes/japanese-style-ginger-pork-shogayaki/?utm_source=instagram&utm_medium=social&utm_campaign=autopilot&utm_content=ig-mon",
+      "media": [
+        "ig-mon-1-608fbc47.jpg",
+        "ig-mon-2-2908ff20.jpg",
+        "ig-mon-3-5d8a97e2.jpg",
+        "ig-mon-4-bf9e783d.jpg",
+        "ig-mon-5-3f059eb2.jpg"
+      ],
+      "cover": null,
+      "recipe": "d166",
+      "recipes": null
+    },
+    {
+      "key": "ig-tue",
+      "channel": "instagram",
+      "kind": "reel",
+      "day": "2026-10-13",
+      "dueAt": "2026-10-13T17:30:00.000Z",
+      "title": "Armenian-Style Lahmacun Flatbread with Spiced Beef Mince",
+      "text": "Armenian-style lahmacun flatbread topped with spiced beef mince, ready in 18 minutes. Spread the beef, onion and pepper mix thinly over the flatbread, bake for 8 to 9 minutes until crisp, and finish with lemon and parsley.\n\nFull recipe and shopping list via the link in our bio. Pictures made with AI.\n\n#easyrecipes #quicksupper #cookingforone #flatbread",
+      "link": "https://solosupper.co.uk/recipes/armenian-style-lahmacun-flatbread-with-spiced-beef-mince/?utm_source=instagram&utm_medium=social&utm_campaign=autopilot&utm_content=ig-tue",
+      "media": [
+        "ig-tue-62833fa9.mp4"
+      ],
+      "cover": "ig-tue-cover-ca3072a2.jpg",
+      "recipe": "d421",
+      "recipes": null
+    },
+    {
+      "key": "pin-wed",
+      "channel": "pinterest",
+      "kind": "usepin",
+      "day": "2026-10-14",
+      "dueAt": "2026-10-14T19:00:00.000Z",
+      "title": "Leftover firm tofu in the fridge?",
+      "text": "Wondering how to use up leftover firm tofu? Try our single-portion meals: Mapo Tofu-Inspired Spiced Pork & Tofu, Korean-Style Tofu & Kimchi Stew, or Tofu Satay Bowl with Peanut Sauce. Full recipe and shopping list at solosupper.co.uk. Pictures made with AI.",
+      "link": "https://solosupper.co.uk/use-up/use-up-firm-tofu/?utm_source=pinterest&utm_medium=social&utm_campaign=autopilot&utm_content=pin-wed",
+      "media": [
+        "pin-wed-4fd87347.jpg"
+      ],
+      "cover": null,
+      "recipe": null,
+      "recipes": [
+        "d151",
+        "d182",
+        "d102"
+      ]
+    },
+    {
+      "key": "ig-wed",
+      "channel": "instagram",
+      "kind": "carousel",
+      "day": "2026-10-14",
+      "dueAt": "2026-10-14T17:30:00.000Z",
+      "title": "Argentinian-Style Chicken Milanesa with Tomato Salad",
+      "text": "Chicken milanesa with a simple tomato and red onion salad, ready in 19 minutes. A pack of two chicken breasts can be awkward when cooking for one person. This recipe opens the pack and uses the first breast tonight, while our Israeli-style chicken schnitzel uses the second breast later in the week so nothing is wasted.\n\nFull recipe and shopping list via the link in our bio. Pictures made with AI.\n\n#solocooking #dinnerforone #chickendinner #midweeksupper",
+      "link": "https://solosupper.co.uk/recipes/argentinian-style-chicken-milanesa-with-tomato-salad/?utm_source=instagram&utm_medium=social&utm_campaign=autopilot&utm_content=ig-wed",
+      "media": [
+        "ig-wed-1-b8e398c8.jpg",
+        "ig-wed-2-3ee3658e.jpg",
+        "ig-wed-3-c341a071.jpg",
+        "ig-wed-4-530b5aea.jpg",
+        "ig-wed-5-3f059eb2.jpg"
+      ],
+      "cover": null,
+      "recipe": "d260",
+      "recipes": null
+    },
+    {
+      "key": "ig-thu",
+      "channel": "instagram",
+      "kind": "reel",
+      "day": "2026-10-15",
+      "dueAt": "2026-10-15T17:30:00.000Z",
+      "title": "Singapore-Style Char Kway Teow with Egg and Beansprouts",
+      "text": "Singapore-style char kway teow ready in 16 minutes. Flat rice noodles tossed in a hot wok with egg, beansprouts, soy sauce and chilli paste for a quick supper for one.\n\nFull recipe and shopping list via the link in our bio. Pictures made with AI.\n\n#charkwayteow #noodles #cookingforone #quicksupper",
+      "link": "https://solosupper.co.uk/recipes/singapore-style-char-kway-teow-with-egg-and-beansprouts/?utm_source=instagram&utm_medium=social&utm_campaign=autopilot&utm_content=ig-thu",
+      "media": [
+        "ig-thu-179a515a.mp4"
+      ],
+      "cover": "ig-thu-cover-65a0b0bc.jpg",
+      "recipe": "d370",
+      "recipes": null
+    },
+    {
+      "key": "pin-fri",
+      "channel": "pinterest",
+      "kind": "pin",
+      "day": "2026-10-16",
+      "dueAt": "2026-10-16T19:00:00.000Z",
+      "title": "Australian Lamb Chops with Mint for One in 19 Minutes",
+      "text": "Pan-fried lamb chops served with boiled new potatoes, green beans and fresh minted yoghurt. A simple mid-week dinner for one person, ready on the table in 19 minutes with no waste. Full recipe and shopping list at solosupper.co.uk. Pictures made with AI.",
+      "link": "https://solosupper.co.uk/recipes/australian-style-lamb-chops-with-mint/?utm_source=pinterest&utm_medium=social&utm_campaign=autopilot&utm_content=pin-fri",
+      "media": [
+        "pin-fri-0ba8b59d.jpg"
+      ],
+      "cover": null,
+      "recipe": "d140",
+      "recipes": null
+    },
+    {
+      "key": "ig-fri",
+      "channel": "instagram",
+      "kind": "carousel",
+      "day": "2026-10-16",
+      "dueAt": "2026-10-16T17:30:00.000Z",
+      "title": "Halloumi & Roasted Veg Couscous",
+      "text": "Halloumi and roasted vegetable couscous, ready in 20 minutes. Standard packs of halloumi are usually 200g, which can be awkward for single portions. This recipe uses the first 100g, and our Lebanese-style fattoush salad finishes the rest of the block later in the week so nothing is thrown away.\n\nFull recipe and shopping list via the link in our bio. Pictures made with AI.\n\n#halloumi #vegetarianrecipes #cookingforone #quicksupper",
+      "link": "https://solosupper.co.uk/recipes/halloumi-and-roasted-veg-couscous/?utm_source=instagram&utm_medium=social&utm_campaign=autopilot&utm_content=ig-fri",
+      "media": [
+        "ig-fri-1-361d6884.jpg",
+        "ig-fri-2-b5c116a7.jpg",
+        "ig-fri-3-1a1dc74b.jpg",
+        "ig-fri-4-1bdccdad.jpg",
+        "ig-fri-5-3f059eb2.jpg"
+      ],
+      "cover": null,
+      "recipe": "d26",
+      "recipes": null
+    },
+    {
+      "key": "ig-sat",
+      "channel": "instagram",
+      "kind": "reel",
+      "day": "2026-10-17",
+      "dueAt": "2026-10-17T17:30:00.000Z",
+      "title": "Kenyan-Style Spiced Beef Greens (Sukuma Wiki-Inspired)",
+      "text": "Kenyan-style spiced beef greens served over rice in 23 minutes. Minced beef cooked with onion and smoked paprika, tossed with shredded kale until tender for an easy dinner for one.\n\nFull recipe and shopping list via the link in our bio. Pictures made with AI.\n\n#beefsupper #cookingforone #quickdinner #easyrecipes",
+      "link": "https://solosupper.co.uk/recipes/kenyan-style-spiced-beef-greens-sukuma-wiki-inspired/?utm_source=instagram&utm_medium=social&utm_campaign=autopilot&utm_content=ig-sat",
+      "media": [
+        "ig-sat-202e8f4f.mp4"
+      ],
+      "cover": "ig-sat-cover-7e5fccae.jpg",
+      "recipe": "d220",
+      "recipes": null
+    },
+    {
+      "key": "ig-sun",
+      "channel": "instagram",
+      "kind": "carousel",
+      "day": "2026-10-18",
+      "dueAt": "2026-10-18T17:30:00.000Z",
+      "title": "Coronation Chicken with Basmati Rice",
+      "text": "Coronation chicken with warm basmati rice, ready in 23 minutes. Buying meat for one often leaves spare portions in the fridge. This dish opens a pack of chicken breasts by using the first 150g portion today, while our Colombian-style ajiaco chicken soup finishes the pack later in the week so no food is wasted.\n\nFull recipe and shopping list via the link in our bio. Pictures made with AI.\n\n#coronationchicken #cookingforone #quicksupper #easyrecipes",
+      "link": "https://solosupper.co.uk/recipes/coronation-chicken-with-basmati-rice/?utm_source=instagram&utm_medium=social&utm_campaign=autopilot&utm_content=ig-sun",
+      "media": [
+        "ig-sun-1-bcdb5a08.jpg",
+        "ig-sun-2-c123b811.jpg",
+        "ig-sun-3-9716ab2e.jpg",
+        "ig-sun-4-51f59a46.jpg",
+        "ig-sun-5-3f059eb2.jpg"
+      ],
+      "cover": null,
+      "recipe": "d314",
+      "recipes": null
+    }
+  ]
+}

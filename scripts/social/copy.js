@@ -116,8 +116,9 @@ async function writeCopy(data, plan) {
     if (p.kind === "carousel") out[p.key] = tplCarousel(by[p.recipe], by[p.partner], p.pack, data.packNames[p.pack] || p.pack);
     if (p.kind === "reel") out[p.key] = tplReel(by[p.recipe]);
   });
-  var vp = plan.posts.find(function (p) { return p.kind === "videopin"; });
-  if (vp) out[vp.key] = { title: out["ig-fri"].pinTitle, description: out["ig-fri"].pinDescription };
+  var vps = plan.posts.filter(function (p) { return p.kind === "videopin"; });
+  var pinFromReel = function () { vps.forEach(function (vp) { var src = out[vp.reel || "ig-fri"]; out[vp.key] = { title: src.pinTitle, description: src.pinDescription }; }); };
+  pinFromReel();
 
   var ask = { posts: plan.posts.filter(function (p) { return p.kind !== "videopin"; }).map(function (p) {
     var o = { key: p.key, kind: p.kind };
@@ -151,7 +152,7 @@ async function writeCopy(data, plan) {
       if (fixed.title) fixed.title = clip(fixed.title, 95);
       out[g.key] = fixed;
     });
-    if (vp) out[vp.key] = { title: out["ig-fri"].pinTitle, description: out["ig-fri"].pinDescription };
+    pinFromReel();
     notes.push("Copy written by Gemini (" + got._model + ").");
   } catch (e) {
     notes.push("Copy from templates (" + e.message + ").");

@@ -124,7 +124,8 @@ async function open() {
     },
 
     // Five-slide Instagram carousel, 1080 x 1350.
-    carousel: async function (data, r, partner, packKey, copy, dir) {
+    carousel: async function (data, r, partner, packKey, copy, dir, prefix) {
+      var pre = prefix || "carousel";
       var packs = data.packs, p = packs[packKey];
       var a = data.needs[r.id][packKey], b = data.needs[partner.id][packKey];
       var n = Math.max(1, Math.ceil((a + b) / p.size - 0.08)), left = Math.max(0, n * p.size - a - b);
@@ -132,22 +133,22 @@ async function open() {
       var files = [];
       var ings = r.ingredients.filter(function (i) { return i.cat !== "spice" || r.ingredients.length <= 7; }).slice(0, 7);
       files.push(await shot('<img class="photo" style="height:810px" src="' + photo(r.id) + '"><div class="pad"><div class="eyebrow">Dinner for one · ' + mins(r) +
-        '</div><h1 style="font-size:' + (r.title.length > 40 ? 72 : 88) + 'px">' + titleHtml(r.title) + '</h1><div class="sub">' + esc(copy.subtitle) + '</div></div><div class="count">1/5</div>', 1080, 1350, path.join(dir, "carousel-1.jpg")));
+        '</div><h1 style="font-size:' + (r.title.length > 40 ? 72 : 88) + 'px">' + titleHtml(r.title) + '</h1><div class="sub">' + esc(copy.subtitle) + '</div></div><div class="count">1/5</div>', 1080, 1350, path.join(dir, pre + "-1.jpg")));
       files.push(await shot('<div class="pad" style="padding-top:100px"><div class="eyebrow">You\'ll need</div><h2 style="margin-top:18px">' +
         (ings.length < r.ingredients.length ? "The main things" : "Everything, for one") + '</h2><ul class="ing">' + ings.map(function (i) {
           return "<li><b>" + esc(i.text || "") + "</b>" + esc(i.item.split(",")[0]) + "</li>";
-        }).join("") + "</ul></div>" + BRAND + '<div class="count">2/5</div>', 1080, 1350, path.join(dir, "carousel-2.jpg")));
+        }).join("") + "</ul></div>" + BRAND + '<div class="count">2/5</div>', 1080, 1350, path.join(dir, pre + "-2.jpg")));
       files.push(await shot('<div class="pad" style="padding-top:100px"><div class="eyebrow">How</div><h2 style="margin-top:18px">' + U.minutes(r) + ' minutes, start to finish</h2><ol class="steps">' +
-        copy.steps.map(function (s) { return "<li><span>" + nb(s) + "</span></li>"; }).join("") + "</ol></div>" + BRAND + '<div class="count">3/5</div>', 1080, 1350, path.join(dir, "carousel-3.jpg")));
+        copy.steps.map(function (s) { return "<li><span>" + nb(s) + "</span></li>"; }).join("") + "</ol></div>" + BRAND + '<div class="count">3/5</div>', 1080, 1350, path.join(dir, pre + "-3.jpg")));
       var name = data.packNames[packKey] || packKey;
       files.push(await shot('<div class="pad" style="padding-top:96px"><div class="eyebrow">Nothing wasted</div><h2 style="margin-top:18px">' + esc(name.charAt(0).toUpperCase() + name.slice(1)) + ': sold in a ' + esc(p.sold || 'pack') + '. This uses ' + fmtG(packKey, a, packs) + '.</h2><div class="sub" style="margin-top:22px">Plan a second dinner that finishes the pack:</div>' +
         '<div class="card"><img src="' + photo(r.id) + '"><div><div class="d">Tonight · ' + mins(r) + '</div><div class="t">' + nb(r.title) + '</div><div class="m">' + fmtG(packKey, a, packs) + " of the pack</div></div></div>" +
         '<div class="card" style="margin-top:16px"><img src="' + photo(partner.id) + '"><div><div class="d">Later in the week · ' + mins(partner) + '</div><div class="t">' + nb(partner.title) + '</div><div class="m">the next ' + fmtG(packKey, b, packs) + "</div></div></div>" +
         '<div class="bar"><div style="flex:' + a + ';background:#C2412A">Tonight</div><div style="flex:' + b + ';background:#A33522">Later</div>' + (left > 0 ? '<div style="flex:' + left + ';background:#C9C3B6;color:#1A211D">' + (left / (a + b + left) >= 0.12 ? fmtG(packKey, left, packs) : "") + "</div>" : "") + "</div>" +
-        '<div class="note">Two dinners: ' + (left > 0 ? fmtG(packKey, left, packs) + " left" : "nothing left") + " instead of " + fmtG(packKey, aloneLeft, packs) + ".</div></div>" + BRAND + '<div class="count">4/5</div>', 1080, 1350, path.join(dir, "carousel-4.jpg")));
+        '<div class="note">Two dinners: ' + (left > 0 ? fmtG(packKey, left, packs) + " left" : "nothing left") + " instead of " + fmtG(packKey, aloneLeft, packs) + ".</div></div>" + BRAND + '<div class="count">4/5</div>', 1080, 1350, path.join(dir, pre + "-4.jpg")));
       files.push(await shot('<div class="pad night" style="height:100%;padding-top:170px"><div class="eyebrow" style="color:#F2B661">Plan the whole week</div><h1 style="font-size:86px">Dinners for one that share their packs.</h1>' +
         '<div class="sub" style="color:#CDD2CB">Solo Supper picks the week and adds up the shopping list, so the other half of everything gets used.</div><div class="cta">solosupper.co.uk</div></div>' +
-        '<div class="brand" style="color:#F7F5F0">' + logo("#F7F5F0") + 'Solo Supper</div><div class="ai">Pictures made with AI</div>', 1080, 1350, path.join(dir, "carousel-5.jpg")));
+        '<div class="brand" style="color:#F7F5F0">' + logo("#F7F5F0") + 'Solo Supper</div><div class="ai">Pictures made with AI</div>', 1080, 1350, path.join(dir, pre + "-5.jpg")));
       return files;
     },
 

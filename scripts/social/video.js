@@ -75,10 +75,11 @@ function stillMotion(jpgFile, outFile) {
     "-map", "[v]", "-map", "1:a", "-c:v", "libx264", "-preset", "medium", "-crf", "21", "-c:a", "aac", "-shortest", outFile]);
 }
 
-async function makeVideo(r, overlays, dir, log) {
-  var jpg = path.join(dir, "video-source.jpg");
+async function makeVideo(r, overlays, dir, log, name) {
+  name = name || "reel";
+  var jpg = path.join(dir, name + "-source.jpg");
   ff(["-i", path.join(U.ROOT, "img", "recipes", r.id + ".webp"), "-q:v", "2", jpg]);
-  var raw = path.join(dir, "video-raw.mp4"), source;
+  var raw = path.join(dir, name + "-raw.mp4"), source;
   try {
     source = "Veo " + await veo(r, jpg, raw, log);
   } catch (e) {
@@ -88,12 +89,12 @@ async function makeVideo(r, overlays, dir, log) {
   }
   var probe = cp.spawnSync("ffprobe", ["-v", "error", "-select_streams", "a", "-show_entries", "stream=index", "-of", "csv=p=0", raw], { encoding: "utf8" });
   var hasAudio = /\d/.test(probe.stdout || "");
-  var out = path.join(dir, "reel.mp4");
+  var out = path.join(dir, name + ".mp4");
   ff(["-i", raw, "-loop", "1", "-t", "10", "-i", overlays.top, "-loop", "1", "-t", "10", "-i", overlays.bottom].concat(hasAudio ? [] : ["-f", "lavfi", "-t", "10", "-i", "anullsrc=r=44100:cl=stereo"]).concat([
     "-filter_complex", "[0:v]scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,setsar=1[v];[1:v]format=rgba,fade=t=in:st=0.2:d=0.6:alpha=1[t];" +
       "[2:v]format=rgba,fade=t=in:st=2.5:d=0.6:alpha=1[b];[v][t]overlay=0:0[a];[a][b]overlay=0:0:shortest=1,format=yuv420p[out]",
     "-map", "[out]", "-map", hasAudio ? "0:a" : "3:a", "-c:v", "libx264", "-preset", "medium", "-crf", "21", "-c:a", "aac", "-b:a", "128k", "-movflags", "+faststart", "-shortest", out]));
-  var thumb = path.join(dir, "reel-cover.jpg");
+  var thumb = path.join(dir, name + "-cover.jpg");
   ff(["-ss", "3", "-i", out, "-frames:v", "1", "-q:v", "3", thumb]);
   [jpg, raw].forEach(function (f) { try { fs.unlinkSync(f); } catch (e) { /* ignore */ } });
   return { file: out, cover: thumb, source: source };

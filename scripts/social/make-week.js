@@ -21,6 +21,7 @@ var V = require("./video.js");
 function arg(name, dflt) { var i = process.argv.indexOf("--" + name); return i !== -1 ? process.argv[i + 1] : dflt; }
 var OUT = path.resolve(arg("out", path.join(U.ROOT, "social-media-out")));
 var WEEK = arg("week") || U.nextMonday(new Date());
+var LAYOUT = arg("layout", process.env.SOCIAL_LAYOUT || "weekly");
 var MEDIA_BASE = (process.env.MEDIA_BASE || "https://social-media.solo-supper.pages.dev").replace(/\/+$/, "");
 var HISTORY = path.join(U.ROOT, "social", "history.json");
 
@@ -30,19 +31,18 @@ function log(s) { console.log("[social] " + s); }
   if (!/^\d{4}-\d{2}-\d{2}$/.test(WEEK) || new Date(WEEK + "T00:00:00Z").getUTCDay() !== 1) throw new Error("--week must be a Monday, as YYYY-MM-DD");
   var data = U.loadSiteData();
   var history = U.readJson(HISTORY, { weeks: [] });
-  var plan = P.planWeek(data, history, WEEK);
+  var plan = P.planWeek(data, history, WEEK, LAYOUT);
   var dir = path.join(OUT, WEEK);
   fs.rmSync(dir, { recursive: true, force: true });
   fs.mkdirSync(dir, { recursive: true });
-  log("Week of " + WEEK + ": " + plan.posts.length + " posts");
+  log("Week of " + WEEK + " (" + LAYOUT + "): " + plan.posts.length + " posts");
 
   var copy = await C.writeCopy(data, plan);
   copy.notes.forEach(log);
   var by = data.byId, notes = copy.notes.slice();
 
   var r = await R.open();
-  var reel = null;
-  try {
+    try {
     for (var i = 0; i < plan.posts.length; i++) {
       var p = plan.posts[i], c = copy.copy[p.key];
       if (p.kind === "pin") {
@@ -53,20 +53,23 @@ function log(s) { console.log("[social] " + s); }
         await r.usePin(u, c.title, p.recipes.map(function (id) { return by[id]; }), path.join(dir, p.key + ".jpg"));
         Object.assign(p, { title: c.title, text: c.description, link: U.useUpUrl(data, u, "pinterest", p.key), media: [p.key + ".jpg"] });
       } else if (p.kind === "carousel") {
-        var files = await r.carousel(data, by[p.recipe], by[p.partner], p.pack, c, dir);
+        var files = await r.carousel(data, by[p.recipe], by[p.partner], p.pack, c, dir, p.key);
         Object.assign(p, { title: by[p.recipe].title, text: c.caption, link: U.recipeUrl(data, by[p.recipe], "instagram", p.key), media: files.map(function (f) { return path.basename(f); }) });
       }
     }
-    var rp = plan.posts.find(function (x) { return x.kind === "reel"; });
-    if (rp) {
+    var reels = plan.posts.filter(function (x) { return x.kind === "reel"; });
+    for (var k = 0; k < reels.length; k++) {
+      var rp = reels[k];
       var ov = await r.overlays(by[rp.recipe], dir);
-      reel = await V.makeVideo(by[rp.recipe], ov, dir, log);
+      var reel = await V.makeVideo(by[rp.recipe], ov, dir, log, rp.key);
       [ov.top, ov.bottom].forEach(function (f) { fs.unlinkSync(f); });
-      notes.push("Video: " + reel.source + ".");
-      Object.assign(rp, { title: by[rp.recipe].title, text: copy.copy[rp.key].caption, link: U.recipeUrl(data, by[rp.recipe], "instagram", rp.key), media: ["reel.mp4"], cover: "reel-cover.jpg" });
-      var vp = plan.posts.find(function (x) { return x.kind === "videopin"; });
-      if (vp) Object.assign(vp, { title: copy.copy[vp.key].title, text: copy.copy[vp.key].description, link: U.recipeUrl(data, by[vp.recipe], "pinterest", vp.key), media: ["reel.mp4"], cover: "reel-cover.jpg" });
+      notes.push("Video" + (reels.length > 1 ? " " + (k + 1) : "") + ": " + reel.source + ".");
+      Object.assign(rp, { title: by[rp.recipe].title, text: copy.copy[rp.key].caption, link: U.recipeUrl(data, by[rp.recipe], "instagram", rp.key), media: [path.basename(reel.file)], cover: path.basename(reel.cover) });
     }
+    plan.posts.filter(function (x) { return x.kind === "videopin"; }).forEach(function (vp) {
+      var src = plan.posts.find(function (x) { return x.key === vp.reel; });
+      Object.assign(vp, { title: copy.copy[vp.key].title, text: copy.copy[vp.key].description, link: U.recipeUrl(data, by[vp.recipe], "pinterest", vp.key), media: src.media.slice(), cover: src.cover });
+    });
   } finally { await r.close(); }
 
   // Put a short content hash in every file name. Re-running a week replaces the

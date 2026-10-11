@@ -1,6 +1,7 @@
 "use strict";
-// Chooses next week's posts: seven Pinterest pins (one a day) and two
-// Instagram posts (a carousel on Tuesday and a short video on Friday).
+// Chooses a week's posts. Normal weeks: seven Pinterest pins (one a day) and
+// two Instagram posts (a carousel on Tuesday and a short video on Friday).
+// The "launch" layout is a one-off: Instagram daily and three pins.
 var U = require("./util.js");
 
 var REPEAT_WEEKS = 12;   // a recipe is not posted again within this many weeks
@@ -17,7 +18,7 @@ function recentIds(history, week, weeks) {
   return { ids: ids, useups: useups };
 }
 
-function planWeek(data, history, week) {
+function planWeek(data, history, week, layout) {
   var rand = U.rng("solo-supper-" + week);
   var recent = recentIds(history, week, REPEAT_WEEKS);
   var recentUse = recentIds(history, week, USEUP_WEEKS).useups;
@@ -52,48 +53,54 @@ function planWeek(data, history, week) {
     });
     return best;
   }
-  var carousel = take(function (r) { return !!pairFor(r); });
-  var pair = pairFor(carousel);
-  if (!pair) throw new Error("No recipe pair found for the carousel");
-  var partner = pair.partner, packKey = pair.pack;
-  used[partner.id] = 1;
-
-  // Friday video: something with colour and steam, so not a salad or a sandwich.
-  var reel = take(function (r) { return !/salad|sandwich|toastie|wrap|smørrebrød|poke/i.test(r.title) && U.minutes(r) <= 35; });
-
-  // Three more recipe pins, spread across cuisines and proteins.
+  var takeCarousel = function () {
+    var c = take(function (r) { return !!pairFor(r); });
+    var pr = pairFor(c);
+    if (!pr) throw new Error("No recipe pair found for the carousel");
+    used[pr.partner.id] = 1;
+    return { recipe: c, partner: pr.partner, pack: pr.pack };
+  };
+  // Videos: something with colour and steam, so not a salad or a sandwich.
+  var takeReel = function () { return take(function (r) { return !/salad|sandwich|toastie|wrap|smørrebrød|poke/i.test(r.title) && U.minutes(r) <= 35; }); };
   var seenC = {}, seenP = {};
-  [carousel, reel].forEach(function (r) { seenC[r.cuisine] = 1; seenP[r.protein] = 1; });
-  var extra = [];
-  for (var i = 0; i < 3; i++) {
-    extra.push(take(function (r) { return !seenC[r.cuisine] && !seenP[r.protein]; }));
-    seenC[extra[i].cuisine] = 1; seenP[extra[i].protein] = 1;
-  }
-
-  // Two use-up pins.
-  var useups = U.shuffle(data.useUp.filter(function (u) { return !recentUse[u.key] && u.users.length >= 4; }), rand).slice(0, 2).map(function (u) {
-    var seen = {}, picks = [];
-    U.shuffle(u.users, rand).forEach(function (id) {
-      var r = data.byId[id];
-      if (picks.length < 3 && r.photo && !seen[r.cuisine]) { picks.push(r); seen[r.cuisine] = 1; }
+  var note = function (r) { seenC[r.cuisine] = 1; seenP[r.protein] = 1; return r; };
+  var takeVaried = function () { return note(take(function (r) { return !seenC[r.cuisine] && !seenP[r.protein]; })); };
+  var takeUseups = function (n) {
+    return U.shuffle(data.useUp.filter(function (u) { return !recentUse[u.key] && u.users.length >= 4; }), rand).slice(0, n).map(function (u) {
+      var seen = {}, picks = [];
+      U.shuffle(u.users, rand).forEach(function (id) {
+        var r = data.byId[id];
+        if (picks.length < 3 && r.photo && !seen[r.cuisine]) { picks.push(r); seen[r.cuisine] = 1; }
+      });
+      return { u: u, recipes: picks };
     });
-    return { u: u, recipes: picks };
-  });
-
+  };
   var day = function (n) { return U.addDays(week, n); };
   var pinAt = function (n) { return U.londonTime(day(n), 20, 0); };
   var igAt = function (n) { return U.londonTime(day(n), 18, 30); };
-  var posts = [
-    { key: "pin-mon", channel: "pinterest", kind: "pin", day: day(0), dueAt: pinAt(0), recipe: extra[0].id },
-    { key: "pin-tue", channel: "pinterest", kind: "pin", day: day(1), dueAt: pinAt(1), recipe: carousel.id },
-    { key: "ig-tue", channel: "instagram", kind: "carousel", day: day(1), dueAt: igAt(1), recipe: carousel.id, partner: partner.id, pack: packKey },
-    { key: "pin-wed", channel: "pinterest", kind: "usepin", day: day(2), dueAt: pinAt(2), useup: useups[0].u.key, recipes: useups[0].recipes.map(function (r) { return r.id; }) },
-    { key: "pin-thu", channel: "pinterest", kind: "pin", day: day(3), dueAt: pinAt(3), recipe: extra[1].id },
-    { key: "ig-fri", channel: "instagram", kind: "reel", day: day(4), dueAt: igAt(4), recipe: reel.id },
-    { key: "pin-fri", channel: "pinterest", kind: "videopin", day: day(4), dueAt: pinAt(4), recipe: reel.id },
-    { key: "pin-sat", channel: "pinterest", kind: "usepin", day: day(5), dueAt: pinAt(5), useup: useups[1].u.key, recipes: useups[1].recipes.map(function (r) { return r.id; }) },
-    { key: "pin-sun", channel: "pinterest", kind: "pin", day: day(6), dueAt: pinAt(6), recipe: extra[2].id }
-  ];
+  var DAYS = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"];
+  var carouselPost = function (n, c) { note(c.recipe); note(c.partner); return { key: "ig-" + DAYS[n], channel: "instagram", kind: "carousel", day: day(n), dueAt: igAt(n), recipe: c.recipe.id, partner: c.partner.id, pack: c.pack }; };
+  var reelPost = function (n, r) { note(r); return { key: "ig-" + DAYS[n], channel: "instagram", kind: "reel", day: day(n), dueAt: igAt(n), recipe: r.id }; };
+  var pinPost = function (n, r) { return { key: "pin-" + DAYS[n], channel: "pinterest", kind: "pin", day: day(n), dueAt: pinAt(n), recipe: r.id }; };
+  var usePost = function (n, x) { return { key: "pin-" + DAYS[n], channel: "pinterest", kind: "usepin", day: day(n), dueAt: pinAt(n), useup: x.u.key, recipes: x.recipes.map(function (r) { return r.id; }) }; };
+  var posts, useups;
+
+  if (layout === "launch") {
+    // One-off launch week: Instagram every day (four carousels, three videos)
+    // and three pins, to fit the slots Buffer's free plan has left.
+    var ig = [carouselPost(0, takeCarousel()), reelPost(1, takeReel()), carouselPost(2, takeCarousel()), reelPost(3, takeReel()),
+      carouselPost(4, takeCarousel()), reelPost(5, takeReel()), carouselPost(6, takeCarousel())];
+    useups = takeUseups(1);
+    posts = [pinPost(0, takeVaried()), ig[0], ig[1], usePost(2, useups[0]), ig[2], ig[3], pinPost(4, takeVaried()), ig[4], ig[5], ig[6]];
+  } else {
+    // A normal week: seven pins (one a day), a Tuesday carousel and a Friday video.
+    var car = carouselPost(1, takeCarousel());
+    var reel = reelPost(4, takeReel());
+    var extra = [takeVaried(), takeVaried(), takeVaried()];
+    useups = takeUseups(2);
+    var vpin = { key: "pin-fri", channel: "pinterest", kind: "videopin", day: day(4), dueAt: pinAt(4), recipe: reel.recipe, reel: reel.key };
+    posts = [pinPost(0, extra[0]), pinPost(1, data.byId[car.recipe]), car, usePost(2, useups[0]), pinPost(3, extra[1]), reel, vpin, usePost(5, useups[1]), pinPost(6, extra[2])];
+  }
   return {
     week: week, posts: posts,
     history: { week: week, recipes: Object.keys(used), useups: useups.map(function (x) { return x.u.key; }) }

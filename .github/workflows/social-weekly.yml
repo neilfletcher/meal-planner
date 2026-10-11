@@ -14,6 +14,11 @@ on:
       week:
         description: "Monday of the week, YYYY-MM-DD (blank = next Monday)"
         required: false
+      layout:
+        description: "weekly = 7 pins, a carousel and a video; launch = one-off week with Instagram daily and 3 pins"
+        type: choice
+        options: [weekly, launch]
+        default: weekly
 
 permissions:
   contents: write
@@ -30,6 +35,7 @@ jobs:
     env:
       MODE: ${{ inputs.mode || (vars.SOCIAL_AUTOPUBLISH == 'true' && 'publish' || 'preview') }}
       WEEK_INPUT: ${{ inputs.week }}
+      SOCIAL_LAYOUT: ${{ inputs.layout || 'weekly' }}
       MEDIA_BASE: ${{ vars.SOCIAL_MEDIA_BASE || 'https://social-media.solo-supper.pages.dev' }}
       GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
       BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}

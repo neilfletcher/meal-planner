@@ -92,7 +92,7 @@
           <div class="week-heading">
             <div class="week-toggle" role="group" aria-label="Which week">
               <button type="button" class="week-tab" id="week-this-btn" aria-pressed="true">This week</button>
-              <button type="button" class="week-tab" id="week-next-btn" aria-pressed="false">Next week</button>
+              <button type="button" class="week-tab needs-pro" id="week-next-btn" aria-pressed="false">Next week</button>
             </div>
             <span class="eyebrow" id="week-eyebrow">This week</span>
             <h1 class="week-range" id="week-range"></h1>
@@ -103,7 +103,7 @@
               <button type="button" class="mode-btn" id="mode-days-btn" aria-pressed="true">Plan by day</button>
               <button type="button" class="mode-btn" id="mode-batch-btn" aria-pressed="false">Just pick dinners</button>
             </div>
-            <button class="btn btn-primary" id="lowwaste-fill-btn" title="Fill empty days with dinners that share their packs">Low-waste fill</button>
+            <button class="btn btn-primary needs-pro" id="lowwaste-fill-btn" title="Fill empty days with dinners that share their packs">Low-waste fill</button>
             <button class="btn btn-ink" id="fill-week-btn">Fill at random</button>
             <button class="btn btn-outline" id="clear-week-btn">Clear week</button>
           </div>
@@ -123,7 +123,7 @@
             <label class="batch-count-label"><span class="visually-hidden">Number of dinners to add</span>
               <input type="number" id="batch-count-input" min="1" max="30" value="4" class="batch-count-input">
             </label>
-            <button class="btn btn-primary" id="batch-lowwaste-btn" title="Pick dinners that share their packs">Low-waste pick</button>
+            <button class="btn btn-primary needs-pro" id="batch-lowwaste-btn" title="Pick dinners that share their packs">Low-waste pick</button>
             <button class="btn btn-ink" id="batch-surprise-btn">Surprise me</button>
             <button class="btn btn-outline" id="batch-add-btn">Add a dinner</button>
             <button class="btn btn-ghost" id="batch-clear-btn">Clear list</button>
@@ -172,7 +172,7 @@
     </div>
     <div class="recipe-filters">
       <div id="tag-chips" class="chip-row"></div>
-      <button type="button" class="btn btn-outline" id="add-recipe-btn">Add your own recipe</button>
+      <button type="button" class="btn btn-outline needs-pro" id="add-recipe-btn">Add your own recipe</button>
     </div>
     <div class="recipe-grid" id="recipe-grid"></div>
   </section>
@@ -199,7 +199,11 @@
 </div>
 
 <div class="modal-backdrop" id="paywall-modal-backdrop" hidden>
-  <div class="modal" id="paywall-modal" role="dialog" aria-modal="true" aria-label="Unlock"></div>
+  <div class="modal modal-pro" id="paywall-modal" role="dialog" aria-modal="true" aria-label="Solo Supper Pro"></div>
+</div>
+
+<div class="modal-backdrop" id="signin-modal-backdrop" hidden>
+  <div class="modal modal-signin" id="signin-modal" role="dialog" aria-modal="true" aria-label="Sign in"></div>
 </div>
 
 <div class="modal-backdrop" id="settings-modal-backdrop" hidden>

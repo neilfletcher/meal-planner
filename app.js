@@ -87,7 +87,7 @@
   }
   function isPro() {
     if (!isNativeApp()) return true; // the website itself is always fully unlocked
-    return !!(window.SSNative && window.SSNative.isPro());
+    return !!(window.SSNative && window.SSNative.isPro()) || webPro();
   }
   function isRecipeLocked(recipeId) {
     return !isPro() && !FREE_RECIPE_SET[recipeId] && !(RECIPES_BY_ID[recipeId] && RECIPES_BY_ID[recipeId].custom);
@@ -131,6 +131,7 @@
   }
   function openPaywall() {
     if (!paywallBackdrop) return;
+    if (!isNativeApp()) { openProPaywall(); return; }
     renderPaywallModal();
     paywallBackdrop.hidden = false;
   }
@@ -402,6 +403,10 @@
   }
 
 
+  function initialAvatar(name) {
+    var ch = String(name).trim().charAt(0).toUpperCase() || "?";
+    return "data:image/svg+xml," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 36"><rect width="36" height="36" rx="18" fill="#1A211D"/><text x="18" y="23.5" text-anchor="middle" font-family="Georgia,serif" font-size="17" fill="#F7F5F0">' + ch.replace(/[<&>"]/g, "") + "</text></svg>");
+  }
   function updateAccountUI(user) {
     var signedOutEl = document.getElementById("account-signed-out");
     var signedInEl = document.getElementById("account-signed-in");
@@ -411,7 +416,7 @@
       signedInEl.hidden = false;
       var avatar = document.getElementById("account-avatar");
       var name = document.getElementById("account-name");
-      if (avatar) { avatar.src = user.photoURL || ""; avatar.alt = user.displayName || "Account"; }
+      if (avatar) { avatar.src = user.photoURL || initialAvatar(user.displayName || user.email || "?"); avatar.alt = user.displayName || user.email || "Account"; }
       if (name) name.textContent = user.displayName || user.email || "Signed in";
     } else {
       signedOutEl.hidden = false;
@@ -435,6 +440,7 @@
 
     if (googleBtn) {
       googleBtn.addEventListener("click", function () {
+        if (!isNativeApp()) { openSignIn(); return; }
         // A popup window is blocked by Google inside an app's WebView, so the
         // Android build signs in via native-bridge.js (Credential Manager)
         // instead and bridges the result into this same compat SDK. The
@@ -460,12 +466,17 @@
       updateAccountUI(user);
       if (user) {
         startCloudSync(user);
+        startEntitlement(user);
+        if (signinBackdrop && !signinBackdrop.hidden) closeSignIn();
+        if (afterSignIn) { pendingAfterPro = afterSignIn; afterSignIn = null; }
       } else {
         stopCloudSync();
+        stopEntitlement();
       }
       renderAll();
     });
 
+    completeEmailLinkSignIn();
     renderAll();
   }
 
@@ -884,6 +895,8 @@
 
   document.getElementById("lowwaste-fill-btn").addEventListener("click", lowWasteFillWeek);
   function setView(next) {
+    if (next && !requirePro("nextweek")) return;
+    viewPicked = true;
     if (viewNext === next) return;
     viewNext = next;
     renderAll();
@@ -1460,6 +1473,7 @@
   }
 
   function lowWasteFillWeek() {
+    if (!requirePro("lowwaste")) return;
     var empty = fillableDays();
     if (!empty.length) { noFillableToast(); return; }
     var undoSnap = JSON.stringify(syncPayload());
@@ -1471,6 +1485,7 @@
     toast(rep.items.length ? "Week filled to use up packs. A few bits left over: see the list." : "Week filled. Everything you open gets used.", "Undo", function () { applyState(JSON.parse(undoSnap)); onStateChanged(); });
   }
   function lowWasteBatch() {
+    if (!requirePro("lowwaste")) return;
     var input = document.getElementById("batch-count-input");
     var n = Math.min(30, Math.max(1, parseInt(input.value, 10) || 4));
     input.value = n;
@@ -2359,10 +2374,13 @@
       if (state.lastWeek) document.getElementById("banner-copy-btn").addEventListener("click", copyLastWeek);
       document.getElementById("banner-fill-btn").addEventListener("click", function () { state.newWeekNotice = false; fillWeek(); });
       document.getElementById("banner-close-btn").addEventListener("click", function () { state.newWeekNotice = false; onStateChanged(); });
+    } else if (trialBannerHtml()) {
+      el.innerHTML = trialBannerHtml();
+      wireTrialBanner();
     } else if (!W().plan.some(Boolean)) {
       el.innerHTML = '<div class="banner-card banner-hero"><div><strong>' + (viewNext ? "Plan next week in one tap." : "Plan the rest of your week in one tap.") + '</strong>' +
         '<p>Low-waste picks dinners that share their packs, so the half bag of spinach from Monday goes into Thursday. Or fill it at random, or tap a day to choose yourself.</p></div>' +
-        '<div class="banner-actions"><button type="button" class="btn btn-primary" id="banner-lowwaste-btn">Low-waste week</button>' +
+        '<div class="banner-actions"><button type="button" class="btn btn-primary needs-pro" id="banner-lowwaste-btn">Low-waste week</button>' +
         '<button type="button" class="btn btn-outline banner-btn-light" id="banner-fill-btn">Fill at random</button></div></div>';
       document.getElementById("banner-lowwaste-btn").addEventListener("click", lowWasteFillWeek);
       document.getElementById("banner-fill-btn").addEventListener("click", fillWeek);
@@ -2705,7 +2723,7 @@
   var settingsModal = document.getElementById("settings-modal");
   function settingsOpen() { return settingsBackdrop && !settingsBackdrop.hidden; }
   function openSettings() { renderSettings(); settingsBackdrop.hidden = false; }
-  function closeSettings() { settingsBackdrop.hidden = true; settingsModal.innerHTML = ""; }
+  function closeSettings() { settingsBackdrop.hidden = true; settingsModal.innerHTML = ""; deleteArmed = false; }
   function renderSettings() {
     var avoid = state.avoid || {};
     var staples = Object.keys(state.staples || {}).sort();
@@ -2715,6 +2733,7 @@
     settingsModal.innerHTML =
       '<div class="modal-close-row"><button class="icon-btn" id="settings-close-btn" aria-label="Close">' + ico("close") + '</button></div>' +
       "<h2>Settings</h2>" +
+      accountSettingsHtml() +
       "<h3>Never show me</h3>" +
       '<div class="chip-row">' + AVOID_OPTIONS.map(function (o) {
         return '<button type="button" class="chip" data-avoid="' + o[0] + '" aria-pressed="' + (avoid[o[0]] ? "true" : "false") + '">' + esc(o[1]) + "</button>";
@@ -2744,6 +2763,7 @@
     });
     document.getElementById("settings-basics-btn").addEventListener("click", addUsualBasics);
     document.getElementById("analytics-on").addEventListener("change", function (e) { setAnalyticsConsent(e.target.checked); });
+    wireAccountSettings();
     if (NativeExtras) {
       var status = document.getElementById("reminder-status");
       var update = function () {
@@ -2828,7 +2848,7 @@
     return "plant-based";
   }
   function openCustomForm(existingId) {
-    if (!isPro()) { openPaywall(); return; }
+    if (isNativeApp()) { if (!isPro()) { openPaywall(); return; } } else if (!requirePro("custom")) return;
     var r = existingId ? RECIPES_BY_ID[existingId] : null;
     var ingText = r ? r.ingredients.map(function (i) { return (i.amt !== null ? fmtAmt(i.amt) + " " : "") + (i.unit ? i.unit + " " : "") + i.item; }).join("\n") : "";
     var tags = r ? r.tags : [];
@@ -2899,6 +2919,7 @@
     { el: function () { return document.getElementById("cook-overlay"); }, close: closeCookMode },
     { el: function () { return document.getElementById("custom-modal-backdrop"); }, close: function () { closeCustomForm(); } },
     { el: function () { return document.getElementById("paywall-modal-backdrop"); }, close: function () { closePaywall(); } },
+    { el: function () { return document.getElementById("signin-modal-backdrop"); }, close: function () { afterSignIn = null; closeSignIn(); } },
     { el: function () { return document.getElementById("picker-modal-backdrop"); }, close: function () { closePicker(); } },
     { el: function () { return document.getElementById("recipe-modal-backdrop"); }, close: function () { closeRecipeModal(); } },
     { el: function () { return document.getElementById("settings-modal-backdrop"); }, close: function () { closeSettings(); } }
@@ -3077,13 +3098,392 @@
   var shopCupBtn = document.getElementById("shop-cupboard-btn");
   if (shopCupBtn) shopCupBtn.addEventListener("click", function () { shopCupboardMode = !shopCupboardMode; renderShopping(); });
 
+  /* ============================= PRO ON THE WEBSITE ============================= */
+  /*
+   * On the website, the recipes and the planner are free; Pro adds low-waste
+   * planning, planning next week and your own recipes. New accounts get a
+   * 14-day trial (no card). Who has Pro lives in Firestore at
+   * entitlements/{uid}, written only by the server (functions/api) and read
+   * here. The Android app keeps its own Google Play unlock, and also honours
+   * Pro on the account (for example from a gift code).
+   */
+  var API_BASE = "/api/";
+  var ent = null;              // the signed-in account's entitlement, or null
+  var entUnsub = null;
+  var proWelcomePending = false;
+  var EMAIL_FOR_SIGNIN_KEY = "soloSupper.emailForSignIn";
+  var DAY_MS = 86400000;
+  var PRO_PRICES = { annual: "£14.99", monthly: "£2.49", annualMonthly: "£1.25" };
+
+  // Keep in step with functions/_shared/entitlement.js.
+  function proState(e, now) {
+    e = e || {};
+    now = now || Date.now();
+    var paid = { active: 1, trialing: 1, past_due: 1 };
+    if (e.grantLifetime) return { pro: true, source: "grant", until: null };
+    if (e.giftLifetime) return { pro: true, source: "gift", until: null };
+    if (e.stripeStatus && paid[e.stripeStatus] && (!e.stripePeriodEnd || e.stripePeriodEnd + 3 * DAY_MS > now)) return { pro: true, source: "stripe", until: e.stripePeriodEnd || null };
+    if (e.grantUntil > now) return { pro: true, source: "grant", until: e.grantUntil };
+    if (e.giftUntil > now) return { pro: true, source: "gift", until: e.giftUntil };
+    if (e.trialEndsAt > now) return { pro: true, source: "trial", until: e.trialEndsAt };
+    return { pro: false, source: e.trialEndsAt ? "trial-ended" : "none", until: null };
+  }
+  function webPro() { return !!(currentUser && ent && proState(ent).pro); }
+  // Planning features: free in the Android app (it sells the recipe unlock),
+  // Pro on the website.
+  function hasProFeatures() { return isNativeApp() ? true : webPro(); }
+  function requirePro(reason) {
+    if (hasProFeatures()) return true;
+    openProPaywall(reason);
+    return false;
+  }
+  function hasStripeCustomer() { return !!(ent && (ent.hasStripeCustomer || ent.stripeCustomer)); }
+  function fmtLongDate(ms) { return new Date(ms).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" }); }
+  function daysLeft(ms) { return Math.max(0, Math.ceil((ms - Date.now()) / DAY_MS)); }
+
+  function api(path, body) {
+    if (!currentUser) return Promise.reject(new Error("Sign in first."));
+    return currentUser.getIdToken().then(function (tok) {
+      return fetch(API_BASE + path, {
+        method: "POST",
+        headers: { "content-type": "application/json", authorization: "Bearer " + tok },
+        body: JSON.stringify(body || {})
+      });
+    }).then(function (r) {
+      return r.json().catch(function () { return {}; }).then(function (j) {
+        if (!r.ok) throw new Error(j.error || "Something went wrong. Please try again.");
+        return j;
+      });
+    });
+  }
+
+  function setEntitlement(e) {
+    var was = proState(ent);
+    ent = e;
+    var now = proState(ent);
+    if (proWelcomePending && now.pro && now.source === "stripe") {
+      proWelcomePending = false;
+      toast("Welcome to Pro. Thank you for supporting Solo Supper.");
+    }
+    if (now.pro && pendingAfterPro) { var then = pendingAfterPro; pendingAfterPro = null; setTimeout(then, 0); }
+    if (was.pro !== now.pro || was.source !== now.source) {
+      // At the weekend, open on next week once we know Pro is there.
+      if (now.pro && !viewPicked && todayIdx >= 5 && !viewNext) viewNext = true;
+      renderAll();
+      if (settingsOpen()) renderSettings();
+    }
+  }
+  function startEntitlement(user) {
+    stopEntitlement();
+    if (!isNativeApp()) {
+      api("account").then(function (j) { if (currentUser && currentUser.uid === user.uid) setEntitlement(j.entitlement); }).catch(function () { /* server not reachable: Firestore below still works */ });
+    }
+    if (window.firebaseDb) {
+      entUnsub = window.firebaseDb.collection("entitlements").doc(user.uid).onSnapshot(function (snap) {
+        if (snap.exists && currentUser && currentUser.uid === user.uid) setEntitlement(snap.data());
+      }, function () { /* no access yet: rules not updated */ });
+    }
+  }
+  function stopEntitlement() {
+    if (entUnsub) { entUnsub(); entUnsub = null; }
+    if (ent) { ent = null; if (viewNext && !hasProFeatures()) viewNext = false; }
+  }
+
+  function proStatusText() {
+    if (!currentUser) return "Not signed in.";
+    if (!ent) return "Checking your plan…";
+    var s = proState(ent);
+    if (s.source === "stripe") {
+      var plan = ent.stripeInterval === "month" ? "monthly" : "yearly";
+      if (ent.stripeStatus === "past_due") return "Pro, " + plan + ". Your last payment didn't go through, so please update your card under Manage subscription.";
+      if (ent.stripeCancelAtPeriodEnd) return "Pro until " + fmtLongDate(ent.stripePeriodEnd) + ". Your subscription is cancelled and won't renew.";
+      return "Pro, " + plan + ". Renews on " + fmtLongDate(ent.stripePeriodEnd) + ".";
+    }
+    if (s.source === "gift") return s.until ? "Pro until " + fmtLongDate(s.until) + ", from a gift code." : "Pro for life, from a gift code.";
+    if (s.source === "grant") return s.until ? "Pro until " + fmtLongDate(s.until) + "." : "Pro for life.";
+    if (s.source === "trial") { var d = daysLeft(s.until); return "Free Pro trial: " + d + (d === 1 ? " day" : " days") + " left (ends " + fmtLongDate(s.until) + ")."; }
+    if (s.source === "trial-ended") return "Free plan. Your Pro trial ended on " + fmtLongDate(ent.trialEndsAt) + ".";
+    return "Free plan.";
+  }
+
+  /* ---------- sign in: Google or an emailed link ---------- */
+  var signinBackdrop = document.getElementById("signin-modal-backdrop");
+  var signinModal = document.getElementById("signin-modal");
+  var afterSignIn = null; // what to do once signed in, e.g. fill the week the trial was started for
+  var pendingAfterPro = null;
+  function closeSignIn() { if (signinBackdrop) { signinBackdrop.hidden = true; signinModal.innerHTML = ""; } }
+  var GOOGLE_G = '<svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3c-1.6 4.7-6.1 8-11.3 8-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.1 8 3l6-6C34.6 5.1 29.6 3 24 3 12.4 3 3 12.4 3 24s9.4 21 21 21 21-9.4 21-21c0-1.4-.1-2.8-.4-4.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.6 15.1 18.9 12 24 12c3.1 0 5.8 1.1 8 3l6-6C34.6 5.1 29.6 3 24 3 16.3 3 9.7 7.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 45c5.5 0 10.4-1.9 14-5.1l-6.5-5.5C29.5 36.1 26.9 37 24 37c-5.2 0-9.6-3.3-11.3-8l-6.6 5.1C9.6 40.6 16.3 45 24 45z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.3-2.2 4.3-4.1 5.7l6.5 5.5C41.5 36 45 30.5 45 24c0-1.4-.1-2.8-.4-4.5z"/></svg>';
+
+  function openSignIn(opts) {
+    opts = opts || {};
+    if (isNativeApp()) { // the app signs in natively with Google
+      if (window.SSNative && window.SSNative.signInWithGoogle) window.SSNative.signInWithGoogle().catch(function () { setSyncStatus("Sign-in failed"); });
+      return;
+    }
+    if (!signinBackdrop || !window.firebaseAuth) { toast("Sign-in isn't available right now."); return; }
+    afterSignIn = opts.then || null;
+    renderSignIn(opts.mode || "start", opts);
+    signinBackdrop.hidden = false;
+  }
+  function renderSignIn(mode, opts) {
+    opts = opts || {};
+    var close = '<div class="modal-close-row"><button class="icon-btn" id="signin-close-btn" aria-label="Close">' + ico("close") + "</button></div>";
+    if (mode === "sent") {
+      signinModal.innerHTML = close +
+        '<span class="eyebrow">Check your email</span><h2>Open the link we sent you</h2>' +
+        '<p class="modal-lead">We\'ve sent a sign-in link to <strong>' + esc(opts.email) + '</strong>. Open it on this device and you\'ll be signed in. It can take a minute to arrive, so check spam if it doesn\'t.</p>' +
+        '<button type="button" class="btn btn-outline btn-block" id="signin-again-btn">Use a different email</button>';
+      document.getElementById("signin-again-btn").addEventListener("click", function () { renderSignIn("start"); });
+    } else {
+      var confirm = mode === "confirm";
+      signinModal.innerHTML = close +
+        '<span class="eyebrow">' + (confirm ? "Nearly there" : "Your account") + "</span>" +
+        "<h2>" + (confirm ? "Confirm your email" : (opts.title || "Sign in to Solo Supper")) + "</h2>" +
+        '<p class="modal-lead">' + (confirm
+          ? "You opened the sign-in link on a different device or browser. Enter the email address you used, to finish signing in."
+          : (opts.lead || "Keep your week on every device. New accounts get 14 days of Pro free, no card needed.")) + "</p>" +
+        (confirm ? "" : '<button type="button" class="btn btn-outline btn-block btn-google" id="signin-google-btn">' + GOOGLE_G + "<span>Continue with Google</span></button>" +
+          '<div class="or-rule"><span>or</span></div>') +
+        '<form id="signin-email-form" novalidate>' +
+        '<label class="field">Email<input type="email" id="signin-email" autocomplete="email" inputmode="email" placeholder="you@example.com" required value="' + esc(opts.email || "") + '"></label>' +
+        '<button type="submit" class="btn btn-primary btn-block" id="signin-email-btn">' + (confirm ? "Finish signing in" : "Email me a sign-in link") + "</button>" +
+        '<p class="form-error" id="signin-error" hidden></p></form>' +
+        (confirm ? "" : '<p class="settings-note">No password needed. By signing in you agree to the <a href="../terms/">terms</a> and <a href="../privacy/">privacy policy</a>.</p>');
+      var form = document.getElementById("signin-email-form");
+      var err = document.getElementById("signin-error");
+      var showErr = function (m) { err.textContent = m; err.hidden = false; };
+      form.addEventListener("submit", function (ev) {
+        ev.preventDefault();
+        var email = document.getElementById("signin-email").value.trim();
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showErr("Enter a valid email address."); return; }
+        var btn = document.getElementById("signin-email-btn");
+        btn.disabled = true;
+        if (confirm) {
+          window.firebaseAuth.signInWithEmailLink(email, opts.link).then(function () {
+            lsSet(EMAIL_FOR_SIGNIN_KEY, "");
+            closeSignIn();
+            toast("You're signed in.");
+          }).catch(function (e) { btn.disabled = false; showErr(emailLinkError(e)); });
+          return;
+        }
+        btn.textContent = "Sending…";
+        window.firebaseAuth.sendSignInLinkToEmail(email, { url: location.origin + location.pathname, handleCodeInApp: true }).then(function () {
+          lsSet(EMAIL_FOR_SIGNIN_KEY, email);
+          renderSignIn("sent", { email: email });
+        }).catch(function (e) {
+          btn.disabled = false; btn.textContent = "Email me a sign-in link";
+          showErr(e && e.code === "auth/invalid-email" ? "Enter a valid email address." : "Couldn't send the link just now. Please try again, or use Google.");
+        });
+      });
+      var g = document.getElementById("signin-google-btn");
+      if (g) g.addEventListener("click", function () {
+        var provider = new firebase.auth.GoogleAuthProvider();
+        window.firebaseAuth.signInWithPopup(provider).catch(function (e) {
+          if (e && (e.code === "auth/popup-blocked" || e.code === "auth/operation-not-supported-in-this-environment")) window.firebaseAuth.signInWithRedirect(provider);
+          else if (e && e.code !== "auth/popup-closed-by-user" && e.code !== "auth/cancelled-popup-request") showErr("Google sign-in didn't work. Please try again, or use your email.");
+        });
+      });
+    }
+    document.getElementById("signin-close-btn").addEventListener("click", function () { afterSignIn = null; closeSignIn(); });
+  }
+  function emailLinkError(e) {
+    var c = e && e.code;
+    if (c === "auth/invalid-action-code" || c === "auth/expired-action-code") return "That sign-in link has expired or was already used. Close this and send yourself a new one.";
+    if (c === "auth/invalid-email") return "That email doesn't match the link. Use the address the link was sent to.";
+    return "Signing in didn't work. Please send yourself a new link.";
+  }
+  // Called once on load: finishes signing in when the page was opened from an emailed link.
+  function completeEmailLinkSignIn() {
+    if (isNativeApp() || !window.firebaseAuth || !window.firebaseAuth.isSignInWithEmailLink) return;
+    var link = location.href;
+    if (!window.firebaseAuth.isSignInWithEmailLink(link)) return;
+    try { history.replaceState(null, "", location.pathname); } catch (e) { /* ignore */ }
+    var email = lsGet(EMAIL_FOR_SIGNIN_KEY);
+    if (!email) { openSignIn({ mode: "confirm", link: link }); return; }
+    window.firebaseAuth.signInWithEmailLink(email, link).then(function () {
+      lsSet(EMAIL_FOR_SIGNIN_KEY, "");
+      toast("You're signed in.");
+    }).catch(function (e) {
+      openSignIn({ title: "Sign in again", lead: emailLinkError(e), email: email });
+    });
+  }
+
+  /* ---------- the Pro page (website) ---------- */
+  var PRO_REASONS = {
+    lowwaste: "Low-waste planning is part of Pro",
+    nextweek: "Planning next week is part of Pro",
+    custom: "Your own recipes are part of Pro"
+  };
+  var proPlanChoice = "annual";
+  function openProPaywall(reason) {
+    if (!paywallBackdrop) return;
+    renderProPaywall(reason);
+    paywallBackdrop.hidden = false;
+  }
+  function renderProPaywall(reason) {
+    var s = proState(ent);
+    var signedIn = !!currentUser;
+    var paid = s.pro && s.source === "stripe";
+    var lead;
+    if (!signedIn) lead = "Try every Pro feature free for 14 days. No card needed, and the recipes and planner stay free whatever you decide.";
+    else if (s.source === "trial-ended") lead = "Your free trial has ended. Pick a plan to keep planning with less waste.";
+    else if (s.source === "trial") lead = "You're on the free trial, with " + daysLeft(s.until) + " days left. Subscribe any time to keep Pro afterwards.";
+    else if (s.pro) lead = proStatusText();
+    else lead = "Plan around pack sizes, waste less and plan ahead.";
+    var features = [
+      ["Low-waste weeks", "Dinners picked to share their packs, so the other half of the spinach gets used"],
+      ["Plan next week", "Sort out next week on a Sunday, or any time before"],
+      ["Your own recipes", "Add the dishes you already make, alongside the " + BUILTIN_COUNT + " in the book"],
+      ["Everything else stays free", "Every recipe, the planner and the shopping list"]
+    ];
+    var html = '<div class="modal-close-row"><button class="icon-btn" id="paywall-close-btn" aria-label="Close">' + ico("close") + "</button></div>" +
+      '<span class="eyebrow">Solo Supper Pro</span>' +
+      "<h2>" + esc(PRO_REASONS[reason] || "Waste less, plan ahead") + "</h2>" +
+      '<p class="modal-lead">' + esc(lead) + "</p>" +
+      '<ul class="pro-features">' + features.map(function (f) {
+        return "<li>" + ico("check") + "<span><strong>" + esc(f[0]) + "</strong>" + esc(f[1]) + "</span></li>";
+      }).join("") + "</ul>";
+    if (!signedIn) {
+      html += '<button type="button" class="btn btn-primary btn-block" id="pro-trial-btn">Start your free 14-day trial</button>' +
+        '<p class="settings-note pro-small">Sign in with Google or your email. No card needed.</p>';
+    } else if (paid) {
+      html += '<button type="button" class="btn btn-outline btn-block" id="pro-manage-btn">Manage subscription</button>';
+    } else if (s.pro && s.source !== "trial") {
+      html += "";
+    } else {
+      html += '<div class="plan-choice" role="radiogroup" aria-label="Choose a plan">' +
+        planOption("annual", "Yearly", PRO_PRICES.annual + " a year", PRO_PRICES.annualMonthly + " a month", "Best value") +
+        planOption("monthly", "Monthly", PRO_PRICES.monthly + " a month", "Cancel any time", "") + "</div>" +
+        '<button type="button" class="btn btn-primary btn-block" id="pro-buy-btn">Continue to secure payment</button>' +
+        '<p class="form-error" id="pro-error" hidden></p>' +
+        '<p class="settings-note pro-small">Prices include VAT. Cancel any time, and you can have a full refund within 14 days of any payment. Payment is handled by Stripe and shows as Link. <a href="../terms/">Terms</a> · <a href="../refunds/">Refunds</a></p>';
+    }
+    if (signedIn && !paid) {
+      html += '<details class="gift-row"' + (reason === "gift" ? " open" : "") + '><summary>Have a gift code?</summary>' +
+        '<form id="gift-form" class="gift-form" novalidate><input type="text" id="gift-code" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="SOLO-XXXX-XXXX" aria-label="Gift code">' +
+        '<button type="submit" class="btn btn-ink" id="gift-btn">Redeem</button></form><p class="form-error" id="gift-error" hidden></p></details>';
+    }
+    paywallModal.innerHTML = html;
+    document.getElementById("paywall-close-btn").addEventListener("click", closePaywall);
+    var trialBtn = document.getElementById("pro-trial-btn");
+    if (trialBtn) trialBtn.addEventListener("click", function () {
+      closePaywall();
+      openSignIn({ title: "Start your free trial", lead: "Sign in and Pro switches on straight away for 14 days. No card needed.", then: function () { if (reason === "lowwaste") lowWasteFillWeek(); } });
+    });
+    var manageBtn = document.getElementById("pro-manage-btn");
+    if (manageBtn) manageBtn.addEventListener("click", openBillingPortal);
+    paywallModal.querySelectorAll("[data-plan]").forEach(function (b) {
+      b.addEventListener("click", function () { proPlanChoice = b.getAttribute("data-plan"); renderProPaywall(reason); });
+    });
+    var buyBtn = document.getElementById("pro-buy-btn");
+    if (buyBtn) buyBtn.addEventListener("click", function () {
+      buyBtn.disabled = true; buyBtn.textContent = "Opening secure payment…";
+      api("checkout", { plan: proPlanChoice }).then(function (j) { location.href = j.url; }).catch(function (e) {
+        buyBtn.disabled = false; buyBtn.textContent = "Continue to secure payment";
+        var pe = document.getElementById("pro-error"); pe.textContent = e.message; pe.hidden = false;
+      });
+    });
+    var giftForm = document.getElementById("gift-form");
+    if (giftForm) giftForm.addEventListener("submit", function (ev) {
+      ev.preventDefault();
+      var input = document.getElementById("gift-code"), gb = document.getElementById("gift-btn"), ge = document.getElementById("gift-error");
+      if (!input.value.trim()) { ge.textContent = "Enter your code."; ge.hidden = false; return; }
+      gb.disabled = true; ge.hidden = true;
+      api("redeem", { code: input.value }).then(function (j) {
+        setEntitlement(j.entitlement);
+        closePaywall();
+        var st = proState(j.entitlement);
+        toast(st.until ? "Code accepted: Pro until " + fmtLongDate(st.until) + "." : "Code accepted: Pro for life. Enjoy.");
+      }).catch(function (e) { gb.disabled = false; ge.textContent = e.message; ge.hidden = false; });
+    });
+  }
+  function planOption(key, name, price, sub, badge) {
+    var on = proPlanChoice === key;
+    return '<button type="button" class="plan-opt' + (on ? " is-on" : "") + '" role="radio" aria-checked="' + on + '" data-plan="' + key + '">' +
+      '<span class="plan-name">' + esc(name) + (badge ? ' <span class="plan-badge">' + esc(badge) + "</span>" : "") + "</span>" +
+      '<span class="plan-price">' + esc(price) + "</span><span class=\"plan-sub\">" + esc(sub) + "</span></button>";
+  }
+  function openBillingPortal(ev) {
+    var btn = ev && ev.currentTarget;
+    if (btn) { btn.disabled = true; btn.textContent = "Opening…"; }
+    api("portal").then(function (j) { location.href = j.url; }).catch(function (e) {
+      if (btn) { btn.disabled = false; btn.textContent = "Manage subscription"; }
+      toast(e.message);
+    });
+  }
+
+  /* ---------- account section in settings (website) ---------- */
+  var deleteArmed = false;
+  function accountSettingsHtml() {
+    if (isNativeApp() || !window.firebaseAuth) return "";
+    if (!currentUser) {
+      return "<h3>Your account</h3>" +
+        '<p class="settings-note">Sign in to keep your week on every device. New accounts get 14 days of Pro free.</p>' +
+        '<button type="button" class="btn btn-primary btn-sm" id="acct-signin-btn">Sign in</button>';
+    }
+    var s = proState(ent);
+    var paid = s.pro && s.source === "stripe";
+    return "<h3>Your account</h3>" +
+      '<p class="acct-email">' + esc(currentUser.email || currentUser.displayName || "Signed in") + "</p>" +
+      '<p class="acct-status' + (s.pro ? " is-pro" : "") + '">' + esc(proStatusText()) + "</p>" +
+      '<div class="acct-actions">' +
+      (!paid ? '<button type="button" class="btn btn-primary btn-sm" id="acct-upgrade-btn">' + (s.pro ? "See Pro plans" : "Upgrade to Pro") + "</button>" : "") +
+      (hasStripeCustomer() ? '<button type="button" class="btn btn-outline btn-sm" id="acct-manage-btn">Manage subscription</button>' : "") +
+      (!paid ? '<button type="button" class="btn btn-ghost btn-sm" id="acct-gift-btn">Redeem a gift code</button>' : "") +
+      '<button type="button" class="btn btn-ghost btn-sm" id="acct-signout-btn">Sign out</button>' +
+      "</div>" +
+      '<button type="button" class="btn btn-ghost btn-sm acct-delete' + (deleteArmed ? " is-armed" : "") + '" id="acct-delete-btn">' +
+      (deleteArmed ? "Tap again to delete your account and everything in it" : "Delete account") + "</button>" +
+      (deleteArmed ? '<p class="settings-note">This removes your saved weeks, ratings and recipes from our servers and cancels any subscription. It can\'t be undone.</p>' : "");
+  }
+  function wireAccountSettings() {
+    var on = function (id, fn) { var el = document.getElementById(id); if (el) el.addEventListener("click", fn); };
+    on("acct-signin-btn", function () { closeSettings(); openSignIn(); });
+    on("acct-upgrade-btn", function () { closeSettings(); openProPaywall(); });
+    on("acct-gift-btn", function () { closeSettings(); openProPaywall("gift"); });
+    on("acct-manage-btn", openBillingPortal);
+    on("acct-signout-btn", function () { closeSettings(); window.firebaseAuth.signOut(); });
+    on("acct-delete-btn", function (ev) {
+      if (!deleteArmed) { deleteArmed = true; renderSettings(); return; }
+      var b = ev.currentTarget; b.disabled = true; b.textContent = "Deleting…";
+      api("delete-account").then(function () {
+        deleteArmed = false;
+        closeSettings();
+        return window.firebaseAuth.signOut();
+      }).then(function () {
+        toast("Your account has been deleted. Your plan is still saved on this device only.");
+      }).catch(function (e) { deleteArmed = false; b.disabled = false; toast(e.message); renderSettings(); });
+    });
+  }
+
+  // Trial ending soon: a gentle note on the planner in the last three days.
+  var trialNoteDismissed = false;
+  function trialBannerHtml() {
+    if (isNativeApp() || !currentUser || !ent || trialNoteDismissed) return "";
+    var s = proState(ent);
+    if (s.source !== "trial" || daysLeft(s.until) > 3) return "";
+    var d = daysLeft(s.until);
+    return '<div class="banner-card banner-trial"><div><strong>' + (d <= 1 ? "Your Pro trial ends tomorrow." : "Your Pro trial ends in " + d + " days.") + "</strong>" +
+      "<p>Low-waste planning, next week and your own recipes switch off when it ends. Keep them from " + PRO_PRICES.annualMonthly + " a month.</p></div>" +
+      '<div class="banner-actions"><button type="button" class="btn btn-primary btn-sm" id="trial-plans-btn">See plans</button>' +
+      '<button type="button" class="icon-btn" id="trial-close-btn" aria-label="Dismiss">' + ico("close") + "</button></div></div>";
+  }
+  function wireTrialBanner() {
+    var a = document.getElementById("trial-plans-btn"), c = document.getElementById("trial-close-btn");
+    if (a) a.addEventListener("click", function () { openProPaywall(); });
+    if (c) c.addEventListener("click", function () { trialNoteDismissed = true; renderPlannerBanner(); });
+  }
+
   /* ============================= INIT ============================= */
   var viewChosen = false;
+  var viewPicked = false; // the person chose a week themselves
   function renderAll() {
     if (checkWeekRollover()) setTimeout(scheduleSave, 0);
     ensureNext();
     // At the weekend, open on next week: that is the one worth planning.
-    if (!viewChosen) { viewChosen = true; viewNext = todayIdx >= 5; }
+    if (!viewChosen) { viewChosen = true; viewNext = todayIdx >= 5 && hasProFeatures(); }
+    if (viewNext && !hasProFeatures()) viewNext = false;
+    document.body.classList.toggle("show-pro-tags", !isNativeApp() && !hasProFeatures());
     document.getElementById("servings-value").textContent = state.servings;
     renderTagChips();
     renderPlanner();
@@ -3100,7 +3500,15 @@
   (function handleDeepLink() {
     var q;
     try { q = new URLSearchParams(location.search); } catch (e) { return; }
-    var addId = q.get("add"), cookId = q.get("cook");
+    var addId = q.get("add"), cookId = q.get("cook"), proBack = q.get("pro");
+    if (proBack) {
+      try { history.replaceState(null, "", location.pathname); } catch (e) { /* ignore */ }
+      if (proBack === "success") {
+        if (proState(ent).source === "stripe") toast("Welcome to Pro. Thank you for supporting Solo Supper.");
+        else { proWelcomePending = true; toast("Payment received. Switching on Pro…"); }
+      } else if (proBack === "cancelled") toast("No payment was taken. Pro is there whenever you want it.");
+      return;
+    }
     if (!addId && !cookId) return;
     try { history.replaceState(null, "", location.pathname); } catch (e) { /* ignore */ }
     var id = addId || cookId;

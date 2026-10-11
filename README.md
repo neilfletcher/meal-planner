@@ -94,6 +94,11 @@ service cloud.firestore {
     match /users/{userId}/planner/{docId} {
       allow read, write: if request.auth != null && request.auth.uid == userId;
     }
+    // Who has Pro: readable by its owner, written only by the server.
+    match /entitlements/{userId} {
+      allow read: if request.auth != null && request.auth.uid == userId;
+    }
+    // giftCodes and stripeCustomers: no client access at all.
   }
 }
 ```
@@ -128,3 +133,51 @@ GitHub's scanner flags any string shaped like a Google API key, including this o
 - Everything is saved to the browser's local storage immediately, on every change, whether or not you're signed in. This means the app is fully usable offline or without ever setting up Firebase.
 - When signed in, changes are also written to Firestore (in a document scoped to your account, under a short delay so rapid changes like ticking off shopping items don't spam the network) and a live listener keeps every open tab or device in sync automatically, no refresh needed.
 - Signing out just stops the cloud sync; what's already on the device stays there.
+
+
+## Pro, payments and gift codes
+
+The website is free; **Pro** adds low-waste planning, planning next week and your own recipes. New accounts get a 14-day trial with no card. Payments go through **Stripe Managed Payments** (Link is the merchant of record, so it handles VAT, receipts and disputes).
+
+The small server lives in `functions/` and runs as **Cloudflare Pages Functions** at `/api/*` (`_routes.json` keeps every other page static, so they don't count towards the Functions limit). No Firebase Blaze plan is needed.
+
+| Path | What it does |
+| --- | --- |
+| `GET /api/health` | Shows which settings are in place (never the secrets) |
+| `POST /api/account` | Starts the trial on first sign-in, returns Pro status |
+| `POST /api/checkout` | Opens Stripe Checkout for the yearly or monthly price |
+| `POST /api/portal` | Opens Stripe's customer portal (manage or cancel) |
+| `POST /api/redeem` | Applies a gift code |
+| `POST /api/delete-account` | Deletes the account, its data and any subscription |
+| `POST /api/admin` | Admin page: make gift codes, give or remove free Pro |
+| `POST /api/stripe-webhook` | Stripe reports subscription changes here |
+
+Who has Pro is stored in Firestore at `entitlements/{uid}`, written only by these functions.
+
+### Settings in Cloudflare (Pages project > Settings > Variables and secrets)
+
+| Name | Value |
+| --- | --- |
+| `FIREBASE_SERVICE_ACCOUNT` | The whole JSON key from Firebase > Project settings > Service accounts > Generate new private key (secret) |
+| `STRIPE_SECRET_KEY` | `sk_test_...` while testing, `sk_live_...` when live (secret) |
+| `STRIPE_WEBHOOK_SECRET` | `whsec_...` from the webhook endpoint in Stripe (secret) |
+| `STRIPE_PRICE_ANNUAL`, `STRIPE_PRICE_MONTHLY` | Only needed for live mode; the test price IDs are built in |
+| `ADMIN_EMAILS` | Optional; defaults to neil.fletcher@gmail.com |
+
+After changing them, redeploy (Deployments > ... > Retry deployment) and check `https://solosupper.co.uk/api/health`.
+
+### Stripe
+
+- Webhook endpoint: `https://solosupper.co.uk/api/stripe-webhook` with the events `checkout.session.completed`, `customer.subscription.created`, `customer.subscription.updated` and `customer.subscription.deleted`.
+- Settings > Tax: turn on **Include tax in prices**, so £14.99 means £14.99.
+- Settings > Billing > Customer portal: turn it on, allowing cancelling and switching between the two prices.
+- Settings > Checkout: add the terms (`/terms/`) and privacy (`/privacy/`) links. Business details: support email hello@solosupper.co.uk, statement descriptor SOLOSUPPER.
+
+### Firebase
+
+- Authentication > Sign-in method: turn on **Email/Password** and, inside it, **Email link (passwordless sign-in)**.
+- Firestore rules: as above, including the `entitlements` rule.
+
+### Tests
+
+`node --experimental-default-type=module tests/api-test.mjs` tests `functions` with every outside service mocked (ID tokens, Firestore, Stripe, webhook signatures, gift-code races).

@@ -264,6 +264,25 @@
   .health-dot.critical { background: var(--critical); }
   .health-text .value { font-size: 20px; font-weight: 600; }
   .health-text .label { font-size: 12.5px; color: var(--ink-muted); margin-top: 2px; }
+
+  /* gift codes and free Pro */
+  .gc-h { font-family: "IBM Plex Sans", sans-serif; font-size: 14px; font-weight: 600; margin: 22px 0 10px; color: var(--ink); }
+  .gc-h:first-child { margin-top: 0; }
+  .gc-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: flex-end; }
+  .gc-row label { display: flex; flex-direction: column; gap: 4px; font-size: 12px; color: var(--ink-muted); }
+  .gc-row label.grow { flex: 1 1 220px; }
+  .gc-row input, .gc-row select { font: inherit; font-size: 14px; color: var(--ink); background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 8px 10px; min-height: 38px; }
+  .gc-row input[type=number] { width: 80px; }
+  .gc-new { margin-top: 14px; background: var(--accent-soft); border-radius: 10px; padding: 14px 16px; }
+  .gc-new code { font-family: "IBM Plex Mono", monospace; font-size: 15px; display: inline-block; margin: 2px 14px 2px 0; }
+  .gc-msg { font-size: 13px; color: var(--ink-muted); min-height: 18px; margin: 10px 0 0; }
+  .gc-msg.err { color: var(--critical); }
+  .gc-table-wrap { overflow-x: auto; }
+  .gc-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .gc-table th { text-align: left; font-weight: 600; color: var(--ink-muted); padding: 8px 10px; border-bottom: 1px solid var(--border); white-space: nowrap; }
+  .gc-table td { padding: 8px 10px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .gc-table td:first-child { font-family: "IBM Plex Mono", monospace; white-space: nowrap; }
+  .gc-used { color: var(--ink-faint); }
 </style>
 </head>
 <body>
@@ -440,6 +459,44 @@
         <div class="health-text">
           <div class="value num" id="healthValue">&mdash;</div>
           <div class="label" id="healthLabel">client-side errors, last 7 days</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="block" id="giftBlock">
+      <div class="block-head">
+        <div>
+          <div class="eyebrow">Pro</div>
+          <h2>Gift codes and free Pro</h2>
+        </div>
+        <button class="ghost" id="gcReload" type="button">Reload</button>
+      </div>
+      <div class="card">
+        <h3 class="gc-h">Make gift codes</h3>
+        <div class="gc-row">
+          <label>How many <input type="number" id="gcCount" min="1" max="50" value="1"></label>
+          <label>Pro for <select id="gcMonths"><option value="12">12 months</option><option value="6">6 months</option><option value="3">3 months</option><option value="1">1 month</option><option value="0">Life</option></select></label>
+          <label class="grow">Note (who it's for) <input type="text" id="gcNote" maxlength="120" placeholder="e.g. Mum, book club"></label>
+          <button class="primary" id="gcMake" type="button">Make codes</button>
+        </div>
+        <div class="gc-new" id="gcNew" hidden></div>
+
+        <h3 class="gc-h">Give Pro to someone who already has an account</h3>
+        <div class="gc-row">
+          <label class="grow">Their sign-in email <input type="email" id="grEmail" placeholder="name@example.com"></label>
+          <label>For <select id="grMonths"><option value="0">Life</option><option value="12">12 months</option><option value="6">6 months</option><option value="3">3 months</option><option value="1">1 month</option></select></label>
+          <button class="primary" id="grGive" type="button">Give Pro</button>
+          <button class="ghost" id="grCheck" type="button">Check</button>
+          <button class="ghost" id="grRevoke" type="button">Remove free Pro</button>
+        </div>
+        <p class="gc-msg" id="grMsg"></p>
+
+        <h3 class="gc-h">All codes</h3>
+        <div class="gc-table-wrap">
+          <table class="gc-table">
+            <thead><tr><th>Code</th><th>Pro for</th><th>Note</th><th>Made</th><th>Used by</th></tr></thead>
+            <tbody id="gcRows"><tr><td colspan="5" class="gc-used">Loading&hellip;</td></tr></tbody>
+          </table>
         </div>
       </div>
     </section>
@@ -815,6 +872,63 @@
   document.getElementById("refreshBtn").addEventListener("click", function () { location.reload(); });
   document.getElementById("signOutBtn").addEventListener("click", function () { window.firebaseAuth.signOut(); });
 
+
+  // ---------- gift codes and free Pro (calls /api/admin) ----------
+  function adminApi(body) {
+    var u = window.firebaseAuth.currentUser;
+    if (!u) return Promise.reject(new Error("Signed out"));
+    return u.getIdToken().then(function (tok) {
+      return fetch("/api/admin", { method: "POST", headers: { "content-type": "application/json", authorization: "Bearer " + tok }, body: JSON.stringify(body) });
+    }).then(function (r) {
+      return r.json().catch(function () { return {}; }).then(function (j) { if (!r.ok) throw new Error(j.error || ("Error " + r.status)); return j; });
+    });
+  }
+  function gcEsc(s) { return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+  function gcFor(m) { return m ? m + (m === 1 ? " month" : " months") : "Life"; }
+  function gcDate(ms) { return ms ? new Date(ms).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" }) : ""; }
+  function loadCodes() {
+    var tb = document.getElementById("gcRows");
+    adminApi({ action: "listCodes" }).then(function (j) {
+      if (!j.codes.length) { tb.innerHTML = '<tr><td colspan="5" class="gc-used">No codes yet.</td></tr>'; return; }
+      tb.innerHTML = j.codes.map(function (c) {
+        return "<tr><td>" + gcEsc(c.code) + "</td><td>" + gcFor(c.months) + "</td><td>" + gcEsc(c.note) + "</td><td>" + gcDate(c.createdAt) + "</td><td" + (c.redeemedBy ? ">" + gcEsc(c.redeemedEmail || "Used") + " <span class=\"gc-used\">" + gcDate(c.redeemedAt) + "</span>" : ' class="gc-used">Not used yet') + "</td></tr>";
+      }).join("");
+    }).catch(function (e) { tb.innerHTML = '<tr><td colspan="5" class="gc-used">Couldn\'t load codes: ' + gcEsc(e.message) + "</td></tr>"; });
+  }
+  document.getElementById("gcReload").addEventListener("click", loadCodes);
+  document.getElementById("gcMake").addEventListener("click", function () {
+    var btn = this, box = document.getElementById("gcNew");
+    var months = parseInt(document.getElementById("gcMonths").value, 10);
+    btn.disabled = true;
+    adminApi({ action: "createCodes", count: document.getElementById("gcCount").value, months: months, note: document.getElementById("gcNote").value }).then(function (j) {
+      var what = months ? gcFor(months) + " of Solo Supper Pro" : "Solo Supper Pro for life";
+      var msg = j.codes.map(function (c) { return "Here's " + what + ": " + c + "\nSign in at solosupper.co.uk/plan, open Settings and choose Redeem a gift code."; }).join("\n\n");
+      box.innerHTML = "<div>" + j.codes.map(function (c) { return "<code>" + gcEsc(c) + "</code>"; }).join("") + '</div><p class="gc-msg">Copy a ready-to-send message for each code: <button class="ghost" id="gcCopy" type="button">Copy message</button></p>';
+      box.hidden = false;
+      document.getElementById("gcCopy").addEventListener("click", function () {
+        var b = this;
+        navigator.clipboard.writeText(msg).then(function () { b.textContent = "Copied"; }, function () { b.textContent = "Couldn't copy"; });
+      });
+      loadCodes();
+    }).catch(function (e) { box.hidden = false; box.textContent = "Couldn't make codes: " + e.message; }).then(function () { btn.disabled = false; });
+  });
+  function grant(action) {
+    var msg = document.getElementById("grMsg");
+    var email = document.getElementById("grEmail").value.trim();
+    if (!email) { msg.className = "gc-msg err"; msg.textContent = "Enter their email first."; return; }
+    msg.className = "gc-msg"; msg.textContent = "Working…";
+    adminApi({ action: action, email: email, months: parseInt(document.getElementById("grMonths").value, 10) }).then(function (j) {
+      var e = j.entitlement, how;
+      if (!e.pro) how = "Free plan" + (e.trialEndsAt ? ", trial " + (e.trialEndsAt > Date.now() ? "until " + gcDate(e.trialEndsAt) : "ended " + gcDate(e.trialEndsAt)) : "");
+      else if (e.source === "stripe") how = "Paying (" + (e.stripeInterval === "month" ? "monthly" : "yearly") + ")";
+      else how = ({ grant: "Free Pro from you", gift: "Pro from a gift code", trial: "On the free trial" }[e.source] || "Pro") + (e.until ? " until " + gcDate(e.until) : " for life");
+      msg.textContent = j.email + ": " + how + ".";
+    }).catch(function (e) { msg.className = "gc-msg err"; msg.textContent = e.message; });
+  }
+  document.getElementById("grGive").addEventListener("click", function () { grant("grant"); });
+  document.getElementById("grCheck").addEventListener("click", function () { grant("lookup"); });
+  document.getElementById("grRevoke").addEventListener("click", function () { grant("revoke"); });
+
   // ---------- sign-in gate ----------
   var authGate = document.getElementById("authGate");
   var dashboardRoot = document.getElementById("dashboardRoot");
@@ -860,6 +974,7 @@
       authGate.hidden = true;
       dashboardRoot.hidden = false;
       loadDashboardData();
+      loadCodes();
     } else if (user) {
       dashboardRoot.hidden = true;
       authGate.hidden = false;

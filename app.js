@@ -156,6 +156,7 @@
     customRecipes: [],   // the person's own recipes
     lastWeek: null,      // { week, plan } kept for "Copy last week"
     newWeekNotice: false,
+    cookDays: [true, true, true, true, true, true, true], // which days of the week they cook (Mon..Sun)
     next: null           // next week's plan: { week, plan, cooked, leftovers, checked }
   };
   var HISTORY_LIMIT = 400; // keep this bounded so it never grows the saved state unreasonably
@@ -224,6 +225,20 @@
   function viewToday() { return viewNext ? -1 : todayIdx; }
   // First day that can still be planned: today in this week, Monday in next week.
   function firstOpenDay() { return viewNext ? 0 : todayIdx; }
+  // Cooking days are a standing choice (e.g. Monday to Thursday) that every
+  // fill respects. A day that is off can still have a dinner added by hand.
+  function isCookDay(d) { return !state.cookDays || state.cookDays[d] !== false; }
+  function cookDayCount() { var n = 0; for (var d = 0; d < 7; d++) if (isCookDay(d)) n++; return n; }
+  // Days a fill may put a dinner on: still to come, a cooking day, and empty.
+  function fillableDays() {
+    var out = [];
+    for (var d = firstOpenDay(); d < 7; d++) if (isCookDay(d) && !W().plan[d]) out.push(d);
+    return out;
+  }
+  function noFillableToast() {
+    if (!cookDayCount()) { toast("Pick at least one cooking day first."); return; }
+    toast(viewNext ? "Every cooking day next week already has a dinner." : "Every cooking day left this week already has a dinner.");
+  }
 
   function fmtRange() {
     var start = VM();
@@ -285,6 +300,7 @@
     if (Array.isArray(data.customRecipes)) state.customRecipes = data.customRecipes;
     if (data.lastWeek !== undefined) state.lastWeek = data.lastWeek;
     if (typeof data.newWeekNotice === "boolean") state.newWeekNotice = data.newWeekNotice;
+    if (Array.isArray(data.cookDays) && data.cookDays.length === 7) state.cookDays = data.cookDays.map(function (v) { return v !== false; });
     if (data.next && typeof data.next === "object" && Array.isArray(data.next.plan) && data.next.plan.length === 7) state.next = data.next;
     registerCustomRecipes();
   }
@@ -588,8 +604,7 @@
       document.getElementById("planner-count").textContent = String(state.batch.length);
     } else {
       renderDayList();
-      var planned = W().plan.filter(Boolean).length;
-      document.getElementById("planner-count").textContent = planned + "/7";
+      document.getElementById("planner-count").textContent = W().plan.filter(Boolean).length + "/" + weekTarget();
     }
     renderPlannerAside();
   }
@@ -713,7 +728,8 @@
     var cookedN = Object.keys(W().cooked).filter(function (k) { return W().cooked[k] && W().cooked[k].id === W().plan[k]; }).length;
     document.getElementById("week-range").innerHTML = fmtRange();
     var eyebrow = document.getElementById("week-eyebrow");
-    if (eyebrow) eyebrow.textContent = (viewNext ? "Next week" : "This week") + " · " + planned + " of 7 planned" + (cookedN ? " · " + cookedN + " cooked" : "");
+    if (eyebrow) eyebrow.textContent = (viewNext ? "Next week" : "This week") + " · " + planned + " of " + weekTarget() + " planned" + (cookedN ? " · " + cookedN + " cooked" : "");
+    renderCookDays();
     var wt = document.getElementById("week-this-btn"), wn = document.getElementById("week-next-btn");
     if (wt) { wt.setAttribute("aria-pressed", viewNext ? "false" : "true"); wn.setAttribute("aria-pressed", viewNext ? "true" : "false"); }
     dayList.innerHTML = "";
@@ -723,7 +739,8 @@
       var isCooked = !!(recipeId && W().cooked[idx] && W().cooked[idx].id === recipeId);
       var card = document.createElement("div");
       var filled = !!(recipeId && RECIPES_BY_ID[recipeId]);
-      card.className = "day-card" + (idx === viewToday() ? " is-today" : "") + (!viewNext && idx < todayIdx ? " is-past" : "") + (isCooked ? " is-cooked" : "") + (filled ? "" : " is-empty");
+      var off = !isCookDay(idx);
+      card.className = "day-card" + (idx === viewToday() ? " is-today" : "") + (!viewNext && idx < todayIdx ? " is-past" : "") + (isCooked ? " is-cooked" : "") + (filled ? "" : " is-empty") + (off && !filled ? " is-off" : "");
 
       var label = document.createElement("div");
       label.className = "day-label";
@@ -747,6 +764,13 @@
           function (i) { return function () { toggleCooked(i); }; }(idx),
           function (i) { return function () { openPicker({ type: "day", dayIdx: i }); }; }(idx),
           function (i) { return function () { withUndo("Dinner removed", function () { clearCooked(i); W().plan[i] = null; onStateChanged(); }); }; }(idx)));
+      } else if (off) {
+        var offEl = document.createElement("div");
+        offEl.className = "day-empty";
+        offEl.innerHTML = '<span class="day-empty-text">Not cooking</span>' +
+          '<span class="day-empty-actions"><button type="button" class="btn btn-outline btn-sm" data-act="on">Cook this day</button></span>';
+        offEl.querySelector('[data-act="on"]').addEventListener("click", function (i) { return function () { setCookDay(i, true); }; }(idx));
+        card.appendChild(offEl);
       } else {
         var empty = document.createElement("div");
         empty.className = "day-empty";
@@ -829,6 +853,35 @@
     document.getElementById("aside-shop-btn").addEventListener("click", function () { document.getElementById("tab-shopping-btn").click(); });
   }
 
+  // How many dinners this week is aiming for: the cooking days, plus any
+  // day off that has had a dinner added by hand anyway.
+  function weekTarget() {
+    var n = 0;
+    for (var d = 0; d < 7; d++) if (isCookDay(d) || W().plan[d]) n++;
+    return n;
+  }
+  function setCookDay(d, on) {
+    if (!Array.isArray(state.cookDays) || state.cookDays.length !== 7) state.cookDays = [true, true, true, true, true, true, true];
+    state.cookDays[d] = on;
+    onStateChanged();
+  }
+  function renderCookDays() {
+    var wrap = document.getElementById("cook-days");
+    if (!wrap) return;
+    var n = cookDayCount();
+    var html = '<span class="cook-days-label">Cooking on</span><span class="cook-days-chips" role="group" aria-label="Days you cook">';
+    for (var d = 0; d < 7; d++) {
+      var on = isCookDay(d);
+      html += '<button type="button" class="cook-day" data-day="' + d + '" aria-pressed="' + on + '" title="' + DOW_NAMES[d] + (on ? ": cooking. Click to skip" : ": not cooking. Click to cook") + '">' +
+        DOW_NAMES[d].slice(0, 2) + "</button>";
+    }
+    html += '</span><span class="cook-days-count">' + n + (n === 1 ? " dinner" : " dinners") + " a week</span>";
+    wrap.innerHTML = html;
+    wrap.querySelectorAll(".cook-day").forEach(function (b) {
+      b.addEventListener("click", function () { var d = +b.getAttribute("data-day"); setCookDay(d, !isCookDay(d)); });
+    });
+  }
+
   document.getElementById("lowwaste-fill-btn").addEventListener("click", lowWasteFillWeek);
   function setView(next) {
     if (viewNext === next) return;
@@ -839,7 +892,8 @@
   document.getElementById("week-next-btn").addEventListener("click", function () { setView(true); });
   document.getElementById("batch-lowwaste-btn").addEventListener("click", lowWasteBatch);
   document.getElementById("fill-week-btn").addEventListener("click", function () {
-    if (W().plan.slice(firstOpenDay()).every(Boolean)) { toast(viewNext ? "Every day next week already has a dinner." : "Every day left this week already has a dinner."); return; }
+    var days = fillableDays();
+    if (!days.length) { noFillableToast(); return; }
     var undoSnap = JSON.stringify(syncPayload());
     state.newWeekNotice = false;
     setTimeout(function () { toast("Week filled", "Undo", function () { applyState(JSON.parse(undoSnap)); onStateChanged(); }); }, 0);
@@ -852,13 +906,11 @@
     var basePool = likedIds.length ? likedIds : eligible.map(function (r) { return r.id; });
     var pool = shuffle(basePool.filter(function (id) { return used.indexOf(id) === -1; }));
     var pi = 0;
-    for (var d = firstOpenDay(); d < 7; d++) {
-      if (!W().plan[d]) {
-        if (pi >= pool.length) { pool = shuffle(basePool.slice()); pi = 0; }
-        W().plan[d] = pool[pi++];
-        logHistory(W().plan[d], "fill");
-      }
-    }
+    days.forEach(function (d) {
+      if (pi >= pool.length) { pool = shuffle(basePool.slice()); pi = 0; }
+      W().plan[d] = pool[pi++];
+      logHistory(W().plan[d], "fill");
+    });
     onStateChanged();
   });
   document.getElementById("clear-week-btn").addEventListener("click", function () {
@@ -1408,9 +1460,8 @@
   }
 
   function lowWasteFillWeek() {
-    var empty = [];
-    for (var d = firstOpenDay(); d < 7; d++) if (!W().plan[d]) empty.push(d);
-    if (!empty.length) { toast((viewNext ? "Every day next week" : "Every day left this week") + " already has a dinner. Clear a few to fill them with less waste."); return; }
+    var empty = fillableDays();
+    if (!empty.length) { noFillableToast(); return; }
     var undoSnap = JSON.stringify(syncPayload());
     var picks = planLowWaste(W().plan.filter(Boolean), empty.length);
     picks.forEach(function (id, i) { W().plan[empty[i]] = id; logHistory(id, "lowwaste"); });
@@ -1708,6 +1759,7 @@
         b.textContent = DOW_NAMES[d].slice(0, 3);
         b.type = "button";
         if (d === viewToday()) b.classList.add("is-today");
+        if (!isCookDay(d)) b.classList.add("is-off");
         b.title = "Add to " + DOW_NAMES[d];
         b.addEventListener("click", function (dayIdx) { return function () {
           clearCooked(dayIdx);
@@ -2283,7 +2335,7 @@
     if (!state.lastWeek) return;
     withUndo("Copied last week's dinners", function () {
       state.lastWeek.plan.forEach(function (id, i) {
-        if (id && RECIPES_BY_ID[id] && !isRecipeLocked(id) && allowedByPrefs(RECIPES_BY_ID[id])) {
+        if (id && isCookDay(i) && RECIPES_BY_ID[id] && !isRecipeLocked(id) && allowedByPrefs(RECIPES_BY_ID[id])) {
           W().plan[i] = id; logHistory(id, "copy");
         }
       });
@@ -2894,7 +2946,7 @@
 
   /* ============================= CLOUD SYNC ============================= */
   var SYNC_FIELDS = ["servings", "mode", "plan", "batch", "checked", "ratings", "noSeafood", "history", "cooked", "cookLog",
-    "planWeek", "leftovers", "staples", "avoid", "customRecipes", "lastWeek", "newWeekNotice", "next"];
+    "planWeek", "leftovers", "staples", "avoid", "customRecipes", "lastWeek", "newWeekNotice", "next", "cookDays"];
   var UNSYNCED_KEY = "soloSupper.unsynced";
   var lastSyncedJson = {};
   var savePending = false;
@@ -2938,6 +2990,7 @@
       ["leftovers", "checked"].forEach(function (f) { M.next[f] = Object.assign({}, C.next[f] || {}, L.next[f] || {}); });
     }
     M.servings = L.servings; M.mode = L.mode;
+    M.cookDays = (Array.isArray(C.cookDays) && C.cookDays.length === 7) ? C.cookDays : L.cookDays;
     M.noSeafood = !!(L.noSeafood || C.noSeafood);
     return M;
   }

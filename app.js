@@ -3443,6 +3443,7 @@
       if (now.pro && !viewPicked && todayIdx >= 5 && !viewNext) viewNext = true;
       renderAll();
       if (settingsOpen()) renderSettings();
+      if (!isNativeApp() && paywallBackdrop && !paywallBackdrop.hidden) renderProPaywall(lastProReason);
     }
   }
   function startEntitlement(user) {
@@ -3588,8 +3589,10 @@
     fridge: "Planning around your fridge is part of Pro"
   };
   var proPlanChoice = "annual";
+  var lastProReason;
   function openProPaywall(reason) {
     if (!paywallBackdrop) return;
+    lastProReason = reason;
     renderProPaywall(reason);
     paywallBackdrop.hidden = false;
   }
@@ -3608,6 +3611,7 @@
       ["Use what you have", "Tell it what's in the fridge and it plans dinners that finish it off"],
       ["Plan next week", "Sort out next week on a Sunday, or any time before"],
       ["Your own recipes", "Add the dishes you already make, alongside the " + BUILTIN_COUNT + " in the book"],
+      ["Waste saved", "See the packs you finish instead of binning, and roughly what that saves"],
       ["Everything else stays free", "Every recipe, the planner and the shopping list"]
     ];
     var html = '<div class="modal-close-row"><button class="icon-btn" id="paywall-close-btn" aria-label="Close">' + ico("close") + "</button></div>" +
@@ -3943,6 +3947,7 @@
     var addId = q.get("add"), cookId = q.get("cook"), proBack = q.get("pro");
     if (proBack) {
       try { history.replaceState(null, "", location.pathname); } catch (e) { /* ignore */ }
+      if (proBack === "plans") { if (!isNativeApp()) openProPaywall(); return; }
       if (proBack === "success") {
         if (proState(ent).source === "stripe") toast("Welcome to Pro. Thank you for supporting Solo Supper.");
         else { proWelcomePending = true; toast("Payment received. Switching on Pro…"); }

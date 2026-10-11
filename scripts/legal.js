@@ -137,7 +137,7 @@ module.exports = [
   {
     slug: "refunds",
     title: "Refund policy",
-    description: "How to get a refund for Solo Supper Pro.",
+    description: "How to get a refund for Solo Supper Pro: a full refund within 14 days of any payment, no questions asked.",
     html: [
       "<p>If Pro is not for you, you can have your money back.</p>",
 

@@ -1,0 +1,23 @@
+# Cloudflare Pages response headers (https://developers.cloudflare.com/pages/configuration/headers/)
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  X-Frame-Options: SAMEORIGIN
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=()
+  Strict-Transport-Security: max-age=31536000
+
+# Recipe photos never change once published: cache them for a week.
+/img/*
+  Cache-Control: public, max-age=604800
+
+# Private bits of the repo that do not need to be public pages.
+/admin.html
+  X-Robots-Tag: noindex, nofollow
+/dashboard-data.json
+  X-Robots-Tag: noindex
+/functions/*
+  X-Robots-Tag: noindex
+/scripts/*
+  X-Robots-Tag: noindex
+/tests/*
+  X-Robots-Tag: noindex

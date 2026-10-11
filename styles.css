@@ -320,7 +320,7 @@ button.shop-item { width: 100%; border-top: 0; border-left: 0; border-right: 0; 
 .card-meta .i, .mark .i { width: 15px; height: 15px; }
 .mark { display: inline-flex; align-items: center; gap: 5px; font-family: var(--mono); font-size: 13px; color: var(--ink-2); }
 .mark-veg { color: var(--olive); }
-.mark-hot { color: var(--tomato); }
+.mark-hot { color: var(--tomato-deep); }
 .marks { display: flex; gap: 16px; flex-wrap: wrap; }
 .recipe-photo { aspect-ratio: 4 / 3; border-radius: 4px; overflow: hidden; background: var(--board); margin-bottom: 4px; }
 .recipe-photo img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform .4s ease; }
@@ -570,7 +570,10 @@ h1, .display, .display-l, .display-m, .week-range { letter-spacing: -0.02em; }
 .day-card.is-off .day-empty-text { font-size: 14px; }
 .day-card.is-past.is-off .day-empty-actions { display: none; }
 .day-pick-btn.is-off { opacity: .5; }
-.day-card.is-past { opacity: .55; }
+.day-card.is-past { opacity: 1; }
+.day-card.is-past .thumb, .day-card.is-past img { opacity: .6; }
+.day-card.is-past .title { color: var(--ink-2); }
+.day-card.is-past .dow, .day-card.is-past .dom, .day-card.is-past .day-empty-text { color: var(--ink-3); }
 .day-card.is-past.is-empty { background: transparent; border-style: solid; border-color: var(--line); padding-top: 6px; padding-bottom: 6px; }
 .day-card.is-past.is-empty .day-label { flex-direction: row; gap: 10px; align-items: baseline; }
 .day-card.is-past.is-empty .day-label .dom { font-size: 20px; }

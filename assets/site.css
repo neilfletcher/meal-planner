@@ -207,7 +207,7 @@ em { font-style: italic; }
 .rcard-meta .i, .mark .i { width: 15px; height: 15px; }
 .mark { display: inline-flex; align-items: center; gap: 5px; font-family: var(--mono); font-size: 13px; }
 .mark-veg { color: var(--olive); }
-.mark-hot { color: var(--tomato); }
+.mark-hot { color: var(--tomato-deep); }
 .marks { display: flex; gap: 16px; }
 
 /* typographic stand-in for recipes without a photo yet */
@@ -408,3 +408,14 @@ h1, .display, .display-l, .display-m, .week-range { letter-spacing: -0.02em; }
   .legal td:nth-child(2)::before { content: "Type: "; color: var(--ink-3); }
   .legal td:nth-child(4)::before { content: "Kept: "; color: var(--ink-3); }
 }
+
+/* Pro band on the home page */
+.pro-band { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: clamp(28px, 4vw, 72px); align-items: start; background: var(--plate); border: 1px solid var(--line); border-radius: 16px; padding: clamp(28px, 4vw, 56px); }
+.pro-band-text { display: flex; flex-direction: column; gap: 16px; }
+.pro-band-text .small { margin-top: -4px; }
+.pro-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px 32px; }
+.pro-list li { border-top: 2px solid var(--yolk); padding-top: 14px; }
+.pro-list h3 { font-size: 24px; line-height: 1.1; margin-bottom: 6px; }
+.pro-list p { color: var(--ink-2); font-size: 15.5px; line-height: 1.5; }
+@media (max-width: 900px) { .pro-band { grid-template-columns: 1fr; } }
+@media (max-width: 560px) { .pro-list { grid-template-columns: 1fr; } }

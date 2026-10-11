@@ -240,10 +240,12 @@ var USEUP = Object.keys(PK.PACKS).map(function (k) {
   var amounts = users.map(function (r) { return NEEDS[r.id][k]; }).sort(function (a, b) { return a - b; });
   var typical = amounts[Math.floor(amounts.length / 2)];
   var name = packName(k), h1, slug;
-  if (p.unit === "tin") { h1 = "What to cook with half a tin of " + k; slug = "half-a-tin-of-" + slugify(k); }
+  // Display only (slugs stay as they are, so published addresses never change).
+  var shown = /mushroom$/.test(name) ? name + "s" : name;
+  if (p.unit === "tin") { h1 = "What to cook with half a tin of " + name; slug = "half-a-tin-of-" + slugify(k); }
   else if (p.unit === "g" && p.size <= 30) { h1 = "Recipes to use up leftover " + k; slug = "leftover-" + slugify(k); }
   else if (/^(chicken|beef|pork|lamb|turkey|salmon|cod|white fish|trout|smoked|cooking chorizo|streaky bacon|ham)/.test(k)) { h1 = "What to cook with the rest of a pack of " + name; slug = "rest-of-a-pack-of-" + slugify(name); }
-  else { h1 = "Recipes to use up " + name; slug = "use-up-" + slugify(name); }
+  else { h1 = "Recipes to use up " + shown; slug = "use-up-" + slugify(name); }
   return { key: k, name: name, pack: p, users: users, typical: typical, h1: h1, slug: slug };
 }).filter(Boolean).sort(function (a, b) { return b.users.length - a.users.length; });
 
@@ -280,7 +282,24 @@ var ICON = {
 };
 var LOGO = '<svg class="logo-mark" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="1.4"/><circle cx="14.6" cy="13.6" r="3.1" class="logo-dot"/></svg>';
 
+// Search results show about 160 characters: keep whole sentences that fit.
+function clipDesc(d) {
+  d = String(d || "");
+  if (d.length <= 160) return d;
+  var out = "";
+  (d.match(/[^.!?]+[.!?]+(\s|$)/g) || [d]).some(function (sen) {
+    if ((out + sen).trim().length > 160) return true;
+    out += sen;
+    return false;
+  });
+  out = out.trim();
+  if (out) return out;
+  var cut = d.slice(0, 157);
+  return cut.slice(0, cut.lastIndexOf(" ")) + "\u2026";
+}
+
 function head(o) {
+  o = Object.assign({}, o, { description: clipDesc(o.description) });
   var url = SITE_URL + "/" + o.path;
   var img = o.image ? SITE_URL + "/" + o.image : SITE_URL + "/img/recipes/d2.webp";
   return '<!doctype html>\n<html lang="en-GB">\n<head>\n' +
@@ -410,7 +429,7 @@ function sectionHead(eyebrow, h2, linkHref, linkText) {
     '<p class="lead">' + RECIPES.length + " recipes written for a single portion. The planner picks dinners that share their packs, so the spinach you open on Monday is finished by Thursday, and the shopping list adds it all up.</p>" +
     '<div class="btn-row"><a class="btn btn-primary btn-lg" href="plan/">Plan this week ' + ICON.arrow + "</a>" +
     '<a class="btn btn-outline btn-lg" href="recipes/">Browse recipes</a></div>' +
-    '<p class="small muted">About ten minutes of prep a night. Free to use, and your week syncs when you sign in with Google.</p>' +
+    '<p class="small muted">About ten minutes of prep a night. Sign in and your week follows you to every device.</p>' +
     "</div>" +
     '<div class="hero2-mosaic">' + mosaic.map(function (r, i) { return tile(r, i === 0 ? "tile-big" : "", i < 3); }).join("") + "</div>" +
     "</section>" +
@@ -439,12 +458,25 @@ function sectionHead(eyebrow, h2, linkHref, linkText) {
     '<div class="night-text">' +
     '<h2 class="display-m">How the planner works</h2>' +
     '<ol class="night-steps">' +
-    '<li><span class="ns-n">1</span><div><h3>Pick a low-waste week</h3><p>One tap chooses dinners that share their packs: the other half of the coriander, the rest of the mince. Swap anything you would not cook.</p></div></li>' +
+    '<li><span class="ns-n">1</span><div><h3>Pick a low-waste week</h3><p>One tap chooses dinners that share their packs: the other half of the coriander, the rest of the mince. Swap anything you would not cook. Part of Pro, free for 14 days.</p></div></li>' +
     '<li><span class="ns-n">2</span><div><h3>Shop once</h3><p>One list, grouped by aisle, with quantities added up. Hide what is already in the cupboard.</p></div></li>' +
     '<li><span class="ns-n">3</span><div><h3>Cook for one</h3><p>Every recipe is a single portion, with a step-by-step cooking mode and timers.</p></div></li>' +
     "</ol>" +
     '<div class="btn-row"><a class="btn btn-primary btn-lg" href="plan/">Open the planner ' + ICON.arrow + "</a></div>" +
     "</div>" + recipeImg(BY_ID.d8, rel, "night-img") + "</div></section>" +
+
+    '<section class="wrap section"><div class="pro-band">' +
+    '<div class="pro-band-text"><span class="eyebrow">Solo Supper Pro</span>' +
+    '<h2 class="display-m">Waste less, plan ahead</h2>' +
+    '<p class="lead">The recipes, the planner and the shopping list are yours to use. Pro does the clever part: it plans around the packs you open and what is already in the fridge.</p>' +
+    '<div class="btn-row"><a class="btn btn-primary btn-lg" href="plan/?pro=plans">Try Pro free for 14 days ' + ICON.arrow + "</a></div>" +
+    '<p class="small muted">No card needed for the trial. Then &pound;14.99 a year or &pound;2.49 a month, prices include VAT. Cancel any time.</p></div>' +
+    '<ul class="pro-list">' +
+    '<li><h3>Low-waste weeks</h3><p>Dinners picked to share their packs, so the other half of the spinach gets eaten.</p></li>' +
+    '<li><h3>Use what I have</h3><p>Tell it what is in the fridge and it plans dinners that finish it off.</p></li>' +
+    '<li><h3>Plan next week</h3><p>Sort out next week on a Sunday, with this week&rsquo;s leftovers carried over.</p></li>' +
+    '<li><h3>Waste saved</h3><p>See the packs you finish instead of binning, and roughly what that saves.</p></li>' +
+    "</ul></div></section>" +
 
     '<section class="wrap section">' +
     sectionHead("", "Got half a pack left?", "use-up/", "Every leftover") +
@@ -815,7 +847,7 @@ out("sitemap.xml", '<?xml version="1.0" encoding="UTF-8"?>\n' +
     return "  <url><loc>" + esc(SITE_URL + "/" + s.loc) + "</loc><lastmod>" + today + "</lastmod><priority>" + s.pri + "</priority>" +
       (s.img ? "<image:image><image:loc>" + esc(SITE_URL + "/" + s.img) + "</image:loc></image:image>" : "") + "</url>";
   }).join("\n") + "\n</urlset>\n");
-out("robots.txt", "User-agent: *\nAllow: /\nDisallow: /admin.html\n\nSitemap: " + SITE_URL + "/sitemap.xml\n");
+out("robots.txt", "User-agent: *\nAllow: /\nDisallow: /admin.html\nDisallow: /api/\nDisallow: /functions/\nDisallow: /scripts/\nDisallow: /tests/\nDisallow: /dashboard-data.json\n\nSitemap: " + SITE_URL + "/sitemap.xml\n");
 
 console.log("Solo Supper: built " + written.length + " files for " + SITE_URL +
   " (" + RECIPES.length + " recipes, " + COLLECTIONS.length + " collections, " + CUISINES.length + " cuisines).");

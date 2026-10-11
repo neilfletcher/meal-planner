@@ -23,7 +23,12 @@
       ],
       "cover": null,
       "recipe": "d285",
-      "recipes": null
+      "recipes": null,
+      "buffer": {
+        "id": "6acc053463ff33d8c9991b7d",
+        "dueAt": "2026-10-12T19:00:00.000Z",
+        "queuedAt": "2026-10-11T21:52:52.650Z"
+      }
     },
     {
       "key": "ig-mon",
@@ -43,7 +48,12 @@
       ],
       "cover": null,
       "recipe": "d166",
-      "recipes": null
+      "recipes": null,
+      "buffer": {
+        "id": "6acc0535a9411fbcc55dbec7",
+        "dueAt": "2026-10-12T17:30:00.000Z",
+        "queuedAt": "2026-10-11T21:52:53.311Z"
+      }
     },
     {
       "key": "ig-tue",
@@ -59,7 +69,12 @@
       ],
       "cover": "ig-tue-cover-ca3072a2.jpg",
       "recipe": "d421",
-      "recipes": null
+      "recipes": null,
+      "buffer": {
+        "id": "6acc05358e8dd50ffc58cca8",
+        "dueAt": "2026-10-13T17:30:00.000Z",
+        "queuedAt": "2026-10-11T21:52:53.986Z"
+      }
     },
     {
       "key": "pin-wed",
@@ -79,7 +94,12 @@
         "d151",
         "d182",
         "d102"
-      ]
+      ],
+      "buffer": {
+        "id": "6acc0536fa026cfb8117bba6",
+        "dueAt": "2026-10-14T19:00:00.000Z",
+        "queuedAt": "2026-10-11T21:52:54.336Z"
+      }
     },
     {
       "key": "ig-wed",
@@ -99,7 +119,12 @@
       ],
       "cover": null,
       "recipe": "d260",
-      "recipes": null
+      "recipes": null,
+      "buffer": {
+        "id": "6acc0536a9411fbcc55dbeef",
+        "dueAt": "2026-10-14T17:30:00.000Z",
+        "queuedAt": "2026-10-11T21:52:54.896Z"
+      }
     },
     {
       "key": "ig-thu",
@@ -115,7 +140,12 @@
       ],
       "cover": "ig-thu-cover-65a0b0bc.jpg",
       "recipe": "d370",
-      "recipes": null
+      "recipes": null,
+      "buffer": {
+        "id": "6acc05378e8dd50ffc58ccd2",
+        "dueAt": "2026-10-15T17:30:00.000Z",
+        "queuedAt": "2026-10-11T21:52:55.518Z"
+      }
     },
     {
       "key": "pin-fri",
@@ -131,7 +161,12 @@
       ],
       "cover": null,
       "recipe": "d140",
-      "recipes": null
+      "recipes": null,
+      "buffer": {
+        "id": "6acc0537fa026cfb8117bbdd",
+        "dueAt": "2026-10-16T19:00:00.000Z",
+        "queuedAt": "2026-10-11T21:52:55.802Z"
+      }
     },
     {
       "key": "ig-fri",
@@ -151,7 +186,12 @@
       ],
       "cover": null,
       "recipe": "d26",
-      "recipes": null
+      "recipes": null,
+      "buffer": {
+        "id": "6acc0538a9411fbcc55dbf17",
+        "dueAt": "2026-10-16T17:30:00.000Z",
+        "queuedAt": "2026-10-11T21:52:56.352Z"
+      }
     },
     {
       "key": "ig-sat",
@@ -167,7 +207,12 @@
       ],
       "cover": "ig-sat-cover-7e5fccae.jpg",
       "recipe": "d220",
-      "recipes": null
+      "recipes": null,
+      "buffer": {
+        "id": "6acc053863ff33d8c9991bbd",
+        "dueAt": "2026-10-17T17:30:00.000Z",
+        "queuedAt": "2026-10-11T21:52:56.918Z"
+      }
     },
     {
       "key": "ig-sun",
@@ -187,7 +232,12 @@
       ],
       "cover": null,
       "recipe": "d314",
-      "recipes": null
+      "recipes": null,
+      "buffer": {
+        "id": "6acc0539fa026cfb8117bc07",
+        "dueAt": "2026-10-18T17:30:00.000Z",
+        "queuedAt": "2026-10-11T21:52:57.642Z"
+      }
     }
   ]
 }

@@ -268,7 +268,7 @@ function health(env) {
     ok: true,
     firebaseServiceAccount: sa === "invalid" ? "not valid JSON" : ok(sa && sa.private_key && sa.client_email),
     projectId: sa && sa !== "invalid" ? sa.project_id : null,
-    stripeSecretKey: env.STRIPE_SECRET_KEY ? (String(env.STRIPE_SECRET_KEY).indexOf("sk_live_") === 0 ? "live" : "test") : false,
+    stripeSecretKey: env.STRIPE_SECRET_KEY ? (/^(sk|rk)_live_/.test(String(env.STRIPE_SECRET_KEY)) ? "live" : "test") : false,
     stripeWebhookSecret: ok(env.STRIPE_WEBHOOK_SECRET),
     prices: { annual: priceFor(env, "annual"), monthly: priceFor(env, "monthly") }
   });

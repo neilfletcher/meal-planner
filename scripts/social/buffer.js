@@ -65,7 +65,7 @@ function postInput(s, ch, post, mediaUrls) {
   var isVideo = /\.mp4$/.test(mediaUrls[0]);
   if (isVideo) {
     var v = { url: mediaUrls[0] };
-    if (field(s.video, /^thumbnailUrl$/) && post.coverUrl) v.thumbnailUrl = post.coverUrl;
+    // Buffer refuses thumbnailUrl; the cover frame is picked with thumbnailOffset instead.
     if (field(s.video, /^metadata$/)) v.metadata = { thumbnailOffset: 3000 };
     input.assets.push({ video: v });
   } else {
@@ -90,7 +90,9 @@ function postInput(s, ch, post, mediaUrls) {
     var im = {};
     s.instagram.inputFields.forEach(function (f) {
       if (/^type$/.test(f.name)) {
-        var want = post.kind === "reel" ? /^reel$/i : /^(post|carousel)$/i;
+        // Buffer lists "carousel" in the schema but rejects it for Instagram:
+        // a "post" with several images goes out as a carousel.
+        var want = post.kind === "reel" ? /^reel$/i : /^post$/i;
         var v2 = (s.instagramTypes || []).find(function (x) { return want.test(x); });
         if (v2) im[f.name] = v2;
       } else if (/^shouldShareToFeed$/.test(f.name)) im[f.name] = true;

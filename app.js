@@ -3356,7 +3356,7 @@
         planOption("monthly", "Monthly", PRO_PRICES.monthly + " a month", "Cancel any time", "") + "</div>" +
         '<button type="button" class="btn btn-primary btn-block" id="pro-buy-btn">Continue to secure payment</button>' +
         '<p class="form-error" id="pro-error" hidden></p>' +
-        '<p class="settings-note pro-small">Prices include VAT. Cancel any time, and you can have a full refund within 14 days of any payment. Payment is handled by Stripe and shows as Link. <a href="../terms/">Terms</a> · <a href="../refunds/">Refunds</a></p>';
+        '<p class="settings-note pro-small">Prices include VAT. Cancel any time, and you can have a full refund within 14 days of any payment. Payment is handled by Stripe and shows as Onelink. <a href="../terms/">Terms</a> · <a href="../refunds/">Refunds</a></p>';
     }
     if (signedIn && !paid) {
       html += '<details class="gift-row"' + (reason === "gift" ? " open" : "") + '><summary>Have a gift code?</summary>' +

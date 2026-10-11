@@ -41,7 +41,7 @@ module.exports = [
       "<p><strong>Legal basis:</strong> your consent.</p>",
 
       "<h3>Pro subscriptions</h3>",
-      "<p>On the website, Pro is sold through Stripe's Managed Payments service, with Link (part of Stripe) acting as the merchant of record. Link takes your payment details and handles payment, tax, receipts and renewal reminders; I never see your card details. I receive your email address, what you bought and whether your subscription is active, so that Pro can be switched on for your account. In the Android app, purchases go through Google Play in the same way.</p>",
+      "<p>On the website, Pro is sold through Stripe's Managed Payments service, with Onelink (Stripe's checkout service, formerly Link) acting as the merchant of record. Onelink takes your payment details and handles payment, tax, receipts and renewal reminders; I never see your card details. I receive your email address, what you bought and whether your subscription is active, so that Pro can be switched on for your account. In the Android app, purchases go through Google Play in the same way.</p>",
       "<p><strong>Legal basis:</strong> contract, and keeping financial records the law requires.</p>",
 
       "<h3>Emails</h3>",
@@ -54,7 +54,7 @@ module.exports = [
       "<li><strong>Google Analytics</strong>: usage statistics, only if you agree.</li>",
       "<li><strong>Cloudflare</strong>: hosts the website, protects it from attacks and forwards email sent to Solo Supper addresses.</li>",
       "<li><strong>Resend</strong>: sends email from Solo Supper addresses.</li>",
-      "<li><strong>Stripe and Link</strong> and <strong>Google Play</strong>: payments for Pro.</li>",
+      "<li><strong>Stripe and Onelink</strong> and <strong>Google Play</strong>: payments for Pro.</li>",
       "</ul>",
       "<p>Some of these services store data outside the UK, including in the United States. Where that happens, the transfer is covered by UK-approved safeguards such as the UK Extension to the EU-US Data Privacy Framework or standard contractual clauses.</p>",
 
@@ -101,11 +101,11 @@ module.exports = [
 
       "<h2>Solo Supper Pro</h2>",
       "<h3>Subscriptions</h3>",
-      "<p>Pro adds planning features on top of the free recipes. The price, what is included and how often you are billed are shown before you buy. On the website, Pro is sold through Stripe's Managed Payments, and Link (part of Stripe) is the merchant of record, so your purchase is also covered by the Link terms shown at checkout. It appears on your statement as LINK.COM followed by Solo Supper. In the Android app, Pro is sold through Google Play under Google Play's terms.</p>",
+      "<p>Pro adds planning features on top of the free recipes. The price, what is included and how often you are billed are shown before you buy. On the website, Pro is sold through Stripe's Managed Payments, and Onelink (part of Stripe) is the merchant of record, so your purchase is also covered by the Onelink terms shown at checkout. In the Android app, Pro is sold through Google Play under Google Play's terms.</p>",
       "<p>Subscriptions renew automatically at the end of each period until you cancel.</p>",
 
       "<h3>Cancelling</h3>",
-      "<p>You can cancel at any time from Settings, then Manage subscription, in the planner, or from your account at link.com (or from Google Play subscriptions in the app). Pro then stays on until the end of the period you have paid for and does not renew.</p>",
+      "<p>You can cancel at any time from Settings, then Manage subscription, in the planner, or from your Onelink account (or from Google Play subscriptions in the app). Pro then stays on until the end of the period you have paid for and does not renew.</p>",
 
       "<h3>Free trial</h3>",
       "<p>New accounts may get a free Pro trial. No card is needed, and when the trial ends your account returns to the free version unless you choose to subscribe. One trial per person.</p>",
@@ -148,7 +148,7 @@ module.exports = [
       "<p>After 14 days, payments are not normally refunded, but you can cancel at any time so your subscription does not renew. Pro stays on until the end of the period you have paid for. If something has gone wrong, such as being charged twice or Pro not working, email me and it will be put right.</p>",
 
       "<h2>How refunds are paid</h2>",
-      "<p>Website purchases are refunded through Stripe (Link) to the card or account you paid with, usually within 5 to 10 working days. You can also ask Link's support team at link.com for a refund. Purchases made in the Android app are refunded through Google Play: you can request one from Google Play directly, or email me and I will help.</p>",
+      "<p>Website purchases are refunded through Stripe (Onelink) to the card or account you paid with, usually within 5 to 10 working days. You can also ask Onelink's support team for a refund. Purchases made in the Android app are refunded through Google Play: you can request one from Google Play directly, or email me and I will help.</p>",
 
       "<h2>Your statutory rights</h2>",
       "<p>This policy is in addition to your rights under UK consumer law, including the Consumer Contracts Regulations and the Consumer Rights Act 2015. Nothing here affects those rights.</p>",

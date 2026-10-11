@@ -1,0 +1,120 @@
+/* Solo Supper service worker: lets the planner open and work offline (the
+ * plan itself lives in localStorage), and keeps recipe photos and pages
+ * you have looked at for when there's no signal in the shop.
+ *
+ * - Pages, scripts and styles: network first, so a deploy shows up straight
+ *   away; after 3 seconds without an answer the saved copy is used instead.
+ * - Recipe photos: saved copy first (they never change once published).
+ * - Firebase scripts and Google Fonts: saved copy first (versioned URLs).
+ * - /api, Firestore, sign-in and analytics: never touched.
+ *
+ * Bump VERSION to clear old caches.
+ */
+var VERSION = "v1";
+var CORE = "ss-core-" + VERSION;
+var PAGES = "ss-pages-" + VERSION;
+var IMAGES = "ss-img-" + VERSION;
+var KEEP = [CORE, PAGES, IMAGES];
+
+var CORE_FILES = [
+  "/plan/", "/styles.css", "/app.js", "/recipes-data.js", "/firebase-config.js",
+  "/favicon.svg", "/manifest.webmanifest", "/icons/icon-192.png",
+  "https://www.gstatic.com/firebasejs/10.13.2/firebase-app-compat.js",
+  "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth-compat.js",
+  "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore-compat.js"
+];
+var MAX_PAGES = 80, MAX_IMAGES = 250;
+
+self.addEventListener("install", function (e) {
+  e.waitUntil(caches.open(CORE).then(function (c) {
+    // One file failing (a flaky connection) shouldn't stop the install.
+    return Promise.all(CORE_FILES.map(function (u) { return c.add(u).catch(function () {}); }));
+  }).then(function () { return self.skipWaiting(); }));
+});
+
+self.addEventListener("activate", function (e) {
+  e.waitUntil(caches.keys().then(function (keys) {
+    return Promise.all(keys.filter(function (k) { return k.indexOf("ss-") === 0 && KEEP.indexOf(k) === -1; }).map(function (k) { return caches.delete(k); }));
+  }).then(function () { return self.clients.claim(); }));
+});
+
+function trim(name, max) {
+  return caches.open(name).then(function (c) {
+    return c.keys().then(function (keys) {
+      if (keys.length <= max) return;
+      return Promise.all(keys.slice(0, keys.length - max).map(function (k) { return c.delete(k); }));
+    });
+  });
+}
+
+function save(name, req, res, max) {
+  if (!res || !(res.ok || res.type === "opaque")) return;
+  var copy = res.clone();
+  caches.open(name).then(function (c) { return c.put(req, copy); }).then(function () { if (max) return trim(name, max); }).catch(function () {});
+}
+
+// Ask the network; if it is slow or fails, answer from the cache.
+function networkFirst(req, name, max, fallback) {
+  return new Promise(function (resolve) {
+    var done = false;
+    var finish = function (r) { if (!done && r) { done = true; resolve(r); } };
+    var fromCache = function () {
+      return caches.match(req, { ignoreSearch: req.mode === "navigate" }).then(function (hit) {
+        return hit || (fallback ? fallback() : null);
+      });
+    };
+    var timer = setTimeout(function () { fromCache().then(function (hit) { if (hit) finish(hit); }); }, 3000);
+    fetch(req).then(function (res) {
+      clearTimeout(timer);
+      save(name, req, res, max);
+      if (done) return;
+      if (res.ok || req.mode !== "navigate") return finish(res);
+      // A 404 or 500 page: show it unless we have a good saved copy.
+      return fromCache().then(function (hit) { finish(hit || res); });
+    }).catch(function () {
+      clearTimeout(timer);
+      fromCache().then(function (hit) { finish(hit || Response.error()); });
+    });
+  });
+}
+
+function cacheFirst(req, name, max) {
+  return caches.match(req).then(function (hit) {
+    return hit || fetch(req).then(function (res) { save(name, req, res, max); return res; });
+  });
+}
+
+function offlinePage(url) {
+  if (url.pathname.indexOf("/plan") === 0) return caches.match("/plan/");
+  return caches.match("/plan/").then(function (plan) {
+    return new Response(
+      '<!doctype html><html lang="en-GB"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">' +
+      "<title>Offline | Solo Supper</title><style>body{font-family:system-ui,sans-serif;background:#F7F5F0;color:#1A211D;display:grid;place-items:center;min-height:100vh;margin:0;padding:16px;text-align:center}" +
+      "a{display:inline-block;margin-top:12px;background:#C2412A;color:#fff;padding:12px 20px;border-radius:999px;text-decoration:none;font-weight:600}</style></head>" +
+      "<body><main><h1>You're offline</h1><p>This page hasn't been saved on this device yet.</p>" +
+      (plan ? '<a href="/plan/">Open your week</a>' : "") + "</main></body></html>",
+      { headers: { "content-type": "text/html; charset=utf-8" } });
+  });
+}
+
+self.addEventListener("fetch", function (e) {
+  var req = e.request;
+  if (req.method !== "GET") return;
+  var url = new URL(req.url);
+
+  if (url.origin === self.location.origin) {
+    if (url.pathname.indexOf("/api/") === 0 || url.pathname === "/sw.js" || url.pathname === "/admin.html") return;
+    if (req.mode === "navigate") {
+      e.respondWith(networkFirst(req, PAGES, MAX_PAGES, function () { return offlinePage(url); }));
+      return;
+    }
+    if (url.pathname.indexOf("/img/") === 0) { e.respondWith(cacheFirst(req, IMAGES, MAX_IMAGES)); return; }
+    if (/\.(js|css|svg|png|webmanifest|json)$/.test(url.pathname)) { e.respondWith(networkFirst(req, CORE)); return; }
+    return;
+  }
+
+  if ((url.hostname === "www.gstatic.com" && url.pathname.indexOf("/firebasejs/") === 0) ||
+      url.hostname === "fonts.googleapis.com" || url.hostname === "fonts.gstatic.com") {
+    e.respondWith(cacheFirst(req, CORE));
+  }
+});

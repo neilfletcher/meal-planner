@@ -1,0 +1,29 @@
+{
+  "id": "/plan/",
+  "name": "Solo Supper",
+  "short_name": "Solo Supper",
+  "description": "Plan a week of dinners for one, with a shopping list that adds itself up and low-waste planning that uses up every pack.",
+  "lang": "en-GB",
+  "dir": "ltr",
+  "start_url": "/plan/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#F7F5F0",
+  "theme_color": "#FFFFFF",
+  "categories": ["food", "lifestyle"],
+  "icons": [
+    { "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/icon-maskable-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
+    { "src": "/icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Your week", "url": "/plan/", "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png" }] },
+    { "name": "Shopping list", "url": "/plan/?tab=shopping", "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png" }] }
+  ],
+  "screenshots": [
+    { "src": "/icons/screen-week.png", "sizes": "780x1688", "type": "image/png", "form_factor": "narrow", "label": "Your week of dinners" },
+    { "src": "/icons/screen-shopping.png", "sizes": "780x1688", "type": "image/png", "form_factor": "narrow", "label": "A shopping list that adds itself up" },
+    { "src": "/icons/screen-wide.png", "sizes": "1440x900", "type": "image/png", "form_factor": "wide", "label": "Plan your week" }
+  ]
+}

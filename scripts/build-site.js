@@ -318,6 +318,8 @@ function head(o) {
     '<meta name="theme-color" content="#F7F5F0">\n' +
     '<meta name="color-scheme" content="light">\n' +
     '<link rel="icon" href="' + o.rel + 'favicon.svg" type="image/svg+xml">\n' +
+    '<link rel="apple-touch-icon" href="' + o.rel + 'icons/apple-touch-icon.png">\n' +
+    '<link rel="manifest" href="' + o.rel + 'manifest.webmanifest">\n' +
     '<link rel="preconnect" href="https://fonts.googleapis.com">\n<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n' +
     '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..600;1,6..72,400..600&amp;family=Geist:wght@400;500;600;700&amp;family=Geist+Mono:wght@400;500;600&amp;display=swap">\n' +
     '<link rel="stylesheet" href="' + o.rel + 'assets/site.css">\n' +

@@ -2998,6 +2998,7 @@
       '<div class="modal-close-row"><button class="icon-btn" id="settings-close-btn" aria-label="Close">' + ico("close") + '</button></div>' +
       "<h2>Settings</h2>" +
       accountSettingsHtml() +
+      installSettingsHtml() +
       "<h3>Never show me</h3>" +
       '<div class="chip-row">' + AVOID_OPTIONS.map(function (o) {
         return '<button type="button" class="chip" data-avoid="' + o[0] + '" aria-pressed="' + (avoid[o[0]] ? "true" : "false") + '">' + esc(o[1]) + "</button>";
@@ -3031,6 +3032,8 @@
     document.getElementById("settings-basics-btn").addEventListener("click", addUsualBasics);
     document.getElementById("analytics-on").addEventListener("change", function (e) { setAnalyticsConsent(e.target.checked); });
     wireAccountSettings();
+    var inst = document.getElementById("install-app-btn");
+    if (inst) inst.addEventListener("click", function () { closeSettings(); promptInstall(); });
     document.getElementById("newonly-on").addEventListener("change", function (e) { state.newOnly = e.target.checked; onStateChanged(); toast(state.newOnly ? "Suggestions now skip dishes you\u2019ve cooked." : "Suggestions can include dishes you\u2019ve cooked."); });
     if (NativeExtras) {
       var status = document.getElementById("reminder-status");
@@ -3939,12 +3942,67 @@
   renderTagChips();
   initConsent();
 
+  /* ============================= INSTALL AS AN APP =============================
+   * The site is a progressive web app (manifest.webmanifest, sw.js): it can be
+   * added to the home screen and the planner works offline. Chrome and Edge
+   * offer an install prompt we can trigger; iPhone needs Share > Add to Home
+   * Screen. Not used inside the Android app, which is already an app.
+   */
+  var installPrompt = null;
+  function runningAsApp() {
+    return isNativeApp() || (window.matchMedia && window.matchMedia("(display-mode: standalone)").matches) || navigator.standalone === true;
+  }
+  function isIOS() { return /iPhone|iPad|iPod/.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1); }
+  function installSettingsHtml() {
+    if (runningAsApp()) return "";
+    var how = installPrompt
+      ? '<button type="button" class="btn btn-sm" id="install-app-btn">Install Solo Supper</button>'
+      : '<p class="settings-note">' + (isIOS()
+        ? "In Safari, tap the Share button, then <strong>Add to Home Screen</strong>."
+        : "In Chrome or Edge, choose <strong>Install</strong> from the address bar or the browser menu. In Safari on a Mac, choose File, then <strong>Add to Dock</strong>.") + "</p>";
+    return "<h3>Get the app</h3>" +
+      '<p class="settings-note">Put Solo Supper on your home screen. It opens like an app, and your week and shopping list still work with no signal.</p>' + how;
+  }
+  function track(name, params) { try { if (window.gtag && analyticsConsent() === "yes") window.gtag("event", name, params); } catch (e) { /* ignore */ } }
+  function promptInstall() {
+    if (!installPrompt) return;
+    var p = installPrompt;
+    installPrompt = null;
+    p.prompt();
+    p.userChoice.then(function (c) { track("pwa_install_prompt", { outcome: c && c.outcome }); }).catch(function () {});
+  }
+  if (!isNativeApp()) {
+    if ("serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost")) {
+      window.addEventListener("load", function () { navigator.serviceWorker.register("/sw.js").catch(function () {}); });
+    }
+    window.addEventListener("beforeinstallprompt", function (e) {
+      e.preventDefault();
+      installPrompt = e;
+      if (settingsOpen()) renderSettings();
+      // One gentle nudge, once someone has a week worth keeping.
+      if (!lsGet("soloSupper.installNudge") && Math.max(currentRecipeIds().length, (state.history || []).length) >= 3) {
+        setTimeout(function () {
+          if (!installPrompt) return;
+          lsSet("soloSupper.installNudge", "1");
+          toast("Keep your week on your home screen. It works offline too.", "Install", promptInstall);
+        }, 4000);
+      }
+    });
+    window.addEventListener("appinstalled", function () { installPrompt = null; lsSet("soloSupper.installNudge", "1"); track("pwa_installed", {}); });
+  }
+
   // Links in from the public recipe pages: plan/?add=d12 opens that recipe
   // ready to drop into a day; plan/?cook=d12 goes straight to cooking mode.
   (function handleDeepLink() {
     var q;
     try { q = new URLSearchParams(location.search); } catch (e) { return; }
-    var addId = q.get("add"), cookId = q.get("cook"), proBack = q.get("pro");
+    var addId = q.get("add"), cookId = q.get("cook"), proBack = q.get("pro"), tab = q.get("tab");
+    if (tab && /^(planner|shopping|recipes|stats)$/.test(tab)) {
+      try { history.replaceState(null, "", location.pathname); } catch (e) { /* ignore */ }
+      var tb = document.getElementById("tab-" + tab + "-btn");
+      if (tb) tb.click();
+      return;
+    }
     if (proBack) {
       try { history.replaceState(null, "", location.pathname); } catch (e) { /* ignore */ }
       if (proBack === "plans") { if (!isNativeApp()) openProPaywall(); return; }

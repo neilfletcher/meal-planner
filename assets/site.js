@@ -17,6 +17,11 @@
     });
   }
 
+  /* ---------- offline support and installing as an app (see /sw.js) ---------- */
+  if ("serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost")) {
+    window.addEventListener("load", function () { navigator.serviceWorker.register("/sw.js").catch(function () {}); });
+  }
+
   /* ---------- returning planners go straight to their week ---------- */
   if (lsGet("soloSupper.state.v1")) {
     document.querySelectorAll("[data-planner-cta]").forEach(function (a) { a.textContent = "Your week"; });

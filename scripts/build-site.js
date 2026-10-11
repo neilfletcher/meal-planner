@@ -153,6 +153,99 @@ var COLLECTIONS = [
 ];
 COLLECTIONS.forEach(function (c) { c.recipes = RECIPES.filter(c.test); });
 
+/* ---------------------------------------------------- pack data, from app.js */
+// The shopping-list maths and the pack sizes live in app.js. They are reused
+// here, unchanged, so the public pages and the planner always agree about
+// what a recipe opens and what it leaves behind.
+var APP_SRC = fs.readFileSync(path.join(ROOT, "app.js"), "utf8");
+function appSection(from, to) {
+  var i = APP_SRC.indexOf(from), j = APP_SRC.indexOf(to, i);
+  if (i < 0 || j < 0) throw new Error("build-site: could not find the app.js section starting " + JSON.stringify(from));
+  return APP_SRC.slice(i, j);
+}
+var packCtx = { RECIPES: RECIPES, RECIPES_BY_ID: BY_ID, state: { servings: 1, staples: {}, ratings: {} } };
+vm.createContext(packCtx);
+vm.runInContext(
+  appSection("  var FRACTIONS = ", "  function scaledIngredientText") +
+  appSection("  var SHOP_SINGULAR = {", "  // Returns { cat: { key: { label, amt } } }") +
+  appSection("  /* ============================= LOW-WASTE PLANNING", "  function leftoversHtml(") +
+  "\nthis.API = { recipeNeeds: recipeNeeds, wasteOf: wasteOf, PACKS: PACKS, shopPlural: shopPlural };", packCtx);
+var PK = packCtx.API;
+var NEEDS = {};
+RECIPES.forEach(function (r) { NEEDS[r.id] = PK.recipeNeeds(r.id); });
+function sumNeeds(ids) {
+  var t = {};
+  ids.forEach(function (id) { var n = NEEDS[id]; Object.keys(n).forEach(function (k) { t[k] = (t[k] || 0) + n[k]; }); });
+  return t;
+}
+function packName(k) {
+  return /(fillet|thigh|breast|tomato|sausage|onion|chop|steak|pepper|egg|bun|roll|flatbread|tortilla|chilli|courgette|avocado|lemon|lime)$/.test(k) ? PK.shopPlural(k) : k;
+}
+function fmtQty(k, v) {
+  var p = PK.PACKS[k];
+  if (p.unit === "g") return (v >= 100 ? Math.round(v / 10) * 10 : Math.max(5, Math.round(v / 5) * 5)) + " g";
+  if (p.unit === "ml") return Math.max(5, Math.round(v / 5) * 5) + " ml";
+  if (p.unit === "tin") return fmtAmt(Math.round(v * 4) / 4) + " tin";
+  if (p.unit === "rasher" || p.unit === "slice") { var n = Math.max(1, Math.round(v)); return n + " " + p.unit + (n === 1 ? "" : "s"); }
+  return fmtAmt(Math.max(0.25, Math.round(v * 4) / 4));
+}
+function fmtLeft(it) {
+  var p = PK.PACKS[it.name];
+  if (p.unit === "") return fmtQty(it.name, it.spare) + " " + (it.spare > 1.2 ? packName(it.name) : it.name);
+  if (p.unit === "tin") return fmtQty(it.name, it.spare) + " of " + it.name;
+  return fmtQty(it.name, it.spare) + " " + it.name;
+}
+// What cooking these dinners leaves in opened packs (the ones worth worrying about).
+function leftoversOf(total) {
+  var out = [];
+  Object.keys(total).forEach(function (k) {
+    if (k.charAt(0) === "?") return;
+    var p = PK.PACKS[k];
+    var packs = Math.max(1, Math.ceil(total[k] / p.size - 0.08));
+    var spare = Math.max(0, packs * p.size - total[k]);
+    if (spare / p.size >= 0.25 && p.perish >= 0.5) out.push({ name: k, spare: spare, cost: spare / p.size * p.perish });
+  });
+  return out.sort(function (a, b) { return b.cost - a.cost; });
+}
+// For one recipe: what it leaves, and the recipes that best finish those packs.
+function useUpFor(r) {
+  var left = leftoversOf(NEEDS[r.id]);
+  if (!left.length) return { left: [], picks: [] };
+  var leftKeys = left.map(function (x) { return x.name; });
+  var w0 = PK.wasteOf(sumNeeds([r.id]));
+  var scored = [];
+  RECIPES.forEach(function (c) {
+    if (c === r) return;
+    var shared = leftKeys.filter(function (k) { return NEEDS[c.id][k]; });
+    if (!shared.length) return;
+    var saving = w0 + PK.wasteOf(sumNeeds([c.id])) - PK.wasteOf(sumNeeds([r.id, c.id]));
+    if (saving <= 0.2) return;
+    scored.push({ r: c, shared: shared, s: saving + (c.photo ? 0.3 : 0) + (c.cuisine !== r.cuisine ? 0.1 : 0) });
+  });
+  scored.sort(function (a, b) { return b.s - a.s || (a.r.id < b.r.id ? -1 : 1); });
+  var picks = [], cuisinesSeen = {};
+  scored.forEach(function (x) { if (picks.length < 4 && !cuisinesSeen[x.r.cuisine]) { picks.push(x); cuisinesSeen[x.r.cuisine] = 1; } });
+  scored.forEach(function (x) { if (picks.length < 4 && picks.indexOf(x) === -1) picks.push(x); });
+  return { left: left, picks: picks };
+}
+function listAnd(a) { return a.length < 2 ? a.join("") : a.slice(0, -1).join(", ") + " and " + a[a.length - 1]; }
+
+// "Use it up" pages: one per packed ingredient that goes off and that plenty of recipes use.
+var USEUP = Object.keys(PK.PACKS).map(function (k) {
+  var p = PK.PACKS[k];
+  var users = RECIPES.filter(function (r) { return NEEDS[r.id][k]; })
+    .sort(function (a, b) { return NEEDS[b.id][k] - NEEDS[a.id][k] || (a.id < b.id ? -1 : 1); });
+  if (p.perish < 1 || users.length < 4) return null;
+  var amounts = users.map(function (r) { return NEEDS[r.id][k]; }).sort(function (a, b) { return a - b; });
+  var typical = amounts[Math.floor(amounts.length / 2)];
+  var name = packName(k), h1, slug;
+  if (p.unit === "tin") { h1 = "What to cook with half a tin of " + k; slug = "half-a-tin-of-" + slugify(k); }
+  else if (p.unit === "g" && p.size <= 30) { h1 = "Recipes to use up leftover " + k; slug = "leftover-" + slugify(k); }
+  else if (/^(chicken|beef|pork|lamb|turkey|salmon|cod|white fish|trout|smoked|cooking chorizo|streaky bacon|ham)/.test(k)) { h1 = "What to cook with the rest of a pack of " + name; slug = "rest-of-a-pack-of-" + slugify(name); }
+  else { h1 = "Recipes to use up " + name; slug = "use-up-" + slugify(name); }
+  return { key: k, name: name, pack: p, users: users, typical: typical, h1: h1, slug: slug };
+}).filter(Boolean).sort(function (a, b) { return b.users.length - a.users.length; });
+
 /* ---------------------------------------------------------------- output */
 var written = [];
 var sitemap = [];
@@ -166,7 +259,7 @@ function rmrf(rel) {
   var p = path.join(ROOT, rel);
   if (fs.existsSync(p)) fs.rmSync(p, { recursive: true, force: true });
 }
-["recipes", "collections", "cuisines"].forEach(rmrf);
+["recipes", "collections", "cuisines", "use-up"].forEach(rmrf);
 
 /* -------------------------------------------------------------- partials */
 var ICON = {
@@ -223,6 +316,7 @@ function header(rel, active) {
     link("recipes", "recipes/", "Recipes") +
     link("collections", "collections/", "Collections") +
     link("cuisines", "cuisines/", "Cuisines") +
+    link("useup", "use-up/", "Use it up") +
     link("planner", "plan/", "The planner") +
     "</nav>" +
     '<div class="site-header-actions">' +
@@ -240,7 +334,7 @@ function footer(rel) {
     '<div class="footer-brand"><a class="brand brand-light" href="' + rel + '">' + LOGO + "<span>Solo Supper</span></a>" +
     '<p class="footer-line">Good dinners, sized for <em>one</em>.</p></div>' +
     col("Recipes", [["Quick dinners for one", rel + "collections/quick-dinners-for-one/"], ["Vegetarian for one", rel + "collections/vegetarian-dinners-for-one/"], ["Fish for one", rel + "collections/fish-dinners-for-one/"], ["All recipes", rel + "recipes/"]]) +
-    col("Planner", [["Plan your week", rel + "plan/"], ["Cuisines", rel + "cuisines/"], ["Collections", rel + "collections/"]]) +
+    col("Planner", [["Plan your week", rel + "plan/"], ["Use it up", rel + "use-up/"], ["Cuisines", rel + "cuisines/"], ["Collections", rel + "collections/"]]) +
     col("About", [["Contact", "mailto:" + CONTACT_EMAIL], ["Privacy", PRIVACY_URL], ["Cookie settings", "#cookie-settings"]]) +
     "</div>" +
     '<div class="footer-base"><span>&copy; ' + YEAR + " Solo Supper</span><span>Every recipe written for one. Scaled for two when someone stays over.</span></div>" +
@@ -271,12 +365,13 @@ function tagMarks(r) {
   return out;
 }
 
-function card(r, rel, extraAttrs) {
+function card(r, rel, extraAttrs, note) {
   return '<article class="rcard"' + (extraAttrs || "") + ">" +
     '<a class="rcard-media" href="' + rel + "recipes/" + r.slug + '/" tabindex="-1" aria-hidden="true">' + recipeImg(r, rel, "rcard-img") + "</a>" +
     '<span class="eyebrow">' + esc(r.cuisine) + " &middot; " + esc(PROTEIN_LABEL[r.protein] || r.protein) + "</span>" +
     '<h3 class="rcard-title"><a href="' + rel + "recipes/" + r.slug + '/">' + esc(r.title) + "</a></h3>" +
     '<div class="rcard-meta"><span class="mono">' + ICON.clock + total(r) + " min</span>" + tagMarks(r) + "</div>" +
+    (note ? '<p class="rcard-note">' + note + "</p>" : "") +
     "</article>";
 }
 
@@ -309,11 +404,11 @@ function sectionHead(eyebrow, h2, linkHref, linkText) {
   var body =
     '<section class="hero2">' +
     '<div class="hero2-text">' +
-    '<h1 class="display">Dinner for one, planned for the week.</h1>' +
-    '<p class="lead">' + RECIPES.length + " recipes written for a single portion, from " + CUISINES.length + " countries. Pick your week, get one shopping list, and cook each night in about ten minutes of prep.</p>" +
+    '<h1 class="display">Dinner for one, without the waste.</h1>' +
+    '<p class="lead">' + RECIPES.length + " recipes written for a single portion. The planner picks dinners that share their packs, so the spinach you open on Monday is finished by Thursday, and the shopping list adds it all up.</p>" +
     '<div class="btn-row"><a class="btn btn-primary btn-lg" href="plan/">Plan this week ' + ICON.arrow + "</a>" +
     '<a class="btn btn-outline btn-lg" href="recipes/">Browse recipes</a></div>' +
-    '<p class="small muted">Free to use. Sign in with Google to keep your week on every device.</p>' +
+    '<p class="small muted">About ten minutes of prep a night. Free to use, and your week syncs when you sign in with Google.</p>' +
     "</div>" +
     '<div class="hero2-mosaic">' + mosaic.map(function (r, i) { return tile(r, i === 0 ? "tile-big" : "", i < 3); }).join("") + "</div>" +
     "</section>" +
@@ -342,12 +437,19 @@ function sectionHead(eyebrow, h2, linkHref, linkText) {
     '<div class="night-text">' +
     '<h2 class="display-m">How the planner works</h2>' +
     '<ol class="night-steps">' +
-    '<li><span class="ns-n">1</span><div><h3>Pick your week</h3><p>Choose dinners day by day, or press Fill and swap the ones you would not cook.</p></div></li>' +
+    '<li><span class="ns-n">1</span><div><h3>Pick a low-waste week</h3><p>One tap chooses dinners that share their packs: the other half of the coriander, the rest of the mince. Swap anything you would not cook.</p></div></li>' +
     '<li><span class="ns-n">2</span><div><h3>Shop once</h3><p>One list, grouped by aisle, with quantities added up. Hide what is already in the cupboard.</p></div></li>' +
     '<li><span class="ns-n">3</span><div><h3>Cook for one</h3><p>Every recipe is a single portion, with a step-by-step cooking mode and timers.</p></div></li>' +
     "</ol>" +
     '<div class="btn-row"><a class="btn btn-primary btn-lg" href="plan/">Open the planner ' + ICON.arrow + "</a></div>" +
     "</div>" + recipeImg(BY_ID.d8, rel, "night-img") + "</div></section>" +
+
+    '<section class="wrap section">' +
+    sectionHead("", "Got half a pack left?", "use-up/", "Every leftover") +
+    '<p class="section-lead">Cooking for one means half a tin here and half a bag there. Pick what is sitting in your fridge and finish it tonight.</p>' +
+    '<ul class="useup-cloud">' + USEUP.slice(0, 16).map(function (u) {
+      return '<li><a href="use-up/' + u.slug + '/"><span>' + esc(u.h1.replace(/^(What to cook with|Recipes to use up) /, "").replace(/^the rest of a pack of /, "a pack of ").replace(/^./, function (c) { return c.toUpperCase(); })) + '</span><span class="mono">' + u.users.length + "</span></a></li>";
+    }).join("") + "</ul></section>" +
 
     '<section class="wrap section">' +
     sectionHead("", CUISINES.length + " countries in the book", "cuisines/", "All cuisines") +
@@ -358,7 +460,7 @@ function sectionHead(eyebrow, h2, linkHref, linkText) {
   out("index.html", page({
     rel: rel, path: "", active: "home", bodyClass: "page-home",
     title: "Solo Supper: dinners for one, planned for the week",
-    description: RECIPES.length + " original recipes written for one person, a weekly meal planner and a shopping list that adds itself up. Dinner for one, sorted.",
+    description: RECIPES.length + " recipes written for one person, and a weekly planner that picks dinners sharing their packs, so less goes in the bin. Dinner for one, without the waste.",
     image: "img/recipes/d9.webp",
     jsonld: [{ "@context": "https://schema.org", "@type": "WebSite", name: "Solo Supper", url: SITE_URL + "/" }]
   }, body));
@@ -444,6 +546,10 @@ RECIPES.forEach(function (r) {
   }).join("");
   var stepsHtml = r.steps.map(function (s, k) { return '<li><span class="step-num">' + (k + 1) + '</span><p>' + esc(s) + "</p></li>"; }).join("");
   var rel4 = related(r);
+  var uu = useUpFor(r);
+  var uuIds = uu.picks.map(function (x) { return x.r.id; });
+  rel4 = rel4.filter(function (x) { return uuIds.indexOf(x.id) === -1; });
+  if (rel4.length < 4) rel4 = rel4.concat(related(r).filter(function (x) { return uuIds.indexOf(x.id) === -1 && rel4.indexOf(x) === -1; })).slice(0, 4);
   var cuisineHref = rel + "cuisines/" + CUISINE_SLUG[r.cuisine] + "/";
   var protein = PROTEIN_LABEL[r.protein] || r.protein;
   var colls = COLLECTIONS.filter(function (c) { return c.recipes.indexOf(r) !== -1; });
@@ -481,6 +587,15 @@ RECIPES.forEach(function (r) {
       '<a class="chip" href="' + cuisineHref + '">' + esc(demonym(r.cuisine)) + " dinners for one</a></div></div>" : "") +
     "</section></div>" +
     "</article>" +
+    (uu.picks.length
+      ? '<section class="section useup" aria-labelledby="useup-h"><div class="useup-head"><h2 id="useup-h">Use up the rest</h2>' +
+        '<p>Cooking this for one leaves ' + listAnd(uu.left.slice(0, 3).map(function (x) { return "<strong>" + esc(fmtLeft(x)) + "</strong>"; })) +
+        ". These recipes finish them off, so plan one later in the same week.</p></div>" +
+        '<div class="rgrid rgrid-4">' + uu.picks.map(function (x) {
+          return card(x.r, rel, "", "Uses the " + esc(listAnd(x.shared.map(packName))));
+        }).join("") + "</div>" +
+        '<div class="btn-row useup-cta"><a class="btn btn-primary" href="' + rel + "plan/?add=" + r.id + '">Plan this with them ' + ICON.arrow + "</a></div></section>"
+      : '<section class="section"><p class="useup-none">' + ICON.check + "Nothing left over: everything this recipe opens gets used.</p></section>") +
     '<section class="section">' + sectionHead("", "Good with the rest of your week", rel + "recipes/", "All recipes") +
     '<div class="rgrid rgrid-4">' + rel4.map(function (x) { return card(x, rel); }).join("") + "</div></section>" +
     "</div>";
@@ -617,6 +732,53 @@ CUISINES.forEach(function (cu) {
         '<span class="mono">' + counts[c] + "</span></a></li>";
     }).join("") + "</ol></section>"));
   sitemap.push({ loc: "cuisines/", pri: "0.7" });
+})();
+
+/* ------------------------------------------------------------ use it up */
+(function buildUseUp() {
+  USEUP.forEach(function (u) {
+    var rel = "../../";
+    var p = u.pack, spare = Math.max(0, p.size - u.typical);
+    var lead = u.users.filter(function (r) { return r.photo; })[0] || u.users[0];
+    var intro = (p.unit === "" ? packName(u.key).replace(/^./, function (c) { return c.toUpperCase(); }) + " come in a " + p.sold : u.key.replace(/^./, function (c) { return c.toUpperCase(); }) + (/s$/.test(u.key) ? " usually come" : " usually comes") + " as a " + p.sold) +
+      ". A dinner for one tends to use about " + fmtQty(u.key, u.typical) + (spare > 0 ? ", which leaves around " + fmtQty(u.key, spare) + " behind" : "") +
+      ". All " + u.users.length + " recipes here use it, so put two or three in the same week and the pack gets finished.";
+    var body =
+      '<div class="wrap"><nav class="crumbs" aria-label="Breadcrumb"><a href="' + rel + 'use-up/">Use it up</a><span aria-hidden="true">/</span><span aria-current="page">' + esc(u.h1) + "</span></nav></div>" +
+      '<section class="wrap hub-head">' +
+      '<div class="hub-text"><span class="eyebrow">' + u.users.length + " recipes &middot; " + esc(p.sold) + "</span>" +
+      '<h1 class="display">' + esc(u.h1) + "</h1>" +
+      '<p class="lead">' + esc(intro) + "</p>" +
+      '<div class="btn-row"><a class="btn btn-primary btn-lg" href="' + rel + 'plan/">Plan a low-waste week ' + ICON.arrow + "</a></div></div>" +
+      '<div class="hub-media">' + recipeImg(lead, rel, "hub-img", null, true) + "</div></section>" +
+      '<section class="wrap section-tight"><div class="rgrid">' + u.users.map(function (r) {
+        return card(r, rel, "", "Uses " + esc(fmtQty(u.key, NEEDS[r.id][u.key])) + (p.unit === "tin" ? "" : " of the pack"));
+      }).join("") + "</div></section>" +
+      '<section class="wrap section">' + sectionHead("", "Other leftovers") +
+      '<div class="link-cloud">' + USEUP.filter(function (x) { return x !== u; }).map(function (x) { return '<a class="chip" href="../' + x.slug + '/">' + esc(x.h1) + "</a>"; }).join("") + "</div></section>";
+    out("use-up/" + u.slug + "/index.html", page({
+      rel: rel, path: "use-up/" + u.slug + "/", active: "useup",
+      title: u.h1 + ": " + u.users.length + " recipes for one | Solo Supper",
+      description: intro,
+      image: lead && lead.photo ? "img/recipes/" + lead.id + ".webp" : null,
+      jsonld: [{ "@context": "https://schema.org", "@type": "ItemList", name: u.h1,
+        itemListElement: u.users.map(function (r, i) { return { "@type": "ListItem", position: i + 1, url: SITE_URL + "/recipes/" + r.slug + "/" }; }) }]
+    }, body));
+    sitemap.push({ loc: "use-up/" + u.slug + "/", pri: "0.7" });
+  });
+  var rel = "../";
+  out("use-up/index.html", page({
+    rel: rel, path: "use-up/", active: "useup",
+    title: "Use it up: recipes for leftover ingredients when cooking for one | Solo Supper",
+    description: "Half a tin of chickpeas, the rest of the coriander, three spare chicken thighs. Recipes for one that finish the packs supermarkets sell for families."
+  },
+    '<section class="wrap page-head"><div class="page-head-text"><span class="eyebrow">' + USEUP.length + " leftovers</span>" +
+    '<h1 class="display">Use it up</h1>' +
+    '<p class="lead">Supermarkets sell for families. Cooking for one leaves half a tin here, half a bag there. Pick what is in your fridge and find a dinner that finishes it.</p></div></section>' +
+    '<section class="wrap section-tight"><ul class="useup-cloud useup-cloud-big">' + USEUP.map(function (u) {
+      return '<li><a href="' + u.slug + '/"><span>' + esc(u.h1) + '</span><span class="mono">' + u.users.length + "</span></a></li>";
+    }).join("") + "</ul></section>"));
+  sitemap.push({ loc: "use-up/", pri: "0.8" });
 })();
 
 /* ------------------------------------------------------------ 404 */

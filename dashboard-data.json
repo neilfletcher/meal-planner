@@ -1,19 +1,19 @@
 {
-  "generatedAt": "2026-10-10T12:02:28.709Z",
+  "generatedAt": "2026-10-11T12:15:34.130Z",
   "traffic": {
     "last7Days": {
       "users": 22,
-      "newUsers": 19,
-      "sessions": 41,
-      "pageViews": 70,
-      "avgEngagementTimeSec": 26
+      "newUsers": 18,
+      "sessions": 52,
+      "pageViews": 144,
+      "avgEngagementTimeSec": 73
     },
     "last30Days": {
-      "users": 178,
-      "newUsers": 181,
-      "sessions": 300,
-      "pageViews": 459,
-      "avgEngagementTimeSec": 29
+      "users": 181,
+      "newUsers": 184,
+      "sessions": 319,
+      "pageViews": 542,
+      "avgEngagementTimeSec": 37
     },
     "dailyUsers": [
       {
@@ -90,14 +90,18 @@
       },
       {
         "date": "2026-10-10",
-        "users": 13
+        "users": 14
+      },
+      {
+        "date": "2026-10-11",
+        "users": 5
       }
     ],
     "topPages": [
       {
         "path": "/DB-club-records/",
         "title": "Duston Bowmen Records",
-        "views": 101
+        "views": 104
       },
       {
         "path": "/DB-club-members/",
@@ -112,17 +116,22 @@
       {
         "path": "/archery-tracker/",
         "title": "Neil Fletcher: Archery Tracker",
-        "views": 33
-      },
-      {
-        "path": "/DB-join/",
-        "title": "Join Duston Bowmen",
-        "views": 30
+        "views": 42
       },
       {
         "path": "/",
         "title": "Neil Fletcher",
-        "views": 29
+        "views": 32
+      },
+      {
+        "path": "/DB-join/",
+        "title": "Join Duston Bowmen",
+        "views": 31
+      },
+      {
+        "path": "/meal-planner/",
+        "title": "Solo Supper: dinners for one, planned for the week",
+        "views": 28
       },
       {
         "path": "/archery-backstop/",
@@ -138,11 +147,6 @@
         "path": "/DB-archery-dashboard/",
         "title": "Archery Tracker",
         "views": 17
-      },
-      {
-        "path": "/meal-planner/",
-        "title": "Plate & List",
-        "views": 10
       }
     ]
   },
@@ -151,10 +155,6 @@
     "newLast7Days": 0,
     "newLast30Days": 22,
     "dailySignups": [
-      {
-        "date": "2026-09-11",
-        "count": 0
-      },
       {
         "date": "2026-09-12",
         "count": 0
@@ -270,21 +270,25 @@
       {
         "date": "2026-10-10",
         "count": 0
+      },
+      {
+        "date": "2026-10-11",
+        "count": 0
       }
     ]
   },
   "retention": {
     "newVsReturning": {
-      "new": 177,
+      "new": 180,
       "returning": 14
     },
     "windowDays": 28
   },
   "stickiness": {
-    "dau": 0,
+    "dau": 14,
     "wau": 22,
-    "mau": 178,
-    "dauMauPct": 0
+    "mau": 181,
+    "dauMauPct": 8
   },
   "platform": {
     "web": 0,
@@ -301,84 +305,89 @@
     "topCooked": [
       {
         "id": "d1",
-        "title": "Sticky Hoisin Pork with Egg-Fried Rice",
+        "title": "d1",
         "count": 2
       },
       {
         "id": "d2",
-        "title": "Harissa Salmon with Lemon Couscous",
+        "title": "d2",
         "count": 1
       },
       {
         "id": "d4",
-        "title": "Sesame Ginger Beef Stir-Fry",
+        "title": "d4",
         "count": 1
       },
       {
         "id": "d223",
-        "title": "Belgian-Style Beef & Beer Stew (Carbonnade-Inspired)",
+        "title": "d223",
         "count": 1
       },
       {
         "id": "d125",
-        "title": "Singapore-Style Chilli Chicken Noodles",
+        "title": "d125",
+        "count": 1
+      },
+      {
+        "id": "d428",
+        "title": "d428",
         "count": 1
       },
       {
         "id": "d9",
-        "title": "Lemon & Herb Cod with Crushed Potatoes",
+        "title": "d9",
         "count": 1
       }
     ],
     "topPlanned": [
       {
         "id": "d1",
-        "title": "Sticky Hoisin Pork with Egg-Fried Rice",
+        "title": "d1",
         "count": 6
       },
       {
         "id": "d2",
-        "title": "Harissa Salmon with Lemon Couscous",
+        "title": "d2",
         "count": 5
       },
       {
         "id": "d5",
-        "title": "Spiced Chickpea & Spinach Curry",
+        "title": "d5",
         "count": 5
       },
       {
         "id": "d4",
-        "title": "Sesame Ginger Beef Stir-Fry",
+        "title": "d4",
         "count": 4
       },
       {
         "id": "d3",
-        "title": "Thai Green Curry with Chicken",
+        "title": "d3",
         "count": 4
       },
       {
         "id": "d7",
-        "title": "Quick Matar Paneer",
+        "title": "d7",
         "count": 3
       },
       {
         "id": "d125",
-        "title": "Singapore-Style Chilli Chicken Noodles",
+        "title": "d125",
+        "count": 3
+      },
+      {
+        "id": "d223",
+        "title": "d223",
         "count": 3
       },
       {
         "id": "d42",
-        "title": "Beef Bulgogi Lettuce Cups",
+        "title": "d42",
         "count": 2
       },
       {
         "id": "d205",
-        "title": "Armenian-Style Lamb & Bulgur Pilaf",
-        "count": 2
-      },
-      {
-        "id": "d223",
-        "title": "Belgian-Style Beef & Beer Stew (Carbonnade-Inspired)",
+        "title": "d205",
         "count": 2
       }
     ],
@@ -391,9 +400,9 @@
       "confirmedACook": 5
     },
     "library": {
-      "totalRecipes": 437,
-      "everTouched": 67,
-      "neverTouchedPct": 85
+      "totalRecipes": 0,
+      "everTouched": 76,
+      "neverTouchedPct": 0
     },
     "dormant": {
       "count": 0,

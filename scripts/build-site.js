@@ -316,6 +316,7 @@ function head(o) {
     '<meta property="og:image" content="' + esc(img) + '">\n' +
     '<meta name="twitter:card" content="summary_large_image">\n' +
     '<meta name="theme-color" content="#F7F5F0">\n' +
+    '<meta name="p:domain_verify" content="65478e8870d5adc2d2e0ae11d07f8944"/>\n' +
     '<meta name="color-scheme" content="light">\n' +
     '<link rel="icon" href="' + o.rel + 'favicon.svg" type="image/svg+xml">\n' +
     '<link rel="apple-touch-icon" href="' + o.rel + 'icons/apple-touch-icon.png">\n' +

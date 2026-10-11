@@ -1,3 +1,26 @@
 {
-  "weeks": []
+  "weeks": [
+    {
+      "week": "2026-10-12",
+      "recipes": [
+        "d90",
+        "d55",
+        "d98",
+        "d345",
+        "d115",
+        "d143"
+      ],
+      "useups": [
+        "coriander",
+        "salmon fillet"
+      ],
+      "posted": [
+        "d345",
+        "d90",
+        "d115",
+        "d98",
+        "d143"
+      ]
+    }
+  ]
 }

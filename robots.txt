@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /admin.html
 
-Sitemap: https://neilfletcher.github.io/meal-planner/sitemap.xml
+Sitemap: https://solosupper.co.uk/sitemap.xml

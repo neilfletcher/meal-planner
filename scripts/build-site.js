@@ -14,7 +14,7 @@
  *
  * Run from anywhere:   node scripts/build-site.js
  * Set the live address (used for canonical links, the sitemap and social
- * previews) with SITE_URL, e.g.  SITE_URL=https://solosupper.com node scripts/build-site.js
+ * previews) with SITE_URL, e.g.  SITE_URL=http://localhost:8080 node scripts/build-site.js
  * No dependencies: plain Node 16+.
  */
 "use strict";
@@ -24,7 +24,7 @@ var path = require("path");
 var vm = require("vm");
 
 var ROOT = path.resolve(__dirname, "..");
-var SITE_URL = (process.env.SITE_URL || "https://neilfletcher.github.io/meal-planner").replace(/\/+$/, "");
+var SITE_URL = (process.env.SITE_URL || "https://solosupper.co.uk").replace(/\/+$/, "");
 var GA_ID = "G-JF54HQGVLT";
 var PRIVACY_URL = "https://neilfletcher.github.io/TrooLoo-privacy/privacy.html";
 var CONTACT_EMAIL = "apps@trooperlooper.co.uk";

@@ -32,19 +32,24 @@ async function veo(r, jpgFile, outFile, log) {
   var prompt = "Animate this photo of " + r.title + " for an 8-second vertical food video. Keep the plate, the food and its arrangement exactly as they are: " +
     "no new ingredients, no extra food, no change in portion size. Add gentle steam rising from the hot food, a very slow push-in towards the plate, and soft warm " +
     "natural light. No hands, no people, no cutlery moving, no text. Quiet kitchen sound only.";
-  var body = { instances: [{ prompt: prompt, image: { inlineData: { mimeType: "image/jpeg", data: fs.readFileSync(jpgFile).toString("base64") } } }],
-    parameters: { aspectRatio: "9:16", resolution: "1080p", durationSeconds: 8 } };
-  var start = await fetch(API + "/models/" + model + ":predictLongRunning?key=" + encodeURIComponent(key), {
-    method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(body) });
-  var op = await start.json();
-  if (!start.ok || !op.name) {
-    // Some models do not accept every parameter; try again with the bare minimum.
-    body.parameters = { aspectRatio: "9:16" };
-    start = await fetch(API + "/models/" + model + ":predictLongRunning?key=" + encodeURIComponent(key), {
-      method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(body) });
-    op = await start.json();
-    if (!start.ok || !op.name) throw new Error(model + " refused the request: " + JSON.stringify(op.error || op).slice(0, 400));
+  var b64 = fs.readFileSync(jpgFile).toString("base64");
+  // The Gemini API's Veo endpoint wants the photo as bytesBase64Encoded; inlineData is kept as a fallback.
+  var images = [{ bytesBase64Encoded: b64, mimeType: "image/jpeg" }, { inlineData: { mimeType: "image/jpeg", data: b64 } }];
+  var params = [{ aspectRatio: "9:16", resolution: "1080p", durationSeconds: 8 }, { aspectRatio: "9:16" }];
+  var op = null, errs = [];
+  outer: for (var a = 0; a < images.length; a++) {
+    for (var p = 0; p < params.length; p++) {
+      var body = { instances: [{ prompt: prompt, image: images[a] }], parameters: params[p] };
+      var start = await fetch(API + "/models/" + model + ":predictLongRunning?key=" + encodeURIComponent(key), {
+        method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(body) });
+      var res = await start.json();
+      if (start.ok && res.name) { op = res; break outer; }
+      errs.push(JSON.stringify(res.error || res).slice(0, 250));
+      // Billing or quota problems won't be fixed by a different request shape.
+      if (start.status === 402 || start.status === 429 || start.status === 403) break outer;
+    }
   }
+  if (!op) throw new Error(model + " refused the request: " + errs.join(" | ").slice(0, 700));
   log("Veo (" + model + ") started: " + op.name);
   for (var i = 0; i < 60 && !op.done; i++) {
     await sleep(10000);

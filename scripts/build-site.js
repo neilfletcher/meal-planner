@@ -673,10 +673,17 @@ RECIPES.forEach(function (r) {
 });
 
 /* ------------------------------------------------------------ hub pages */
+// The big picture at the top of a list page: a dish from further down the
+// list, so it never sits straight above the same photo in the first card.
+function heroPick(list) {
+  var photos = list.filter(function (r) { return r.photo; });
+  return photos.filter(function (r) { return list.indexOf(r) >= 4; })[0] ||
+    photos.filter(function (r) { return list.indexOf(r) > 0; }).pop() || photos[0] || list[0];
+}
+
 function hubPage(o) {
   var rel = "../../";
-  var withPhoto = o.recipes.filter(function (r) { return r.photo; });
-  var lead = withPhoto[0] || o.recipes[0];
+  var lead = heroPick(o.recipes);
   var body =
     '<div class="wrap"><nav class="crumbs" aria-label="Breadcrumb"><a href="' + rel + o.parentPath + '">' + esc(o.parentName) + '</a><span aria-hidden="true">/</span><span aria-current="page">' + esc(o.h1) + "</span></nav></div>" +
     '<section class="wrap hub-head">' +
@@ -773,7 +780,7 @@ CUISINES.forEach(function (cu) {
   USEUP.forEach(function (u) {
     var rel = "../../";
     var p = u.pack, spare = Math.max(0, p.size - u.typical);
-    var lead = u.users.filter(function (r) { return r.photo; })[0] || u.users[0];
+    var lead = heroPick(u.users);
     var intro = (p.unit === "" ? packName(u.key).replace(/^./, function (c) { return c.toUpperCase(); }) + " come in a " + p.sold : u.key.replace(/^./, function (c) { return c.toUpperCase(); }) + (/s$/.test(u.key) ? " usually come" : " usually comes") + " as a " + p.sold) +
       ". A dinner for one tends to use about " + fmtQty(u.key, u.typical) + (spare > 0 ? ", which leaves around " + fmtQty(u.key, spare) + " behind" : "") +
       ". All " + u.users.length + " recipes here use it, so put two or three in the same week and the pack gets finished.";

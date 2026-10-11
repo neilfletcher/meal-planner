@@ -13,8 +13,6 @@
 # Private bits of the repo that do not need to be public pages.
 /admin.html
   X-Robots-Tag: noindex, nofollow
-/dashboard-data.json
-  X-Robots-Tag: noindex
 /functions/*
   X-Robots-Tag: noindex
 /scripts/*

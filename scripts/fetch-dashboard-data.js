@@ -3,7 +3,9 @@
 // Firebase Auth, and recipe/shopping-list/device usage via Firestore (the
 // same users/{uid}/planner/state documents the app itself syncs, plus a
 // lightweight users/{uid}/deviceLog/main doc for cross-device counting),
-// then writes the combined result to dashboard-data.json at the repo root.
+// then saves the combined result privately in Firestore at admin/dashboard,
+// where only the admin page (through /api/admin) can read it. Set
+// DASHBOARD_FILE=1 to also write dashboard-data.json locally for debugging.
 //
 // Required environment variables (set as GitHub Actions secrets):
 //   GA4_PROPERTY_ID          e.g. "123456789" (numeric only, no "properties/" prefix)
@@ -396,9 +398,18 @@ async function main() {
     engagement,
   };
 
-  const outPath = path.join(__dirname, '..', 'dashboard-data.json');
-  fs.writeFileSync(outPath, JSON.stringify(output, null, 2));
-  console.log(`Wrote ${outPath}`);
+  // Stored as one JSON string: simpler than mapping every nested list to Firestore fields.
+  await admin.firestore().collection('admin').doc('dashboard').set({
+    json: JSON.stringify(output),
+    updatedAt: Date.now(),
+  });
+  console.log('Saved to Firestore admin/dashboard');
+
+  if (process.env.DASHBOARD_FILE === '1') {
+    const outPath = path.join(__dirname, '..', 'dashboard-data.json');
+    fs.writeFileSync(outPath, JSON.stringify(output, null, 2));
+    console.log(`Wrote ${outPath}`);
+  }
 }
 
 main().catch((err) => {

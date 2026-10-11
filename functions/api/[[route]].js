@@ -190,6 +190,12 @@ async function admin(request, env) {
     return json({ codes: codes, months: months, note: note });
   }
 
+  if (body.action === "dashboard") {
+    var dash = await getDoc(env, "admin/dashboard");
+    if (!dash || !dash.data.json) return json({ dashboard: null });
+    return json({ dashboard: JSON.parse(dash.data.json), updatedAt: dash.data.updatedAt || 0 });
+  }
+
   if (body.action === "listCodes") {
     var rows = await listCollection(env, "giftCodes", "createdAt", 300);
     return json({ codes: rows.map(function (r) { return Object.assign({ code: r.id }, r.data); }) });

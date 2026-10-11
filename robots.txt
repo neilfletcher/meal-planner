@@ -5,6 +5,5 @@ Disallow: /api/
 Disallow: /functions/
 Disallow: /scripts/
 Disallow: /tests/
-Disallow: /dashboard-data.json
 
 Sitemap: https://solosupper.co.uk/sitemap.xml

@@ -205,6 +205,15 @@ const [, , code3] = (await call("admin", { token: tAdmin, body: { action: "creat
 const ra = await Promise.all([call("redeem", { token: await idToken("u5", "e@x.com"), body: { code: code3 } }), call("redeem", { token: await idToken("u6", "f@x.com"), body: { code: code3 } })]);
 ok(ra.filter((x) => x.status === 200).length === 1, "only one of two simultaneous redemptions wins");
 
+// dashboard numbers
+r = await call("admin", { token: tAdmin, body: { action: "dashboard" } });
+ok(r.status === 200 && r.body.dashboard === null, "dashboard empty before the first run");
+writeDoc("admin/dashboard", { json: enc(JSON.stringify({ traffic: { users: 5 } })), updatedAt: enc(123) });
+r = await call("admin", { token: tAdmin, body: { action: "dashboard" } });
+ok(r.body.dashboard && r.body.dashboard.traffic.users === 5, "admin reads the dashboard numbers");
+r = await call("admin", { token: t2, body: { action: "dashboard" } });
+ok(r.status === 403, "dashboard numbers are admin only");
+
 // grants
 r = await call("admin", { token: tAdmin, body: { action: "grant", email: "nobody@example.com", months: 0 } });
 ok(r.status === 404, "grant needs an existing account");

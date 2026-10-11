@@ -855,15 +855,16 @@
   applyDashboardData(emptyMetrics());
 
   function loadDashboardData() {
-    fetch("dashboard-data.json?cb=" + Date.now())
-      .then(function (r) {
-        if (!r.ok) throw new Error("HTTP " + r.status);
-        return r.json();
+    // The numbers live privately in Firestore; only admin accounts can fetch them.
+    adminApi({ action: "dashboard" })
+      .then(function (j) {
+        if (!j.dashboard) throw new Error("no data yet: run the Update dashboard data action on GitHub");
+        return j.dashboard;
       })
       .then(applyDashboardData)
       .catch(function (err) {
         els["waitingBanner"].classList.add("show");
-        els["waitingBanner"].textContent = "Couldn't load dashboard-data.json (" + err.message + "). Try Refresh in a moment.";
+        els["waitingBanner"].textContent = "Couldn't load the dashboard numbers (" + err.message + "). Try Refresh in a moment.";
         els["syncPill"].classList.add("stale");
         els["syncText"].textContent = "Not connected";
       });

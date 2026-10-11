@@ -854,7 +854,7 @@ out("sitemap.xml", '<?xml version="1.0" encoding="UTF-8"?>\n' +
     return "  <url><loc>" + esc(SITE_URL + "/" + s.loc) + "</loc><lastmod>" + today + "</lastmod><priority>" + s.pri + "</priority>" +
       (s.img ? "<image:image><image:loc>" + esc(SITE_URL + "/" + s.img) + "</image:loc></image:image>" : "") + "</url>";
   }).join("\n") + "\n</urlset>\n");
-out("robots.txt", "User-agent: *\nAllow: /\nDisallow: /admin.html\nDisallow: /api/\nDisallow: /functions/\nDisallow: /scripts/\nDisallow: /tests/\nDisallow: /dashboard-data.json\n\nSitemap: " + SITE_URL + "/sitemap.xml\n");
+out("robots.txt", "User-agent: *\nAllow: /\nDisallow: /admin.html\nDisallow: /api/\nDisallow: /functions/\nDisallow: /scripts/\nDisallow: /tests/\n\nSitemap: " + SITE_URL + "/sitemap.xml\n");
 
 console.log("Solo Supper: built " + written.length + " files for " + SITE_URL +
   " (" + RECIPES.length + " recipes, " + COLLECTIONS.length + " collections, " + CUISINES.length + " cuisines).");

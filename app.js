@@ -866,6 +866,7 @@
     var repAside = wasteReport(ids);
     html += '<section class="aside-card"><div class="aside-head"><h2>Leftovers</h2></div>' +
       '<p class="aside-more">What the opened packs leave once this week is cooked.</p>' + leftoversHtml(ids, 6) +
+      (function () { if (!hasProFeatures()) return ""; var sv = savingsFor(ids); return sv.packs >= 0.5 ? '<p class="aside-more savings-line">' + ico("check") + "Sharing packs saves about " + fmtPacks(sv.packs) + " (" + fmtMoney(sv.money) + ") compared with buying for each dinner.</p>" : ""; })() +
       (repAside.items.length && state.mode === "days" && !viewNext ? '<button type="button" class="btn btn-outline btn-block needs-pro" id="aside-carry-btn">Carry leftovers to my fridge</button>' : "") + "</section>";
     el.innerHTML = html;
     document.getElementById("aside-shop-btn").addEventListener("click", function () { document.getElementById("tab-shopping-btn").click(); });
@@ -2241,6 +2242,7 @@
 
     /* ---- Your kitchen (personal, built from confirmed cooks + history + ratings) ---- */
     html += '<div class="stats-section"><div class="week-heading stats-heading"><span class="eyebrow">Counts only dinners you ticked as cooked</span><h1 class="week-range">Your <em>kitchen</em></h1></div>';
+    html += savingsSectionHtml();
 
     /* Actually cooked: only counts a dish once you tick the checkmark on its
        day, so these numbers never assume a planned dinner got made. */
@@ -2375,6 +2377,7 @@
     html += "</div>";
 
     el.innerHTML = html;
+    wireSavings();
     var unlockLink = document.getElementById("stats-unlock-link");
     if (unlockLink) unlockLink.addEventListener("click", function (e) { e.preventDefault(); openPaywall(); });
   }
@@ -3708,6 +3711,133 @@
     var a = document.getElementById("trial-plans-btn"), c = document.getElementById("trial-close-btn");
     if (a) a.addEventListener("click", function () { openProPaywall(); });
     if (c) c.addEventListener("click", function () { trialNoteDismissed = true; renderPlannerBanner(); });
+  }
+
+  /* ============================= WASTE SAVED ============================= */
+  // What planning dinners to share packs saves, compared with buying for each
+  // dinner on its own (the usual way when cooking for one). Only ingredients
+  // that go off count (perish 0.5 and up), cupboard staples are skipped, and
+  // money uses rough UK supermarket prices for each pack.
+  var PACK_PRICE = {
+    "chicken thigh": 3.00, "chicken breast": 3.20, "beef mince": 3.50, "pork mince": 3.00, "lamb mince": 4.50, "turkey mince": 3.50,
+    "white fish fillet": 3.50, "cod fillet": 4.50, "salmon fillet": 4.50, "trout fillet": 4.00, "smoked mackerel fillet": 2.50,
+    "beef rump steak": 4.50, "beef sirloin": 6.00, "beef frying strips": 4.00, "pork loin steak": 3.00, "pork loin": 3.50,
+    "lamb leg steak": 5.00, "pork sausage": 2.50, "pork chop": 3.00, "smoked sausage": 1.80, "cooking chorizo": 2.50,
+    "streaky bacon": 2.20, "ham": 1.80,
+    "soured cream": 0.85, "double cream": 1.40, "natural yoghurt": 1.20, "milk": 1.15, "feta": 1.80, "halloumi": 2.50,
+    "paneer": 2.50, "mozzarella": 0.85, "cheddar": 2.50, "egg": 1.80,
+    "coriander": 0.80, "parsley": 0.80, "dill": 0.80, "mint": 0.80, "basil": 0.80, "chives": 0.80, "spring onion": 0.55,
+    "spinach": 1.20, "baby spinach": 1.20, "mixed salad leaves": 1.00, "beansprouts": 0.90, "green beans": 1.10,
+    "tenderstem broccoli": 1.80, "kale": 1.00, "pak choi": 1.20, "chestnut mushroom": 1.20, "cherry tomato": 1.20,
+    "new potato": 1.20, "cooked beetroot": 0.90, "cucumber": 0.75, "red pepper": 0.60, "green pepper": 0.55, "pepper": 0.60,
+    "courgette": 0.50, "avocado": 0.90, "lemon": 0.40, "lime": 0.30, "tomato": 0.25, "onion": 0.15, "red onion": 0.20,
+    "leek": 0.60, "sweet potato": 0.40, "white cabbage": 0.80, "butternut squash": 1.20,
+    "chopped tomato": 0.50, "chickpeas": 0.60, "black beans": 0.60, "butter beans": 0.60, "kidney beans": 0.60,
+    "cannellini beans": 0.60, "black-eyed beans": 0.60, "coconut milk": 1.10, "passata": 0.70, "pineapple chunks": 0.70,
+    "cooked rice": 1.00, "firm tofu": 1.80,
+    "flatbread": 1.20, "pitta bread": 0.80, "burger bun": 1.00, "crusty bread roll": 1.00, "soft tortilla": 1.10
+  };
+  // Perishable food a set of dinners leaves in opened packs: { packs, money }.
+  function spareOf(ids) {
+    var together = {}, staples = state.staples || {};
+    ids.forEach(function (id) {
+      var n = recipeNeeds(id);
+      Object.keys(n).forEach(function (k) { if (PACKS[k] && PACKS[k].perish >= 0.5 && n[k] > 0) together[k] = (together[k] || 0) + n[k]; });
+    });
+    var packs = 0, money = 0;
+    Object.keys(together).forEach(function (k) {
+      if (staples[(SHOP_PACK_CAT[k] || "") + "|" + k]) return;
+      var p = PACKS[k];
+      var spare = (Math.max(1, Math.ceil(together[k] / p.size - 0.08)) * p.size - together[k]) / p.size;
+      packs += spare; money += spare * (PACK_PRICE[k] || 1);
+    });
+    return { packs: packs, money: money };
+  }
+  // A typical dinner for one, bought on its own: the average across the book.
+  var typicalCache = null, typicalServings = null;
+  function typicalDinnerWaste() {
+    if (typicalCache && typicalServings === state.servings) return typicalCache;
+    var t = { packs: 0, money: 0 }, n = 0;
+    RECIPES.forEach(function (r) { if (r.custom) return; var w = spareOf([r.id]); t.packs += w.packs; t.money += w.money; n++; });
+    typicalServings = state.servings;
+    typicalCache = { packs: n ? t.packs / n : 0, money: n ? t.money / n : 0 };
+    return typicalCache;
+  }
+  // { packs, money } saved by these dinners compared with the same number of
+  // typical dinners, each bought separately.
+  function savingsFor(ids) {
+    if (!ids.length) return { packs: 0, money: 0 };
+    var typ = typicalDinnerWaste(), actual = spareOf(ids);
+    return { packs: Math.max(0, typ.packs * ids.length - actual.packs), money: Math.max(0, typ.money * ids.length - actual.money) };
+  }
+  function mondayKeyOf(ts) {
+    var d = new Date(ts), day = d.getDay();
+    d.setDate(d.getDate() + (day === 0 ? -6 : 1 - day));
+    return weekKey(d);
+  }
+  // Dinners ticked as cooked, grouped into Monday-to-Sunday weeks.
+  function cookedWeeks() {
+    var weeks = {};
+    (state.cookLog || []).forEach(function (h) {
+      if (!RECIPES_BY_ID[h.id]) return;
+      var k = mondayKeyOf(h.ts);
+      (weeks[k] = weeks[k] || []).push(h.id);
+    });
+    return weeks;
+  }
+  function fmtMoney(v) { return "£" + (v >= 10 ? Math.round(v) : v.toFixed(2)); }
+  function fmtPacks(p) { var n = Math.round(p); return n === 1 ? "1 pack" : n + " packs"; }
+  function savingsSummary() {
+    var weeks = cookedWeeks(), thisMonth = new Date().toISOString().slice(0, 7);
+    var month = { packs: 0, money: 0 }, all = { packs: 0, money: 0 }, series = [];
+    Object.keys(weeks).sort().forEach(function (k) {
+      var s = savingsFor(weeks[k]);
+      all.packs += s.packs; all.money += s.money;
+      if (k.slice(0, 7) === thisMonth || mondayKeyOf(Date.now()) === k) { month.packs += s.packs; month.money += s.money; }
+      series.push({ week: k, money: s.money, packs: s.packs });
+    });
+    var planIds = state.mode === "batch" ? state.batch.map(function (b) { return b.id; }) : W().plan.filter(Boolean);
+    return { month: month, all: all, series: series, plan: savingsFor(planIds), cookedWeeks: Object.keys(weeks).length };
+  }
+
+  function savingsSectionHtml() {
+    var head = '<h3 class="stats-subhead">Waste saved</h3>';
+    if (!hasProFeatures()) {
+      return head + '<div class="savings-locked"><div><strong>See what low-waste planning saves you.</strong>' +
+        "<p>Pro tracks the packs you finish instead of binning, and roughly what that saves each month.</p></div>" +
+        '<button type="button" class="btn btn-primary btn-sm needs-pro" id="savings-pro-btn">See Pro</button></div>';
+    }
+    var s = savingsSummary();
+    var html = head;
+    if (!s.cookedWeeks) {
+      html += '<p class="stats-empty">Tick dinners as cooked and this shows how many packs you finished instead of throwing away, and roughly what that saved.' +
+        (s.plan.packs >= 0.5 ? " Your current plan is set to save about <strong>" + fmtPacks(s.plan.packs) + "</strong>, around <strong>" + fmtMoney(s.plan.money) + "</strong>." : "") + "</p>";
+      return html;
+    }
+    html += '<div class="stat-tile-row">' +
+      statTile(fmtPacks(s.month.packs).replace(/ packs?$/, ""), Math.round(s.month.packs) === 1 ? "pack finished this month" : "packs finished this month") +
+      statTile(fmtMoney(s.month.money), "saved this month, roughly") +
+      statTile(fmtMoney(s.all.money), "saved since you started") +
+      "</div>";
+    var recent = s.series.slice(-8);
+    var max = Math.max.apply(null, recent.map(function (x) { return x.money; }).concat([1]));
+    html += '<div class="week-chart savings-chart" role="img" aria-label="Money saved in each of the last ' + recent.length + ' cooked weeks">' +
+      recent.map(function (x, i) {
+        return '<div class="wc-col"><span class="wc-val">' + (x.money >= 0.5 ? fmtMoney(x.money) : "") + '</span><span class="wc-bar' + (i === recent.length - 1 ? " is-now" : "") + '" style="height:' + Math.round(x.money / max * 100) + '%"></span></div>';
+      }).join("") + '</div><div class="wc-axis"><span>Week of ' + new Date(recent[0].week).toLocaleDateString("en-GB", { day: "numeric", month: "short" }) + "</span><span>Latest</span></div>";
+    html += '<p class="stats-note">Compared with cooking the same number of typical dinners for one, each bought separately. Counts only dinners you ticked as cooked, and only food that goes off; prices are typical UK supermarket ones, so treat it as a rough guide.' +
+      (s.plan.packs >= 0.5 ? " Your current plan should save about <strong>" + fmtPacks(s.plan.packs) + "</strong> more." : "") + "</p>" +
+      (s.month.packs >= 1 ? '<button type="button" class="btn btn-outline btn-sm" id="savings-share-btn">Share this month</button>' : "");
+    return html;
+  }
+  function wireSavings() {
+    var pro = document.getElementById("savings-pro-btn");
+    if (pro) pro.addEventListener("click", function () { openProPaywall(); });
+    var share = document.getElementById("savings-share-btn");
+    if (share) share.addEventListener("click", function () {
+      var s = savingsSummary();
+      shareText("Solo Supper", "This month I finished " + fmtPacks(s.month.packs) + " of food instead of binning it, about " + fmtMoney(s.month.money) + " saved, by planning dinners for one with Solo Supper. https://solosupper.co.uk");
+    });
   }
 
   /* ============================= INIT ============================= */

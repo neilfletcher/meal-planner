@@ -642,3 +642,13 @@ h1, .display, .display-l, .display-m, .week-range { letter-spacing: -0.02em; }
 .have-tag { display: inline-block; margin-left: 6px; font-family: var(--mono); font-size: 11px; letter-spacing: .02em; color: var(--olive); background: #EEF1E6; border-radius: 999px; padding: 2px 8px; vertical-align: 1px; white-space: nowrap; }
 .banner-fridge { border-color: var(--olive); background: #F3F5EC; }
 .shop-leftovers #shop-carry-btn { margin-top: 12px; }
+
+/* ---------- waste saved ---------- */
+.savings-locked { display: flex; align-items: center; justify-content: space-between; gap: 14px 20px; flex-wrap: wrap; background: var(--plate); border: 1px solid var(--line); border-radius: 8px; padding: 20px 22px; }
+.savings-locked strong { font-family: var(--serif); font-weight: 400; font-size: 24px; line-height: 1.15; display: block; }
+.savings-locked p { color: var(--ink-2); font-size: 14px; margin-top: 4px; max-width: 520px; }
+.savings-chart .wc-bar { background: var(--olive); }
+.savings-chart .wc-bar.is-now { background: var(--tomato); }
+.savings-line { display: flex; gap: 8px; align-items: flex-start; color: var(--olive) !important; font-weight: 500; }
+.savings-line .i { width: 16px; height: 16px; flex-shrink: 0; margin-top: 2px; }
+#savings-share-btn { margin-top: 12px; }

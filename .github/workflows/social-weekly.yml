@@ -56,18 +56,32 @@ jobs:
             mkdir media && git -C media init -q -b social-media && git -C media remote add origin "$URL"
           fi
 
+      - name: Skip a week that is already in Buffer
+        run: |
+          RUN="$MODE"
+          M="media/$WEEK/manifest.json"
+          if [ -f "$M" ] && grep -q '"queuedAt"' "$M"; then
+            if [ "$MODE" = "preview" ] || [ "$MODE" = "publish" ]; then
+              echo "::notice::The week of $WEEK is already queued in Buffer, so it is not made again. Use queue-existing to retry any failed posts."
+              RUN=queue-existing
+              [ "$MODE" = "preview" ] && RUN=skip
+            fi
+          fi
+          echo "RUN=$RUN" >> "$GITHUB_ENV"
+          echo "Mode: $MODE, running as: $RUN"
+
       - name: Install tools
-        if: env.MODE == 'preview' || env.MODE == 'publish'
+        if: env.RUN == 'preview' || env.RUN == 'publish'
         run: |
           which ffmpeg || (sudo apt-get update -q && sudo apt-get install -y -q ffmpeg)
           cd scripts/social && npm install --no-audit --no-fund && npx playwright install --with-deps chromium
 
       - name: Make the posts
-        if: env.MODE == 'preview' || env.MODE == 'publish'
+        if: env.RUN == 'preview' || env.RUN == 'publish'
         run: node scripts/social/make-week.js --out media --week "$WEEK"
 
       - name: Save media (social-media branch, last 5 weeks only)
-        if: env.MODE == 'preview' || env.MODE == 'publish'
+        if: env.RUN == 'preview' || env.RUN == 'publish'
         run: |
           cd media
           CUTOFF=$(date -u -d '35 days ago' +%F)
@@ -78,22 +92,22 @@ jobs:
           git branch -M social-media && git push -q -f origin social-media
 
       - name: Save history and links page (main)
-        if: env.MODE == 'preview' || env.MODE == 'publish'
+        if: env.RUN == 'preview' || env.RUN == 'publish'
         run: |
           git config user.name "Solo Supper autopilot"; git config user.email "hello@solosupper.co.uk"
           git add social/history.json links/index.html
           git diff --cached --quiet || (git commit -q -m "Social posts for the week of $WEEK" && git pull -q --rebase && git push -q)
 
       - name: Check Buffer
-        if: env.MODE == 'check-buffer'
+        if: env.RUN == 'check-buffer'
         run: node scripts/social/publish-week.js --media media --check
 
       - name: Queue in Buffer
-        if: env.MODE == 'publish' || env.MODE == 'queue-existing'
+        if: env.RUN == 'publish' || env.RUN == 'queue-existing'
         run: node scripts/social/publish-week.js --media media --week "$WEEK"
 
       - name: Save Buffer results
-        if: always() && env.MODE != 'preview'
+        if: always() && env.RUN != 'preview'
         run: |
           cd media
           git config user.name "Solo Supper autopilot"; git config user.email "hello@solosupper.co.uk"
@@ -101,9 +115,9 @@ jobs:
           git diff --cached --quiet || (git commit -q -m "Buffer results for the week of $WEEK" && git push -q origin HEAD:social-media)
 
       - name: Weekly summary issue
-        if: env.MODE == 'preview' || env.MODE == 'publish'
+        if: env.RUN == 'preview' || env.RUN == 'publish'
         run: |
           TITLE="Social posts for the week of $WEEK"
-          if [ "$MODE" = "preview" ]; then NOTE="**Preview only:** nothing has been queued. To queue these posts, run the Social autopilot workflow with mode queue-existing and week $WEEK."; else NOTE="**Queued in Buffer.** Edit or delete anything in the Buffer app before it goes out."; fi
+          if [ "$RUN" = "preview" ]; then NOTE="**Preview only:** nothing has been queued. To queue these posts, run the Social autopilot workflow with mode queue-existing and week $WEEK."; else NOTE="**Queued in Buffer.** Edit or delete anything in the Buffer app before it goes out."; fi
           { echo "$NOTE"; echo; cat "media/$WEEK/issue.md"; } > /tmp/issue.md
           gh issue create --title "$TITLE" --body-file /tmp/issue.md

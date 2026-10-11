@@ -249,6 +249,38 @@ var USEUP = Object.keys(PK.PACKS).map(function (k) {
   return { key: k, name: name, pack: p, users: users, typical: typical, h1: h1, slug: slug };
 }).filter(Boolean).sort(function (a, b) { return b.users.length - a.users.length; });
 
+/* ------------------------------------------- data for the social autopilot */
+// SITE_DATA_OUT=path node scripts/build-site.js writes the recipe, pack and
+// use-up data as JSON for scripts/social/ and stops without building pages.
+if (process.env.SITE_DATA_OUT) {
+  var useUpById = {};
+  RECIPES.forEach(function (r) {
+    var u = useUpFor(r);
+    useUpById[r.id] = {
+      left: u.left.map(function (x) { return { name: x.name, spare: x.spare }; }),
+      picks: u.picks.map(function (x) { return { id: x.r.id, shared: x.shared }; })
+    };
+  });
+  fs.writeFileSync(process.env.SITE_DATA_OUT, JSON.stringify({
+    siteUrl: SITE_URL,
+    recipes: RECIPES.map(function (r) {
+      return {
+        id: r.id, title: r.title, slug: r.slug, prep: r.prep, cook: r.cook, cuisine: r.cuisine, demonym: demonym(r.cuisine),
+        protein: r.protein, tags: r.tags, photo: r.photo, steps: r.steps,
+        ingredients: r.ingredients.map(function (i) { return { amt: i.amt, unit: i.unit, item: i.item, cat: i.cat, text: amtText(i) }; })
+      };
+    }),
+    needs: NEEDS,
+    packs: PK.PACKS,
+    packNames: Object.keys(PK.PACKS).reduce(function (o, k) { o[k] = packName(k); return o; }, {}),
+    useUpFor: useUpById,
+    useUp: USEUP.map(function (u) {
+      return { key: u.key, name: u.name, h1: u.h1, slug: u.slug, typical: u.typical, users: u.users.map(function (r) { return r.id; }) };
+    })
+  }));
+  process.exit(0);
+}
+
 /* ---------------------------------------------------------------- output */
 var written = [];
 var sitemap = [];

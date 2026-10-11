@@ -1,0 +1,109 @@
+# Copy this file to .github/workflows/social-weekly.yml (see scripts/social/README.md).
+name: Social autopilot
+
+on:
+  schedule:
+    - cron: "0 6 * * 6"   # Saturdays at 06:00 UTC: makes next week's posts
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "preview = make the posts only; publish = make and queue in Buffer; queue-existing = queue a week already made; check-buffer = read Buffer settings only"
+        type: choice
+        options: [preview, publish, queue-existing, check-buffer]
+        default: preview
+      week:
+        description: "Monday of the week, YYYY-MM-DD (blank = next Monday)"
+        required: false
+
+permissions:
+  contents: write
+  issues: write
+
+concurrency:
+  group: social-autopilot
+  cancel-in-progress: false
+
+jobs:
+  social:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      MODE: ${{ inputs.mode || (vars.SOCIAL_AUTOPUBLISH == 'true' && 'publish' || 'preview') }}
+      WEEK_INPUT: ${{ inputs.week }}
+      MEDIA_BASE: ${{ vars.SOCIAL_MEDIA_BASE || 'https://social-media.solo-supper.pages.dev' }}
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Work out the week
+        run: |
+          if [ -n "$WEEK_INPUT" ]; then WEEK="$WEEK_INPUT"; else WEEK=$(node -e "console.log(require('./scripts/social/util.js').nextMonday(new Date()))"); fi
+          echo "WEEK=$WEEK" >> "$GITHUB_ENV"
+          echo "Mode: $MODE, week of $WEEK"
+
+      - name: Get the media branch
+        run: |
+          URL="https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          if git ls-remote --exit-code --heads "$URL" social-media >/dev/null; then
+            git clone --depth 1 --branch social-media "$URL" media
+          else
+            mkdir media && git -C media init -q -b social-media && git -C media remote add origin "$URL"
+          fi
+
+      - name: Install tools
+        if: env.MODE == 'preview' || env.MODE == 'publish'
+        run: |
+          which ffmpeg || (sudo apt-get update -q && sudo apt-get install -y -q ffmpeg)
+          cd scripts/social && npm install --no-audit --no-fund && npx playwright install --with-deps chromium
+
+      - name: Make the posts
+        if: env.MODE == 'preview' || env.MODE == 'publish'
+        run: node scripts/social/make-week.js --out media --week "$WEEK"
+
+      - name: Save media (social-media branch, last 5 weeks only)
+        if: env.MODE == 'preview' || env.MODE == 'publish'
+        run: |
+          cd media
+          CUTOFF=$(date -u -d '35 days ago' +%F)
+          for d in 20*-*-*; do [ -d "$d" ] && [[ "$d" < "$CUTOFF" ]] && rm -rf "$d"; done
+          git config user.name "Solo Supper autopilot"; git config user.email "hello@solosupper.co.uk"
+          git checkout -q --orphan fresh
+          git add -A && git commit -q -m "Social media for the week of $WEEK"
+          git branch -M social-media && git push -q -f origin social-media
+
+      - name: Save history and links page (main)
+        if: env.MODE == 'preview' || env.MODE == 'publish'
+        run: |
+          git config user.name "Solo Supper autopilot"; git config user.email "hello@solosupper.co.uk"
+          git add social/history.json links/index.html
+          git diff --cached --quiet || (git commit -q -m "Social posts for the week of $WEEK" && git pull -q --rebase && git push -q)
+
+      - name: Check Buffer
+        if: env.MODE == 'check-buffer'
+        run: node scripts/social/publish-week.js --media media --check
+
+      - name: Queue in Buffer
+        if: env.MODE == 'publish' || env.MODE == 'queue-existing'
+        run: node scripts/social/publish-week.js --media media --week "$WEEK"
+
+      - name: Save Buffer results
+        if: always() && env.MODE != 'preview'
+        run: |
+          cd media
+          git config user.name "Solo Supper autopilot"; git config user.email "hello@solosupper.co.uk"
+          git add -A
+          git diff --cached --quiet || (git commit -q -m "Buffer results for the week of $WEEK" && git push -q origin HEAD:social-media)
+
+      - name: Weekly summary issue
+        if: env.MODE == 'preview' || env.MODE == 'publish'
+        run: |
+          TITLE="Social posts for the week of $WEEK"
+          if [ "$MODE" = "preview" ]; then NOTE="**Preview only:** nothing has been queued. To queue these posts, run the Social autopilot workflow with mode queue-existing and week $WEEK."; else NOTE="**Queued in Buffer.** Edit or delete anything in the Buffer app before it goes out."; fi
+          { echo "$NOTE"; echo; cat "media/$WEEK/issue.md"; } > /tmp/issue.md
+          gh issue create --title "$TITLE" --body-file /tmp/issue.md

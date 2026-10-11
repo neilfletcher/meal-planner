@@ -1,0 +1,146 @@
+"use strict";
+// Writes pin titles, descriptions, Instagram captions and carousel text.
+// Uses Gemini when GEMINI_API_KEY is set; otherwise (or if Gemini fails or
+// breaks a house rule) falls back to plain templates, so a week never stalls.
+var U = require("./util.js");
+
+var API = "https://generativelanguage.googleapis.com/v1beta";
+var TEXT_MODELS = (process.env.GEMINI_TEXT_MODEL ? [process.env.GEMINI_TEXT_MODEL] : []).concat(["gemini-flash-latest", "gemini-2.5-flash"]);
+var BANNED = /\b(straightforward|genuinely|honestly|leverage|seamless(ly)?|robust|delve|crucial|innovative|game[- ]changer|elevate|indulge|guilt[- ]free|healthy|skinny|weight[- ]loss|superfood|detox)\b/i;
+var AI_LINE = "Pictures made with AI.";
+
+function clean(s) {
+  return String(s || "").replace(/\s*\u2014\s*/g, ", ").replace(/\s+([,.!?])/g, "$1").replace(/[ \t]+/g, " ").trim();
+}
+function clip(s, n) { s = clean(s); return s.length <= n ? s : s.slice(0, s.lastIndexOf(" ", n - 1)).replace(/[,;:]$/, "") + "…"; }
+function an(w) { return (/^[aeiou]/i.test(w) && !/^(uk|eu|ur)/i.test(w) ? "an " : "a ") + w; }
+function mainIngredients(r) {
+  return r.ingredients.filter(function (i) { return /meat|produce|dairy|frozen/.test(i.cat); })
+    .map(function (i) { return i.item.split(",")[0].replace(/^(fresh|shop-bought) /, ""); }).slice(0, 4);
+}
+function listAnd(a) { return a.length < 2 ? a.join("") : a.slice(0, -1).join(", ") + " and " + a[a.length - 1]; }
+
+// ---------------------------------------------------------------- templates
+function tplPin(r) {
+  var mins = U.minutes(r);
+  return {
+    title: clip(r.title + " for one, ready in " + mins + " minutes", 95),
+    description: clip("An easy " + r.demonym + " dinner for one with " + listAnd(mainIngredients(r)) + ", on the table in " + mins +
+      " minutes. Sized for a single portion, with a shopping list that uses up what you buy. Full recipe and shopping list at solosupper.co.uk. " + AI_LINE, 480)
+  };
+}
+function tplUsePin(u, rs) {
+  return {
+    title: clip(u.h1.replace(/^What to cook with /, "Got ").replace(/^Recipes to use up /, "Use up ") + (/^Got /.test(u.h1.replace(/^What to cook with /, "Got ")) ? "? " : ": ") + rs.length + " dinners for one", 95),
+    description: clip("Bought " + u.name + " for one recipe and wondering what to do with the rest? " + listAnd(rs.map(function (r) { return r.title; })) +
+      " all use it, each written for one. More ideas at solosupper.co.uk. " + AI_LINE, 480)
+  };
+}
+function tplCarousel(r, partner, packKey) {
+  var steps = r.steps.filter(function (s) { return !/^Season to taste, then serve/i.test(s); }).map(function (s) {
+    var first = s.split(/(?<=\.)\s/)[0];
+    return clip(first.replace(/^Season to taste, then /i, "").replace(/^./, function (c) { return c.toUpperCase(); }), 140);
+  }).slice(0, 4);
+  return {
+    subtitle: clip(an(r.demonym).replace(/^a/, "A") + " dinner for one, on the table in " + U.minutes(r) + " minutes.", 80),
+    steps: steps,
+    caption: clip(r.title + ": dinner for one in " + U.minutes(r) + " minutes. It opens a pack of " + packKey + ", so " + partner.title +
+      " later in the week finishes it. Full recipe and shopping list via the link in our bio. " + AI_LINE, 900) + "\n\n#dinnerforone #cookingforone #easydinner #nofoodwaste #" + r.demonym.toLowerCase().replace(/[^a-z]/g, "") + "food"
+  };
+}
+function tplReel(r) {
+  return {
+    caption: clip(r.title + ", " + an(r.demonym) + " dinner for one in " + U.minutes(r) + " minutes, with " + listAnd(mainIngredients(r)) +
+      ". Full recipe and shopping list via the link in our bio. " + AI_LINE, 900) + "\n\n#dinnerforone #cookingforone #easydinner #quickdinner #" + r.demonym.toLowerCase().replace(/[^a-z]/g, "") + "food",
+    pinTitle: clip(r.title + " for one, ready in " + U.minutes(r) + " minutes", 95),
+    pinDescription: tplPin(r).description
+  };
+}
+
+// ---------------------------------------------------------------- Gemini
+async function gemini(prompt) {
+  var key = process.env.GEMINI_API_KEY;
+  if (!key) throw new Error("no GEMINI_API_KEY");
+  var last;
+  for (var i = 0; i < TEXT_MODELS.length; i++) {
+    var res = await fetch(API + "/models/" + TEXT_MODELS[i] + ":generateContent?key=" + encodeURIComponent(key), {
+      method: "POST", headers: { "content-type": "application/json" },
+      body: JSON.stringify({ contents: [{ role: "user", parts: [{ text: prompt }] }], generationConfig: { responseMimeType: "application/json", temperature: 0.8 } })
+    });
+    var j = await res.json().catch(function () { return {}; });
+    if (res.ok && j.candidates && j.candidates[0]) {
+      var txt = j.candidates[0].content.parts.map(function (p) { return p.text || ""; }).join("");
+      return JSON.parse(txt);
+    }
+    last = new Error(TEXT_MODELS[i] + ": " + res.status + " " + JSON.stringify(j.error || j).slice(0, 300));
+  }
+  throw last;
+}
+
+function facts(r) {
+  return { title: r.title, cuisine: r.demonym, minutes: U.minutes(r), protein: r.protein, tags: r.tags,
+    ingredients: r.ingredients.map(function (i) { return (i.text ? i.text + " " : "") + i.item; }), steps: r.steps };
+}
+
+var RULES = [
+  "You write social media copy for Solo Supper, a UK website of dinner recipes for one person, planned so nothing goes to waste.",
+  "House style: British English spelling. Warm, plain and practical; no hype, no exclamation marks, no emojis.",
+  "Never use em dashes. Never use these words: straightforward, genuinely, honestly, leverage, seamlessly, robust, delve, crucial, innovative, elevate, indulge, guilt-free, healthy, skinny, superfood, detox.",
+  "Make no health, diet or weight claims. Use only numbers given in the facts (minutes, amounts); never invent prices, calories or savings.",
+  "Every Pinterest description must end with: Full recipe and shopping list at solosupper.co.uk. " + AI_LINE,
+  "Every Instagram caption must end with the sentence: Full recipe and shopping list via the link in our bio. " + AI_LINE + " Then a blank line and 4 or 5 lower-case hashtags."
+].join("\n");
+
+async function writeCopy(data, plan) {
+  var by = data.byId, out = {}, notes = [];
+  // Templates first, so every post always has text.
+  plan.posts.forEach(function (p) {
+    if (p.kind === "pin") out[p.key] = tplPin(by[p.recipe]);
+    if (p.kind === "usepin") out[p.key] = tplUsePin(data.useUp.find(function (u) { return u.key === p.useup; }), p.recipes.map(function (id) { return by[id]; }));
+    if (p.kind === "carousel") out[p.key] = tplCarousel(by[p.recipe], by[p.partner], p.pack);
+    if (p.kind === "reel") out[p.key] = tplReel(by[p.recipe]);
+  });
+  var vp = plan.posts.find(function (p) { return p.kind === "videopin"; });
+  if (vp) out[vp.key] = { title: out["ig-fri"].pinTitle, description: out["ig-fri"].pinDescription };
+
+  var ask = { posts: plan.posts.filter(function (p) { return p.kind !== "videopin"; }).map(function (p) {
+    var o = { key: p.key, kind: p.kind };
+    if (p.recipe) o.recipe = facts(by[p.recipe]);
+    if (p.kind === "carousel") { o.partner = facts(by[p.partner]); o.sharedPack = p.pack; }
+    if (p.kind === "usepin") { var u = data.useUp.find(function (x) { return x.key === p.useup; }); o.useUp = { ingredient: u.name, page: u.h1, recipes: p.recipes.map(function (id) { return by[id].title; }) }; }
+    return o;
+  }) };
+  var prompt = RULES + "\n\nWrite copy for each post below. Return JSON: {\"posts\":[{\"key\":...}]} with, per kind:\n" +
+    "- pin: title (max 90 characters, how people search: the dish, 'for one', and the time), description (250 to 450 characters, natural search phrases, mentions it is for one).\n" +
+    "- usepin: title (max 90 characters, framed as a leftover problem such as 'Half a bag of spinach left?'), description (250 to 450 characters naming the recipes).\n" +
+    "- carousel: subtitle (one sentence, max 80 characters, for the cover slide), steps (array of 3 or 4 short method steps, each max 100 characters, faithful to the recipe), caption (max 900 characters, and it must explain that the recipe opens a pack of the shared ingredient and that the partner recipe later in the week finishes it).\n" +
+    "- reel: caption (max 700 characters), pinTitle (max 90 characters), pinDescription (250 to 450 characters).\n\n" +
+    JSON.stringify(ask);
+  try {
+    var got = await gemini(prompt);
+    (got.posts || []).forEach(function (g) {
+      var base = out[g.key]; if (!base) return;
+      var fixed = {};
+      Object.keys(base).forEach(function (f) {
+        var v = g[f];
+        if (Array.isArray(base[f])) v = Array.isArray(v) && v.length >= 3 ? v.slice(0, 4).map(function (s) { return clip(s, 110); }) : null;
+        else if (typeof v === "string") v = clean(v);
+        else v = null;
+        if (v && (Array.isArray(v) ? v.join(" ") : v).match(BANNED)) { notes.push(g.key + "." + f + ": broke a word rule, used the template"); v = null; }
+        fixed[f] = v || base[f];
+      });
+      if (fixed.description && fixed.description.indexOf("solosupper.co.uk") === -1) fixed.description = clip(fixed.description, 380) + " Full recipe and shopping list at solosupper.co.uk. " + AI_LINE;
+      if (fixed.pinDescription && fixed.pinDescription.indexOf("solosupper.co.uk") === -1) fixed.pinDescription = clip(fixed.pinDescription, 380) + " Full recipe and shopping list at solosupper.co.uk. " + AI_LINE;
+      if (fixed.caption && fixed.caption.indexOf("AI") === -1) fixed.caption = fixed.caption.replace(/(\n\n#)/, " " + AI_LINE + "$1");
+      if (fixed.title) fixed.title = clip(fixed.title, 95);
+      out[g.key] = fixed;
+    });
+    if (vp) out[vp.key] = { title: out["ig-fri"].pinTitle, description: out["ig-fri"].pinDescription };
+    notes.push("Copy written by Gemini.");
+  } catch (e) {
+    notes.push("Copy from templates (" + e.message + ").");
+  }
+  return { copy: out, notes: notes };
+}
+
+module.exports = { writeCopy: writeCopy, clean: clean };

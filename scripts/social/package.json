@@ -1,0 +1,11 @@
+{
+  "name": "solo-supper-social",
+  "private": true,
+  "description": "Weekly Pinterest and Instagram posts for Solo Supper (see README.md).",
+  "dependencies": {
+    "@fontsource/geist-mono": "^5.0.0",
+    "@fontsource/geist-sans": "^5.0.0",
+    "@fontsource/newsreader": "^5.0.0",
+    "playwright": "^1.48.0"
+  }
+}

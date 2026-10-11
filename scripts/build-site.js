@@ -284,6 +284,7 @@ function head(o) {
   var img = o.image ? SITE_URL + "/" + o.image : SITE_URL + "/img/recipes/d2.webp";
   return '<!doctype html>\n<html lang="en-GB">\n<head>\n' +
     '<meta charset="utf-8">\n<meta name="viewport" content="width=device-width, initial-scale=1">\n' +
+    '<script>if(location.hostname==="neilfletcher.github.io")location.replace("https://solosupper.co.uk"+location.pathname.replace(/^\\/meal-planner/,"")+location.search+location.hash);</script>\n' +
     "<title>" + esc(o.title) + "</title>\n" +
     '<meta name="description" content="' + esc(o.description) + '">\n' +
     '<link rel="canonical" href="' + esc(url) + '">\n' +

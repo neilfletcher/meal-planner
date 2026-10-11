@@ -221,24 +221,24 @@ async function fetchFirebaseSignups() {
   };
 }
 
-// Recipe titles live only inside the site's app.js as a big literal array
-// (id/title pairs), not in Firestore. Rather than keep a second copy that
-// can drift out of date, read it straight from the checked-out repo each
-// run and pull out "id": "...", title: "..." pairs with a regex - good
-// enough since the format is machine-generated and consistent.
+// Recipe titles live in the site's recipes-data.js (older copies kept them in
+// app.js), not in Firestore. Rather than keep a second copy that can drift,
+// read them from the checked-out repo each run and pull out
+// id: "...", title: "..." pairs with a regex, which is good enough since the
+// format is consistent.
 function loadRecipeTitles() {
-  const appJsPath = path.join(__dirname, '..', 'app.js');
   const titles = {};
-  if (!fs.existsSync(appJsPath)) {
-    console.warn(`app.js not found at ${appJsPath} - recipe names will show as raw ids`);
-    return titles;
-  }
-  const source = fs.readFileSync(appJsPath, 'utf8');
   const pattern = /id:\s*"([^"]+)"\s*,\s*title:\s*"([^"]+)"/g;
-  let match;
-  while ((match = pattern.exec(source)) !== null) {
-    titles[match[1]] = match[2];
-  }
+  ['recipes-data.js', 'app.js'].forEach((file) => {
+    const p = path.join(__dirname, '..', file);
+    if (!fs.existsSync(p)) return;
+    const source = fs.readFileSync(p, 'utf8');
+    let match;
+    while ((match = pattern.exec(source)) !== null) {
+      if (!titles[match[1]]) titles[match[1]] = match[2];
+    }
+  });
+  if (!Object.keys(titles).length) console.warn('No recipe titles found - names will show as raw ids');
   return titles;
 }
 

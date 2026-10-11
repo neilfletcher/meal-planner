@@ -104,6 +104,7 @@
               <button type="button" class="mode-btn" id="mode-batch-btn" aria-pressed="false">Just pick dinners</button>
             </div>
             <button class="btn btn-primary needs-pro" id="lowwaste-fill-btn" title="Fill empty days with dinners that share their packs">Low-waste fill</button>
+            <button class="btn btn-outline needs-pro" id="fridge-btn" title="Tell it what needs using up">Use what I have</button>
             <button class="btn btn-ink" id="fill-week-btn">Fill at random</button>
             <button class="btn btn-outline" id="clear-week-btn">Clear week</button>
           </div>
@@ -124,6 +125,7 @@
               <input type="number" id="batch-count-input" min="1" max="30" value="4" class="batch-count-input">
             </label>
             <button class="btn btn-primary needs-pro" id="batch-lowwaste-btn" title="Pick dinners that share their packs">Low-waste pick</button>
+            <button class="btn btn-outline needs-pro" id="batch-fridge-btn">Use what I have</button>
             <button class="btn btn-ink" id="batch-surprise-btn">Surprise me</button>
             <button class="btn btn-outline" id="batch-add-btn">Add a dinner</button>
             <button class="btn btn-ghost" id="batch-clear-btn">Clear list</button>
@@ -200,6 +202,10 @@
 
 <div class="modal-backdrop" id="paywall-modal-backdrop" hidden>
   <div class="modal modal-pro" id="paywall-modal" role="dialog" aria-modal="true" aria-label="Solo Supper Pro"></div>
+</div>
+
+<div class="modal-backdrop" id="fridge-modal-backdrop" hidden>
+  <div class="modal modal-fridge" id="fridge-modal" role="dialog" aria-modal="true" aria-label="What's in your fridge"></div>
 </div>
 
 <div class="modal-backdrop" id="signin-modal-backdrop" hidden>

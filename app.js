@@ -158,6 +158,8 @@
     lastWeek: null,      // { week, plan } kept for "Copy last week"
     newWeekNotice: false,
     cookDays: [true, true, true, true, true, true, true], // which days of the week they cook (Mon..Sun)
+    fridge: {},          // leftovers to use up: { packKey: amount in the pack's unit }
+    fridgeFrom: null,    // "YYYY-MM-DD" Monday of the first week the fridge applies to
     next: null           // next week's plan: { week, plan, cooked, leftovers, checked }
   };
   var HISTORY_LIMIT = 400; // keep this bounded so it never grows the saved state unreasonably
@@ -301,6 +303,8 @@
     if (Array.isArray(data.customRecipes)) state.customRecipes = data.customRecipes;
     if (data.lastWeek !== undefined) state.lastWeek = data.lastWeek;
     if (typeof data.newWeekNotice === "boolean") state.newWeekNotice = data.newWeekNotice;
+    if (data.fridge && typeof data.fridge === "object" && !Array.isArray(data.fridge)) state.fridge = data.fridge;
+    if (typeof data.fridgeFrom === "string" || data.fridgeFrom === null) state.fridgeFrom = data.fridgeFrom;
     if (Array.isArray(data.cookDays) && data.cookDays.length === 7) state.cookDays = data.cookDays.map(function (v) { return v !== false; });
     if (data.next && typeof data.next === "object" && Array.isArray(data.next.plan) && data.next.plan.length === 7) state.next = data.next;
     registerCustomRecipes();
@@ -858,10 +862,17 @@
         return '<div class="mini-bar"><span class="mini-val">' + (m || "") + '</span><span class="mini-fill' + (i === viewToday() ? " is-today" : "") + '" style="height:' + Math.round(m / max * 64) + 'px"></span><span class="mini-day">' + DOW_NAMES[i].charAt(0) + "</span></div>";
       }).join("") + "</div>" : "") +
       "</section>";
+    html += fridgeAsideHtml();
+    var repAside = wasteReport(ids);
     html += '<section class="aside-card"><div class="aside-head"><h2>Leftovers</h2></div>' +
-      '<p class="aside-more">What the opened packs leave once this week is cooked.</p>' + leftoversHtml(ids, 6) + "</section>";
+      '<p class="aside-more">What the opened packs leave once this week is cooked.</p>' + leftoversHtml(ids, 6) +
+      (repAside.items.length && state.mode === "days" && !viewNext ? '<button type="button" class="btn btn-outline btn-block needs-pro" id="aside-carry-btn">Carry leftovers to my fridge</button>' : "") + "</section>";
     el.innerHTML = html;
     document.getElementById("aside-shop-btn").addEventListener("click", function () { document.getElementById("tab-shopping-btn").click(); });
+    var fe = document.getElementById("aside-fridge-edit"), fp = document.getElementById("aside-fridge-plan"), cb = document.getElementById("aside-carry-btn");
+    if (fe) fe.addEventListener("click", openFridge);
+    if (fp) fp.addEventListener("click", function () { if (state.mode === "batch") lowWasteBatch(); else lowWasteFillWeek(); });
+    if (cb) cb.addEventListener("click", carryLeftovers);
   }
 
   // How many dinners this week is aiming for: the cooking days, plus any
@@ -1374,15 +1385,33 @@
     Object.keys(n).forEach(function (k) { total[k] = (total[k] || 0) + n[k]; });
     return total;
   }
+  // What is already open in the fridge (see WHAT'S IN YOUR FRIDGE).
+  // Leftovers carried over from this week only count from next week on.
+  function fridgeHave() {
+    if (!state.fridge || typeof state.fridge !== "object") return {};
+    if (state.fridgeFrom && typeof VM === "function" && weekKey(VM()) < state.fridgeFrom) return {};
+    return state.fridge;
+  }
+  // Uses what is in the fridge first, then whole packs for the rest.
+  function packOutcome(p, need, have) {
+    var fromHave = Math.min(have, need), rest = need - fromHave;
+    var packs = rest > 0 ? Math.max(1, Math.ceil(rest / p.size - 0.08)) : 0;
+    return { packs: packs, spare: Math.max(0, packs * p.size - rest), haveLeft: have - fromHave, fromHave: fromHave };
+  }
+  function packKeys(total) {
+    var keys = Object.keys(total), have = fridgeHave();
+    Object.keys(have).forEach(function (k) { if (!(k in total) && PACKS[k] && have[k] > 0) keys.push(k); });
+    return keys;
+  }
   function wasteOf(total) {
-    var w = 0, staples = state.staples || {};
-    Object.keys(total).forEach(function (k) {
+    var w = 0, staples = state.staples || {}, have = fridgeHave();
+    packKeys(total).forEach(function (k) {
       if (k.charAt(0) === "?") { w += (UNLISTED_W[k.slice(1)] || 1) * 0.5 / total[k]; return; }
       var p = PACKS[k];
       if (staples[(SHOP_PACK_CAT[k] || "") + "|" + k]) return;
-      var packs = Math.max(1, Math.ceil(total[k] / p.size - 0.08));
-      var spare = Math.max(0, packs * p.size - total[k]);
-      w += (spare / p.size) * p.perish;
+      var o = packOutcome(p, total[k] || 0, have[k] || 0);
+      // Food already open counts a little more: it is nearer its use-by date.
+      w += (o.spare / p.size) * p.perish + (o.haveLeft / p.size) * p.perish * 1.5;
     });
     return w;
   }
@@ -1393,14 +1422,14 @@
   function wasteReport(ids) {
     var total = {};
     ids.forEach(function (id) { addNeeds(total, id); });
-    var items = [];
-    Object.keys(total).forEach(function (k) {
+    var items = [], have = fridgeHave();
+    packKeys(total).forEach(function (k) {
       if (k.charAt(0) === "?") return;
       var p = PACKS[k];
-      var packs = Math.max(1, Math.ceil(total[k] / p.size - 0.08));
-      var spare = Math.max(0, packs * p.size - total[k]);
+      var o = packOutcome(p, total[k] || 0, have[k] || 0);
+      var spare = o.spare + o.haveLeft, packs = o.packs;
       var frac = spare / p.size;
-      if (frac >= 0.2 && p.perish >= 0.5) items.push({ name: k, spare: spare, frac: frac, pack: p, need: total[k], packs: packs, cost: frac * p.perish });
+      if (frac >= 0.2 && p.perish >= 0.5) items.push({ name: k, spare: spare, frac: frac, pack: p, need: total[k] || 0, packs: packs, cost: frac * p.perish, fromFridge: o.fromHave });
     });
     items.sort(function (a, b) { return b.cost - a.cost; });
     return { score: wasteOf(total), items: items, used: Object.keys(total).length };
@@ -1482,7 +1511,9 @@
     state.newWeekNotice = false;
     onStateChanged();
     var rep = wasteReport(W().plan.filter(Boolean));
-    toast(rep.items.length ? "Week filled to use up packs. A few bits left over: see the list." : "Week filled. Everything you open gets used.", "Undo", function () { applyState(JSON.parse(undoSnap)); onStateChanged(); });
+    var usedFridge = fridgeUsedBy(picks);
+    toast(usedFridge.length ? "Week planned around your " + listAnd(usedFridge.map(fridgeNoun)) + "."
+      : rep.items.length ? "Week filled to use up packs. A few bits left over: see the list." : "Week filled. Everything you open gets used.", "Undo", function () { applyState(JSON.parse(undoSnap)); onStateChanged(); });
   }
   function lowWasteBatch() {
     if (!requirePro("lowwaste")) return;
@@ -1493,8 +1524,199 @@
     var picks = planLowWaste(state.batch.map(function (b) { return b.id; }), n);
     picks.forEach(function (id) { state.batch.push({ uid: newUid(), id: id, cookedAt: null }); logHistory(id, "lowwaste"); });
     onStateChanged();
-    toast(picks.length + " dinners picked to share their packs.", "Undo", function () { applyState(JSON.parse(undoSnap)); onStateChanged(); });
+    var usedF = fridgeUsedBy(picks);
+    toast(picks.length + " dinners picked" + (usedF.length ? " to use your " + listAnd(usedF.map(fridgeNoun)) : " to share their packs") + ".", "Undo", function () { applyState(JSON.parse(undoSnap)); onStateChanged(); });
   }
+
+  /* ============================= WHAT'S IN YOUR FRIDGE ============================= */
+  // Leftovers the person already has (state.fridge: { packKey: amount in that
+  // pack's unit }). Low-waste planning counts them as open packs, so it picks
+  // dinners that finish them off; the shopping list flags them; and the
+  // leftovers card can carry this week's leftovers into the fridge for next week.
+  var fridgeBackdrop = document.getElementById("fridge-modal-backdrop");
+  var fridgeModal = document.getElementById("fridge-modal");
+  var fridgeDraft = null, fridgeAdding = null, fridgeQuery = "";
+  var FRIDGE_GROUPS = { "chicken thigh": "Meat and fish", "soured cream": "Dairy and eggs", "coriander": "Herbs", "spring onion": "Vegetables and fruit", "chopped tomato": "Tins and cartons", "flatbread": "Bread and wraps" };
+  function fridgeGroups() {
+    var out = [], cur = null;
+    Object.keys(PACKS).forEach(function (k) {
+      if (FRIDGE_GROUPS[k]) { cur = { name: FRIDGE_GROUPS[k], keys: [] }; out.push(cur); }
+      if (cur) cur.keys.push(k);
+    });
+    return out;
+  }
+  function fridgeText(k, amt) { return fmtSpare({ pack: PACKS[k], spare: amt, name: k }); }
+  function fridgeNoun(k) { var u = PACKS[k].unit; return (u === "" && PACKS[k].size > 1) ? shopPlural(k) : k; }
+  function fridgeShort(k, amt) {
+    var u = PACKS[k].unit;
+    if (u === "g" || u === "ml") return Math.round(amt) + " " + u;
+    if (u === "tin") return fmtAmt(Math.round(amt * 4) / 4) + " tin";
+    if (u === "rasher" || u === "slice") return Math.round(amt) + " " + u + (Math.round(amt) === 1 ? "" : "s");
+    return fmtAmt(Math.round(amt * 4) / 4);
+  }
+  function fridgeChoices(k) {
+    var p = PACKS[k];
+    if ((p.unit === "" && p.size > 1) || p.unit === "rasher" || p.unit === "slice") {
+      var out = [];
+      for (var n = 1; n <= Math.min(p.size, 8); n++) out.push({ amt: n, label: String(n) });
+      return out;
+    }
+    return [0.25, 0.5, 0.75, 1].map(function (f) {
+      return { amt: Math.round(f * p.size * 100) / 100, label: f === 1 ? (p.unit === "" ? "A whole one" : "A full pack") : fmtAmt(f) + (p.unit === "" ? "" : " of a pack") };
+    });
+  }
+  function fridgeKeys() { return Object.keys(fridgeHave()).filter(function (k) { return PACKS[k] && fridgeHave()[k] > 0; }); }
+  function listAnd(a) { return a.length < 2 ? a.join("") : a.slice(0, -1).join(", ") + " and " + a[a.length - 1]; }
+  // Which fridge items a set of dinners uses.
+  function fridgeUsedBy(ids) {
+    var total = {}, have = fridgeHave();
+    ids.forEach(function (id) { addNeeds(total, id); });
+    return Object.keys(have).filter(function (k) { return have[k] > 0 && total[k] > 0; });
+  }
+
+  function openFridge() {
+    if (!requirePro("fridge")) return;
+    if (!fridgeBackdrop) return;
+    fridgeDraft = Object.assign({}, fridgeHave());
+    fridgeAdding = null; fridgeQuery = "";
+    renderFridge();
+    fridgeBackdrop.hidden = false;
+    var s = document.getElementById("fridge-search"); if (s && window.innerWidth > 700) s.focus();
+  }
+  function closeFridge() { if (fridgeBackdrop) { fridgeBackdrop.hidden = true; fridgeModal.innerHTML = ""; } }
+  function renderFridge() {
+    var planned = fridgeUsedByPlan();
+    var keys = Object.keys(fridgeDraft).filter(function (k) { return PACKS[k] && fridgeDraft[k] > 0; });
+    var q = fridgeQuery.trim().toLowerCase();
+    var html = '<div class="modal-close-row"><button class="icon-btn" id="fridge-close-btn" aria-label="Close">' + ico("close") + "</button></div>" +
+      '<span class="eyebrow">Use what you have</span><h2>What\'s in your fridge?</h2>' +
+      '<p class="modal-lead">Add the half packs and leftovers that need using up. Low-waste planning then picks dinners that finish them off before you buy more.</p>';
+    html += '<div class="fridge-have">' + (keys.length
+      ? '<ul class="fridge-list">' + keys.map(function (k) {
+        return '<li><span class="fridge-name">' + esc(fridgeText(k, fridgeDraft[k])) + "</span>" +
+          (planned[k] ? '<span class="fridge-badge">In your plan</span>' : "") +
+          '<button type="button" class="icon-btn icon-btn-sm" data-fridge-remove="' + esc(k) + '" aria-label="Remove ' + esc(k) + '">' + ico("close") + "</button></li>";
+      }).join("") + "</ul>"
+      : '<p class="settings-note fridge-empty">Nothing yet. Pick what you have below.</p>') + "</div>";
+    if (fridgeAdding) {
+      html += '<div class="fridge-adding"><span class="fridge-adding-q">How much ' + esc(fridgeAdding) + " is left? <span class=\"fridge-pack\">(" + esc(PACKS[fridgeAdding].sold) + ")</span></span>" +
+        '<div class="chip-row">' + fridgeChoices(fridgeAdding).map(function (c) {
+          return '<button type="button" class="chip" data-fridge-amt="' + c.amt + '">' + esc(c.label) + "</button>";
+        }).join("") + '<button type="button" class="btn btn-ghost btn-sm" id="fridge-adding-cancel">Cancel</button></div></div>';
+    }
+    html += '<label class="fridge-search-wrap">' + ico("plus") + '<input type="search" id="fridge-search" placeholder="Find an ingredient: spinach, chickpeas, coriander…" value="' + esc(fridgeQuery) + '" aria-label="Find an ingredient"></label>';
+    html += '<div class="fridge-groups" id="fridge-groups">' + fridgeGroupsHtml(q) + "</div>";
+    var inBatch = state.mode === "batch";
+    html += '<div class="fridge-actions">' +
+      '<button type="button" class="btn btn-primary" id="fridge-plan-btn"' + (keys.length ? "" : " disabled") + ">" + (inBatch ? "Pick dinners around these" : "Plan my week around these") + "</button>" +
+      '<button type="button" class="btn btn-outline" id="fridge-save-btn">Save</button>' +
+      (keys.length ? '<button type="button" class="btn btn-ghost" id="fridge-clear-btn">Clear all</button>' : "") + "</div>";
+    fridgeModal.innerHTML = html;
+    wireFridge();
+  }
+  function fridgeGroupsHtml(q) {
+    var html = "";
+    fridgeGroups().forEach(function (g) {
+      var ks = g.keys.filter(function (k) { return !(fridgeDraft[k] > 0) && (!q || k.indexOf(q) !== -1 || shopPlural(k).indexOf(q) !== -1); });
+      if (!ks.length) return;
+      html += '<div class="fridge-group"><h4>' + esc(g.name) + '</h4><div class="chip-row">' + ks.map(function (k) {
+        return '<button type="button" class="chip' + (fridgeAdding === k ? " is-on" : "") + '" data-fridge-add="' + esc(k) + '">' + esc(k) + "</button>";
+      }).join("") + "</div></div>";
+    });
+    return html || '<p class="settings-note">Nothing matches. Try another word, such as "beans" or "mince".</p>';
+  }
+  function wireFridge() {
+    document.getElementById("fridge-close-btn").addEventListener("click", closeFridge);
+    fridgeModal.querySelectorAll("[data-fridge-remove]").forEach(function (b) {
+      b.addEventListener("click", function () { delete fridgeDraft[b.getAttribute("data-fridge-remove")]; renderFridge(); });
+    });
+    fridgeModal.querySelectorAll("[data-fridge-add]").forEach(function (b) {
+      b.addEventListener("click", function () { fridgeAdding = b.getAttribute("data-fridge-add"); renderFridge(); });
+    });
+    fridgeModal.querySelectorAll("[data-fridge-amt]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        fridgeDraft[fridgeAdding] = parseFloat(b.getAttribute("data-fridge-amt"));
+        fridgeAdding = null; fridgeQuery = "";
+        renderFridge();
+      });
+    });
+    var cancel = document.getElementById("fridge-adding-cancel");
+    if (cancel) cancel.addEventListener("click", function () { fridgeAdding = null; renderFridge(); });
+    var search = document.getElementById("fridge-search");
+    search.addEventListener("input", function () {
+      fridgeQuery = search.value;
+      document.getElementById("fridge-groups").innerHTML = fridgeGroupsHtml(fridgeQuery.trim().toLowerCase());
+      fridgeModal.querySelectorAll("#fridge-groups [data-fridge-add]").forEach(function (b) {
+        b.addEventListener("click", function () { fridgeAdding = b.getAttribute("data-fridge-add"); renderFridge(); });
+      });
+    });
+    var save = function () {
+      var clean = {};
+      Object.keys(fridgeDraft).forEach(function (k) { if (PACKS[k] && fridgeDraft[k] > 0) clean[k] = fridgeDraft[k]; });
+      state.fridge = clean;
+      state.fridgeFrom = state.mode === "batch" ? null : weekKey(VM());
+    };
+    document.getElementById("fridge-save-btn").addEventListener("click", function () {
+      save(); closeFridge(); onStateChanged();
+      var n = Object.keys(state.fridge).length;
+      toast(n ? "Fridge saved. Low-waste planning will use " + (n === 1 ? "it" : "these") + " first." : "Fridge cleared.");
+    });
+    document.getElementById("fridge-plan-btn").addEventListener("click", function () {
+      save(); closeFridge();
+      if (state.mode === "batch") lowWasteBatch(); else lowWasteFillWeek();
+    });
+    var clear = document.getElementById("fridge-clear-btn");
+    if (clear) clear.addEventListener("click", function () { fridgeDraft = {}; renderFridge(); });
+  }
+  function fridgeUsedByPlan() {
+    var used = {};
+    fridgeUsedBy(currentRecipeIds()).forEach(function (k) { used[k] = true; });
+    return used;
+  }
+  if (fridgeBackdrop) fridgeBackdrop.addEventListener("click", function (e) { if (e.target === fridgeBackdrop) closeFridge(); });
+  ["fridge-btn", "batch-fridge-btn"].forEach(function (id) {
+    var b = document.getElementById(id);
+    if (b) b.addEventListener("click", openFridge);
+  });
+
+  // "Carry leftovers to my fridge": what this plan leaves over becomes the
+  // fridge, ready for planning next week.
+  function carryLeftovers() {
+    if (!requirePro("fridge")) return;
+    var rep = wasteReport(currentRecipeIds());
+    var next = {};
+    rep.items.forEach(function (it) {
+      var p = it.pack, amt = it.spare;
+      if (p.unit === "" && p.size > 1 || p.unit === "rasher" || p.unit === "slice") amt = Math.round(amt);
+      else amt = Math.round(amt / p.size * 4) / 4 * p.size;
+      if (amt > 0) next[it.name] = amt;
+    });
+    if (!Object.keys(next).length) { toast("Nothing worth carrying over: everything gets used."); return; }
+    var undoSnap = JSON.stringify(syncPayload()), wasNext = viewNext;
+    // Keep anything already put in the fridge for next week.
+    if (state.fridgeFrom && state.fridgeFrom >= nextMondayKey()) {
+      Object.keys(state.fridge || {}).forEach(function (k) { if (PACKS[k]) next[k] = (next[k] || 0) + state.fridge[k]; });
+    }
+    state.fridge = next;
+    state.fridgeFrom = nextMondayKey();
+    if (!viewNext) { viewNext = true; viewPicked = true; }
+    onStateChanged();
+    var n = Object.keys(next).length;
+    toast(n + (n === 1 ? " leftover" : " leftovers") + " carried into next week. Use what I have plans around " + (n === 1 ? "it." : "them."), "Undo", function () { applyState(JSON.parse(undoSnap)); viewNext = wasNext; onStateChanged(); });
+  }
+
+  function fridgeAsideHtml() {
+    var keys = fridgeKeys();
+    if (!keys.length) return "";
+    var used = fridgeUsedByPlan();
+    return '<section class="aside-card"><div class="aside-head"><h2>Your fridge</h2><button type="button" class="btn btn-ghost btn-sm" id="aside-fridge-edit">Edit</button></div>' +
+      '<ul class="aside-list">' + keys.slice(0, 8).map(function (k) {
+        return '<li><span class="name">' + esc(fridgeText(k, fridgeHave()[k])) + '</span><span class="amt">' + (used[k] ? "in your plan" : "not used yet") + "</span></li>";
+      }).join("") + "</ul>" +
+      (keys.some(function (k) { return !used[k]; }) ? '<button type="button" class="btn btn-primary btn-block" id="aside-fridge-plan">Plan around these</button>' : "") +
+      "</section>";
+  }
+
 
   function setShopBar(frac) {
     var bar = document.getElementById("shop-bar");
@@ -1534,10 +1756,11 @@
         total++;
         var isChecked = !!W().checked[itemKey];
         if (isChecked) checkedCount++;
+        var fridgeName = key.split("|")[1], haveAmt = fridgeHave()[fridgeName];
         html += '<label class="shop-item' + (isChecked ? " checked" : "") + '" data-key="' + itemKey.replace(/"/g, "&quot;") + '">' +
           '<input type="checkbox" ' + (isChecked ? "checked" : "") + '>' +
           '<span class="amt">' + g.amt + '</span>' +
-          '<span class="name">' + g.label + '</span></label>';
+          '<span class="name">' + g.label + (haveAmt > 0 && PACKS[fridgeName] ? ' <span class="have-tag">you have ' + esc(fridgeShort(fridgeName, haveAmt)) + "</span>" : "") + '</span></label>';
       });
       html += "</div>";
     });
@@ -1553,11 +1776,19 @@
         }).join("") + "</details>";
     }
     if (!shopCupboardMode) {
+      var fridgeUsed = fridgeUsedBy(recipeIds);
+      if (fridgeUsed.length) {
+        html = '<div class="banner-card banner-fridge"><div><strong>Use your fridge first</strong>' +
+          "<p>You already have " + esc(listAnd(fridgeUsed.map(function (k) { return fridgeText(k, fridgeHave()[k]); }))) + ". Buy less of " + (fridgeUsed.length === 1 ? "it" : "these") + ", or none.</p></div></div>" + html;
+      }
       html += '<section class="shop-section shop-leftovers"><h3>What you will have left</h3>' +
-        '<p class="settings-note">Packs are rounded up to how the shops sell them. Use the Low-waste button on This week to plan around these.</p>' +
-        leftoversHtml(recipeIds, 10) + "</section>";
+        '<p class="settings-note">Packs are rounded up to how the shops sell them. Carry them to your fridge and next week\'s low-waste plan will use them up.</p>' +
+        leftoversHtml(recipeIds, 10) +
+        (state.mode === "days" && !viewNext && wasteReport(recipeIds).items.length ? '<button type="button" class="btn btn-outline btn-sm needs-pro" id="shop-carry-btn">Carry leftovers to my fridge</button>' : "") + "</section>";
     }
     content.innerHTML = html;
+    var shopCarry = document.getElementById("shop-carry-btn");
+    if (shopCarry) shopCarry.addEventListener("click", carryLeftovers);
     document.getElementById("shop-progress").textContent = shopCupboardMode ? "Tap what you always have in" : (state.mode === "days" ? (viewNext ? "For next week · " : "For this week · ") : "") + checkedCount + " of " + total + " ticked off";
     setShopBar(shopCupboardMode || !total ? 0 : checkedCount / total);
     var badge = document.getElementById("shopping-count");
@@ -2919,6 +3150,7 @@
     { el: function () { return document.getElementById("cook-overlay"); }, close: closeCookMode },
     { el: function () { return document.getElementById("custom-modal-backdrop"); }, close: function () { closeCustomForm(); } },
     { el: function () { return document.getElementById("paywall-modal-backdrop"); }, close: function () { closePaywall(); } },
+    { el: function () { return document.getElementById("fridge-modal-backdrop"); }, close: function () { closeFridge(); } },
     { el: function () { return document.getElementById("signin-modal-backdrop"); }, close: function () { afterSignIn = null; closeSignIn(); } },
     { el: function () { return document.getElementById("picker-modal-backdrop"); }, close: function () { closePicker(); } },
     { el: function () { return document.getElementById("recipe-modal-backdrop"); }, close: function () { closeRecipeModal(); } },
@@ -2967,7 +3199,7 @@
 
   /* ============================= CLOUD SYNC ============================= */
   var SYNC_FIELDS = ["servings", "mode", "plan", "batch", "checked", "ratings", "noSeafood", "history", "cooked", "cookLog",
-    "planWeek", "leftovers", "staples", "avoid", "customRecipes", "lastWeek", "newWeekNotice", "next", "cookDays"];
+    "planWeek", "leftovers", "staples", "avoid", "customRecipes", "lastWeek", "newWeekNotice", "next", "cookDays", "fridge", "fridgeFrom"];
   var UNSYNCED_KEY = "soloSupper.unsynced";
   var lastSyncedJson = {};
   var savePending = false;
@@ -3012,6 +3244,8 @@
     }
     M.servings = L.servings; M.mode = L.mode;
     M.cookDays = (Array.isArray(C.cookDays) && C.cookDays.length === 7) ? C.cookDays : L.cookDays;
+    M.fridge = Object.assign({}, C.fridge || {}, L.fridge || {});
+    M.fridgeFrom = L.fridgeFrom || C.fridgeFrom || null;
     M.noSeafood = !!(L.noSeafood || C.noSeafood);
     return M;
   }
@@ -3312,7 +3546,8 @@
   var PRO_REASONS = {
     lowwaste: "Low-waste planning is part of Pro",
     nextweek: "Planning next week is part of Pro",
-    custom: "Your own recipes are part of Pro"
+    custom: "Your own recipes are part of Pro",
+    fridge: "Planning around your fridge is part of Pro"
   };
   var proPlanChoice = "annual";
   function openProPaywall(reason) {
@@ -3332,6 +3567,7 @@
     else lead = "Plan around pack sizes, waste less and plan ahead.";
     var features = [
       ["Low-waste weeks", "Dinners picked to share their packs, so the other half of the spinach gets used"],
+      ["Use what you have", "Tell it what's in the fridge and it plans dinners that finish it off"],
       ["Plan next week", "Sort out next week on a Sunday, or any time before"],
       ["Your own recipes", "Add the dishes you already make, alongside the " + BUILTIN_COUNT + " in the book"],
       ["Everything else stays free", "Every recipe, the planner and the shopping list"]

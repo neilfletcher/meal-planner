@@ -617,3 +617,28 @@ h1, .display, .display-l, .display-m, .week-range { letter-spacing: -0.02em; }
 .show-pro-tags .week-tab.needs-pro::after { position: static; height: auto; display: inline-block; margin-left: 6px; vertical-align: 1px; }
 .show-pro-tags .week-tab.needs-pro[aria-pressed="true"]::after { background: var(--yolk); }
 @media (max-width: 420px) { .plan-choice { grid-template-columns: 1fr; } }
+
+/* ---------- what's in your fridge ---------- */
+.modal-fridge { max-width: 640px; }
+.fridge-have { margin: 4px 0 16px; }
+.fridge-list { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+.fridge-list li { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--line); }
+.fridge-name { flex: 1; font-size: 15px; }
+.fridge-badge { font-family: var(--mono); font-size: 10px; letter-spacing: .08em; text-transform: uppercase; background: var(--olive); color: var(--olive-ink); padding: 3px 7px; border-radius: 999px; }
+.icon-btn-sm { width: 32px; height: 32px; }
+.fridge-empty { margin: 0; }
+.fridge-adding { background: var(--board); border-radius: 12px; padding: 14px 16px; margin-bottom: 14px; display: flex; flex-direction: column; gap: 10px; }
+.fridge-adding-q { font-weight: 600; font-size: 15px; }
+.fridge-pack { font-weight: 400; color: var(--ink-3); font-size: 13px; }
+.fridge-search-wrap { display: flex; align-items: center; gap: 10px; border: 1px solid var(--line-strong); border-radius: 999px; padding: 0 16px; background: var(--plate); min-height: 46px; margin-bottom: 6px; }
+.fridge-search-wrap .i { width: 16px; height: 16px; color: var(--ink-3); flex-shrink: 0; }
+.fridge-search-wrap input { flex: 1; border: 0; outline: 0; font: inherit; font-size: 15px; background: transparent; color: var(--ink); min-width: 0; }
+.fridge-groups { max-height: 38vh; overflow-y: auto; padding: 4px 2px 8px; }
+.fridge-group h4 { font-family: var(--mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-3); font-weight: 400; margin: 16px 0 8px; }
+.fridge-group .chip { min-height: 36px; font-size: 14px; }
+.chip.is-on { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.fridge-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--line); }
+.fridge-actions .btn-primary[disabled] { opacity: .45; cursor: default; }
+.have-tag { display: inline-block; margin-left: 6px; font-family: var(--mono); font-size: 11px; letter-spacing: .02em; color: var(--olive); background: #EEF1E6; border-radius: 999px; padding: 2px 8px; vertical-align: 1px; white-space: nowrap; }
+.banner-fridge { border-color: var(--olive); background: #F3F5EC; }
+.shop-leftovers #shop-carry-btn { margin-top: 12px; }

@@ -75,6 +75,7 @@ function postInput(s, ch, post, mediaUrls) {
   if (post.channel === "pinterest" && s.pinterest) {
     var pm = {}, board = (ch.metadata && ch.metadata.boards || []);
     var b = board.find(function (x) { return /dinners for one/i.test(x.name); }) || board[0];
+    if (!b) throw new Error("The Pinterest account has no boards yet. Create a board called Dinners for one on Pinterest, then refresh the channel in Buffer.");
     s.pinterest.inputFields.forEach(function (f) {
       if (/^boardServiceId$/i.test(f.name) && b) pm[f.name] = b.serviceId;
       else if (/^boardId$/i.test(f.name) && b) pm[f.name] = b.id;
@@ -93,6 +94,7 @@ function postInput(s, ch, post, mediaUrls) {
         var v2 = (s.instagramTypes || []).find(function (x) { return want.test(x); });
         if (v2) im[f.name] = v2;
       } else if (/^shouldShareToFeed$/.test(f.name)) im[f.name] = true;
+      else if (/^isAiGenerated$/.test(f.name)) im[f.name] = true;
       else if (/^thumbnailOffset$/i.test(f.name) && isVideo) im[f.name] = 3000;
     });
     meta[field(s.meta, /^instagram$/i).name] = im;

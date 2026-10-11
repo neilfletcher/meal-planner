@@ -5,7 +5,21 @@
 var U = require("./util.js");
 
 var API = "https://generativelanguage.googleapis.com/v1beta";
-var TEXT_MODELS = (process.env.GEMINI_TEXT_MODEL ? [process.env.GEMINI_TEXT_MODEL] : []).concat(["gemini-flash-latest", "gemini-2.5-flash"]);
+// The newest "flash" model this key can use, found from the API itself, since
+// Google retires model names every few months.
+async function textModels(key) {
+  if (process.env.GEMINI_TEXT_MODEL) return [process.env.GEMINI_TEXT_MODEL];
+  var list = [];
+  try {
+    var j = await (await fetch(API + "/models?pageSize=200&key=" + encodeURIComponent(key))).json();
+    list = (j.models || []).filter(function (m) { return (m.supportedGenerationMethods || ["generateContent"]).indexOf("generateContent") !== -1; })
+      .map(function (m) { return m.name.replace(/^models\//, ""); });
+  } catch (e) { /* fall through to the alias */ }
+  var ver = function (n) { var m = n.match(/^gemini-(\d+(?:\.\d+)?)/); return m ? parseFloat(m[1]) : 0; };
+  var flash = list.filter(function (n) { return /^gemini-[\d.]+-flash$/.test(n); }).sort(function (a, b) { return ver(b) - ver(a); });
+  var other = list.filter(function (n) { return /^gemini-[\d.]+-flash-/.test(n) && !/lite|image|audio|tts|live|embedding/.test(n); }).sort(function (a, b) { return ver(b) - ver(a); });
+  return flash.concat(other).slice(0, 3).concat(["gemini-flash-latest"]);
+}
 var BANNED = /\b(straightforward|genuinely|honestly|leverage|seamless(ly)?|robust|delve|crucial|innovative|game[- ]changer|elevate|indulge|guilt[- ]free|healthy|skinny|weight[- ]loss|superfood|detox)\b/i;
 var AI_LINE = "Pictures made with AI.";
 
@@ -36,7 +50,7 @@ function tplUsePin(u, rs) {
       " all use it, each written for one. More ideas at solosupper.co.uk. " + AI_LINE, 480)
   };
 }
-function tplCarousel(r, partner, packKey) {
+function tplCarousel(r, partner, packKey, packName) {
   var steps = r.steps.filter(function (s) { return !/^Season to taste, then serve/i.test(s); }).map(function (s) {
     var first = s.split(/(?<=\.)\s/)[0];
     return clip(first.replace(/^Season to taste, then /i, "").replace(/^./, function (c) { return c.toUpperCase(); }), 140);
@@ -44,7 +58,7 @@ function tplCarousel(r, partner, packKey) {
   return {
     subtitle: clip(an(r.demonym).replace(/^a/, "A") + " dinner for one, on the table in " + U.minutes(r) + " minutes.", 80),
     steps: steps,
-    caption: clip(r.title + ": dinner for one in " + U.minutes(r) + " minutes. It opens a pack of " + packKey + ", so " + partner.title +
+    caption: clip(r.title + ": dinner for one in " + U.minutes(r) + " minutes. It opens a pack of " + packName + ", so " + partner.title +
       " later in the week finishes it. Full recipe and shopping list via the link in our bio. " + AI_LINE, 900) + "\n\n#dinnerforone #cookingforone #easydinner #nofoodwaste #" + r.demonym.toLowerCase().replace(/[^a-z]/g, "") + "food"
   };
 }
@@ -61,20 +75,22 @@ function tplReel(r) {
 async function gemini(prompt) {
   var key = process.env.GEMINI_API_KEY;
   if (!key) throw new Error("no GEMINI_API_KEY");
-  var last;
-  for (var i = 0; i < TEXT_MODELS.length; i++) {
-    var res = await fetch(API + "/models/" + TEXT_MODELS[i] + ":generateContent?key=" + encodeURIComponent(key), {
+  var models = await textModels(key), errs = [];
+  for (var i = 0; i < models.length; i++) {
+    var res = await fetch(API + "/models/" + models[i] + ":generateContent?key=" + encodeURIComponent(key), {
       method: "POST", headers: { "content-type": "application/json" },
       body: JSON.stringify({ contents: [{ role: "user", parts: [{ text: prompt }] }], generationConfig: { responseMimeType: "application/json", temperature: 0.8 } })
     });
     var j = await res.json().catch(function () { return {}; });
     if (res.ok && j.candidates && j.candidates[0]) {
       var txt = j.candidates[0].content.parts.map(function (p) { return p.text || ""; }).join("");
-      return JSON.parse(txt);
+      var parsed = JSON.parse(txt);
+      parsed._model = models[i];
+      return parsed;
     }
-    last = new Error(TEXT_MODELS[i] + ": " + res.status + " " + JSON.stringify(j.error || j).slice(0, 300));
+    errs.push(models[i] + ": " + res.status + " " + ((j.error && j.error.message) || "").slice(0, 160));
   }
-  throw last;
+  throw new Error(errs.join("; "));
 }
 
 function facts(r) {
@@ -97,7 +113,7 @@ async function writeCopy(data, plan) {
   plan.posts.forEach(function (p) {
     if (p.kind === "pin") out[p.key] = tplPin(by[p.recipe]);
     if (p.kind === "usepin") out[p.key] = tplUsePin(data.useUp.find(function (u) { return u.key === p.useup; }), p.recipes.map(function (id) { return by[id]; }));
-    if (p.kind === "carousel") out[p.key] = tplCarousel(by[p.recipe], by[p.partner], p.pack);
+    if (p.kind === "carousel") out[p.key] = tplCarousel(by[p.recipe], by[p.partner], p.pack, data.packNames[p.pack] || p.pack);
     if (p.kind === "reel") out[p.key] = tplReel(by[p.recipe]);
   });
   var vp = plan.posts.find(function (p) { return p.kind === "videopin"; });
@@ -136,7 +152,7 @@ async function writeCopy(data, plan) {
       out[g.key] = fixed;
     });
     if (vp) out[vp.key] = { title: out["ig-fri"].pinTitle, description: out["ig-fri"].pinDescription };
-    notes.push("Copy written by Gemini.");
+    notes.push("Copy written by Gemini (" + got._model + ").");
   } catch (e) {
     notes.push("Copy from templates (" + e.message + ").");
   }

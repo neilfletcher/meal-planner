@@ -79,7 +79,7 @@ async function makeVideo(r, overlays, dir, log) {
   } catch (e) {
     log("Veo not used (" + e.message + "); using a slow zoom on the photo instead.");
     stillMotion(jpg, raw);
-    source = "photo zoom (fallback)";
+    source = "photo zoom, because Veo was not available (" + e.message.slice(0, 300) + ")";
   }
   var probe = cp.spawnSync("ffprobe", ["-v", "error", "-select_streams", "a", "-show_entries", "stream=index", "-of", "csv=p=0", raw], { encoding: "utf8" });
   var hasAudio = /\d/.test(probe.stdout || "");

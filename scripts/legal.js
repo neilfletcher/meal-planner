@@ -1,0 +1,193 @@
+/*
+ * Legal pages for solosupper.co.uk: privacy, terms, cookies and refunds.
+ * build-site.js turns each entry into /<slug>/index.html.
+ * Edit the text here, then run `node scripts/build-site.js`.
+ *
+ * {EMAIL} and {SITE} are filled in by the build.
+ */
+var UPDATED = "11 October 2026";
+
+module.exports = [
+  {
+    slug: "privacy",
+    title: "Privacy policy",
+    description: "What Solo Supper collects, why, who it is shared with and how to have it deleted.",
+    html: [
+      "<p>Solo Supper is run by Neil Fletcher, a sole trader based in England. I am the data controller for the personal information described here. If you have any question about it, email <a href=\"mailto:{EMAIL}\">{EMAIL}</a>.</p>",
+      "<p>This policy covers the website at {SITE} and the Solo Supper app for Android.</p>",
+
+      "<h2>The short version</h2>",
+      "<ul>",
+      "<li>You can read every recipe and plan your week without an account. Your plan is then kept only in your own browser or phone.</li>",
+      "<li>If you sign in, your plan is stored against your account so it syncs between devices.</li>",
+      "<li>Usage statistics are only collected if you say yes to them.</li>",
+      "<li>I do not sell your information, and I do not use it for advertising.</li>",
+      "</ul>",
+
+      "<h2>What I collect and why</h2>",
+      "<h3>If you use Solo Supper without signing in</h3>",
+      "<p>Your week, shopping list ticks, ratings, preferences and any recipes you add are saved in your browser's local storage (or the app's storage on your phone). They never leave your device, and I cannot see them.</p>",
+
+      "<h3>If you sign in</h3>",
+      "<p>Signing in uses Google sign-in or a link sent to your email address. I receive your name, email address and a unique account ID. Your planner data (the dinners you plan, recipes you mark as cooked, ratings, shopping list ticks, cupboard staples, dislikes, your own recipes and settings) is then stored in your account so it can sync between devices.</p>",
+      "<p><strong>Legal basis:</strong> providing the service you asked for (contract).</p>",
+
+      "<h3>Dislikes and allergies</h3>",
+      "<p>If you choose to hide recipes containing things like nuts, gluten or dairy, that choice is stored with the rest of your planner data. It could suggest something about your health, so it is used only to filter recipes for you and for nothing else. Storing it is your choice, and you can clear it at any time in settings.</p>",
+      "<p><strong>Legal basis:</strong> your explicit consent, given when you switch the option on.</p>",
+
+      "<h3>Usage statistics</h3>",
+      "<p>If you say yes in the cookie banner, the site uses Google Analytics to count visits and see which pages and features are used. IP addresses are anonymised. If you say no, or ignore the banner, Google Analytics is not loaded. You can change your mind at any time from <a href=\"#cookie-settings\">cookie settings</a>.</p>",
+      "<p><strong>Legal basis:</strong> your consent.</p>",
+
+      "<h3>Pro subscriptions</h3>",
+      "<p>On the website, Pro is sold through Lemon Squeezy, which acts as the merchant of record. Lemon Squeezy takes your payment details and handles payment, tax and receipts; I never see your card details. I receive your email address, what you bought and whether your subscription is active, so that Pro can be switched on for your account. In the Android app, purchases go through Google Play in the same way.</p>",
+      "<p><strong>Legal basis:</strong> contract, and keeping financial records the law requires.</p>",
+
+      "<h3>Emails</h3>",
+      "<p>If you email me, I keep the conversation so I can reply and help. I send sign-in links and replies, and nothing else. There is no marketing email unless you have separately signed up for it.</p>",
+
+      "<h2>Who your information is shared with</h2>",
+      "<p>Only the services that make Solo Supper work, each acting on my instructions:</p>",
+      "<ul>",
+      "<li><strong>Google (Firebase)</strong>: sign-in and storing the planner data of signed-in users.</li>",
+      "<li><strong>Google Analytics</strong>: usage statistics, only if you agree.</li>",
+      "<li><strong>Cloudflare</strong>: hosts the website, protects it from attacks and forwards email sent to Solo Supper addresses.</li>",
+      "<li><strong>Resend</strong>: sends email from Solo Supper addresses.</li>",
+      "<li><strong>Lemon Squeezy</strong> and <strong>Google Play</strong>: payments for Pro.</li>",
+      "</ul>",
+      "<p>Some of these services store data outside the UK, including in the United States. Where that happens, the transfer is covered by UK-approved safeguards such as the UK Extension to the EU-US Data Privacy Framework or standard contractual clauses.</p>",
+
+      "<h2>How long it is kept</h2>",
+      "<ul>",
+      "<li>Planner data in your account: until you ask for your account to be deleted.</li>",
+      "<li>Payment records: six years, as UK tax law requires.</li>",
+      "<li>Usage statistics: no longer than 14 months.</li>",
+      "<li>Emails: as long as needed to deal with your question, and no longer than two years.</li>",
+      "</ul>",
+
+      "<h2>Deleting your account</h2>",
+      "<p>Email <a href=\"mailto:{EMAIL}\">{EMAIL}</a> from the address you sign in with and I will delete your account and everything stored with it within 30 days. Data kept only on your device can be removed by clearing your browser's site data or uninstalling the app.</p>",
+
+      "<h2>Your rights</h2>",
+      "<p>Under UK data protection law you can ask for a copy of your information, ask me to correct or delete it, object to or restrict how it is used, ask for it in a portable format, and withdraw consent at any time. Email <a href=\"mailto:{EMAIL}\">{EMAIL}</a> and I will reply within a month.</p>",
+      "<p>If you are unhappy with how your information has been handled, you can complain to the Information Commissioner's Office at <a href=\"https://ico.org.uk/make-a-complaint/\">ico.org.uk</a>.</p>",
+
+      "<h2>Children</h2>",
+      "<p>Solo Supper is meant for adults and is not aimed at children under 13.</p>",
+
+      "<h2>Changes</h2>",
+      "<p>If this policy changes, the new version will appear here with a new date. If a change affects how your information is used in a significant way, signed-in users will be told before it takes effect.</p>",
+      "<p class=\"legal-updated\">Last updated " + UPDATED + ".</p>"
+    ].join("\n")
+  },
+
+  {
+    slug: "terms",
+    title: "Terms of use",
+    description: "The terms for using Solo Supper, including Pro subscriptions, free trials and gift codes.",
+    html: [
+      "<p>These terms apply when you use the Solo Supper website at {SITE} or the Solo Supper app. Solo Supper is run by Neil Fletcher, a sole trader based in England (\"I\", \"me\"). You can contact me at <a href=\"mailto:{EMAIL}\">{EMAIL}</a>.</p>",
+      "<p>By using Solo Supper you agree to these terms. If you do not agree, please do not use it.</p>",
+
+      "<h2>Using Solo Supper</h2>",
+      "<p>The recipes and the planner are free to use. You may use them for your own cooking at home. Please do not copy the recipes, photos or code to publish elsewhere, scrape the site, or try to break or overload it.</p>",
+
+      "<h2>Recipes, allergens and food safety</h2>",
+      "<p>The recipes are written with care, but you are responsible for what you cook and eat. Always check ingredient labels for allergens, cook meat, fish and eggs thoroughly, and follow the storage advice on packs. Allergy and dislike filters are there to help, not to guarantee that a recipe is safe for you. Cooking times, amounts and pack sizes are guides and may differ from what you buy.</p>",
+
+      "<h2>Your account</h2>",
+      "<p>You can use Solo Supper without an account. If you sign in, keep access to your Google account or email address secure, as that is what protects your Solo Supper account. I may suspend an account that is used to abuse the service.</p>",
+
+      "<h2>Solo Supper Pro</h2>",
+      "<h3>Subscriptions</h3>",
+      "<p>Pro adds planning features on top of the free recipes. The price, what is included and how often you are billed are shown before you buy. On the website, Pro is sold by Lemon Squeezy as the merchant of record, so your purchase is also covered by <a href=\"https://www.lemonsqueezy.com/buyer-terms\">Lemon Squeezy's buyer terms</a>. In the Android app, Pro is sold through Google Play under Google Play's terms.</p>",
+      "<p>Subscriptions renew automatically at the end of each period until you cancel.</p>",
+
+      "<h3>Cancelling</h3>",
+      "<p>You can cancel at any time from the link in your receipt or your account settings (or from Google Play subscriptions in the app). Pro then stays on until the end of the period you have paid for and does not renew.</p>",
+
+      "<h3>Free trial</h3>",
+      "<p>New accounts may get a free Pro trial. No card is needed, and when the trial ends your account returns to the free version unless you choose to subscribe. One trial per person.</p>",
+
+      "<h3>Gift codes</h3>",
+      "<p>A gift code gives Pro for the period stated with the code. Each code can be used once, has no cash value and cannot be exchanged or resold.</p>",
+
+      "<h3>Price changes</h3>",
+      "<p>If the price of Pro changes, you will be told by email at least 30 days before it affects your next renewal, so you can cancel first if you wish.</p>",
+
+      "<h3>Refunds</h3>",
+      "<p>See the <a href=\"{REL}refunds/\">refund policy</a>. Nothing in these terms affects your statutory rights as a consumer.</p>",
+
+      "<h2>Changes to Solo Supper</h2>",
+      "<p>I keep improving Solo Supper, so features may change. If a change takes away something important that you have paid for, you can cancel and get a refund for the unused part of your subscription.</p>",
+
+      "<h2>Liability</h2>",
+      "<p>Solo Supper is provided with reasonable care and skill, but I cannot promise it will always be available or free of errors. I am not liable for losses that were not foreseeable, for business losses, or for anything beyond what you have paid me in the previous 12 months. Nothing in these terms limits liability for death or personal injury caused by negligence, for fraud, or for anything else that cannot be limited by law.</p>",
+
+      "<h2>Law</h2>",
+      "<p>These terms are governed by the law of England and Wales. If you live in Scotland or Northern Ireland, you can also bring a claim in your local courts.</p>",
+
+      "<h2>Changes to these terms</h2>",
+      "<p>If these terms change, the new version will appear here with a new date. Significant changes affecting Pro subscribers will be emailed in advance.</p>",
+      "<p class=\"legal-updated\">Last updated " + UPDATED + ".</p>"
+    ].join("\n")
+  },
+
+  {
+    slug: "refunds",
+    title: "Refund policy",
+    description: "How to get a refund for Solo Supper Pro.",
+    html: [
+      "<p>If Pro is not for you, you can have your money back.</p>",
+
+      "<h2>14-day refunds</h2>",
+      "<p>Email <a href=\"mailto:{EMAIL}\">{EMAIL}</a> within 14 days of any payment, whether your first or a renewal, and you will get a full refund for that payment, no questions asked. Please email from the address you signed up with, or include it. Pro is switched off when the refund is made.</p>",
+
+      "<h2>After 14 days</h2>",
+      "<p>After 14 days, payments are not normally refunded, but you can cancel at any time so your subscription does not renew. Pro stays on until the end of the period you have paid for. If something has gone wrong, such as being charged twice or Pro not working, email me and it will be put right.</p>",
+
+      "<h2>How refunds are paid</h2>",
+      "<p>Website purchases are refunded through Lemon Squeezy to the card or account you paid with, usually within 5 to 10 working days. Purchases made in the Android app are refunded through Google Play: you can request one from Google Play directly, or email me and I will help.</p>",
+
+      "<h2>Your statutory rights</h2>",
+      "<p>This policy is in addition to your rights under UK consumer law, including the Consumer Contracts Regulations and the Consumer Rights Act 2015. Nothing here affects those rights.</p>",
+      "<p class=\"legal-updated\">Last updated " + UPDATED + ".</p>"
+    ].join("\n")
+  },
+
+  {
+    slug: "cookies",
+    title: "Cookies and local storage",
+    description: "The cookies and local storage Solo Supper uses, and how to change your choice.",
+    html: [
+      "<p>Solo Supper uses as little as it can. Usage statistics cookies are only set if you agree; everything else is needed for the site to work.</p>",
+      "<p><a class=\"btn btn-outline\" href=\"#cookie-settings\">Change cookie settings</a></p>",
+
+      "<h2>Needed for the site to work</h2>",
+      "<p>These are always on. They do not track you.</p>",
+      "<div class=\"legal-table\"><table>",
+      "<thead><tr><th>Name</th><th>Type</th><th>What it does</th><th>How long</th></tr></thead>",
+      "<tbody>",
+      "<tr><td>soloSupper.state.v1</td><td>Local storage</td><td>Your planner: your week, shopping list, ratings and settings, kept on your device</td><td>Until you clear it</td></tr>",
+      "<tr><td>soloSupper.analyticsConsent</td><td>Local storage</td><td>Remembers your answer to the cookie banner</td><td>Until you clear it</td></tr>",
+      "<tr><td>soloSupper.unsynced</td><td>Local storage</td><td>Notes changes still waiting to sync to your account</td><td>Until you clear it</td></tr>",
+      "<tr><td>firebaseLocalStorageDb</td><td>Browser database</td><td>Keeps you signed in, if you sign in</td><td>Until you sign out</td></tr>",
+      "<tr><td>__cf_bm</td><td>Cookie</td><td>Set by Cloudflare, in some cases, to protect the site from bots</td><td>30 minutes</td></tr>",
+      "</tbody></table></div>",
+
+      "<h2>Usage statistics (only if you agree)</h2>",
+      "<div class=\"legal-table\"><table>",
+      "<thead><tr><th>Name</th><th>Type</th><th>What it does</th><th>How long</th></tr></thead>",
+      "<tbody>",
+      "<tr><td>_ga</td><td>Cookie</td><td>Google Analytics: tells visits apart so they can be counted</td><td>2 years</td></tr>",
+      "<tr><td>_ga_JF54HQGVLT</td><td>Cookie</td><td>Google Analytics: keeps track of the current visit</td><td>2 years</td></tr>",
+      "</tbody></table></div>",
+      "<p>If you say no, these are never set. If you said yes and change your mind, use <a href=\"#cookie-settings\">cookie settings</a>; you can also delete existing cookies in your browser settings.</p>",
+
+      "<h2>More information</h2>",
+      "<p>The <a href=\"{REL}privacy/\">privacy policy</a> explains what happens to your information. Questions to <a href=\"mailto:{EMAIL}\">{EMAIL}</a>.</p>",
+      "<p class=\"legal-updated\">Last updated " + UPDATED + ".</p>"
+    ].join("\n")
+  }
+];

@@ -26,7 +26,8 @@ var vm = require("vm");
 var ROOT = path.resolve(__dirname, "..");
 var SITE_URL = (process.env.SITE_URL || "https://solosupper.co.uk").replace(/\/+$/, "");
 var GA_ID = "G-JF54HQGVLT";
-var PRIVACY_URL = "https://neilfletcher.github.io/TrooLoo-privacy/privacy.html";
+var PRIVACY_URL = SITE_URL + "/privacy/";
+var LEGAL = require("./legal.js");
 var CONTACT_EMAIL = "hello@solosupper.co.uk";
 var YEAR = new Date().getFullYear();
 
@@ -259,7 +260,7 @@ function rmrf(rel) {
   var p = path.join(ROOT, rel);
   if (fs.existsSync(p)) fs.rmSync(p, { recursive: true, force: true });
 }
-["recipes", "collections", "cuisines", "use-up"].forEach(rmrf);
+["recipes", "collections", "cuisines", "use-up"].concat(LEGAL.map(function (l) { return l.slug; })).forEach(rmrf);
 
 /* -------------------------------------------------------------- partials */
 var ICON = {
@@ -336,7 +337,7 @@ function footer(rel) {
     '<p class="footer-line">Good dinners, sized for <em>one</em>.</p></div>' +
     col("Recipes", [["Quick dinners for one", rel + "collections/quick-dinners-for-one/"], ["Vegetarian for one", rel + "collections/vegetarian-dinners-for-one/"], ["Fish for one", rel + "collections/fish-dinners-for-one/"], ["All recipes", rel + "recipes/"]]) +
     col("Planner", [["Plan your week", rel + "plan/"], ["Use it up", rel + "use-up/"], ["Cuisines", rel + "cuisines/"], ["Collections", rel + "collections/"]]) +
-    col("About", [["Contact", "mailto:" + CONTACT_EMAIL], ["Privacy", PRIVACY_URL], ["Cookie settings", "#cookie-settings"]]) +
+    col("About", [["Contact", "mailto:" + CONTACT_EMAIL], ["Privacy", rel + "privacy/"], ["Terms", rel + "terms/"], ["Refunds", rel + "refunds/"], ["Cookies", rel + "cookies/"], ["Cookie settings", "#cookie-settings"]]) +
     "</div>" +
     '<div class="footer-base"><span>&copy; ' + YEAR + " Solo Supper</span><span>Every recipe written for one. Scaled for two when someone stays over.</span></div>" +
     "</div></footer>\n" +
@@ -781,6 +782,20 @@ CUISINES.forEach(function (cu) {
     }).join("") + "</ul></section>"));
   sitemap.push({ loc: "use-up/", pri: "0.8" });
 })();
+
+/* ------------------------------------------------------------ legal pages */
+LEGAL.forEach(function (l) {
+  var rel = "../";
+  var html = l.html.replace(/\{EMAIL\}/g, CONTACT_EMAIL).replace(/\{SITE\}/g, SITE_URL.replace(/^https?:\/\//, "")).replace(/\{REL\}/g, rel);
+  out(l.slug + "/index.html", page({
+    rel: rel, path: l.slug + "/", active: "",
+    title: l.title + " | Solo Supper",
+    description: l.description
+  }, '<section class="wrap page-head"><div class="page-head-text"><span class="eyebrow">Solo Supper</span>' +
+    '<h1 class="display-m">' + esc(l.title) + "</h1></div></section>" +
+    '<section class="wrap"><article class="legal">' + html + "</article></section>"));
+  sitemap.push({ loc: l.slug + "/", pri: "0.3" });
+});
 
 /* ------------------------------------------------------------ 404 */
 // The 404 page is served for any missing path, at any depth, so it links with full addresses.

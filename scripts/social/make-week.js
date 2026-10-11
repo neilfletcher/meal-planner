@@ -69,6 +69,23 @@ function log(s) { console.log("[social] " + s); }
     }
   } finally { await r.close(); }
 
+  // Put a short content hash in every file name. Re-running a week replaces the
+  // files, and browsers, Cloudflare and Buffer would otherwise mix up the old and
+  // new copies at the same address (a video then shows as "corrupt").
+  var renamed = {};
+  function hashed(name) {
+    if (!name) return name;
+    if (renamed[name]) return renamed[name];
+    var h = require("crypto").createHash("sha1").update(fs.readFileSync(path.join(dir, name))).digest("hex").slice(0, 8);
+    var ext = path.extname(name), next = path.basename(name, ext) + "-" + h + ext;
+    fs.renameSync(path.join(dir, name), path.join(dir, next));
+    return (renamed[name] = next);
+  }
+  plan.posts.forEach(function (p) {
+    if (p.media) p.media = p.media.map(hashed);
+    if (p.cover) p.cover = hashed(p.cover);
+  });
+
   var manifest = { week: WEEK, generatedAt: new Date().toISOString(), mediaBase: MEDIA_BASE + "/" + WEEK + "/", notes: notes,
     posts: plan.posts.map(function (p) {
       return { key: p.key, channel: p.channel, kind: p.kind, day: p.day, dueAt: p.dueAt, title: p.title, text: p.text, link: p.link,

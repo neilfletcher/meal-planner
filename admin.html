@@ -241,6 +241,15 @@
 
   footer { margin-top: 32px; padding-top: 16px; border-top: 1px solid var(--border); font-size: 12px; color: var(--ink-faint); line-height: 1.6; }
 
+  .src-table { width: 100%; border-collapse: collapse; font-size: 13.5px; margin-top: 6px; }
+  .src-table th { text-align: right; font-weight: 500; font-size: 12px; color: var(--ink-muted); padding: 6px 8px; border-bottom: 1px solid var(--border); }
+  .src-table th:first-child, .src-table td:first-child { text-align: left; padding-left: 0; }
+  .src-table td { text-align: right; padding: 8px; border-bottom: 1px solid var(--border); font-variant-numeric: tabular-nums; }
+  .src-table tr.hl td { font-weight: 600; }
+  .src-scroll { overflow-x: auto; }
+  .legend { display: flex; gap: 16px; font-size: 12px; color: var(--ink-muted); margin: 4px 0 8px; }
+  .legend i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; vertical-align: -1px; }
+  .fine { font-size: 12px; color: var(--ink-faint); margin-top: 12px; }
   .kpi-row.cols-5 { grid-template-columns: repeat(5, 1fr); }
   @media (max-width: 720px) { .kpi-row.cols-5 { grid-template-columns: repeat(2, 1fr); } }
 
@@ -376,6 +385,31 @@
         <div class="retention-row" id="platformRow">
           <div class="retention-bars" id="platformBars"></div>
         </div>
+      </div>
+    </section>
+
+    <section class="block">
+      <div class="block-head">
+        <div>
+          <div class="eyebrow">From social</div>
+          <h2>Is social media bringing people in</h2>
+        </div>
+      </div>
+      <div class="card">
+        <div class="kpi-row">
+          <div class="kpi"><div class="label">Pinterest visits, 30d</div><div class="value num" id="so-pin">&ndash;</div><div class="delta" id="so-pin-7">&nbsp;</div></div>
+          <div class="kpi"><div class="label">Instagram visits, 30d</div><div class="value num" id="so-ig">&ndash;</div><div class="delta" id="so-ig-7">&nbsp;</div></div>
+          <div class="kpi"><div class="label">New visitors from social, 30d</div><div class="value num" id="so-new">&ndash;</div><div class="delta" id="so-new-share">&nbsp;</div></div>
+          <div class="kpi"><div class="label">Sign-ups from social, 30d</div><div class="value num" id="so-signups">&ndash;</div><div class="delta" id="so-pro">&nbsp;</div></div>
+        </div>
+        <div class="sub-eyebrow">Visits per week, last 12 weeks</div>
+        <div class="legend"><span><i style="background:var(--accent)"></i>Pinterest</span><span><i style="background:var(--gold)"></i>Instagram</span></div>
+        <div class="chart-wrap" id="socialChartWrap"><div class="empty-state">No social visits yet</div></div>
+        <div class="sub-eyebrow">Every channel, last 30 days</div>
+        <div class="src-scroll"><table class="src-table" id="sourceTable"></table></div>
+        <div class="sub-eyebrow" style="margin-top:18px">Where social visitors land, last 30 days</div>
+        <ul class="top-pages" id="socialLanding"></ul>
+        <p class="fine">Counts only visitors who accepted analytics cookies, so the real numbers are higher. Sign-ups and Pro are credited to the channel that first brought each person.</p>
       </div>
     </section>
 
@@ -560,6 +594,7 @@
       stickiness: { dau: 0, wau: 0, mau: 0, dauMauPct: 0 },
       platform: { web: 0, android: 0, configured: false },
       siteHealth: { exceptions7d: 0 },
+      social: null,
       engagement: {
         trackedAccounts: 0, activePlanners: 0, usingShoppingList: 0, topCooked: [], topPlanned: [], topFavourited: [],
         funnel: { signedUp: 0, tracked: 0, builtAPlan: 0, usedShoppingList: 0, confirmedACook: 0 },
@@ -578,7 +613,8 @@
    "en-tracked","en-active","en-active-pct","en-shopping","en-shopping-pct","en-library","en-library-pct",
    "en-dormant","en-dormant-label","topCooked","topFavourited","funnel",
    "st-dau","st-wau","st-mau","st-ratio","healthDot","healthValue","healthLabel",
-   "retentionBars","retentionPct","tooltip"].forEach(function (id) {
+   "retentionBars","retentionPct","tooltip",
+   "so-pin","so-pin-7","so-ig","so-ig-7","so-new","so-new-share","so-signups","so-pro","socialChartWrap","sourceTable","socialLanding"].forEach(function (id) {
     els[id] = document.getElementById(id);
   });
 
@@ -741,6 +777,59 @@
       '<div class="retention-bar-col"><div class="n num">' + fmtNum(android) + '</div><div class="bar new" style="height:' + aH + 'px"></div><div class="l">Android app</div></div>';
   }
 
+  var CHANNEL_NAMES = { pinterest: "Pinterest", instagram: "Instagram", otherSocial: "Other social", search: "Search engines", direct: "Direct or unknown", other: "Other websites" };
+  function renderSocial(so) {
+    if (!so || !so.byChannel) {
+      ["so-pin","so-ig","so-new","so-signups"].forEach(function (id) { els[id].textContent = "–"; });
+      els["so-pin-7"].textContent = so && so.configured === false ? "GA4 query failed" : "waits for the next sync";
+      els["socialChartWrap"].innerHTML = '<div class="empty-state">No social data yet</div>';
+      els["sourceTable"].innerHTML = "";
+      renderRankedList(els["socialLanding"], [], "No social visits yet");
+      return;
+    }
+    var b = so.byChannel, pin = b.pinterest, ig = b.instagram;
+    var all = Object.keys(b).reduce(function (t, k) { return t + b[k].newUsers30; }, 0);
+    els["so-pin"].textContent = fmtNum(pin.visits30);
+    els["so-pin-7"].textContent = fmtNum(pin.visits7) + " in 7d";
+    els["so-ig"].textContent = fmtNum(ig.visits30);
+    els["so-ig-7"].textContent = fmtNum(ig.visits7) + " in 7d";
+    var newSocial = pin.newUsers30 + ig.newUsers30;
+    els["so-new"].textContent = fmtNum(newSocial);
+    els["so-new-share"].textContent = all ? Math.round(newSocial / all * 100) + "% of all new visitors" : " ";
+    els["so-signups"].textContent = fmtNum(pin.signUps30 + ig.signUps30);
+    var pro = pin.proStarts30 + ig.proStarts30;
+    els["so-pro"].textContent = pro ? fmtNum(pro) + " went Pro" : fmtNum(pin.checkouts30 + ig.checkouts30) + " opened checkout";
+
+    // Stacked weekly bars: Pinterest under Instagram.
+    var weeks = so.weekly || [];
+    if (!weeks.some(function (x) { return x.pinterest + x.instagram > 0; })) {
+      els["socialChartWrap"].innerHTML = '<div class="empty-state">No social visits yet</div>';
+    } else {
+      var w = 600, h = 160, padT = 10, padB = 20, gap = 6, innerH = h - padT - padB;
+      var max = Math.max.apply(null, weeks.map(function (x) { return x.pinterest + x.instagram; }).concat([1]));
+      var barW = (w - gap * (weeks.length - 1)) / weeks.length;
+      var svg = '<svg viewBox="0 0 ' + w + ' ' + h + '" class="chart" role="img" aria-label="Visits per week from Pinterest and Instagram">';
+      weeks.forEach(function (x, i) {
+        var x0 = i * (barW + gap), hp = x.pinterest / max * innerH, hi = x.instagram / max * innerH;
+        var label = new Date(x.week + "T12:00:00Z").toLocaleDateString("en-GB", { day: "numeric", month: "short" });
+        svg += '<g><title>Week of ' + label + ': Pinterest ' + x.pinterest + ', Instagram ' + x.instagram + '</title>' +
+          '<rect x="' + x0 + '" y="' + (padT + innerH - hp) + '" width="' + barW + '" height="' + hp + '" fill="var(--accent)" rx="2"></rect>' +
+          '<rect x="' + x0 + '" y="' + (padT + innerH - hp - hi) + '" width="' + barW + '" height="' + hi + '" fill="var(--gold)" rx="2"></rect></g>';
+        if (i === 0 || i === weeks.length - 1) svg += '<text x="' + (i === 0 ? 0 : w) + '" y="' + (h - 4) + '" font-size="10" fill="var(--ink-faint)" text-anchor="' + (i === 0 ? "start" : "end") + '">' + label + '</text>';
+      });
+      els["socialChartWrap"].innerHTML = svg + "</svg>";
+    }
+
+    var rows = ["pinterest", "instagram", "otherSocial", "search", "direct", "other"].filter(function (k) { return b[k] && (b[k].visits30 || k === "pinterest" || k === "instagram"); });
+    els["sourceTable"].innerHTML = "<thead><tr><th>Channel</th><th>Visits 7d</th><th>Visits 30d</th><th>New visitors</th><th>Sign-ups</th><th>Checkouts</th><th>Pro</th></tr></thead><tbody>" +
+      rows.map(function (k) {
+        var c = b[k];
+        return '<tr class="' + (k === "pinterest" || k === "instagram" ? "hl" : "") + '"><td>' + CHANNEL_NAMES[k] + "</td><td>" + fmtNum(c.visits7) + "</td><td>" + fmtNum(c.visits30) + "</td><td>" + fmtNum(c.newUsers30) +
+          "</td><td>" + fmtNum(c.signUps30) + "</td><td>" + fmtNum(c.checkouts30) + "</td><td>" + fmtNum(c.proStarts30) + "</td></tr>";
+      }).join("") + "</tbody>";
+    renderRankedList(els["socialLanding"], (so.topLanding || []).map(function (p) { return { title: p.path, count: p.sessions }; }), "No social visits yet");
+  }
+
   function renderFunnel(stages) {
     if (!stages || !stages.length || !stages[0].value) {
       els["funnel"].innerHTML = '<div class="empty-state">No funnel data yet</div>';
@@ -808,6 +897,7 @@
     }), { color: "var(--accent)" });
     renderTopPages(data.traffic.topPages);
     renderPlatformSplit(data.platform);
+    renderSocial(data.social);
 
     var su = data.signups;
     els["ov-signups"].textContent = fmtNum(su.newLast7Days);

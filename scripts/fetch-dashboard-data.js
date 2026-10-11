@@ -187,6 +187,116 @@ async function fetchGA4(analyticsClient, propertyId) {
   };
 }
 
+// Where visitors come from, with Pinterest and Instagram picked out, for the
+// "From social" panel. Sign-ups and checkouts are the GA4 events the app sends
+// (sign_up, begin_checkout, pro_checkout_complete), credited to the channel
+// that first brought that visitor. Only visitors who accepted analytics are
+// counted, so treat these as a sample rather than a full count.
+function channelOf(source, medium) {
+  const s = String(source || '').toLowerCase();
+  const m = String(medium || '').toLowerCase();
+  if (/pinterest|pin\.it/.test(s)) return 'pinterest';
+  if (/instagram|^ig$/.test(s)) return 'instagram';
+  if (/facebook|^fb$|t\.co|twitter|x\.com|tiktok|reddit|linkedin|threads|bsky|mastodon/.test(s) || m === 'social') return 'otherSocial';
+  if (m === 'organic' || /google|bing|duckduckgo|ecosia|yahoo/.test(s)) return 'search';
+  if (s === '(direct)' || s === '') return 'direct';
+  return 'other';
+}
+const CHANNELS = ['pinterest', 'instagram', 'otherSocial', 'search', 'direct', 'other'];
+
+function isoWeekMonday(yw) {
+  // "202641" -> Monday of ISO week 41 of 2026, as YYYY-MM-DD.
+  const year = Number(String(yw).slice(0, 4));
+  const week = Number(String(yw).slice(4));
+  const jan4 = new Date(Date.UTC(year, 0, 4));
+  const monday = new Date(jan4.getTime() - ((jan4.getUTCDay() + 6) % 7) * DAY_MS + (week - 1) * 7 * DAY_MS);
+  return monday.toISOString().slice(0, 10);
+}
+
+async function fetchSocial(analyticsClient, propertyId) {
+  const property = `properties/${propertyId}`;
+  const blank = () => ({ visits7: 0, visits30: 0, newUsers30: 0, signUps30: 0, checkouts30: 0, proStarts30: 0 });
+  const byChannel = Object.fromEntries(CHANNELS.map((c) => [c, blank()]));
+  const out = { configured: true, byChannel, weekly: [], topLanding: [] };
+
+  async function report(req) {
+    const [res] = await analyticsClient.runReport({ property, limit: 10000, ...req });
+    return res.rows || [];
+  }
+
+  try {
+    for (const [range, key] of [['7daysAgo', 'visits7'], ['30daysAgo', 'visits30']]) {
+      const rows = await report({
+        dateRanges: [{ startDate: range, endDate: 'today' }],
+        dimensions: [{ name: 'sessionSource' }, { name: 'sessionMedium' }],
+        metrics: [{ name: 'sessions' }, { name: 'newUsers' }],
+      });
+      rows.forEach((row) => {
+        const c = byChannel[channelOf(row.dimensionValues[0].value, row.dimensionValues[1].value)];
+        c[key] += Number(row.metricValues[0].value);
+        if (key === 'visits30') c.newUsers30 += Number(row.metricValues[1].value);
+      });
+    }
+
+    const events = await report({
+      dateRanges: [{ startDate: '30daysAgo', endDate: 'today' }],
+      dimensions: [{ name: 'firstUserSource' }, { name: 'firstUserMedium' }, { name: 'eventName' }],
+      metrics: [{ name: 'eventCount' }],
+      dimensionFilter: { filter: { fieldName: 'eventName', inListFilter: { values: ['sign_up', 'begin_checkout', 'pro_checkout_complete'] } } },
+    });
+    events.forEach((row) => {
+      const c = byChannel[channelOf(row.dimensionValues[0].value, row.dimensionValues[1].value)];
+      const n = Number(row.metricValues[0].value);
+      const ev = row.dimensionValues[2].value;
+      if (ev === 'sign_up') c.signUps30 += n;
+      else if (ev === 'begin_checkout') c.checkouts30 += n;
+      else if (ev === 'pro_checkout_complete') c.proStarts30 += n;
+    });
+
+    // Visits per week from Pinterest and Instagram, last 12 weeks.
+    // Every one of the last 12 weeks, so quiet weeks show as gaps, not missing.
+    const weeks = {};
+    const today = new Date();
+    const thisMonday = new Date(Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate()) - ((today.getUTCDay() + 6) % 7) * DAY_MS);
+    for (let i = 11; i >= 0; i--) {
+      const w = new Date(thisMonday.getTime() - i * 7 * DAY_MS).toISOString().slice(0, 10);
+      weeks[w] = { week: w, pinterest: 0, instagram: 0 };
+    }
+    const weekly = await report({
+      dateRanges: [{ startDate: '84daysAgo', endDate: 'today' }],
+      dimensions: [{ name: 'isoYearIsoWeek' }, { name: 'sessionSource' }, { name: 'sessionMedium' }],
+      metrics: [{ name: 'sessions' }],
+    });
+    weekly.forEach((row) => {
+      const ch = channelOf(row.dimensionValues[1].value, row.dimensionValues[2].value);
+      const w = isoWeekMonday(row.dimensionValues[0].value);
+      if (!weeks[w]) return;
+      if (ch === 'pinterest' || ch === 'instagram') weeks[w][ch] += Number(row.metricValues[0].value);
+    });
+    out.weekly = Object.values(weeks).sort((a, b) => (a.week < b.week ? -1 : 1));
+
+    // Which pages social visitors land on, last 30 days.
+    const landing = {};
+    const lp = await report({
+      dateRanges: [{ startDate: '30daysAgo', endDate: 'today' }],
+      dimensions: [{ name: 'landingPage' }, { name: 'sessionSource' }, { name: 'sessionMedium' }],
+      metrics: [{ name: 'sessions' }],
+    });
+    lp.forEach((row) => {
+      const ch = channelOf(row.dimensionValues[1].value, row.dimensionValues[2].value);
+      if (ch !== 'pinterest' && ch !== 'instagram') return;
+      const page = row.dimensionValues[0].value.split('?')[0] || '/';
+      landing[page] = (landing[page] || 0) + Number(row.metricValues[0].value);
+    });
+    out.topLanding = Object.entries(landing).sort((a, b) => b[1] - a[1]).slice(0, 6).map(([path, sessions]) => ({ path, sessions }));
+  } catch (err) {
+    console.warn('Social report failed:', err.message);
+    out.configured = false;
+    out.error = String(err.message || err).slice(0, 200);
+  }
+  return out;
+}
+
 async function fetchFirebaseSignups() {
   let users = [];
   let pageToken;
@@ -380,6 +490,9 @@ async function main() {
   console.log('Fetching GA4 data...');
   const ga4Data = await fetchGA4(analyticsClient, propertyId);
 
+  console.log('Fetching social traffic from GA4...');
+  const social = await fetchSocial(analyticsClient, propertyId);
+
   console.log('Fetching Firebase sign-up data...');
   const signups = await fetchFirebaseSignups();
 
@@ -395,6 +508,7 @@ async function main() {
     stickiness: ga4Data.stickiness,
     platform: ga4Data.platform,
     siteHealth: ga4Data.siteHealth,
+    social,
     engagement,
   };
 

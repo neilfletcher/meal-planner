@@ -488,6 +488,7 @@
       currentUser = user;
       updateAccountUI(user);
       if (user) {
+        trackSignUp(user);
         startCloudSync(user);
         startEntitlement(user);
         if (signinBackdrop && !signinBackdrop.hidden) closeSignIn();
@@ -3659,6 +3660,7 @@
     var buyBtn = document.getElementById("pro-buy-btn");
     if (buyBtn) buyBtn.addEventListener("click", function () {
       buyBtn.disabled = true; buyBtn.textContent = "Opening secure payment…";
+      track("begin_checkout", { plan: proPlanChoice });
       api("checkout", { plan: proPlanChoice }).then(function (j) { location.href = j.url; }).catch(function (e) {
         buyBtn.disabled = false; buyBtn.textContent = "Continue to secure payment";
         var pe = document.getElementById("pro-error"); pe.textContent = e.message; pe.hidden = false;
@@ -3963,6 +3965,18 @@
     return "<h3>Get the app</h3>" +
       '<p class="settings-note">Put Solo Supper on your home screen. It opens like an app, and your week and shopping list still work with no signal.</p>' + how;
   }
+  // A brand-new account (created in the last 10 minutes) counts as a sign-up,
+  // once per device, so the dashboard can show which channel brought people in.
+  function trackSignUp(user) {
+    try {
+      var made = Date.parse(user.metadata && user.metadata.creationTime);
+      if (!made || Date.now() - made > 10 * 60000 || analyticsConsent() !== "yes") return;
+      if (lsGet("soloSupper.signupTracked") === user.uid) return;
+      lsSet("soloSupper.signupTracked", user.uid);
+      var pid = user.providerData && user.providerData[0] && user.providerData[0].providerId;
+      track("sign_up", { method: pid === "google.com" ? "google" : "email" });
+    } catch (e) { /* ignore */ }
+  }
   function track(name, params) { try { if (window.gtag && analyticsConsent() === "yes") window.gtag("event", name, params); } catch (e) { /* ignore */ } }
   function promptInstall() {
     if (!installPrompt) return;
@@ -4007,6 +4021,7 @@
       try { history.replaceState(null, "", location.pathname); } catch (e) { /* ignore */ }
       if (proBack === "plans") { if (!isNativeApp()) openProPaywall(); return; }
       if (proBack === "success") {
+        track("pro_checkout_complete");
         if (proState(ent).source === "stripe") toast("Welcome to Pro. Thank you for supporting Solo Supper.");
         else { proWelcomePending = true; toast("Payment received. Switching on Pro…"); }
       } else if (proBack === "cancelled") toast("No payment was taken. Pro is there whenever you want it.");

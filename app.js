@@ -160,6 +160,7 @@
     cookDays: [true, true, true, true, true, true, true], // which days of the week they cook (Mon..Sun)
     fridge: {},          // leftovers to use up: { packKey: amount in the pack's unit }
     fridgeFrom: null,    // "YYYY-MM-DD" Monday of the first week the fridge applies to
+    newOnly: false,      // suggestions (Surprise me, fills) only pick dishes not cooked yet
     next: null           // next week's plan: { week, plan, cooked, leftovers, checked }
   };
   var HISTORY_LIMIT = 400; // keep this bounded so it never grows the saved state unreasonably
@@ -185,8 +186,25 @@
   }
   // Recipes eligible for random suggestions: never 1-star dishes, never
   // seafood when that's switched off. Falls back gracefully if that's empty.
+  // Dishes ticked as cooked at least once: { id: times }.
+  var cookedCache = null, cookedCacheLen = -1;
+  function cookedCounts() {
+    var log = state.cookLog || [];
+    if (cookedCache && cookedCacheLen === log.length) return cookedCache;
+    cookedCache = {};
+    log.forEach(function (h) { if (RECIPES_BY_ID[h.id]) cookedCache[h.id] = (cookedCache[h.id] || 0) + 1; });
+    cookedCacheLen = log.length;
+    return cookedCache;
+  }
   function suggestPool(base) {
     var src = base || RECIPES;
+    if (state.newOnly) {
+      // "New dishes only": leave out anything already cooked, unless that
+      // leaves too few to fill a week.
+      var cooked = cookedCounts();
+      var fresh = src.filter(function (r) { return !cooked[r.id] && allowedByPrefs(r) && state.ratings[r.id] !== 1; });
+      if (fresh.length >= 10) return fresh;
+    }
     var pool = src.filter(function (r) { return allowedByPrefs(r) && state.ratings[r.id] !== 1; });
     if (!pool.length) pool = src.filter(allowedByPrefs);
     if (!pool.length) pool = src;
@@ -305,6 +323,7 @@
     if (typeof data.newWeekNotice === "boolean") state.newWeekNotice = data.newWeekNotice;
     if (data.fridge && typeof data.fridge === "object" && !Array.isArray(data.fridge)) state.fridge = data.fridge;
     if (typeof data.fridgeFrom === "string" || data.fridgeFrom === null) state.fridgeFrom = data.fridgeFrom;
+    if (typeof data.newOnly === "boolean") state.newOnly = data.newOnly;
     if (Array.isArray(data.cookDays) && data.cookDays.length === 7) state.cookDays = data.cookDays.map(function (v) { return v !== false; });
     if (data.next && typeof data.next === "object" && Array.isArray(data.next.plan) && data.next.plan.length === 7) state.next = data.next;
     registerCustomRecipes();
@@ -1819,7 +1838,7 @@
   var activeTags = {};
   var searchTerm = "";
   var ALL_TAGS = ["vegetarian", "vegan", "fish", "spicy"];
-  var activeTime = 0, favOnly = false, yoursOnly = false;
+  var activeTime = 0, favOnly = false, yoursOnly = false, uncookedOnly = false;
 
   function renderTagChips() {
     var wrap = document.getElementById("tag-chips");
@@ -1832,6 +1851,7 @@
       wrap.appendChild(chip);
     };
     add("★ favourites", favOnly, function () { favOnly = !favOnly; });
+    add("not cooked yet", uncookedOnly, function () { uncookedOnly = !uncookedOnly; });
     if ((state.customRecipes || []).length) add("yours", yoursOnly, function () { yoursOnly = !yoursOnly; });
     TIME_OPTIONS.forEach(function (m) { add("≤ " + m + " min", activeTime === m, function () { activeTime = activeTime === m ? 0 : m; }); });
     ALL_TAGS.forEach(function (t) { add(t, !!activeTags[t], function () { activeTags[t] = !activeTags[t]; }); });
@@ -1846,6 +1866,7 @@
       if (!allowedByPrefs(r)) return false;
       if (favOnly && !isFavourite(r)) return false;
       if (yoursOnly && !r.custom) return false;
+      if (uncookedOnly && cookedCounts()[r.id]) return false;
       if (!withinTime(r, activeTime)) return false;
       if (activeList.length && !activeList.every(function (t) { return r.tags.indexOf(t) !== -1; })) return false;
       if (!term) return true;
@@ -1854,7 +1875,7 @@
     });
     grid.innerHTML = "";
     if (!filtered.length) {
-      grid.innerHTML = '<p class="empty-state">' + (favOnly && !term ? "No favourites yet. Rate a dinner 4 or 5 stars and it shows up here." : "Nothing matches that search.") + '</p>';
+      grid.innerHTML = '<p class="empty-state">' + (favOnly && !term ? "No favourites yet. Rate a dinner 4 or 5 stars and it shows up here." : uncookedOnly && !term ? "You've cooked every dish here. Impressive." : "Nothing matches that search.") + '</p>';
     }
     filtered.forEach(function (r) {
       var locked = isRecipeLocked(r.id);
@@ -1867,6 +1888,7 @@
         '<span class="title">' + esc(r.title) + "</span>" +
         '<span class="card-meta"><span class="time">' + ico("clock") + (r.prep + r.cook) + " min</span>" + tagMarks(r) +
         (locked ? '<span class="mark lock-badge">' + ico("lock") + "Locked</span>" : "") +
+        (cookedCounts()[r.id] ? '<span class="mark mark-cooked">' + ico("check") + "Cooked" + (cookedCounts()[r.id] > 1 ? " ×" + cookedCounts()[r.id] : "") + "</span>" : "") +
         (rated ? '<span class="card-rating">' + rated + "</span>" : "") + "</span>";
       card.addEventListener("click", function () { openRecipeModal(r.id, { fromLibrary: true }); });
       grid.appendChild(card);
@@ -2243,6 +2265,7 @@
     /* ---- Your kitchen (personal, built from confirmed cooks + history + ratings) ---- */
     html += '<div class="stats-section"><div class="week-heading stats-heading"><span class="eyebrow">Counts only dinners you ticked as cooked</span><h1 class="week-range">Your <em>kitchen</em></h1></div>';
     html += savingsSectionHtml();
+    html += collectionSectionHtml();
 
     /* Actually cooked: only counts a dish once you tick the checkmark on its
        day, so these numbers never assume a planned dinner got made. */
@@ -2378,6 +2401,13 @@
 
     el.innerHTML = html;
     wireSavings();
+    var tryNew = document.getElementById("collect-try-btn");
+    if (tryNew) tryNew.addEventListener("click", function () {
+      var cooked = cookedCounts();
+      var pool = suggestPool(freeRecipePool(RECIPES)).filter(function (r) { return !r.custom && !cooked[r.id]; });
+      if (!pool.length) pool = RECIPES.filter(function (r) { return !r.custom && !cooked[r.id]; });
+      if (pool.length) openRecipeModal(pool[Math.floor(Math.random() * pool.length)].id, { fromLibrary: true });
+    });
     var unlockLink = document.getElementById("stats-unlock-link");
     if (unlockLink) unlockLink.addEventListener("click", function (e) { e.preventDefault(); openPaywall(); });
   }
@@ -2985,6 +3015,9 @@
         '<div class="reminder-when"><select id="reminder-day" aria-label="Day">' + days + '</select><select id="reminder-hour" aria-label="Time">' + hours + "</select></div>" +
         '<p class="settings-note" id="reminder-status">' + (rp.on ? "Reminder set for " + DOW_NAMES[rp.weekday - 1] + "s at " + rp.hour + ":00." : "Off unless you switch it on.") + "</p>"
         : "") +
+      "<h3>Suggestions</h3>" +
+      '<label class="switch-row"><input type="checkbox" id="newonly-on"' + (state.newOnly ? " checked" : "") + "> Only suggest dishes I haven\u2019t cooked yet</label>" +
+      '<p class="settings-note">Applies to Surprise me and the fill buttons. Dishes you\u2019ve ticked as cooked are skipped until there are too few left to fill a week.</p>' +
       "<h3>Privacy</h3>" +
       '<label class="switch-row"><input type="checkbox" id="analytics-on"' + (analyticsConsent() === "yes" ? " checked" : "") + "> Share anonymous usage statistics</label>" +
       '<p class="settings-note">Helps show which features get used. No personal details, never sold.</p>';
@@ -2998,6 +3031,7 @@
     document.getElementById("settings-basics-btn").addEventListener("click", addUsualBasics);
     document.getElementById("analytics-on").addEventListener("change", function (e) { setAnalyticsConsent(e.target.checked); });
     wireAccountSettings();
+    document.getElementById("newonly-on").addEventListener("change", function (e) { state.newOnly = e.target.checked; onStateChanged(); toast(state.newOnly ? "Suggestions now skip dishes you\u2019ve cooked." : "Suggestions can include dishes you\u2019ve cooked."); });
     if (NativeExtras) {
       var status = document.getElementById("reminder-status");
       var update = function () {
@@ -3202,7 +3236,7 @@
 
   /* ============================= CLOUD SYNC ============================= */
   var SYNC_FIELDS = ["servings", "mode", "plan", "batch", "checked", "ratings", "noSeafood", "history", "cooked", "cookLog",
-    "planWeek", "leftovers", "staples", "avoid", "customRecipes", "lastWeek", "newWeekNotice", "next", "cookDays", "fridge", "fridgeFrom"];
+    "planWeek", "leftovers", "staples", "avoid", "customRecipes", "lastWeek", "newWeekNotice", "next", "cookDays", "fridge", "fridgeFrom", "newOnly"];
   var UNSYNCED_KEY = "soloSupper.unsynced";
   var lastSyncedJson = {};
   var savePending = false;
@@ -3249,6 +3283,7 @@
     M.cookDays = (Array.isArray(C.cookDays) && C.cookDays.length === 7) ? C.cookDays : L.cookDays;
     M.fridge = Object.assign({}, C.fridge || {}, L.fridge || {});
     M.fridgeFrom = L.fridgeFrom || C.fridgeFrom || null;
+    M.newOnly = typeof L.newOnly === "boolean" ? L.newOnly : !!C.newOnly;
     M.noSeafood = !!(L.noSeafood || C.noSeafood);
     return M;
   }
@@ -3711,6 +3746,45 @@
     var a = document.getElementById("trial-plans-btn"), c = document.getElementById("trial-close-btn");
     if (a) a.addEventListener("click", function () { openProPaywall(); });
     if (c) c.addEventListener("click", function () { trialNoteDismissed = true; renderPlannerBanner(); });
+  }
+
+  /* ============================= YOUR COLLECTION ============================= */
+  // "Catch them all": how much of the book you've cooked, by dish and by cuisine.
+  var COLLECT_MILESTONES = [1, 10, 25, 50, 100, 200, 300];
+  function collectionSectionHtml() {
+    var cooked = cookedCounts();
+    var book = RECIPES.filter(function (r) { return !r.custom; });
+    var total = book.length;
+    var done = book.filter(function (r) { return cooked[r.id]; }).length;
+    var byCuisine = {};
+    book.forEach(function (r) { var c = byCuisine[r.cuisine] = byCuisine[r.cuisine] || { n: 0, done: 0 }; c.n++; if (cooked[r.id]) c.done++; });
+    var cuisines = Object.keys(byCuisine);
+    var tried = cuisines.filter(function (c) { return byCuisine[c].done > 0; }).length;
+    var completed = cuisines.filter(function (c) { return byCuisine[c].done === byCuisine[c].n; });
+    var marks = COLLECT_MILESTONES.concat([total]);
+    var next = marks.filter(function (m) { return m > done; })[0];
+    var pct = total ? Math.round(done / total * 1000) / 10 : 0;
+    var html = '<h3 class="stats-subhead">Your collection</h3>' +
+      '<div class="collect-head"><div><span class="collect-big">' + done + '</span><span class="collect-of"> of ' + total + " dishes cooked</span></div>" +
+      '<button type="button" class="btn btn-outline btn-sm" id="collect-try-btn">' + ico("shuffle") + "Something I haven\u2019t cooked</button></div>" +
+      '<div class="collect-bar" role="progressbar" aria-valuemin="0" aria-valuemax="' + total + '" aria-valuenow="' + done + '"><span style="width:' + Math.max(done ? 0.6 : 0, done / total * 100) + '%"></span></div>' +
+      '<p class="stats-note">' + (done ? pct + "% of the book. " : "Tick dinners as cooked and they join your collection. ") +
+      (next ? "<strong>" + (next - done) + (next - done === 1 ? " more dish" : " more dishes") + "</strong> to reach " + (next === total ? "the whole book" : next) + ". " : "You\u2019ve cooked the whole book. ") +
+      "You\u2019ve cooked from <strong>" + tried + " of " + cuisines.length + "</strong> countries" + (completed.length ? " and finished every dish from <strong>" + completed.length + "</strong> (" + esc(completed.slice(0, 3).join(", ")) + (completed.length > 3 ? " and more" : "") + ")" : "") + ".</p>" +
+      '<div class="collect-badges">' + marks.map(function (m) {
+        var got = done >= m;
+        return '<span class="collect-badge' + (got ? " is-got" : "") + '" title="' + (got ? "Reached" : (m - done) + " to go") + '"><span class="cb-n">' + (m === total ? "All" : m) + '</span><span class="cb-l">' + (m === 1 ? "first dish" : "dishes") + "</span></span>";
+      }).join("") + "</div>";
+    var rows = cuisines.sort(function (a, b) {
+      var A = byCuisine[a], B = byCuisine[b];
+      return (B.done / B.n) - (A.done / A.n) || B.done - A.done || a.localeCompare(b);
+    });
+    html += '<details class="collect-cuisines"' + (done ? " open" : "") + "><summary>Country by country</summary>" +
+      '<div class="cc-grid">' + rows.map(function (c) {
+        var x = byCuisine[c];
+        return '<div class="cc-item' + (x.done === x.n ? " is-done" : "") + '"><span class="cc-name">' + esc(c) + '</span><span class="cc-count">' + x.done + "/" + x.n + '</span><span class="cc-bar"><span style="width:' + Math.round(x.done / x.n * 100) + '%"></span></span></div>';
+      }).join("") + "</div></details>";
+    return html;
   }
 
   /* ============================= WASTE SAVED ============================= */

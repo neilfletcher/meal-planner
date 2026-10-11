@@ -652,3 +652,28 @@ h1, .display, .display-l, .display-m, .week-range { letter-spacing: -0.02em; }
 .savings-line { display: flex; gap: 8px; align-items: flex-start; color: var(--olive) !important; font-weight: 500; }
 .savings-line .i { width: 16px; height: 16px; flex-shrink: 0; margin-top: 2px; }
 #savings-share-btn { margin-top: 12px; }
+
+/* ---------- your collection ---------- */
+.collect-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 12px 20px; flex-wrap: wrap; }
+.collect-big { font-family: var(--serif); font-size: 64px; line-height: 1; }
+.collect-of { font-size: 16px; color: var(--ink-2); }
+.collect-bar { height: 12px; background: var(--board); border-radius: 999px; overflow: hidden; margin: 16px 0 4px; }
+.collect-bar span { display: block; height: 100%; background: linear-gradient(90deg, var(--olive), var(--yolk)); border-radius: 999px; }
+.collect-badges { display: flex; flex-wrap: wrap; gap: 10px; margin: 18px 0 8px; }
+.collect-badge { display: flex; flex-direction: column; align-items: center; justify-content: center; width: 76px; height: 76px; border-radius: 50%; border: 1.5px dashed var(--line-strong); color: var(--ink-3); text-align: center; }
+.collect-badge.is-got { border: 0; background: var(--ink); color: var(--paper); }
+.collect-badge.is-got:last-child { background: var(--tomato); }
+.cb-n { font-family: var(--serif); font-size: 24px; line-height: 1; }
+.cb-l { font-family: var(--mono); font-size: 9.5px; letter-spacing: .08em; text-transform: uppercase; margin-top: 3px; }
+.collect-cuisines { margin-top: 18px; }
+.collect-cuisines summary { cursor: pointer; font-weight: 600; font-size: 15px; padding: 8px 0; }
+.cc-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 10px 22px; margin-top: 10px; }
+.cc-item { display: grid; grid-template-columns: 1fr auto; gap: 4px 8px; align-items: baseline; }
+.cc-name { font-size: 14px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cc-count { font-family: var(--mono); font-size: 12px; color: var(--ink-3); }
+.cc-bar { grid-column: 1 / -1; height: 5px; background: var(--board); border-radius: 999px; overflow: hidden; }
+.cc-bar span { display: block; height: 100%; background: var(--olive); border-radius: 999px; }
+.cc-item.is-done .cc-name { font-weight: 600; }
+.cc-item.is-done .cc-bar span { background: var(--tomato); }
+.mark-cooked { color: var(--olive); }
+#collect-try-btn .i { width: 16px; height: 16px; }

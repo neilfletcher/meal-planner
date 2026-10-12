@@ -3688,8 +3688,8 @@
         '<p class="settings-note pro-small">Prices include VAT. Cancel any time, and you can have a full refund within 14 days of any payment. Payment is handled by Stripe and shows as Onelink. <a href="../terms/">Terms</a> · <a href="../refunds/">Refunds</a></p>';
     }
     if (signedIn && !paid) {
-      html += '<details class="gift-row"' + (reason === "gift" ? " open" : "") + '><summary>Have a gift code?</summary>' +
-        '<form id="gift-form" class="gift-form" novalidate><input type="text" id="gift-code" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="SOLO-XXXX-XXXX" aria-label="Gift code">' +
+      html += '<details class="gift-row"' + (reason === "gift" ? " open" : "") + '><summary>Have a gift or promo code?</summary>' +
+        '<form id="gift-form" class="gift-form" novalidate><input type="text" id="gift-code" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="Gift or promo code" aria-label="Gift or promo code">' +
         '<button type="submit" class="btn btn-ink" id="gift-btn">Redeem</button></form><p class="form-error" id="gift-error" hidden></p></details>';
     }
     paywallModal.innerHTML = html;

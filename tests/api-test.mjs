@@ -224,6 +224,33 @@ r = await call("admin", { token: tAdmin, body: { action: "liveCounts" } });
 r = await call("admin", { token: t2, body: { action: "liveCounts" } });
 ok(r.status === 403, "live counts are admin only");
 
+// reusable promo codes
+r = await call("admin", { token: tAdmin, body: { action: "createPromo", code: "listener", months: 2, maxUses: 2, note: "podcast" } });
+ok(r.status === 200 && r.body.code === "LISTENER", "admin creates a promo code");
+r = await call("admin", { token: tAdmin, body: { action: "createPromo", code: "LISTENER", months: 2 } });
+ok(r.status === 409, "promo codes can't be created twice");
+r = await call("admin", { token: t2, body: { action: "createPromo", code: "SNEAKY", months: 99 } });
+ok(r.status === 403, "only admins create promo codes");
+{
+  const tp1 = await idToken("p-1", "p1@example.com"), tp2 = await idToken("p-2", "p2@example.com"), tp3 = await idToken("p-3", "p3@example.com");
+  r = await call("redeem", { token: tp1, body: { code: "Listener" } });
+  ok(r.status === 200 && r.body.promo && r.body.entitlement && r.body.entitlement.pro, "an 8-letter promo code redeems (not mistaken for a gift code)");
+  r = await call("redeem", { token: tp1, body: { code: "LISTENER" } });
+  ok(r.status === 200 && r.body.already, "the same person can't use a promo code twice");
+  r = await call("redeem", { token: tp2, body: { code: "listener" } });
+  ok(r.status === 200 && r.body.promo, "a second person redeems the promo code");
+  r = await call("redeem", { token: tp3, body: { code: "LISTENER" } });
+  ok(r.status === 410, "a promo code stops at its usage limit");
+  r = await call("admin", { token: tAdmin, body: { action: "listPromos" } });
+  ok(r.status === 200 && r.body.promos.some((x) => x.code === "LISTENER" && x.uses === 2), "admin sees promo code usage");
+  await call("admin", { token: tAdmin, body: { action: "createPromo", code: "PODSUPPER", months: 1 } });
+  r = await call("admin", { token: tAdmin, body: { action: "setPromoActive", code: "PODSUPPER", active: false } });
+  r = await call("redeem", { token: tp3, body: { code: "podsupper" } });
+  ok(r.status === 410, "a switched-off promo code is refused");
+  r = await call("redeem", { token: tp3, body: { code: "NOSUCHCODE" } });
+  ok(r.status === 400 || r.status === 404, "an unknown code is refused");
+}
+
 // live visitors from GA4
 r = await call("admin", { token: tAdmin, body: { action: "liveVisitors" } });
 ok(r.status === 200 && r.body.configured === false, "live visitors say when GA4 is not set up");

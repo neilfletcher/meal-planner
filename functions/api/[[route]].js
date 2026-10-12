@@ -121,9 +121,46 @@ function normaliseCode(code) {
   return String(code || "").toUpperCase().replace(/[^A-Z0-9]/g, "").replace(/^(SOLO)?(\w{4})(\w{4})$/, "SOLO-$2-$3");
 }
 
+// Reusable promo codes (e.g. one read out on a podcast): promoCodes/{CODE} has
+// months, maxUses, uses and active; each account can use a code once, recorded
+// at promoCodes/{CODE}/uses/{uid} (no personal details kept there).
+var PROMO_RE = /^[A-Z0-9]{4,20}$/;
+async function redeemPromo(env, user, code) {
+  for (var attempt = 0; attempt < 4; attempt++) {
+    var pdoc = await getDoc(env, "promoCodes/" + code);
+    if (!pdoc) return null;
+    var p = pdoc.data, now = Date.now();
+    var usePath = "promoCodes/" + code + "/uses/" + user.uid, entPath = "entitlements/" + user.uid;
+    var both = await Promise.all([getDoc(env, usePath), getDoc(env, entPath)]);
+    var e = (both[1] && both[1].data) || {};
+    if (both[0]) return json({ entitlement: publicEntitlement(e), already: true });
+    if (p.active === false) throw httpError(410, "That code has ended.");
+    if (p.maxUses && (p.uses || 0) >= p.maxUses) throw httpError(410, "That code has been used up.");
+    var update = { email: user.email };
+    if (!p.months) update.giftLifetime = true;
+    else update.giftUntil = addMonths(Math.max(now, e.giftUntil || 0), p.months);
+    try {
+      await commit(env, [
+        { path: "promoCodes/" + code, data: { uses: (p.uses || 0) + 1, lastUsedAt: now }, merge: true, updateTime: pdoc.updateTime },
+        { path: usePath, data: { at: now }, exists: false },
+        { path: entPath, data: update, merge: true }
+      ]);
+      return json({ entitlement: publicEntitlement(Object.assign({}, e, update)), months: p.months || 0, promo: true });
+    } catch (err) {
+      if (err.status !== 409) throw err; // someone else redeemed at the same moment: read again and retry
+    }
+  }
+  throw httpError(503, "Lots of people are using that code right now. Please try again.");
+}
+
 async function redeem(request, env) {
   var user = await requireUser(request, env);
   var body = await readJson(request);
+  var raw = String(body.code || "").toUpperCase().replace(/[^A-Z0-9]/g, "");
+  if (PROMO_RE.test(raw)) {
+    var promo = await redeemPromo(env, user, raw);
+    if (promo) return promo;
+  }
   var code = normaliseCode(body.code);
   if (!/^SOLO-[A-Z0-9]{4}-[A-Z0-9]{4}$/.test(code)) throw httpError(400, "That doesn't look like a Solo Supper code.");
   var codeDoc = await getDoc(env, "giftCodes/" + code);
@@ -238,6 +275,25 @@ async function admin(request, env) {
     } catch (e) {
       return json({ configured: false, reason: e.message });
     }
+  }
+
+  if (body.action === "createPromo") {
+    var pc = String(body.code || "").toUpperCase().replace(/[^A-Z0-9]/g, "");
+    if (!PROMO_RE.test(pc) || /^SOLO[A-Z0-9]{8}$/.test(pc)) throw httpError(400, "Use 4 to 20 letters and numbers, e.g. PODSUPPER.");
+    var pm = Math.max(0, parseInt(body.months, 10) || 0), mx = Math.max(0, parseInt(body.maxUses, 10) || 0);
+    await commit(env, [{ path: "promoCodes/" + pc, data: { months: pm, maxUses: mx, uses: 0, active: true, note: String(body.note || "").slice(0, 120), createdAt: now, createdBy: user.email }, exists: false }])
+      .catch(function (err) { if (err.status === 409) throw httpError(409, "That code already exists."); throw err; });
+    return json({ code: pc, months: pm, maxUses: mx });
+  }
+  if (body.action === "listPromos") {
+    var prs = await listCollection(env, "promoCodes", "createdAt", 100);
+    return json({ promos: prs.map(function (r) { return Object.assign({ code: r.id }, r.data); }) });
+  }
+  if (body.action === "setPromoActive") {
+    var ac = String(body.code || "").toUpperCase().replace(/[^A-Z0-9]/g, "");
+    if (!(await getDoc(env, "promoCodes/" + ac))) throw httpError(404, "No such code.");
+    await mergeDoc(env, "promoCodes/" + ac, { active: !!body.active });
+    return json({ code: ac, active: !!body.active });
   }
 
   if (body.action === "listCodes") {

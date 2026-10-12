@@ -600,6 +600,23 @@
         </div>
         <div class="gc-new" id="gcNew" hidden></div>
 
+        <h3 class="gc-h">Reusable code (podcasts, newsletters, events)</h3>
+        <p class="gc-msg" style="margin-top:0">One code for lots of people, each account can use it once. Listeners enter it under Pro, "Have a gift code?".</p>
+        <div class="gc-row">
+          <label>Code <input type="text" id="pcCode" maxlength="20" placeholder="PODSUPPER" style="text-transform:uppercase"></label>
+          <label>Pro for <select id="pcMonths"><option value="1">1 month</option><option value="2" selected>2 months</option><option value="3">3 months</option><option value="6">6 months</option><option value="12">12 months</option></select></label>
+          <label>Limit <input type="number" id="pcMax" min="0" value="500" title="0 means no limit"></label>
+          <label class="grow">Note <input type="text" id="pcNote" maxlength="120" placeholder="e.g. Dave's podcast, episode 41"></label>
+          <button class="primary" id="pcMake" type="button">Create code</button>
+        </div>
+        <p class="gc-msg" id="pcMsg"></p>
+        <div class="gc-table-wrap">
+          <table class="gc-table">
+            <thead><tr><th>Code</th><th>Pro for</th><th>Used</th><th>Note</th><th>Made</th><th></th></tr></thead>
+            <tbody id="pcRows"><tr><td colspan="6" class="gc-used">Loading&hellip;</td></tr></tbody>
+          </table>
+        </div>
+
         <h3 class="gc-h">Give Pro to someone who already has an account</h3>
         <div class="gc-row">
           <label class="grow">Their sign-in email <input type="email" id="grEmail" placeholder="name@example.com"></label>
@@ -1335,7 +1352,37 @@
       }).join("");
     }).catch(function (e) { tb.innerHTML = '<tr><td colspan="5" class="gc-used">Couldn\'t load codes: ' + gcEsc(e.message) + "</td></tr>"; });
   }
-  document.getElementById("gcReload").addEventListener("click", loadCodes);
+  document.getElementById("gcReload").addEventListener("click", function () { loadCodes(); loadPromos(); });
+
+  // ---------- reusable promo codes ----------
+  function loadPromos() {
+    var tb = document.getElementById("pcRows");
+    adminApi({ action: "listPromos" }).then(function (j) {
+      if (!j.promos.length) { tb.innerHTML = '<tr><td colspan="6" class="gc-used">No reusable codes yet.</td></tr>'; return; }
+      tb.innerHTML = j.promos.map(function (c) {
+        var on = c.active !== false;
+        return "<tr><td>" + gcEsc(c.code) + "</td><td>" + gcFor(c.months) + "</td><td>" + (c.uses || 0) + (c.maxUses ? " of " + c.maxUses : "") + "</td><td>" + gcEsc(c.note) +
+          "</td><td>" + gcDate(c.createdAt) + '</td><td><button class="ghost" type="button" data-promo="' + gcEsc(c.code) + '" data-on="' + (on ? "0" : "1") + '">' + (on ? "Switch off" : "Switch on") + "</button></td></tr>";
+      }).join("");
+    }).catch(function (e) { tb.innerHTML = '<tr><td colspan="6" class="gc-used">Couldn\'t load codes: ' + gcEsc(e.message) + "</td></tr>"; });
+  }
+  document.getElementById("pcRows").addEventListener("click", function (ev) {
+    var b = ev.target.closest("[data-promo]");
+    if (!b) return;
+    b.disabled = true;
+    adminApi({ action: "setPromoActive", code: b.getAttribute("data-promo"), active: b.getAttribute("data-on") === "1" }).then(loadPromos)
+      .catch(function (e) { b.disabled = false; document.getElementById("pcMsg").textContent = e.message; });
+  });
+  document.getElementById("pcMake").addEventListener("click", function () {
+    var btn = this, msg = document.getElementById("pcMsg");
+    btn.disabled = true; msg.textContent = "";
+    adminApi({ action: "createPromo", code: document.getElementById("pcCode").value, months: document.getElementById("pcMonths").value,
+      maxUses: document.getElementById("pcMax").value, note: document.getElementById("pcNote").value }).then(function (j) {
+      msg.textContent = "Created " + j.code + ": " + gcFor(j.months) + " of Pro" + (j.maxUses ? ", up to " + j.maxUses + " people." : ", no limit.");
+      document.getElementById("pcCode").value = "";
+      btn.disabled = false; loadPromos();
+    }).catch(function (e) { btn.disabled = false; msg.textContent = e.message; });
+  });
 
   // ---------- live sign-ups and subscriptions ----------
   var liveTimer = null;
@@ -1439,6 +1486,7 @@
       dashboardRoot.hidden = false;
       loadDashboardData();
       loadCodes();
+      loadPromos();
       startLive();
     } else if (user) {
       dashboardRoot.hidden = true;

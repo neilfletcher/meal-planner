@@ -180,7 +180,8 @@ function appSection(from, to) {
   return APP_SRC.slice(i, j);
 }
 // Public pages show recipes as written, so no swaps apply here.
-var packCtx = { RECIPES: RECIPES, RECIPES_BY_ID: BY_ID, state: { servings: 1, staples: {}, ratings: {} }, ingredientsOf: function (r) { return r ? r.ingredients : []; } };
+var packCtx = { RECIPES: RECIPES, RECIPES_BY_ID: BY_ID, state: { servings: 1, staples: {}, ratings: {} }, ingredientsOf: function (r) { return r ? r.ingredients : []; },
+  portionOf: function (x) { return typeof x === "string" ? { id: x, serves: 1 } : x; } };
 vm.createContext(packCtx);
 vm.runInContext(
   appSection("  var FRACTIONS = ", "  function scaledIngredientText") +

@@ -26,6 +26,7 @@
     swap: '<path d="M4 8h13l-3-3M20 16H7l3 3"/>',
     check: '<path d="M5 12.5l4.5 4.5L19 7.5"/>',
     plus: '<path d="M12 5v14M5 12h14"/>',
+    minus: '<path d="M5 12h14"/>',
     clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
     leaf: '<path d="M5 19c0-8 5-13 14-14 0 9-5 14-13 14z"/><path d="M5 19l7-7"/>',
     flame: '<path d="M12 3c1 3 5 5 5 10a5 5 0 0 1-10 0c0-2 1-3.5 2-4.5 0 2 1 3 2 3 0-3-1-5 1-8.5z"/>',
@@ -189,6 +190,7 @@
     cookLog: [], // durable log of confirmed cooks only, separate from planning: { id, ts }
     planWeek: null,      // "YYYY-MM-DD" of the Monday the plan belongs to
     leftovers: {},       // { dayIdx: true } - that day is leftovers of the day before
+    guests: {},          // { dayIdx: n } - people eating that day, when it isn't the usual "Cooking for"
     staples: {},         // shopping keys the person always has in the cupboard
     avoid: {},           // "never show me" preferences, e.g. { mushrooms: true }
     customRecipes: [],   // the person's own recipes
@@ -348,12 +350,12 @@
      (state.next), so a plan can be made on a Sunday or late in the week.
      W() is whichever one is on screen. */
   var viewNext = false;
-  function emptyWeek(key) { return { week: key, plan: [null, null, null, null, null, null, null], cooked: {}, leftovers: {}, checked: {} }; }
+  function emptyWeek(key) { return { week: key, plan: [null, null, null, null, null, null, null], cooked: {}, leftovers: {}, checked: {}, guests: {} }; }
   function nextMondayKey() { var d = new Date(MONDAY); d.setDate(d.getDate() + 7); return weekKey(d); }
   function ensureNext() {
     var key = nextMondayKey();
     if (!state.next || state.next.week !== key || !Array.isArray(state.next.plan) || state.next.plan.length !== 7) state.next = emptyWeek(key);
-    ["cooked", "leftovers", "checked"].forEach(function (f) { if (!state.next[f] || typeof state.next[f] !== "object") state.next[f] = {}; });
+    ["cooked", "leftovers", "checked", "guests"].forEach(function (f) { if (!state.next[f] || typeof state.next[f] !== "object") state.next[f] = {}; });
     return state.next;
   }
   function W() { return viewNext && state.mode !== "batch" ? ensureNext() : state; }
@@ -430,6 +432,7 @@
     if (Array.isArray(data.cookLog)) state.cookLog = data.cookLog;
     if (typeof data.planWeek === "string") state.planWeek = data.planWeek;
     state.leftovers = (data.leftovers && typeof data.leftovers === "object") ? data.leftovers : {};
+    state.guests = (data.guests && typeof data.guests === "object" && !Array.isArray(data.guests)) ? data.guests : {};
     if (data.staples && typeof data.staples === "object") state.staples = data.staples;
     if (data.avoid && typeof data.avoid === "object") state.avoid = data.avoid;
     if (state.noSeafood) { state.avoid = state.avoid || {}; state.avoid.seafood = true; }
@@ -530,6 +533,21 @@
   function currentRecipeIds() {
     return state.mode === "batch" ? state.batch.map(function (b) { return b.id; }) : W().plan.filter(Boolean);
   }
+  // People eating on a given day: the usual "Cooking for", unless that day
+  // has guests set (open the day's dinner and change "Cooking for this day").
+  function dayServes(d) {
+    var g = W().guests && W().guests[d];
+    return g >= 1 ? g : state.servings;
+  }
+  // The planned dinners with how many each one feeds, for the shopping list
+  // and the pack maths. A plain recipe id means the usual number of people.
+  function currentPortions() {
+    if (state.mode === "batch") return state.batch.map(function (b) { return b.id; });
+    var out = [];
+    W().plan.forEach(function (id, d) { if (id) out.push(dayServes(d) === state.servings ? id : { id: id, serves: dayServes(d) }); });
+    return out;
+  }
+  function portionOf(x) { return typeof x === "string" ? { id: x, serves: state.servings } : { id: x.id, serves: x.serves || state.servings }; }
 
   function setSyncStatus(text) {
     var el = document.getElementById("account-sync");
@@ -635,15 +653,15 @@
     if (Math.abs(rounded - Math.round(rounded)) < 0.01) rounded = Math.round(rounded);
     return String(rounded);
   }
-  function scaledIngredientText(i) {
+  function scaledIngredientText(i, serves) {
     if (i.amt === null) return i.unit ? (i.unit + " " + i.item) : i.item;
-    var scaled = i.amt * state.servings;
+    var scaled = i.amt * (serves || state.servings);
     var amtStr = fmtAmt(scaled);
     return amtStr + (i.unit ? " " + i.unit : "") + " " + i.item;
   }
-  function scaledAmtOnly(i) {
+  function scaledAmtOnly(i, serves) {
     if (i.amt === null) return i.unit || "to taste";
-    return fmtAmt(i.amt * state.servings) + (i.unit ? " " + i.unit : "");
+    return fmtAmt(i.amt * (serves || state.servings)) + (i.unit ? " " + i.unit : "");
   }
   function totalTime(r) { return r.prep + r.cook; }
   function tagPill(tag) {
@@ -900,6 +918,7 @@
         assigned.innerHTML = recipeThumb(r) +
           '<span class="info"><span class="title">' + esc(r.title) + '</span>' +
           '<span class="meta">' + metaLine(r, leftover ? DOW_NAMES[idx - 1] : null) +
+          (dayServes(idx) !== state.servings ? ' &middot; <span class="guests-tag">For ' + dayServes(idx) + "</span>" : "") +
           (isCooked ? ' &middot; <span class="cooked-word">' + (leftover ? "eaten" : "cooked") + "</span>" : "") + "</span></span>";
         assigned.addEventListener("click", function (rid, i) { return function () { openRecipeModal(rid, { dayIdx: i }); }; }(recipeId, idx));
         card.appendChild(assigned);
@@ -943,7 +962,7 @@
     var badge = document.getElementById("shopping-count");
     if (!ids.length) { el.innerHTML = ""; el.hidden = true; if (badge) badge.textContent = ""; return; }
     el.hidden = false;
-    var groups = shopBuild(ids), staples = state.staples || {};
+    var groups = shopBuild(currentPortions()), staples = state.staples || {};
     var total = 0, ticked = 0, html = "";
     var preview = [];
     CAT_ORDER.forEach(function (cat) {
@@ -992,7 +1011,7 @@
     html += fridgeAsideHtml();
     var repAside = wasteReport(ids);
     html += '<section class="aside-card"><div class="aside-head"><h2>Leftovers</h2></div>' +
-      '<p class="aside-more">What the opened packs leave once this week is cooked.</p>' + leftoversHtml(ids, 6) +
+      '<p class="aside-more">What the opened packs leave once this week is cooked.</p>' + leftoversHtml(currentPortions(), 6) +
       (function () { if (!hasProFeatures()) return ""; var sv = savingsFor(ids); return sv.packs >= 0.5 ? '<p class="aside-more savings-line">' + ico("check") + "Sharing packs saves about " + fmtPacks(sv.packs) + " (" + fmtMoney(sv.money) + ") compared with buying for each dinner.</p>" : ""; })() +
       (repAside.items.length && state.mode === "days" && !viewNext ? '<button type="button" class="btn btn-outline btn-block needs-pro" id="aside-carry-btn">Carry leftovers to my fridge</button>' : "") + "</section>";
     el.innerHTML = html;
@@ -1062,7 +1081,7 @@
     if (!W().plan.some(Boolean)) return;
     withUndo("Week cleared", function () {
       W().plan = [null, null, null, null, null, null, null];
-      W().cooked = {}; W().leftovers = {}; W().checked = {};
+      W().cooked = {}; W().leftovers = {}; W().checked = {}; W().guests = {};
       onStateChanged();
     });
   });
@@ -1280,11 +1299,11 @@
   // Returns { cat: { key: { label, amt } } }
   function shopBuild(recipeIds) {
     var entries = {};
-    recipeIds.forEach(function (rid) {
-      var r = RECIPES_BY_ID[rid];
+    recipeIds.forEach(function (entry) {
+      var pt = portionOf(entry), r = RECIPES_BY_ID[pt.id];
       if (!r) return;
       ingredientsOf(r).forEach(function (i) {
-        var c = shopCanon(i, state.servings);
+        var c = shopCanon(i, pt.serves);
         var e = entries[c.key];
         if (!e) e = entries[c.key] = { cat: c.cat, name: c.name, label: c.label, herb: c.herb, parts: {}, notes: {}, drained: false, labels: {}, swaps: {} };
         if (i.swap && !i.swappedFrom && i.swap.use) e.swaps[i.swap.id] = 1;
@@ -1475,13 +1494,14 @@
 
   // Per-recipe needs of packed ingredients, cached per servings setting.
   var needsCache = {}, needsServings = null;
-  function recipeNeeds(id) {
-    if (needsServings !== state.servings) { needsCache = {}; needsServings = state.servings; }
-    if (needsCache[id]) return needsCache[id];
+  function recipeNeeds(id, serves) {
+    serves = serves || state.servings;
+    var ck = id + "|" + serves;
+    if (needsCache[ck]) return needsCache[ck];
     var r = RECIPES_BY_ID[id], out = {};
     if (r) {
       ingredientsOf(r).forEach(function (i) {
-        var c = shopCanon(i, state.servings);
+        var c = shopCanon(i, serves);
         var p = PACKS[c.name];
         if (!p) {
           // Any other fresh ingredient: opening it for one dinner probably
@@ -1496,14 +1516,14 @@
         out[c.name] = (out[c.name] || 0) + v;
       });
     }
-    needsCache[id] = out;
+    needsCache[ck] = out;
     return out;
   }
   var UNLISTED_PERISH = { meat: 2, dairy: 1.2, produce: 1, bakery: 0.6 };
   var UNLISTED_KEEPS = /^(garlic|ginger|celery|carrot|potato|shallot|apple|orange|green chilli|red chilli|scotch bonnet chilli|lemongrass|lettuce leaf|curry leaves|butter|parmesan)$/;
   var UNLISTED_W = {};
-  function addNeeds(total, id) {
-    var n = recipeNeeds(id);
+  function addNeeds(total, entry) {
+    var pt = portionOf(entry), n = recipeNeeds(pt.id, pt.serves);
     Object.keys(n).forEach(function (k) { total[k] = (total[k] || 0) + n[k]; });
     return total;
   }
@@ -1585,12 +1605,14 @@
   // candidate leaves the least in opened packs, with a nudge towards variety.
   // Several random starts; the best finished set wins.
   function planLowWaste(fixedIds, n) {
+    var fixedEntries = fixedIds; // ids or { id, serves } (days with guests)
+    fixedIds = fixedIds.map(function (x) { return portionOf(x).id; });
     var pool = suggestPool(freeRecipePool(RECIPES)).filter(function (r) { return !r.custom; });
     if (!pool.length || n <= 0) return [];
     var best = null;
     for (var attempt = 0; attempt < 8; attempt++) {
       var chosen = [], total = {};
-      fixedIds.forEach(function (id) { addNeeds(total, id); });
+      fixedEntries.forEach(function (x) { addNeeds(total, x); });
       var cuisines = {}, proteins = {}, spicy = 0, vegan = 0, types = weekTally(fixedIds).types;
       fixedIds.forEach(function (id) { var r = RECIPES_BY_ID[id]; if (r) { cuisines[r.cuisine] = (cuisines[r.cuisine] || 0) + 1; proteins[r.protein] = (proteins[r.protein] || 0) + 1; } });
       for (var k = 0; k < n; k++) {
@@ -1631,11 +1653,11 @@
     var empty = fillableDays();
     if (!empty.length) { noFillableToast(); return; }
     var undoSnap = JSON.stringify(syncPayload());
-    var picks = planLowWaste(W().plan.filter(Boolean), empty.length);
+    var picks = planLowWaste(currentPortions(), empty.length);
     picks.forEach(function (id, i) { W().plan[empty[i]] = id; logHistory(id, "lowwaste"); });
     state.newWeekNotice = false;
     onStateChanged();
-    var rep = wasteReport(W().plan.filter(Boolean));
+    var rep = wasteReport(currentPortions());
     var usedFridge = fridgeUsedBy(picks);
     toast(usedFridge.length ? "Week planned around your " + listAnd(usedFridge.map(fridgeNoun)) + "."
       : rep.items.length ? "Week filled to use up packs. A few bits left over: see the list." : "Week filled. Everything you open gets used.", "Undo", function () { applyState(JSON.parse(undoSnap)); onStateChanged(); });
@@ -1808,7 +1830,7 @@
   // fridge, ready for planning next week.
   function carryLeftovers() {
     if (!requirePro("fridge")) return;
-    var rep = wasteReport(currentRecipeIds());
+    var rep = wasteReport(currentPortions());
     var next = {};
     rep.items.forEach(function (it) {
       var p = it.pack, amt = it.spare;
@@ -1859,7 +1881,7 @@
       setShopBar(0);
       return;
     }
-    var groups = shopBuild(recipeIds); // cat -> map(key -> {label, amt}), see SHOPPING LIST CONSOLIDATION
+    var groups = shopBuild(currentPortions()); // cat -> map(key -> {label, amt}), see SHOPPING LIST CONSOLIDATION
     var staples = state.staples || {}, stapleRows = [];
 
     var total = 0, checkedCount = 0;
@@ -1912,8 +1934,8 @@
       }
       html += '<section class="shop-section shop-leftovers"><h3>What you will have left</h3>' +
         '<p class="settings-note">Packs are rounded up to how the shops sell them. Carry them to your fridge and next week\'s low-waste plan will use them up.</p>' +
-        leftoversHtml(recipeIds, 10) +
-        (state.mode === "days" && !viewNext && wasteReport(recipeIds).items.length ? '<button type="button" class="btn btn-outline btn-sm needs-pro" id="shop-carry-btn">Carry leftovers to my fridge</button>' : "") + "</section>";
+        leftoversHtml(currentPortions(), 10) +
+        (state.mode === "days" && !viewNext && wasteReport(currentPortions()).items.length ? '<button type="button" class="btn btn-outline btn-sm needs-pro" id="shop-carry-btn">Carry leftovers to my fridge</button>' : "") + "</section>";
     }
     content.innerHTML = html;
     var shopCarry = document.getElementById("shop-carry-btn");
@@ -2030,8 +2052,11 @@
     // someone's list.
     var alreadyAssigned = !!(ctx && (ctx.dayIdx !== undefined || ctx.batchUid !== undefined));
     var locked = !alreadyAssigned && isRecipeLocked(recipeId);
-    var servingsNote = state.servings > 1
-      ? "Written for one; scaled here ×" + state.servings + "."
+    // A planned day can feed more (or fewer) people than usual: guests.
+    var dayCtx = ctx && ctx.dayIdx !== undefined && state.mode !== "batch";
+    var serves = dayCtx ? dayServes(ctx.dayIdx) : state.servings;
+    var servingsNote = serves > 1
+      ? "Written for one; scaled here ×" + serves + "."
       : "Written for one.";
 
     var bodyHtml, actionsHtml;
@@ -2051,7 +2076,7 @@
       var ingredientsHtml = catKeys.map(function (c) {
         return '<div class="ing-group"><span class="eyebrow">' + esc(CAT_LABEL[c] || c) + "</span>" +
           byCat[c].map(function (i) {
-            return '<div class="ingredient-row"><span class="amt">' + scaledAmtOnly(i) + '</span><span>' + esc(i.item) + swapNoteHtml(i) + "</span></div>";
+            return '<div class="ingredient-row"><span class="amt">' + scaledAmtOnly(i, serves) + '</span><span>' + esc(i.item) + swapNoteHtml(i) + "</span></div>";
           }).join("") + "</div>";
       }).join("");
       var stepsHtml = r.steps.map(function (s) { return "<li>" + esc(s) + "</li>"; }).join("");
@@ -2065,7 +2090,15 @@
 
       if (ctx && ctx.dayIdx !== undefined) {
         var canLeftover = ctx.dayIdx < 6 && !isLeftover(ctx.dayIdx) && !(W().plan[ctx.dayIdx + 1] === r.id && isLeftover(ctx.dayIdx + 1));
-        actionsHtml = '<div class="modal-actions">' +
+        var dsN = dayServes(ctx.dayIdx), dsUsual = dsN === state.servings;
+        actionsHtml = '<div class="day-serves" role="group" aria-label="People eating on ' + DOW_NAMES[ctx.dayIdx] + '">' +
+          '<span class="day-serves-label">' + DOW_NAMES[ctx.dayIdx] + ": cooking for</span>" +
+          '<div class="stepper"><button type="button" data-ds="-1" aria-label="Fewer people"' + (dsN <= 1 ? " disabled" : "") + ">" + ico("minus") + "</button>" +
+          '<span class="stepper-value">' + dsN + '</span><button type="button" data-ds="1" aria-label="More people"' + (dsN >= 12 ? " disabled" : "") + ">" + ico("plus") + "</button></div>" +
+          (dsUsual ? '<span class="day-serves-hint">Got guests? Change it for just this day, and the shopping list follows.</span>'
+            : '<span class="day-serves-hint">Just this day. <button type="button" class="link-btn" data-ds-reset>Back to ' + state.servings + "</button></span>") +
+          "</div>" +
+          '<div class="modal-actions">' +
           '<button class="btn btn-outline" id="modal-swap-btn">' + ico("swap") + 'Swap for something else</button>' +
           (canLeftover ? '<button class="btn btn-outline" id="modal-leftover-btn">Cook double: leftovers ' + DOW_NAMES[ctx.dayIdx + 1] + '</button>' : "") +
           '<button class="btn btn-ghost" id="modal-remove-btn">Remove from this day</button></div>';
@@ -2091,12 +2124,21 @@
       "<h2>" + esc(r.title) + "</h2>" +
       (tagMarks(r) ? '<div class="marks">' + tagMarks(r) + "</div>" : "") +
       '<dl class="meta4"><div><dt>Prep</dt><dd>' + r.prep + ' min</dd></div><div><dt>Cook</dt><dd>' + r.cook + ' min</dd></div>' +
-      '<div><dt>Total</dt><dd>' + (r.prep + r.cook) + ' min</dd></div><div><dt>Serves</dt><dd>' + state.servings + "</dd></div></dl>" +
+      '<div><dt>Total</dt><dd>' + (r.prep + r.cook) + ' min</dd></div><div><dt>Serves</dt><dd>' + serves + "</dd></div></dl>" +
       '<p class="modal-note">' + servingsNote + (kcal ? " About " + kcal + " kcal per serving (a rough estimate from the ingredients)." : "") + "</p>" +
       (locked ? "" : '<div class="modal-actions modal-actions-top"><button type="button" class="btn btn-ink" id="modal-cook-btn">' + ico("flame") + "Start cooking</button>" + pageLink + "</div>") +
       "</div>" +
       actionsHtml +
       bodyHtml;
+    recipeModal.querySelectorAll("[data-ds], [data-ds-reset]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        var d = ctx.dayIdx, n = b.hasAttribute("data-ds-reset") ? state.servings : Math.min(12, Math.max(1, dayServes(d) + parseInt(b.getAttribute("data-ds"), 10)));
+        W().guests = W().guests || {};
+        if (n === state.servings) delete W().guests[d]; else W().guests[d] = n;
+        onStateChanged();
+        openRecipeModal(recipeId, ctx);
+      });
+    });
 
     recipeBackdrop.hidden = false;
     document.getElementById("modal-close-btn").addEventListener("click", closeRecipeModal);
@@ -2711,6 +2753,7 @@
     state.plan = planned ? planned.plan.slice() : [null, null, null, null, null, null, null];
     state.cooked = {};
     state.leftovers = planned ? (planned.leftovers || {}) : {};
+    state.guests = planned ? (planned.guests || {}) : {};
     state.checked = planned ? (planned.checked || {}) : {};
     state.planWeek = key;
     state.next = null;
@@ -2875,7 +2918,7 @@
     if (settingsOpen()) renderSettings();
   }
   function shoppingText() {
-    var groups = shopBuild(currentRecipeIds());
+    var groups = shopBuild(currentPortions());
     var lines = ["Solo Supper shopping list", ""];
     CAT_ORDER.forEach(function (cat) {
       if (!groups[cat]) return;
@@ -2982,7 +3025,8 @@
       var nice = d.secs >= 60 ? Math.round(d.secs / 60) + " min" : d.secs + " sec";
       return '<button type="button" class="btn btn-sm cook-start-timer" data-secs="' + d.secs + '" data-label="' + esc("Step " + (i + 1) + " · " + nice) + '">' + ico("timer") + "Start " + nice + " timer</button>";
     }).join("");
-    var ings = ingredientsOf(r).map(function (x) { return '<li><span class="amt">' + scaledAmtOnly(x) + "</span> " + esc(x.item) + "</li>"; }).join("");
+    var cookServes = cook.ctx && cook.ctx.dayIdx !== undefined && state.mode !== "batch" ? dayServes(cook.ctx.dayIdx) : state.servings;
+    var ings = ingredientsOf(r).map(function (x) { return '<li><span class="amt">' + scaledAmtOnly(x, cookServes) + "</span> " + esc(x.item) + "</li>"; }).join("");
     var last = i === n - 1;
     el.innerHTML =
       '<div class="cook-inner">' +
@@ -3351,7 +3395,7 @@
 
   /* ============================= CLOUD SYNC ============================= */
   var SYNC_FIELDS = ["servings", "mode", "plan", "batch", "checked", "ratings", "noSeafood", "history", "cooked", "cookLog",
-    "planWeek", "leftovers", "staples", "avoid", "customRecipes", "lastWeek", "newWeekNotice", "next", "cookDays", "fridge", "fridgeFrom", "newOnly", "swaps"];
+    "planWeek", "leftovers", "guests", "staples", "avoid", "customRecipes", "lastWeek", "newWeekNotice", "next", "cookDays", "fridge", "fridgeFrom", "newOnly", "swaps"];
   var UNSYNCED_KEY = "soloSupper.unsynced";
   var lastSyncedJson = {};
   var savePending = false;
@@ -3384,15 +3428,15 @@
     M.batch = unionBy(C.batch, L.batch, function (x) { return x.uid; });
     if (L.planWeek && L.planWeek === C.planWeek) {
       M.plan = (C.plan || []).map(function (c, i) { return (L.plan && L.plan[i]) || c; });
-      ["cooked", "leftovers", "checked"].forEach(function (f) { M[f] = Object.assign({}, C[f] || {}, L[f] || {}); });
+      ["cooked", "leftovers", "checked", "guests"].forEach(function (f) { M[f] = Object.assign({}, C[f] || {}, L[f] || {}); });
     } else if (L.planWeek && (!C.planWeek || L.planWeek > C.planWeek)) {
-      ["plan", "cooked", "leftovers", "checked", "planWeek", "lastWeek", "newWeekNotice"].forEach(function (f) { M[f] = L[f]; });
+      ["plan", "cooked", "leftovers", "checked", "guests", "planWeek", "lastWeek", "newWeekNotice"].forEach(function (f) { M[f] = L[f]; });
     }
     if (L.next && L.next.week && (!C.next || !C.next.week || L.next.week > C.next.week)) M.next = L.next;
     else if (L.next && C.next && L.next.week === C.next.week) {
       M.next = JSON.parse(JSON.stringify(C.next));
       M.next.plan = (C.next.plan || []).map(function (c, i) { return (L.next.plan && L.next.plan[i]) || c; });
-      ["leftovers", "checked"].forEach(function (f) { M.next[f] = Object.assign({}, C.next[f] || {}, L.next[f] || {}); });
+      ["leftovers", "checked", "guests"].forEach(function (f) { M.next[f] = Object.assign({}, C.next[f] || {}, L.next[f] || {}); });
     }
     M.servings = L.servings; M.mode = L.mode;
     M.cookDays = (Array.isArray(C.cookDays) && C.cookDays.length === 7) ? C.cookDays : L.cookDays;

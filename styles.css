@@ -104,6 +104,15 @@ button, input, select, textarea { font-family: inherit; color: inherit; }
 .pro-pill.is-pro { border-color: var(--olive); color: var(--olive); }
 .pro-pill.is-pro:hover { background: var(--olive); color: var(--olive-ink); }
 .pro-pill .pp-short { display: none; }
+/* Per-day guests ("Cooking for on Saturday") */
+.day-serves { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; padding: 12px 14px; margin: 0 0 12px; background: var(--board); border-radius: 12px; }
+.day-serves-label { font-weight: 600; font-size: 14px; }
+.day-serves .stepper { height: 36px; }
+.day-serves .stepper button { width: 34px; height: 34px; }
+.day-serves .stepper button[disabled] { opacity: .35; cursor: default; }
+.day-serves .stepper-value { min-width: 24px; text-align: center; font-family: var(--mono); font-weight: 600; }
+.day-serves-hint { flex-basis: 100%; font-size: 12.5px; color: var(--ink-3); }
+.guests-tag { display: inline-block; padding: 0 7px; border-radius: 999px; background: var(--yolk); color: var(--ink); font-weight: 600; font-size: 11.5px; line-height: 18px; }
 @media (max-width: 560px) { .pro-pill { padding-left: 10px; padding-right: 10px; } .pro-pill .pp-long { display: none; } .pro-pill .pp-short { display: inline; } }
 /* Narrow phones: the logo alone, so the controls and settings always fit. */
 @media (max-width: 430px) { .app-bar .brand-name { display: none; } }

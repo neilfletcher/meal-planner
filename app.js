@@ -1888,7 +1888,11 @@
     var html = "";
     CAT_ORDER.forEach(function (cat) {
       if (!groups[cat]) return;
-      var keys = Object.keys(groups[cat]).sort(function (a, b) { return groups[cat][a].label.localeCompare(groups[cat][b].label); });
+      // Still to buy first (A to Z), ticked items sink to the bottom of their section.
+      var keys = Object.keys(groups[cat]).sort(function (a, b) {
+        var ca = !shopCupboardMode && W().checked[a] ? 1 : 0, cb = !shopCupboardMode && W().checked[b] ? 1 : 0;
+        return ca - cb || groups[cat][a].label.localeCompare(groups[cat][b].label);
+      });
       keys = keys.filter(function (k) { if (staples[k] && !shopCupboardMode) { stapleRows.push({ key: k, g: groups[cat][k] }); return false; } return true; });
       if (!keys.length) return;
       html += '<div class="shop-section"><h3>' + CAT_LABEL[cat] + "</h3>";
@@ -1958,9 +1962,11 @@
         var key = el.dataset.key;
         if (W().checked[key]) delete W().checked[key]; else W().checked[key] = true;
         el.classList.toggle("checked");
-        var checkedNow = Object.keys(W().checked).length;
         scheduleSave();
         renderShopping();
+        // The item moves (ticked items sink); keep keyboard focus on it.
+        var moved = content.querySelector('.shop-item[data-key="' + key.replace(/["\\]/g, "\\$&") + '"] input');
+        if (moved && document.activeElement === document.body) { try { moved.focus({ preventScroll: true }); } catch (e) { moved.focus(); } }
       });
     });
   }

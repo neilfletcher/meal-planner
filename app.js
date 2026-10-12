@@ -59,6 +59,43 @@
 
   // The built-in recipes live in recipes-data.js, shared with the static site generator.
   var RECIPES = (window.SOLO_RECIPES || []).slice();
+
+  /* ============================= INGREDIENT SWAPS ============================= */
+  // Hard-to-find ingredients have a supermarket swap (SOLO_SWAPS in
+  // recipes-data.js). Once someone chooses a swap it applies everywhere: the
+  // recipe, cooking mode, the shopping list and low-waste planning all read
+  // ingredients through ingredientsOf().
+  var SWAPS = window.SOLO_SWAPS || [], SWAP_BY_ID = {}, SWAP_BY_ITEM = {};
+  SWAPS.forEach(function (sw) { SWAP_BY_ID[sw.id] = sw; sw.match.forEach(function (m) { SWAP_BY_ITEM[m] = sw; }); });
+  function swapFor(i) { return SWAP_BY_ITEM[String(i.item || "").toLowerCase().trim()] || null; }
+  function swapOn(sw) { return !!(sw && sw.use && state.swaps && state.swaps[sw.id]); }
+  function ingredientsOf(r) {
+    if (!r) return [];
+    var out = [];
+    r.ingredients.forEach(function (i) {
+      var sw = swapFor(i);
+      if (!sw) { out.push(i); return; }
+      if (!swapOn(sw)) { out.push(Object.assign({}, i, { swap: sw })); return; }
+      sw.use.forEach(function (u) {
+        var amt = u.factor !== undefined ? (i.amt === null || i.amt === undefined ? null : Math.round(i.amt * u.factor * 100) / 100) : u.amt;
+        out.push({ amt: amt, unit: u.unit !== undefined ? u.unit : i.unit, item: u.item, cat: u.cat || i.cat, swappedFrom: i.item, swap: sw });
+      });
+    });
+    return out;
+  }
+  function setSwap(id, on) {
+    state.swaps = state.swaps || {};
+    if (on) state.swaps[id] = true; else delete state.swaps[id];
+    needsCache = {};
+    scheduleSave();
+  }
+  function swapNoteHtml(i) {
+    var sw = i.swap;
+    if (!sw) return "";
+    if (i.swappedFrom) return '<span class="swap-note is-on">Instead of ' + esc(i.swappedFrom) + ' <button type="button" class="link-btn" data-swap-off="' + sw.id + '">Undo</button></span>';
+    return '<details class="swap-note"><summary>' + (sw.tier === "hard" ? "Hard to find?" : "Can't find it?") + "</summary><span>" + esc(sw.tip) + "</span>" +
+      (sw.use ? ' <button type="button" class="link-btn" data-swap-on="' + sw.id + '">Use the swap</button>' : "") + "</details>";
+  }
   var BUILTIN_COUNT = RECIPES.length;
   var RECIPES_BY_ID = {};
   RECIPES.forEach(function (r) { RECIPES_BY_ID[r.id] = r; });
@@ -159,6 +196,7 @@
     newWeekNotice: false,
     cookDays: [true, true, true, true, true, true, true], // which days of the week they cook (Mon..Sun)
     fridge: {},          // leftovers to use up: { packKey: amount in the pack's unit }
+    swaps: {},           // ingredient swaps the person has chosen: { swapId: true } (see SOLO_SWAPS)
     fridgeFrom: null,    // "YYYY-MM-DD" Monday of the first week the fridge applies to
     newOnly: false,      // suggestions (Surprise me, fills) only pick dishes not cooked yet
     next: null           // next week's plan: { week, plan, cooked, leftovers, checked }
@@ -324,6 +362,7 @@
     if (data.fridge && typeof data.fridge === "object" && !Array.isArray(data.fridge)) state.fridge = data.fridge;
     if (typeof data.fridgeFrom === "string" || data.fridgeFrom === null) state.fridgeFrom = data.fridgeFrom;
     if (typeof data.newOnly === "boolean") state.newOnly = data.newOnly;
+    if (data.swaps && typeof data.swaps === "object" && !Array.isArray(data.swaps)) state.swaps = data.swaps;
     if (Array.isArray(data.cookDays) && data.cookDays.length === 7) state.cookDays = data.cookDays.map(function (v) { return v !== false; });
     if (data.next && typeof data.next === "object" && Array.isArray(data.next.plan) && data.next.plan.length === 7) state.next = data.next;
     registerCustomRecipes();
@@ -1183,10 +1222,11 @@
     recipeIds.forEach(function (rid) {
       var r = RECIPES_BY_ID[rid];
       if (!r) return;
-      r.ingredients.forEach(function (i) {
+      ingredientsOf(r).forEach(function (i) {
         var c = shopCanon(i, state.servings);
         var e = entries[c.key];
-        if (!e) e = entries[c.key] = { cat: c.cat, name: c.name, label: c.label, herb: c.herb, parts: {}, notes: {}, drained: false, labels: {} };
+        if (!e) e = entries[c.key] = { cat: c.cat, name: c.name, label: c.label, herb: c.herb, parts: {}, notes: {}, drained: false, labels: {}, swaps: {} };
+        if (i.swap && !i.swappedFrom && i.swap.use) e.swaps[i.swap.id] = 1;
         e.labels[c.label] = (e.labels[c.label] || 0) + 1;
         if (c.drained) e.drained = true;
         if (c.amt === null) { if (c.unit) e.notes[c.unit] = true; return; }
@@ -1230,7 +1270,7 @@
       var noteKeys = Object.keys(e.notes);
       if (!pieces.length && noteKeys.length) pieces.push(noteKeys.indexOf("to taste") !== -1 ? "to taste" : noteKeys[0]);
       groups[e.cat] = groups[e.cat] || {};
-      groups[e.cat][key] = { label: label.charAt(0).toLowerCase() === label.charAt(0) ? label : label, amt: pieces.join(" + ") };
+      groups[e.cat][key] = { label: label.charAt(0).toLowerCase() === label.charAt(0) ? label : label, amt: pieces.join(" + "), swaps: Object.keys(e.swaps || {}) };
     });
     return groups;
   }
@@ -1379,7 +1419,7 @@
     if (needsCache[id]) return needsCache[id];
     var r = RECIPES_BY_ID[id], out = {};
     if (r) {
-      r.ingredients.forEach(function (i) {
+      ingredientsOf(r).forEach(function (i) {
         var c = shopCanon(i, state.servings);
         var p = PACKS[c.name];
         if (!p) {
@@ -1781,7 +1821,11 @@
         html += '<label class="shop-item' + (isChecked ? " checked" : "") + '" data-key="' + itemKey.replace(/"/g, "&quot;") + '">' +
           '<input type="checkbox" ' + (isChecked ? "checked" : "") + '>' +
           '<span class="amt">' + g.amt + '</span>' +
-          '<span class="name">' + g.label + (haveAmt > 0 && PACKS[fridgeName] ? ' <span class="have-tag">you have ' + esc(fridgeShort(fridgeName, haveAmt)) + "</span>" : "") + '</span></label>';
+          '<span class="name">' + g.label + (haveAmt > 0 && PACKS[fridgeName] ? ' <span class="have-tag">you have ' + esc(fridgeShort(fridgeName, haveAmt)) + "</span>" : "") + '</span></label>' +
+          (g.swaps && g.swaps.length && !isChecked ? g.swaps.map(function (id) {
+            var sw = SWAP_BY_ID[id];
+            return '<div class="shop-swap"><span>' + (sw.tier === "hard" ? "Hard to find. " : "Not in every shop. ") + esc(sw.tip) + '</span> <button type="button" class="link-btn" data-swap-on="' + id + '">Use the swap</button></div>';
+          }).join("") : "");
       });
       html += "</div>";
     });
@@ -1911,9 +1955,11 @@
   var recipeBackdrop = document.getElementById("recipe-modal-backdrop");
   var recipeModal = document.getElementById("recipe-modal");
 
+  var modalOpenArgs = null;
   function openRecipeModal(recipeId, ctx) {
     var r = RECIPES_BY_ID[recipeId];
     if (!r) return;
+    modalOpenArgs = [recipeId, ctx];
     // A recipe already sitting in the plan/batch (opened via its assigned
     // card) is always viewable in full - the lock only applies when browsing
     // or picking something new, so buying never orphans a dish already on
@@ -1936,12 +1982,12 @@
       actionsHtml = "";
     } else {
       var byCat = {};
-      r.ingredients.forEach(function (i) { (byCat[i.cat] = byCat[i.cat] || []).push(i); });
+      ingredientsOf(r).forEach(function (i) { (byCat[i.cat] = byCat[i.cat] || []).push(i); });
       var catKeys = CAT_ORDER.filter(function (c) { return byCat[c]; }).concat(Object.keys(byCat).filter(function (c) { return CAT_ORDER.indexOf(c) === -1; }));
       var ingredientsHtml = catKeys.map(function (c) {
         return '<div class="ing-group"><span class="eyebrow">' + esc(CAT_LABEL[c] || c) + "</span>" +
           byCat[c].map(function (i) {
-            return '<div class="ingredient-row"><span class="amt">' + scaledAmtOnly(i) + '</span><span>' + esc(i.item) + "</span></div>";
+            return '<div class="ingredient-row"><span class="amt">' + scaledAmtOnly(i) + '</span><span>' + esc(i.item) + swapNoteHtml(i) + "</span></div>";
           }).join("") + "</div>";
       }).join("");
       var stepsHtml = r.steps.map(function (s) { return "<li>" + esc(s) + "</li>"; }).join("");
@@ -2871,7 +2917,7 @@
       var nice = d.secs >= 60 ? Math.round(d.secs / 60) + " min" : d.secs + " sec";
       return '<button type="button" class="btn btn-sm cook-start-timer" data-secs="' + d.secs + '" data-label="' + esc("Step " + (i + 1) + " · " + nice) + '">' + ico("timer") + "Start " + nice + " timer</button>";
     }).join("");
-    var ings = r.ingredients.map(function (x) { return '<li><span class="amt">' + scaledAmtOnly(x) + "</span> " + esc(x.item) + "</li>"; }).join("");
+    var ings = ingredientsOf(r).map(function (x) { return '<li><span class="amt">' + scaledAmtOnly(x) + "</span> " + esc(x.item) + "</li>"; }).join("");
     var last = i === n - 1;
     el.innerHTML =
       '<div class="cook-inner">' +
@@ -3240,7 +3286,7 @@
 
   /* ============================= CLOUD SYNC ============================= */
   var SYNC_FIELDS = ["servings", "mode", "plan", "batch", "checked", "ratings", "noSeafood", "history", "cooked", "cookLog",
-    "planWeek", "leftovers", "staples", "avoid", "customRecipes", "lastWeek", "newWeekNotice", "next", "cookDays", "fridge", "fridgeFrom", "newOnly"];
+    "planWeek", "leftovers", "staples", "avoid", "customRecipes", "lastWeek", "newWeekNotice", "next", "cookDays", "fridge", "fridgeFrom", "newOnly", "swaps"];
   var UNSYNCED_KEY = "soloSupper.unsynced";
   var lastSyncedJson = {};
   var savePending = false;
@@ -3288,6 +3334,7 @@
     M.fridge = Object.assign({}, C.fridge || {}, L.fridge || {});
     M.fridgeFrom = L.fridgeFrom || C.fridgeFrom || null;
     M.newOnly = typeof L.newOnly === "boolean" ? L.newOnly : !!C.newOnly;
+    M.swaps = Object.assign({}, C.swaps || {}, L.swaps || {});
     M.noSeafood = !!(L.noSeafood || C.noSeafood);
     return M;
   }
@@ -3926,6 +3973,20 @@
   /* ============================= INIT ============================= */
   var viewChosen = false;
   var viewPicked = false; // the person chose a week themselves
+  // Swap buttons live in the recipe card and the shopping list.
+  document.addEventListener("click", function (ev) {
+    var b = ev.target.closest && ev.target.closest("[data-swap-on], [data-swap-off]");
+    if (!b) return;
+    ev.preventDefault();
+    var on = b.hasAttribute("data-swap-on"), id = b.getAttribute(on ? "data-swap-on" : "data-swap-off");
+    if (!SWAP_BY_ID[id]) return;
+    setSwap(id, on);
+    track(on ? "swap_used" : "swap_undone", { swap: id });
+    renderAll();
+    if (modalOpenArgs && !recipeBackdrop.hidden) openRecipeModal(modalOpenArgs[0], modalOpenArgs[1]);
+    toast(on ? "Swapped everywhere it comes up. Undo it from any recipe that uses it." : "Swap undone.");
+  });
+
   function renderAll() {
     if (checkWeekRollover()) setTimeout(scheduleSave, 0);
     ensureNext();

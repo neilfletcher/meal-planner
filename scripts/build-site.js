@@ -36,6 +36,9 @@ var sandbox = { window: {} };
 vm.createContext(sandbox);
 vm.runInContext(fs.readFileSync(path.join(ROOT, "recipes-data.js"), "utf8"), sandbox);
 var RECIPES = sandbox.window.SOLO_RECIPES;
+// Swaps for hard-to-find ingredients (also used by the planner): shown under the ingredient.
+var SWAP_BY_ITEM = {};
+(sandbox.window.SOLO_SWAPS || []).forEach(function (sw) { sw.match.forEach(function (m) { SWAP_BY_ITEM[m] = sw; }); });
 if (!Array.isArray(RECIPES) || !RECIPES.length) throw new Error("No recipes found in recipes-data.js");
 
 var CAT_ORDER = ["meat", "produce", "dairy", "frozen", "store", "spice", "bakery"];
@@ -93,6 +96,12 @@ function amtText(i) {
   return n + (unit ? " " + unit : "");
 }
 function total(r) { return r.prep + r.cook; }
+function swapHtml(i) {
+  var sw = SWAP_BY_ITEM[String(i.item).toLowerCase().trim()];
+  if (!sw) return "";
+  return '<details class="ing-swap"><summary>' + (sw.tier === "hard" ? "Hard to find?" : "Can't find it?") + "</summary><span>" + esc(sw.tip) +
+    (sw.use ? " The planner can swap it on your shopping list for you." : "") + "</span></details>";
+}
 // "Heat the oil in a wok over high heat and stir-fry..." -> "Heat the oil in a wok over high heat"
 function stepName(s) {
   var first = String(s).split(/[.;:]\s|, (?:then|and|until|so)\b|\.$/)[0].trim();
@@ -170,7 +179,8 @@ function appSection(from, to) {
   if (i < 0 || j < 0) throw new Error("build-site: could not find the app.js section starting " + JSON.stringify(from));
   return APP_SRC.slice(i, j);
 }
-var packCtx = { RECIPES: RECIPES, RECIPES_BY_ID: BY_ID, state: { servings: 1, staples: {}, ratings: {} } };
+// Public pages show recipes as written, so no swaps apply here.
+var packCtx = { RECIPES: RECIPES, RECIPES_BY_ID: BY_ID, state: { servings: 1, staples: {}, ratings: {} }, ingredientsOf: function (r) { return r ? r.ingredients : []; } };
 vm.createContext(packCtx);
 vm.runInContext(
   appSection("  var FRACTIONS = ", "  function scaledIngredientText") +
@@ -616,7 +626,7 @@ RECIPES.forEach(function (r) {
     return '<div class="ing-group"><span class="eyebrow">' + esc(CAT_LABEL[c] || c) + "</span><ul>" +
       groups[c].map(function (i) {
         var scalable = i.amt !== null && i.amt !== undefined;
-        return '<li><span class="ing-amt mono"' + (scalable ? ' data-amt="' + i.amt + '" data-unit="' + esc(i.unit || "") + '"' : "") + ">" + esc(amtText(i)) + '</span><span class="ing-name">' + esc(i.item) + "</span></li>";
+        return '<li><span class="ing-amt mono"' + (scalable ? ' data-amt="' + i.amt + '" data-unit="' + esc(i.unit || "") + '"' : "") + ">" + esc(amtText(i)) + '</span><span class="ing-name">' + esc(i.item) + swapHtml(i) + "</span></li>";
       }).join("") + "</ul></div>";
   }).join("");
   var stepsHtml = r.steps.map(function (s, k) { return '<li id="step-' + (k + 1) + '"><span class="step-num">' + (k + 1) + '</span><p>' + esc(s) + "</p></li>"; }).join("");

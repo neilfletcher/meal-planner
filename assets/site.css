@@ -242,6 +242,12 @@ em { font-style: italic; }
 .stepper output { font-weight: 600; }
 .ing-group ul { list-style: none; margin: 6px 0 0; padding: 0; }
 .ing-group li { display: flex; gap: 16px; padding: 11px 0; border-top: 1px solid var(--board); font-size: 16px; line-height: 1.45; }
+.ing-swap { display: block; margin-top: 4px; font-size: 14px; color: var(--ink-3, #636A63); line-height: 1.5; }
+.ing-swap summary { cursor: pointer; color: var(--tomato-deep, #A33522); font-weight: 500; list-style: none; display: inline; }
+.ing-swap summary::-webkit-details-marker { display: none; }
+.ing-swap summary::after { content: " \203A"; }
+.ing-swap[open] summary { display: block; margin-bottom: 2px; }
+.ing-swap[open] summary::after { content: ""; }
 .ing-amt { width: 84px; flex-shrink: 0; font-weight: 500; font-size: 14px; padding-top: 2px; }
 .method { flex: 999 1 520px; min-width: 0; display: flex; flex-direction: column; gap: 16px; }
 .method-steps { list-style: none; margin: 0; padding: 0; }

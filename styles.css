@@ -396,6 +396,17 @@ body.modal-open { overflow: hidden; }
 .ing-group .eyebrow { display: block; font-size: 11px; padding: 4px 0; }
 .ingredient-row { display: flex; gap: 14px; padding: 9px 0; font-size: 15px; border-top: 1px solid var(--board); line-height: 1.4; }
 .ingredient-row .amt { font-family: var(--mono); font-variant-numeric: tabular-nums; width: 80px; flex-shrink: 0; font-size: 13.5px; font-weight: 500; padding-top: 1px; }
+/* Ingredient swaps (hard-to-find ingredients) */
+.swap-note { display: block; margin-top: 3px; font-size: 13px; color: var(--ink-3); line-height: 1.45; }
+.swap-note summary { cursor: pointer; color: var(--tomato-deep); font-weight: 500; list-style: none; display: inline; }
+.swap-note summary::-webkit-details-marker { display: none; }
+.swap-note summary::after { content: " \203A"; }
+.swap-note[open] summary::after { content: ""; }
+.swap-note[open] summary { display: block; margin-bottom: 2px; }
+.swap-note.is-on { color: var(--olive); }
+.link-btn { background: none; border: 0; padding: 0; font: inherit; font-weight: 600; color: var(--tomato-deep); text-decoration: underline; text-underline-offset: 2px; cursor: pointer; }
+.link-btn:focus-visible { outline: 2px solid var(--tomato); outline-offset: 2px; border-radius: 2px; }
+.shop-swap { font-size: 12.5px; color: var(--ink-3); line-height: 1.45; padding: 2px 0 12px 40px; }
 .steps { list-style: none; margin: 0; padding: 0; counter-reset: step; }
 .steps li { counter-increment: step; display: flex; gap: 18px; padding: 14px 0; border-top: 1px solid var(--line); font-size: 16px; line-height: 1.55; }
 .steps li::before { content: counter(step); font-family: var(--serif); font-size: 32px; line-height: .9; color: var(--tomato); width: 28px; flex-shrink: 0; }

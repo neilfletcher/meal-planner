@@ -2,12 +2,18 @@ name: Update dashboard data
 
 on:
   schedule:
-    # Runs once a day at 06:00 UTC. Edit the cron value to change the time.
-    - cron: '0 6 * * *'
+    # Every hour, at 17 minutes past (GA4's own reports update every few hours,
+    # so more often than this adds Firestore reads without fresher numbers).
+    # Sign-ups, subscriptions and visitors on the site now are live on the page.
+    - cron: '17 * * * *'
   workflow_dispatch: {}
 
 permissions:
   contents: read
+
+concurrency:
+  group: dashboard-data
+  cancel-in-progress: false
 
 jobs:
   update-data:

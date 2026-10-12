@@ -80,20 +80,23 @@ export async function verifyIdToken(token, pid) {
 }
 
 /* ------------------------------------------------- service account tokens */
-var tokenCache = { token: null, until: 0 };
+var tokenCache = {};
+var CLOUD = "https://www.googleapis.com/auth/cloud-platform";
 function pemToDer(pem) {
   var b64 = pem.replace(/-----[^-]+-----/g, "").replace(/\s+/g, "");
   var bin = atob(b64), out = new Uint8Array(bin.length);
   for (var i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i);
   return out;
 }
-export async function accessToken(env) {
-  if (tokenCache.token && Date.now() < tokenCache.until) return tokenCache.token;
+export async function accessToken(env, scope) {
+  scope = scope || CLOUD;
+  var hit = tokenCache[scope];
+  if (hit && Date.now() < hit.until) return hit.token;
   var sa = serviceAccount(env);
   var iat = Math.floor(Date.now() / 1000);
   var unsigned = jsonB64url({ alg: "RS256", typ: "JWT" }) + "." + jsonB64url({
     iss: sa.client_email, sub: sa.client_email,
-    scope: "https://www.googleapis.com/auth/cloud-platform",
+    scope: scope,
     aud: "https://oauth2.googleapis.com/token", iat: iat, exp: iat + 3600
   });
   var key = await crypto.subtle.importKey("pkcs8", pemToDer(sa.private_key), { name: "RSASSA-PKCS1-v1_5", hash: "SHA-256" }, false, ["sign"]);
@@ -105,8 +108,24 @@ export async function accessToken(env) {
   });
   if (!r.ok) throw httpError(500, "Google token exchange failed: " + (await r.text()).slice(0, 200));
   var body = await r.json();
-  tokenCache = { token: body.access_token, until: Date.now() + Math.max(60, (body.expires_in || 3600) - 120) * 1000 };
-  return tokenCache.token;
+  tokenCache[scope] = { token: body.access_token, until: Date.now() + Math.max(60, (body.expires_in || 3600) - 120) * 1000 };
+  return body.access_token;
+}
+
+/* ------------------------------------------------------- Google Analytics */
+// Realtime report (the last 30 minutes) from the GA4 Data API. The service
+// account needs Viewer access to the GA4 property (GA4 Admin > Property
+// access management), and GA4_PROPERTY_ID must be set in Cloudflare.
+export async function gaRealtime(env, request) {
+  var token = await accessToken(env, "https://www.googleapis.com/auth/analytics.readonly");
+  var r = await fetch("https://analyticsdata.googleapis.com/v1beta/properties/" + encodeURIComponent(env.GA4_PROPERTY_ID) + ":runRealtimeReport", {
+    method: "POST",
+    headers: { authorization: "Bearer " + token, "content-type": "application/json" },
+    body: JSON.stringify(request)
+  });
+  var body = await r.json().catch(function () { return {}; });
+  if (!r.ok) throw httpError(r.status === 403 ? 403 : 502, "Google Analytics: " + ((body.error && body.error.message) || r.status));
+  return body;
 }
 
 /* ---------------------------------------------------------------- Firestore */

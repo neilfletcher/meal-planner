@@ -13,7 +13,7 @@
  *
  * Signed-in calls send "Authorization: Bearer <Firebase ID token>".
  */
-import { verifyIdToken, projectId, getDoc, mergeDoc, deleteDoc, commit, listCollection, listAuthUsers, findUserByEmail, deleteAuthUser, httpError } from "../_shared/google.js";
+import { verifyIdToken, projectId, getDoc, mergeDoc, deleteDoc, commit, listCollection, listAuthUsers, gaRealtime, findUserByEmail, deleteAuthUser, httpError } from "../_shared/google.js";
 import { stripe, priceFor, verifyWebhook, subscriptionFields } from "../_shared/stripe.js";
 import { proState, addMonths, TRIAL_DAYS } from "../_shared/entitlement.js";
 
@@ -214,6 +214,30 @@ async function admin(request, env) {
       else if (st.source === "trial-ended") c.trialEnded++;
     });
     return json({ counts: c, at: now });
+  }
+
+  if (body.action === "liveVisitors") {
+    // Visitors in the last 30 minutes. Live data has no website field, so
+    // Solo Supper pages are told apart by their titles, which all name it.
+    if (!env.GA4_PROPERTY_ID) return json({ configured: false, reason: "GA4_PROPERTY_ID is not set in Cloudflare" });
+    var SOLO = /solo supper/i;
+    try {
+      var reps = await Promise.all([
+        gaRealtime(env, { metrics: [{ name: "activeUsers" }] }),
+        gaRealtime(env, { metrics: [{ name: "activeUsers" }], dimensionFilter: { filter: { fieldName: "unifiedScreenName", stringFilter: { matchType: "CONTAINS", value: "Solo Supper", caseSensitive: false } } } }),
+        gaRealtime(env, { dimensions: [{ name: "unifiedScreenName" }], metrics: [{ name: "activeUsers" }], limit: 50 })
+      ]);
+      var count = function (rep) { return rep.rows && rep.rows[0] ? parseInt(rep.rows[0].metricValues[0].value, 10) || 0 : 0; };
+      var total = count(reps[0]), solo = count(reps[1]);
+      var pages = (reps[2].rows || []).map(function (row) {
+        return { title: row.dimensionValues[0].value, users: parseInt(row.metricValues[0].value, 10) || 0 };
+      });
+      return json({ configured: true, at: now, total: total, solo: solo, other: Math.max(0, total - solo),
+        soloPages: pages.filter(function (p) { return SOLO.test(p.title); }).slice(0, 8),
+        otherPages: pages.filter(function (p) { return !SOLO.test(p.title); }).slice(0, 8) });
+    } catch (e) {
+      return json({ configured: false, reason: e.message });
+    }
   }
 
   if (body.action === "listCodes") {

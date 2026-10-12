@@ -50,7 +50,14 @@ globalThis.fetch = async (url, init = {}) => {
   if (url === "https://oauth2.googleapis.com/token") {
     const assertion = new URLSearchParams(init.body).get("assertion"); const [h, p, s] = assertion.split(".");
     const good = await wc.subtle.verify("RSASSA-PKCS1-v1_5", saKey.publicKey, Buffer.from(s, "base64url"), new TextEncoder().encode(h + "." + p));
-    return good ? res({ access_token: "at", expires_in: 3600 }) : res({ error: "bad" }, 400);
+    const scope = JSON.parse(Buffer.from(p, "base64url").toString()).scope;
+    return good ? res({ access_token: /analytics/.test(scope) ? "ga" : "at", expires_in: 3600 }) : res({ error: "bad" }, 400);
+  }
+  if (url.startsWith("https://analyticsdata.googleapis.com/v1beta/properties/123:runRealtimeReport")) {
+    if ((init.headers || {}).authorization !== "Bearer ga") return res({ error: { message: "wrong scope" } }, 403);
+    const q = JSON.parse(init.body);
+    if (q.dimensions) return res({ rows: [["Your week | Solo Supper", 3], ["Spine Finder", 2], ["Lamb Koftas for one | Solo Supper", 1]].map(([t, n]) => ({ dimensionValues: [{ value: t }], metricValues: [{ value: String(n) }] })) });
+    return res({ rows: [{ metricValues: [{ value: q.dimensionFilter ? "4" : "6" }] }] });
   }
   const fsBase = "https://firestore.googleapis.com/v1/projects/" + PID + "/databases/(default)/documents";
   if (url.startsWith(fsBase)) {
@@ -216,6 +223,17 @@ r = await call("admin", { token: tAdmin, body: { action: "liveCounts" } });
   ok(c.paying === 2 && c.annual === 1 && c.monthly === 1 && c.cancelling === 1 && c.everPaid >= 3 && c.trialEnded >= 1, "live counts: subscriptions"); }
 r = await call("admin", { token: t2, body: { action: "liveCounts" } });
 ok(r.status === 403, "live counts are admin only");
+
+// live visitors from GA4
+r = await call("admin", { token: tAdmin, body: { action: "liveVisitors" } });
+ok(r.status === 200 && r.body.configured === false, "live visitors say when GA4 is not set up");
+env.GA4_PROPERTY_ID = "123";
+r = await call("admin", { token: tAdmin, body: { action: "liveVisitors" } });
+ok(r.body.configured && r.body.total === 6 && r.body.solo === 4 && r.body.other === 2, "live visitors: Solo Supper and other sites");
+ok(r.body.soloPages.length === 2 && r.body.otherPages.length === 1 && r.body.otherPages[0].title === "Spine Finder", "live visitors: pages split by site");
+r = await call("admin", { token: t2, body: { action: "liveVisitors" } });
+ok(r.status === 403, "live visitors are admin only");
+delete env.GA4_PROPERTY_ID;
 
 // dashboard numbers
 r = await call("admin", { token: tAdmin, body: { action: "dashboard" } });

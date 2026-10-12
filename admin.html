@@ -166,11 +166,19 @@
 
   .overview {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     gap: 12px;
     margin-bottom: 32px;
   }
-  @media (max-width: 720px) { .overview { grid-template-columns: 1fr; } }
+  .overview.cols-3 { grid-template-columns: repeat(3, 1fr); }
+  @media (max-width: 960px) { .overview { grid-template-columns: repeat(2, 1fr); } }
+  .tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--border); margin: 0 0 22px; }
+  .tabs a { padding: 10px 14px; color: var(--ink-muted); text-decoration: none; font-weight: 600; font-size: 14px; border-bottom: 2px solid transparent; margin-bottom: -1px; }
+  .tabs a[aria-current="page"] { color: var(--ink); border-bottom-color: var(--accent); }
+  .live-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--good); margin-right: 6px; vertical-align: 1px; animation: livepulse 2s ease-in-out infinite; }
+  @keyframes livepulse { 50% { opacity: 0.35; } }
+  @media (prefers-reduced-motion: reduce) { .live-dot { animation: none; } }
+  @media (max-width: 720px) { .overview, .overview.cols-3 { grid-template-columns: 1fr; } }
   .hero-tile {
     background: var(--surface);
     border: 1px solid var(--border);
@@ -320,6 +328,12 @@
       </div>
     </header>
 
+    <nav class="tabs" aria-label="Dashboard">
+      <a href="#solo" id="tabSolo" aria-current="page">Solo Supper</a>
+      <a href="#sites" id="tabSites">Other sites</a>
+    </nav>
+
+    <div id="viewSolo">
     <div class="banner" id="waitingBanner">
       Traffic and sign-up numbers haven't synced yet. Once the GitHub Action in the meal-planner
       repo has run at least once, this page will fill in automatically &mdash; no need to reload
@@ -342,6 +356,11 @@
         <div class="value num" id="ov-returning">&mdash;</div>
         <div class="sub" id="ov-returning-sub">last 28 days</div>
       </div>
+      <div class="hero-tile">
+        <div class="label"><span class="live-dot"></span>On the site now</div>
+        <div class="value num" id="ov-now">&ndash;</div>
+        <div class="sub" id="ov-now-sub">last 30 minutes</div>
+      </div>
     </div>
 
     <section class="block" id="liveBlock">
@@ -359,6 +378,8 @@
           <div class="kpi"><div class="label">On free trial</div><div class="value num" id="lv-trial">&mdash;</div><div class="delta" id="lv-ended">&nbsp;</div></div>
           <div class="kpi"><div class="label">Free Pro</div><div class="value num" id="lv-free">&mdash;</div><div class="delta">gift codes and grants</div></div>
         </div>
+        <div class="sub-eyebrow">Being read right now</div>
+        <ul class="top-pages" id="soloNowPages"></ul>
         <div class="delta" id="lv-at" style="font-size:12px;color:var(--ink-faint);">&nbsp;</div>
       </div>
     </section>
@@ -553,10 +574,60 @@
         </div>
       </div>
     </section>
+    </div>
+
+    <div id="viewSites" hidden>
+      <div class="overview cols-3">
+        <div class="hero-tile">
+          <div class="label"><span class="live-dot"></span>On your other sites now</div>
+          <div class="value num" id="ot-now">&ndash;</div>
+          <div class="sub">last 30 minutes</div>
+        </div>
+        <div class="hero-tile">
+          <div class="label">Visitors, 7 days</div>
+          <div class="value num" id="ot-users7">&ndash;</div>
+          <div class="sub" id="ot-users30">&nbsp;</div>
+        </div>
+        <div class="hero-tile">
+          <div class="label">Page views, 30 days</div>
+          <div class="value num" id="ot-views">&ndash;</div>
+          <div class="sub" id="ot-sitecount">&nbsp;</div>
+        </div>
+      </div>
+
+      <section class="block">
+        <div class="block-head">
+          <div>
+            <div class="eyebrow">Right now</div>
+            <h2>What's being read on your other sites</h2>
+          </div>
+        </div>
+        <div class="card"><ul class="top-pages" id="otherNowPages"></ul></div>
+      </section>
+
+      <section class="block">
+        <div class="block-head">
+          <div>
+            <div class="eyebrow">Last 30 days</div>
+            <h2>Your other websites</h2>
+          </div>
+        </div>
+        <div class="card">
+          <div class="chart-wrap" id="otherUsersChart"><div class="empty-state">No traffic data yet</div></div>
+          <div class="sub-eyebrow">By website</div>
+          <div class="src-scroll"><table class="src-table" id="otherSitesTable"></table></div>
+          <div class="sub-eyebrow" style="margin-top:18px">Most-read pages</div>
+          <ul class="top-pages" id="otherTopPages"></ul>
+          <div class="sub-eyebrow" style="margin-top:18px">Where visitors come from</div>
+          <ul class="top-pages" id="otherSources"></ul>
+          <p class="fine">Everything in your Google Analytics property that isn't Solo Supper. Counts only visitors who accepted analytics cookies.</p>
+        </div>
+      </section>
+    </div>
 
     <footer>
-      Traffic and sign-up figures sync once a day from Google Analytics and Firebase via a
-      GitHub Action in the meal-planner repo. Times are UTC. This page is only visible to the
+      Traffic and usage figures sync every hour from Google Analytics and Firebase via a
+      GitHub Action in the meal-planner repo; sign-ups, subscriptions and visitors on the site now are live. Times are UTC. This page is only visible to the
       Google account it's locked to.
     </footer>
   </div>
@@ -595,6 +666,7 @@
       platform: { web: 0, android: 0, configured: false },
       siteHealth: { exceptions7d: 0 },
       social: null,
+      otherSites: null,
       engagement: {
         trackedAccounts: 0, activePlanners: 0, usingShoppingList: 0, topCooked: [], topPlanned: [], topFavourited: [],
         funnel: { signedUp: 0, tracked: 0, builtAPlan: 0, usedShoppingList: 0, confirmedACook: 0 },
@@ -614,6 +686,7 @@
    "en-dormant","en-dormant-label","topCooked","topFavourited","funnel",
    "st-dau","st-wau","st-mau","st-ratio","healthDot","healthValue","healthLabel",
    "retentionBars","retentionPct","tooltip",
+   "ov-now","ov-now-sub","ot-now","ot-users7","ot-users30","ot-views","ot-sitecount","otherNowPages","otherUsersChart","otherSitesTable","otherTopPages","otherSources","soloNowPages",
    "so-pin","so-pin-7","so-ig","so-ig-7","so-new","so-new-share","so-signups","so-pro","socialChartWrap","sourceTable","socialLanding"].forEach(function (id) {
     els[id] = document.getElementById(id);
   });
@@ -830,6 +903,61 @@
     renderRankedList(els["socialLanding"], (so.topLanding || []).map(function (p) { return { title: p.path, count: p.sessions }; }), "No social visits yet");
   }
 
+  function renderOtherSites(o) {
+    if (!o || !o.sites) {
+      ["ot-users7","ot-views"].forEach(function (id) { els[id].textContent = "–"; });
+      els["ot-users30"].textContent = o && o.configured === false ? "GA4 query failed" : "waits for the next sync";
+      els["otherSitesTable"].innerHTML = "";
+      renderRankedList(els["otherTopPages"], [], "No data yet");
+      renderRankedList(els["otherSources"], [], "No data yet");
+      return;
+    }
+    els["ot-users7"].textContent = fmtNum(o.totals.users7);
+    els["ot-users30"].textContent = fmtNum(o.totals.users30) + " in 30 days";
+    els["ot-views"].textContent = fmtNum(o.totals.views30);
+    els["ot-sitecount"].textContent = o.sites.length + (o.sites.length === 1 ? " website" : " websites");
+    lineChart(els["otherUsersChart"], (o.dailyUsers || []).map(function (d) { return { label: d.date, value: d.users }; }), { color: "var(--accent)" });
+    els["otherSitesTable"].innerHTML = "<thead><tr><th>Website</th><th>Visitors 7d</th><th>Visitors 30d</th><th>Visits 30d</th><th>Page views 30d</th></tr></thead><tbody>" +
+      o.sites.map(function (x) {
+        return "<tr><td>" + escapeHtml(x.host) + "</td><td>" + fmtNum(x.users7) + "</td><td>" + fmtNum(x.users30) + "</td><td>" + fmtNum(x.sessions30) + "</td><td>" + fmtNum(x.views30) + "</td></tr>";
+      }).join("") + "</tbody>";
+    renderRankedList(els["otherTopPages"], (o.topPages || []).map(function (p) {
+      return { title: (p.title || p.path) + "  ·  " + p.host + p.path, count: p.views };
+    }), "No page views yet");
+    renderRankedList(els["otherSources"], (o.sources || []).map(function (x) { return { title: CHANNEL_NAMES[x.channel] || x.channel, count: x.sessions }; }), "No visits yet");
+  }
+
+  function loadLiveVisitors() {
+    adminApi({ action: "liveVisitors" }).then(function (j) {
+      if (!j.configured) {
+        els["ov-now"].textContent = "–"; els["ot-now"].textContent = "–";
+        els["ov-now-sub"].textContent = "not set up yet";
+        renderRankedList(els["soloNowPages"], [], "Live visitors need one setup step: " + (j.reason || ""));
+        renderRankedList(els["otherNowPages"], [], "Live visitors need one setup step: " + (j.reason || ""));
+        return;
+      }
+      els["ov-now"].textContent = fmtNum(j.solo);
+      els["ov-now-sub"].textContent = "last 30 minutes";
+      els["ot-now"].textContent = fmtNum(j.other);
+      var rows = function (list) { return (list || []).map(function (p) { return { title: p.title.replace(/\s*[|–-]\s*Solo Supper\s*$/i, ""), count: p.users }; }); };
+      renderRankedList(els["soloNowPages"], rows(j.soloPages), "Nobody on the site in the last 30 minutes");
+      renderRankedList(els["otherNowPages"], rows(j.otherPages), "Nobody on your other sites in the last 30 minutes");
+    }).catch(function () { els["ov-now-sub"].textContent = "couldn't load"; });
+  }
+
+  // Two tabs on one page: #solo (default) and #sites.
+  function showTab() {
+    var sites = location.hash === "#sites";
+    document.getElementById("viewSolo").hidden = sites;
+    document.getElementById("viewSites").hidden = !sites;
+    document.getElementById("tabSolo").setAttribute("aria-current", sites ? "false" : "page");
+    document.getElementById("tabSites").setAttribute("aria-current", sites ? "page" : "false");
+    document.querySelector("header.top .titles h1").textContent = sites ? "Other sites" : "Solo Supper";
+    document.querySelector("header.top .titles p").textContent = sites ? "Everything in Google Analytics that isn't Solo Supper" : "Business dashboard";
+  }
+  window.addEventListener("hashchange", showTab);
+  showTab();
+
   function renderFunnel(stages) {
     if (!stages || !stages.length || !stages[0].value) {
       els["funnel"].innerHTML = '<div class="empty-state">No funnel data yet</div>';
@@ -898,6 +1026,7 @@
     renderTopPages(data.traffic.topPages);
     renderPlatformSplit(data.platform);
     renderSocial(data.social);
+    renderOtherSites(data.otherSites);
 
     var su = data.signups;
     els["ov-signups"].textContent = fmtNum(su.newLast7Days);
@@ -1011,6 +1140,7 @@
   var liveTimer = null;
   function setText(id, t) { document.getElementById(id).textContent = t; }
   function loadLive() {
+    loadLiveVisitors();
     setText("lv-at", "Updating\u2026");
     adminApi({ action: "liveCounts" }).then(function (j) {
       var c = j.counts;

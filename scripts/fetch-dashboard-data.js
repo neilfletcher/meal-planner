@@ -297,6 +297,102 @@ async function fetchSocial(analyticsClient, propertyId) {
   return out;
 }
 
+// The GA4 property is shared with Neil's other websites, so every Solo
+// Supper report is limited to Solo Supper's own addresses (the website, its
+// Cloudflare previews, and the Android app, which runs on "localhost").
+// Everything else is reported separately on the "Other sites" tab.
+const SOLO_HOSTS = '(www\\.)?solosupper\\.co\\.uk|([a-z0-9-]+\\.)?solo-supper\\.pages\\.dev|localhost';
+const SOLO_FILTER = { filter: { fieldName: 'hostName', stringFilter: { matchType: 'FULL_REGEXP', value: SOLO_HOSTS } } };
+const OTHER_FILTER = { notExpression: SOLO_FILTER };
+
+// Wraps the GA4 client so every report also carries the given host filter.
+function scoped(client, hostFilter) {
+  return {
+    runReport: (req) => client.runReport(Object.assign({}, req, {
+      dimensionFilter: req.dimensionFilter ? { andGroup: { expressions: [req.dimensionFilter, hostFilter] } } : hostFilter,
+    })),
+  };
+}
+
+async function fetchOtherSites(analyticsClient, propertyId) {
+  const property = `properties/${propertyId}`;
+  const client = scoped(analyticsClient, OTHER_FILTER);
+  const out = { configured: true, sites: [], dailyUsers: [], topPages: [], sources: [], totals: { users7: 0, users30: 0, views30: 0 } };
+  try {
+    const sites = {};
+    for (const [range, key] of [['7daysAgo', '7'], ['30daysAgo', '30']]) {
+      const [res] = await client.runReport({
+        property,
+        dateRanges: [{ startDate: range, endDate: 'today' }],
+        dimensions: [{ name: 'hostName' }],
+        metrics: [{ name: 'activeUsers' }, { name: 'sessions' }, { name: 'screenPageViews' }],
+      });
+      (res.rows || []).forEach((row) => {
+        const host = row.dimensionValues[0].value || '(not set)';
+        const site = sites[host] || (sites[host] = { host, users7: 0, users30: 0, sessions30: 0, views30: 0 });
+        site['users' + key] += Number(row.metricValues[0].value);
+        if (key === '30') { site.sessions30 += Number(row.metricValues[1].value); site.views30 += Number(row.metricValues[2].value); }
+      });
+    }
+    out.sites = Object.values(sites).sort((a, b) => b.views30 - a.views30);
+
+    // Totals across the other sites (people who visit two of them count once).
+    const totals = async (startDate) => {
+      const [res] = await client.runReport({ property, dateRanges: [{ startDate, endDate: 'today' }], metrics: [{ name: 'activeUsers' }, { name: 'screenPageViews' }] });
+      return res.rows && res.rows[0] ? res.rows[0].metricValues.map((v) => Number(v.value)) : [0, 0];
+    };
+    const t7 = await totals('7daysAgo');
+    const t30 = await totals('30daysAgo');
+    out.totals = { users7: t7[0], users30: t30[0], views30: t30[1] };
+
+    const [daily] = await client.runReport({
+      property,
+      dateRanges: [{ startDate: '30daysAgo', endDate: 'today' }],
+      dimensions: [{ name: 'date' }],
+      metrics: [{ name: 'activeUsers' }],
+      orderBys: [{ dimension: { dimensionName: 'date' } }],
+    });
+    out.dailyUsers = (daily.rows || []).map((row) => {
+      const d = row.dimensionValues[0].value;
+      return { date: `${d.slice(0, 4)}-${d.slice(4, 6)}-${d.slice(6, 8)}`, users: Number(row.metricValues[0].value) };
+    });
+
+    const [pages] = await client.runReport({
+      property,
+      dateRanges: [{ startDate: '30daysAgo', endDate: 'today' }],
+      dimensions: [{ name: 'hostName' }, { name: 'pagePath' }, { name: 'pageTitle' }],
+      metrics: [{ name: 'screenPageViews' }],
+      orderBys: [{ metric: { metricName: 'screenPageViews' }, desc: true }],
+      limit: 12,
+    });
+    out.topPages = (pages.rows || []).map((row) => ({
+      host: row.dimensionValues[0].value,
+      path: row.dimensionValues[1].value,
+      title: row.dimensionValues[2].value,
+      views: Number(row.metricValues[0].value),
+    }));
+
+    const [src] = await client.runReport({
+      property,
+      dateRanges: [{ startDate: '30daysAgo', endDate: 'today' }],
+      dimensions: [{ name: 'sessionSource' }, { name: 'sessionMedium' }],
+      metrics: [{ name: 'sessions' }],
+      limit: 1000,
+    });
+    const by = {};
+    (src.rows || []).forEach((row) => {
+      const c = channelOf(row.dimensionValues[0].value, row.dimensionValues[1].value);
+      by[c] = (by[c] || 0) + Number(row.metricValues[0].value);
+    });
+    out.sources = Object.entries(by).sort((a, b) => b[1] - a[1]).map(([channel, sessions]) => ({ channel, sessions }));
+  } catch (err) {
+    console.warn('Other-sites report failed:', err.message);
+    out.configured = false;
+    out.error = String(err.message || err).slice(0, 200);
+  }
+  return out;
+}
+
 async function fetchFirebaseSignups() {
   let users = [];
   let pageToken;
@@ -488,10 +584,13 @@ async function main() {
   });
 
   console.log('Fetching GA4 data...');
-  const ga4Data = await fetchGA4(analyticsClient, propertyId);
+  const ga4Data = await fetchGA4(scoped(analyticsClient, SOLO_FILTER), propertyId);
 
   console.log('Fetching social traffic from GA4...');
-  const social = await fetchSocial(analyticsClient, propertyId);
+  const social = await fetchSocial(scoped(analyticsClient, SOLO_FILTER), propertyId);
+
+  console.log('Fetching traffic for the other websites...');
+  const otherSites = await fetchOtherSites(analyticsClient, propertyId);
 
   console.log('Fetching Firebase sign-up data...');
   const signups = await fetchFirebaseSignups();
@@ -509,6 +608,7 @@ async function main() {
     platform: ga4Data.platform,
     siteHealth: ga4Data.siteHealth,
     social,
+    otherSites,
     engagement,
   };
 

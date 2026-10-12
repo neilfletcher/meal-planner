@@ -93,6 +93,12 @@ function amtText(i) {
   return n + (unit ? " " + unit : "");
 }
 function total(r) { return r.prep + r.cook; }
+// "Heat the oil in a wok over high heat and stir-fry..." -> "Heat the oil in a wok over high heat"
+function stepName(s) {
+  var first = String(s).split(/[.;:]\s|, (?:then|and|until|so)\b|\.$/)[0].trim();
+  if (first.length > 70) first = first.slice(0, 70).replace(/\s+\S*$/, "") + "…";
+  return first;
+}
 function isoMin(m) { return "PT" + m + "M"; }
 function pad3(id) { var n = String(id).replace(/\D/g, ""); return ("000" + n).slice(-3); }
 function uniq(a) { return a.filter(function (x, i) { return a.indexOf(x) === i; }); }
@@ -613,7 +619,7 @@ RECIPES.forEach(function (r) {
         return '<li><span class="ing-amt mono"' + (scalable ? ' data-amt="' + i.amt + '" data-unit="' + esc(i.unit || "") + '"' : "") + ">" + esc(amtText(i)) + '</span><span class="ing-name">' + esc(i.item) + "</span></li>";
       }).join("") + "</ul></div>";
   }).join("");
-  var stepsHtml = r.steps.map(function (s, k) { return '<li><span class="step-num">' + (k + 1) + '</span><p>' + esc(s) + "</p></li>"; }).join("");
+  var stepsHtml = r.steps.map(function (s, k) { return '<li id="step-' + (k + 1) + '"><span class="step-num">' + (k + 1) + '</span><p>' + esc(s) + "</p></li>"; }).join("");
   var rel4 = related(r);
   var uu = useUpFor(r);
   var uuIds = uu.picks.map(function (x) { return x.r.id; });
@@ -683,7 +689,10 @@ RECIPES.forEach(function (r) {
     recipeIngredient: r.ingredients.map(function (i) {
       return (i.amt === null || i.amt === undefined) ? (i.unit ? i.unit + " " : "") + i.item : amtText(i) + " " + i.item;
     }),
-    recipeInstructions: r.steps.map(function (s, k) { return { "@type": "HowToStep", position: k + 1, text: s }; })
+    // Each step gets a short name (its opening phrase) and a link to that step on the page.
+    recipeInstructions: r.steps.map(function (s, k) {
+      return { "@type": "HowToStep", position: k + 1, name: stepName(s), text: s, url: SITE_URL + "/recipes/" + r.slug + "/#step-" + (k + 1) };
+    })
   };
   if (r.tags.indexOf("vegan") !== -1) ld.suitableForDiet = "https://schema.org/VeganDiet";
   else if (r.tags.indexOf("vegetarian") !== -1) ld.suitableForDiet = "https://schema.org/VegetarianDiet";

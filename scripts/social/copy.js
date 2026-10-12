@@ -21,7 +21,9 @@ async function textModels(key) {
   return flash.concat(other).slice(0, 3).concat(["gemini-flash-latest"]);
 }
 var BANNED = /\b(straightforward|genuinely|honestly|leverage|seamless(ly)?|robust|delve|crucial|innovative|game[- ]changer|elevate|indulge|guilt[- ]free|healthy|skinny|weight[- ]loss|superfood|detox)\b/i;
-var AI_LINE = "Pictures made with AI.";
+// AI disclosure lives in the profile bios and in Instagram's own "AI info"
+// label (set on every post via Buffer), so captions don't repeat it.
+var AI_RE = /\s*(?:all )?(?:pictures?|images?|photos?)(?: (?:are|were))? (?:made|created|generated) (?:with|by|using) AI\.?/gi;
 
 function clean(s) {
   return String(s || "").replace(/\s*\u2014\s*/g, ", ").replace(/\s+([,.!?])/g, "$1").replace(/[ \t]+/g, " ").trim();
@@ -40,14 +42,14 @@ function tplPin(r) {
   return {
     title: clip(r.title + " for one, ready in " + mins + " minutes", 95),
     description: clip("An easy " + r.demonym + " dinner for one with " + listAnd(mainIngredients(r)) + ", on the table in " + mins +
-      " minutes. Sized for a single portion, with a shopping list that uses up what you buy. Full recipe and shopping list at solosupper.co.uk. " + AI_LINE, 480)
+      " minutes. Sized for a single portion, with a shopping list that uses up what you buy. Full recipe and shopping list at solosupper.co.uk.", 480)
   };
 }
 function tplUsePin(u, rs) {
   return {
     title: clip(u.h1.replace(/^What to cook with /, "Got ").replace(/^Recipes to use up /, "Use up ") + (/^Got /.test(u.h1.replace(/^What to cook with /, "Got ")) ? "? " : ": ") + rs.length + " dinners for one", 95),
     description: clip("Bought " + u.name + " for one recipe and wondering what to do with the rest? " + listAnd(rs.map(function (r) { return r.title; })) +
-      " all use it, each written for one. More ideas at solosupper.co.uk. " + AI_LINE, 480)
+      " all use it, each written for one. More ideas at solosupper.co.uk.", 480)
   };
 }
 function tplCarousel(r, partner, packKey, packName) {
@@ -59,13 +61,13 @@ function tplCarousel(r, partner, packKey, packName) {
     subtitle: clip(an(r.demonym).replace(/^a/, "A") + " dinner for one, on the table in " + U.minutes(r) + " minutes.", 80),
     steps: steps,
     caption: clip(r.title + ": dinner for one in " + U.minutes(r) + " minutes. It opens a pack of " + packName + ", so " + partner.title +
-      " later in the week finishes it. Full recipe and shopping list via the link in our bio. " + AI_LINE, 900) + "\n\n#dinnerforone #cookingforone #easydinner #nofoodwaste #" + r.demonym.toLowerCase().replace(/[^a-z]/g, "") + "food"
+      " later in the week finishes it. Full recipe and shopping list via the link in our bio.", 900) + "\n\n#dinnerforone #cookingforone #easydinner #nofoodwaste #" + r.demonym.toLowerCase().replace(/[^a-z]/g, "") + "food"
   };
 }
 function tplReel(r) {
   return {
     caption: clip(r.title + ", " + an(r.demonym) + " dinner for one in " + U.minutes(r) + " minutes, with " + listAnd(mainIngredients(r)) +
-      ". Full recipe and shopping list via the link in our bio. " + AI_LINE, 900) + "\n\n#dinnerforone #cookingforone #easydinner #quickdinner #" + r.demonym.toLowerCase().replace(/[^a-z]/g, "") + "food",
+      ". Full recipe and shopping list via the link in our bio.", 900) + "\n\n#dinnerforone #cookingforone #easydinner #quickdinner #" + r.demonym.toLowerCase().replace(/[^a-z]/g, "") + "food",
     pinTitle: clip(r.title + " for one, ready in " + U.minutes(r) + " minutes", 95),
     pinDescription: tplPin(r).description
   };
@@ -103,8 +105,9 @@ var RULES = [
   "House style: British English spelling. Warm, plain and practical; no hype, no exclamation marks, no emojis.",
   "Never use em dashes. Never use these words: straightforward, genuinely, honestly, leverage, seamlessly, robust, delve, crucial, innovative, elevate, indulge, guilt-free, healthy, skinny, superfood, detox.",
   "Make no health, diet or weight claims. Use only numbers given in the facts (minutes, amounts); never invent prices, calories or savings.",
-  "Every Pinterest description must end with: Full recipe and shopping list at solosupper.co.uk. " + AI_LINE,
-  "Every Instagram caption must end with the sentence: Full recipe and shopping list via the link in our bio. " + AI_LINE + " Then a blank line and 4 or 5 lower-case hashtags."
+  "Every Pinterest description must end with: Full recipe and shopping list at solosupper.co.uk.",
+  "Every Instagram caption must end with the sentence: Full recipe and shopping list via the link in our bio. Then a blank line and 4 or 5 lower-case hashtags.",
+  "Do not mention AI or how the pictures were made."
 ].join("\n");
 
 async function writeCopy(data, plan) {
@@ -146,9 +149,9 @@ async function writeCopy(data, plan) {
         if (v && (Array.isArray(v) ? v.join(" ") : v).match(BANNED)) { notes.push(g.key + "." + f + ": broke a word rule, used the template"); v = null; }
         fixed[f] = v || base[f];
       });
-      if (fixed.description && fixed.description.indexOf("solosupper.co.uk") === -1) fixed.description = clip(fixed.description, 380) + " Full recipe and shopping list at solosupper.co.uk. " + AI_LINE;
-      if (fixed.pinDescription && fixed.pinDescription.indexOf("solosupper.co.uk") === -1) fixed.pinDescription = clip(fixed.pinDescription, 380) + " Full recipe and shopping list at solosupper.co.uk. " + AI_LINE;
-      if (fixed.caption && fixed.caption.indexOf("AI") === -1) fixed.caption = fixed.caption.replace(/(\n\n#)/, " " + AI_LINE + "$1");
+      if (fixed.description && fixed.description.indexOf("solosupper.co.uk") === -1) fixed.description = clip(fixed.description, 380) + " Full recipe and shopping list at solosupper.co.uk.";
+      if (fixed.pinDescription && fixed.pinDescription.indexOf("solosupper.co.uk") === -1) fixed.pinDescription = clip(fixed.pinDescription, 380) + " Full recipe and shopping list at solosupper.co.uk.";
+      ["description", "pinDescription", "caption"].forEach(function (f) { if (fixed[f]) fixed[f] = fixed[f].replace(AI_RE, ""); });
       if (fixed.title) fixed.title = clip(fixed.title, 95);
       out[g.key] = fixed;
     });

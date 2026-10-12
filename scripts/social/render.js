@@ -111,8 +111,7 @@ async function open() {
     pin: function (r, file) {
       return shot('<img class="photo" style="height:900px" src="' + photo(r.id) + '"><div class="pad" style="padding-top:56px">' +
         '<div class="eyebrow">Dinner for one · ' + mins(r) + '</div><h1 style="font-size:' + (r.title.length > 42 ? 76 : 92) + 'px">' + titleHtml(r.title) + "</h1>" +
-        '<div class="sub" style="font-size:32px">Full recipe and shopping list at solosupper.co.uk</div></div>' + BRAND +
-        '<div class="ai" style="color:#636A63">Picture made with AI</div>', 1000, 1500, file);
+        '<div class="sub" style="font-size:32px">Full recipe and shopping list at solosupper.co.uk</div></div>' + BRAND, 1000, 1500, file);
     },
 
     // Use-up pin: the leftover, and three dinners that finish it.
@@ -120,7 +119,7 @@ async function open() {
       return shot('<div class="pad" style="padding-top:90px"><div class="eyebrow">Use it up</div><h1 style="font-size:84px">' + nb(title) + "</h1>" +
         '<div class="minis">' + rs.map(function (r) {
           return '<div class="mini"><img src="' + photo(r.id) + '"><div><div class="t">' + nb(r.title) + '</div><div class="m">' + mins(r) + " · for one</div></div></div>";
-        }).join("") + "</div></div>" + BRAND + '<div class="ai" style="color:#636A63">Pictures made with AI</div>', 1000, 1500, file);
+        }).join("") + "</div></div>" + BRAND, 1000, 1500, file);
     },
 
     // Five-slide Instagram carousel, 1080 x 1350.
@@ -148,14 +147,14 @@ async function open() {
         '<div class="note">Two dinners: ' + (left > 0 ? fmtG(packKey, left, packs) + " left" : "nothing left") + " instead of " + fmtG(packKey, aloneLeft, packs) + ".</div></div>" + BRAND + '<div class="count">4/5</div>', 1080, 1350, path.join(dir, pre + "-4.jpg")));
       files.push(await shot('<div class="pad night" style="height:100%;padding-top:170px"><div class="eyebrow" style="color:#F2B661">Plan the whole week</div><h1 style="font-size:86px">Dinners for one that share their packs.</h1>' +
         '<div class="sub" style="color:#CDD2CB">Solo Supper picks the week and adds up the shopping list, so the other half of everything gets used.</div><div class="cta">solosupper.co.uk</div></div>' +
-        '<div class="brand" style="color:#F7F5F0">' + logo("#F7F5F0") + 'Solo Supper</div><div class="ai">Pictures made with AI</div>', 1080, 1350, path.join(dir, pre + "-5.jpg")));
+        '<div class="brand" style="color:#F7F5F0">' + logo("#F7F5F0") + 'Solo Supper</div>', 1080, 1350, path.join(dir, pre + "-5.jpg")));
       return files;
     },
 
     // Transparent overlays for the vertical video, 1080 x 1920.
     overlays: async function (r, dir) {
       var top = await shot('<div class="top"><div class="eyebrow">Dinner for one · ' + mins(r) + '</div><h1 style="font-size:' + (r.title.length > 40 ? 86 : 104) + 'px">' + titleHtml(r.title) + "</h1></div>", 1080, 1920, path.join(dir, "overlay-top.png"), true);
-      var bottom = await shot('<div class="pill"><b>Full recipe + shopping list</b><span>solosupper.co.uk</span></div><div class="aiv">Made with AI</div>', 1080, 1920, path.join(dir, "overlay-bottom.png"), true);
+      var bottom = await shot('<div class="pill"><b>Full recipe + shopping list</b><span>solosupper.co.uk</span></div>', 1080, 1920, path.join(dir, "overlay-bottom.png"), true);
       return { top: top, bottom: bottom };
     }
   };

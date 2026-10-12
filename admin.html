@@ -258,6 +258,45 @@
   .legend { display: flex; gap: 16px; font-size: 12px; color: var(--ink-muted); margin: 4px 0 8px; }
   .legend i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; vertical-align: -1px; }
   .fine { font-size: 12px; color: var(--ink-faint); margin-top: 12px; }
+  .insights { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+  .insights li { font-size: 14px; line-height: 1.45; padding-left: 22px; position: relative; }
+  .insights li::before { content: ""; position: absolute; left: 4px; top: 7px; width: 8px; height: 8px; border-radius: 50%; background: var(--ink-faint); }
+  .insights li.up::before { background: var(--good); }
+  .insights li.down::before { background: var(--critical); }
+  .insights li.tip::before { background: var(--gold); }
+  .glance td:first-child a { color: var(--ink); font-weight: 600; text-decoration: none; }
+  .glance td:first-child small { display: block; color: var(--ink-faint); font-weight: 400; font-size: 11.5px; }
+  .glance td, .glance th { white-space: nowrap; padding: 7px 6px; }
+  .glance th { white-space: normal; vertical-align: bottom; }
+  .glance { font-size: 13px; }
+  .chg-up { color: var(--good); } .chg-down { color: var(--critical); } .chg-flat { color: var(--ink-faint); }
+  .spark { display: block; width: 84px; height: 24px; }
+  .site-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+  @media (max-width: 900px) { .site-grid { grid-template-columns: 1fr; } }
+  .site-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 16px 18px; box-shadow: var(--shadow); min-width: 0; }
+  .site-card h3 { font-size: 16px; font-weight: 600; margin: 0; }
+  .site-card h3 a { color: var(--ink); text-decoration: none; }
+  .site-card .path { font-size: 12px; color: var(--ink-faint); margin-top: 2px; overflow-wrap: anywhere; }
+  .mini-kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 12px 0 8px; }
+  .mini-kpis div { font-size: 11.5px; color: var(--ink-muted); }
+  .mini-kpis b { display: block; font-size: 17px; color: var(--ink); font-weight: 600; margin-top: 2px; font-variant-numeric: tabular-nums; }
+  .site-card .spark { width: 100%; height: 44px; margin: 4px 0 6px; }
+  .split-bar { display: flex; height: 8px; border-radius: 4px; overflow: hidden; background: var(--surface-2); margin: 4px 0 2px; }
+  .split-legend { font-size: 11.5px; color: var(--ink-muted); }
+  .facts { display: grid; grid-template-columns: 1fr 1fr; gap: 2px 22px; margin-top: 6px; }
+  @media (max-width: 480px) { .facts { grid-template-columns: 1fr; } }
+  .facts > div { min-width: 0; }
+  .facts h4 { font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-faint); margin: 10px 0 3px; font-weight: 600; }
+  .facts .row { display: flex; justify-content: space-between; gap: 10px; font-size: 12.5px; line-height: 1.6; }
+  .facts .row span:first-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .facts .row span:last-child { color: var(--ink-muted); font-variant-numeric: tabular-nums; }
+  .quiet { color: var(--ink-faint); font-size: 13px; margin-top: 8px; }
+  .heat-scroll { overflow-x: auto; }
+  .heat { display: grid; grid-template-columns: 34px repeat(24, minmax(14px, 1fr)); gap: 2px; font-size: 10px; color: var(--ink-faint); min-width: 420px; }
+  .heat .c { height: 16px; border-radius: 3px; background: var(--accent); }
+  .heat .h { text-align: center; }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  @media (max-width: 720px) { .two-col { grid-template-columns: 1fr; gap: 0; } .mini-kpis { grid-template-columns: repeat(2, 1fr); } }
   .kpi-row.cols-5 { grid-template-columns: repeat(5, 1fr); }
   @media (max-width: 720px) { .kpi-row.cols-5 { grid-template-columns: repeat(2, 1fr); } }
 
@@ -577,50 +616,61 @@
     </div>
 
     <div id="viewSites" hidden>
-      <div class="overview cols-3">
+      <div class="overview">
         <div class="hero-tile">
-          <div class="label"><span class="live-dot"></span>On your other sites now</div>
+          <div class="label"><span class="live-dot"></span>On your sites now</div>
           <div class="value num" id="ot-now">&ndash;</div>
           <div class="sub">last 30 minutes</div>
         </div>
         <div class="hero-tile">
           <div class="label">Visitors, 7 days</div>
           <div class="value num" id="ot-users7">&ndash;</div>
-          <div class="sub" id="ot-users30">&nbsp;</div>
+          <div class="sub" id="ot-users7-sub">&nbsp;</div>
         </div>
         <div class="hero-tile">
           <div class="label">Page views, 30 days</div>
           <div class="value num" id="ot-views">&ndash;</div>
-          <div class="sub" id="ot-sitecount">&nbsp;</div>
+          <div class="sub" id="ot-users30">&nbsp;</div>
+        </div>
+        <div class="hero-tile">
+          <div class="label">Sites with visitors</div>
+          <div class="value num" id="ot-active">&ndash;</div>
+          <div class="sub">in the last 7 days</div>
         </div>
       </div>
 
       <section class="block">
-        <div class="block-head">
-          <div>
-            <div class="eyebrow">Right now</div>
-            <h2>What's being read on your other sites</h2>
-          </div>
-        </div>
-        <div class="card"><ul class="top-pages" id="otherNowPages"></ul></div>
+        <div class="block-head"><div><div class="eyebrow">Worth knowing</div><h2>Highlights</h2></div></div>
+        <div class="card"><ul class="insights" id="otInsights"><li>Waiting for the next sync&hellip;</li></ul></div>
       </section>
 
       <section class="block">
-        <div class="block-head">
-          <div>
-            <div class="eyebrow">Last 30 days</div>
-            <h2>Your other websites</h2>
-          </div>
-        </div>
+        <div class="block-head"><div><div class="eyebrow">Every site</div><h2>At a glance</h2></div></div>
+        <div class="card"><div class="src-scroll"><table class="src-table glance" id="otGlance"></table></div>
+          <p class="fine">Change compares the last 7 days with the 7 days before. Time is engaged time per visit. Returning and phone shares are for the last 30 days.</p></div>
+      </section>
+
+      <section class="block">
+        <div class="block-head"><div><div class="eyebrow">Last 30 days</div><h2>Site by site</h2></div></div>
+        <div class="site-grid" id="otSites"></div>
+      </section>
+
+      <section class="block">
+        <div class="block-head"><div><div class="eyebrow">Across all sites</div><h2>When, where from and where to</h2></div></div>
         <div class="card">
+          <div class="sub-eyebrow" style="margin-top:0">Visitors per day, last 30 days</div>
           <div class="chart-wrap" id="otherUsersChart"><div class="empty-state">No traffic data yet</div></div>
-          <div class="sub-eyebrow">By website</div>
-          <div class="src-scroll"><table class="src-table" id="otherSitesTable"></table></div>
-          <div class="sub-eyebrow" style="margin-top:18px">Most-read pages</div>
-          <ul class="top-pages" id="otherTopPages"></ul>
-          <div class="sub-eyebrow" style="margin-top:18px">Where visitors come from</div>
-          <ul class="top-pages" id="otherSources"></ul>
-          <p class="fine">Everything in your Google Analytics property that isn't Solo Supper. Counts only visitors who accepted analytics cookies.</p>
+          <div class="sub-eyebrow">When people visit (last 30 days, darker is busier)</div>
+          <div class="heat-scroll"><div class="heat" id="otHeat"></div></div>
+          <div class="two-col">
+            <div><div class="sub-eyebrow">How they find you</div><ul class="top-pages" id="otherSources"></ul></div>
+            <div><div class="sub-eyebrow">Countries</div><ul class="top-pages" id="otCountries"></ul></div>
+          </div>
+          <div class="sub-eyebrow">Links clicked to leave your sites</div>
+          <ul class="top-pages" id="otOutbound"></ul>
+          <div class="sub-eyebrow">Being read right now</div>
+          <ul class="top-pages" id="otherNowPages"></ul>
+          <p class="fine">Everything in your Google Analytics property that isn't Solo Supper. Each project folder on neilfletcher.github.io counts as its own site. Only visitors who accept analytics cookies are counted.</p>
         </div>
       </section>
     </div>
@@ -686,7 +736,7 @@
    "en-dormant","en-dormant-label","topCooked","topFavourited","funnel",
    "st-dau","st-wau","st-mau","st-ratio","healthDot","healthValue","healthLabel",
    "retentionBars","retentionPct","tooltip",
-   "ov-now","ov-now-sub","ot-now","ot-users7","ot-users30","ot-views","ot-sitecount","otherNowPages","otherUsersChart","otherSitesTable","otherTopPages","otherSources","soloNowPages",
+   "ov-now","ov-now-sub","ot-now","ot-users7","ot-users30","ot-views","otherNowPages","otherUsersChart","otherSources","soloNowPages",
    "so-pin","so-pin-7","so-ig","so-ig-7","so-new","so-new-share","so-signups","so-pro","socialChartWrap","sourceTable","socialLanding"].forEach(function (id) {
     els[id] = document.getElementById(id);
   });
@@ -903,28 +953,142 @@
     renderRankedList(els["socialLanding"], (so.topLanding || []).map(function (p) { return { title: p.path, count: p.sessions }; }), "No social visits yet");
   }
 
+  // ---------------------------------------------------------- Other sites tab
+  var DAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+  function byId(id) { return document.getElementById(id); }
+  function pct(a, b) { return b ? Math.round(a / b * 100) : 0; }
+  function shortDate(iso) { return new Date(iso + "T12:00:00Z").toLocaleDateString("en-GB", { day: "numeric", month: "short" }); }
+  function change(now, before) {
+    if (!before && !now) return { text: "–", cls: "chg-flat", pct: 0 };
+    if (!before) return { text: "new", cls: "chg-up", pct: 100 };
+    var p = Math.round((now - before) / before * 100);
+    return { text: (p > 0 ? "▲ " : p < 0 ? "▼ " : "") + Math.abs(p) + "%", cls: p > 0 ? "chg-up" : p < 0 ? "chg-down" : "chg-flat", pct: p };
+  }
+  function spark(values, cls) {
+    var w = 110, h = 26, max = Math.max.apply(null, (values || []).concat([1])), n = (values || []).length;
+    if (!n) return "";
+    var pts = values.map(function (v, i) { return (n === 1 ? 0 : i / (n - 1) * w).toFixed(1) + "," + (h - 2 - v / max * (h - 4)).toFixed(1); }).join(" ");
+    return '<svg class="' + (cls || "spark") + '" viewBox="0 0 ' + w + " " + h + '" preserveAspectRatio="none" aria-hidden="true"><polyline points="0,' + h + " " + pts + " " + w + "," + h +
+      '" fill="var(--accent-soft)" stroke="none"></polyline><polyline points="' + pts + '" fill="none" stroke="var(--accent)" stroke-width="1.6" vector-effect="non-scaling-stroke"></polyline></svg>';
+  }
+  function avgTime(s) { return s.sessions30 ? fmtDuration(Math.round(s.engagementSec30 / s.sessions30)) : "–"; }
+  function phoneShare(s) { var d = s.devices || {}, t = (d.mobile || 0) + (d.desktop || 0) + (d.tablet || 0); return t ? pct(d.mobile || 0, t) : null; }
+  function retShare(s) { var r = s.returning || {}, t = (r.new || 0) + (r.returning || 0); return t ? pct(r.returning || 0, t) : null; }
+  function sourceName(x) { return CHANNEL_NAMES[x] || x; }
+  function siteLink(s) { return '<a href="' + escapeHtml(s.url) + '" target="_blank" rel="noopener">' + escapeHtml(s.name) + "</a>"; }
+  function sitePath(s) { return s.key.replace(/^neilfletcher\.github\.io/, "") || "/"; }
+
+  function otherInsights(o) {
+    var out = [], sites = o.sites || [];
+    var t = change(o.totals.users7, o.totals.usersPrev7);
+    if (o.totals.usersPrev7 || o.totals.users7) out.push({ cls: t.pct > 0 ? "up" : t.pct < 0 ? "down" : "", text: "Across all your sites: " + fmtNum(o.totals.users7) + " visitors in the last 7 days" + (o.totals.usersPrev7 ? ", " + (t.pct >= 0 ? "up " : "down ") + Math.abs(t.pct) + "% on the week before." : ".") });
+    sites.filter(function (s) { return s.users7 + s.usersPrev7 >= 4; }).forEach(function (s) {
+      var c = change(s.users7, s.usersPrev7);
+      if (c.pct >= 30) out.push({ cls: "up", text: "<b>" + escapeHtml(s.name) + "</b> is growing: " + s.users7 + " visitors this week against " + s.usersPrev7 + " the week before." });
+      else if (c.pct <= -30) out.push({ cls: "down", text: "<b>" + escapeHtml(s.name) + "</b> is quieter: " + s.users7 + " visitors this week against " + s.usersPrev7 + " the week before." });
+    });
+    var top = sites.slice().sort(function (a, b) { return b.users30 - a.users30; })[0];
+    if (top && top.users30) out.push({ cls: "", text: "<b>" + escapeHtml(top.name) + "</b> is your busiest site, with " + pct(top.users30, sites.reduce(function (a, s) { return a + s.users30; }, 0)) + "% of visitors across your sites this month." });
+    var stick = sites.filter(function (s) { return s.sessions30 >= 5; }).sort(function (a, b) { return b.engagementSec30 / b.sessions30 - a.engagementSec30 / a.sessions30; })[0];
+    if (stick) out.push({ cls: "", text: "People spend longest on <b>" + escapeHtml(stick.name) + "</b>: " + avgTime(stick) + " per visit on average." });
+    sites.forEach(function (s) {
+      var r = retShare(s), m = phoneShare(s);
+      if (s.users30 >= 5 && r !== null && r >= 50) out.push({ cls: "up", text: "<b>" + escapeHtml(s.name) + "</b> keeps its audience: " + r + "% of its visitors this month had been before." });
+      if (s.users30 >= 5 && m !== null && m >= 70) out.push({ cls: "tip", text: "<b>" + escapeHtml(s.name) + "</b> is mostly used on phones (" + m + "%), so test changes on a small screen first." });
+      var search = (s.sources || []).filter(function (x) { return x.source === "search"; })[0], all = (s.sources || []).reduce(function (a, x) { return a + x.sessions; }, 0);
+      if (search && all >= 5 && search.sessions / all >= 0.4) out.push({ cls: "up", text: "<b>" + escapeHtml(s.name) + "</b> gets " + pct(search.sessions, all) + "% of its visits from search engines." });
+      var home = (s.referrers || []).filter(function (x) { return x.from === "neilfletcher.github.io/"; })[0];
+      if (home && s.views30 >= 5 && home.views / s.views30 >= 0.3) out.push({ cls: "", text: "<b>" + escapeHtml(s.name) + "</b>: about " + pct(home.views, s.views30) + "% of its page views start from your build log homepage." });
+    });
+    var now = Date.now();
+    sites.forEach(function (s) {
+      if (!s.lastSeen) out.push({ cls: "down", text: "<b>" + escapeHtml(s.name) + "</b> has had no visitors in the last 90 days." });
+      else if ((now - Date.parse(s.lastSeen + "T12:00:00Z")) / 86400000 > 14) out.push({ cls: "down", text: "<b>" + escapeHtml(s.name) + "</b> has been quiet since " + shortDate(s.lastSeen) + "." });
+    });
+    if (o.heatmap && o.heatmap.length) {
+      var best = o.heatmap.slice().sort(function (a, b) { return b.users - a.users; })[0];
+      var dayTot = [0, 0, 0, 0, 0, 0, 0]; o.heatmap.forEach(function (c) { dayTot[c.dow] += c.users; });
+      var bd = dayTot.indexOf(Math.max.apply(null, dayTot));
+      out.push({ cls: "", text: "Busiest day is " + DAYS[bd] + "; the busiest hour is " + DAYS[best.dow] + "s from " + String(best.hour).padStart(2, "0") + ":00." });
+    }
+    var amazon = (o.outbound || []).filter(function (x) { return /amazon\./i.test(x.url); }).reduce(function (a, x) { return a + x.clicks; }, 0);
+    if (amazon) out.push({ cls: "up", text: amazon + " click" + (amazon === 1 ? "" : "s") + " through to your books on Amazon this month." });
+    var yt = (o.outbound || []).filter(function (x) { return /youtube\.com|youtu\.be/i.test(x.url); }).reduce(function (a, x) { return a + x.clicks; }, 0);
+    if (yt) out.push({ cls: "up", text: yt + " click" + (yt === 1 ? "" : "s") + " through to your YouTube channel this month." });
+    return out;
+  }
+
   function renderOtherSites(o) {
     if (!o || !o.sites) {
-      ["ot-users7","ot-views"].forEach(function (id) { els[id].textContent = "–"; });
-      els["ot-users30"].textContent = o && o.configured === false ? "GA4 query failed" : "waits for the next sync";
-      els["otherSitesTable"].innerHTML = "";
-      renderRankedList(els["otherTopPages"], [], "No data yet");
-      renderRankedList(els["otherSources"], [], "No data yet");
+      byId("ot-users7").textContent = "–"; byId("ot-views").textContent = "–"; byId("ot-active").textContent = "–";
+      byId("ot-users7-sub").textContent = o && o.configured === false ? "GA4 query failed" : "waits for the next sync";
+      byId("otInsights").innerHTML = "<li>" + (o && o.error ? "Google Analytics returned an error: " + escapeHtml(o.error) : "Waiting for the next sync.") + "</li>";
       return;
     }
-    els["ot-users7"].textContent = fmtNum(o.totals.users7);
-    els["ot-users30"].textContent = fmtNum(o.totals.users30) + " in 30 days";
-    els["ot-views"].textContent = fmtNum(o.totals.views30);
-    els["ot-sitecount"].textContent = o.sites.length + (o.sites.length === 1 ? " website" : " websites");
-    lineChart(els["otherUsersChart"], (o.dailyUsers || []).map(function (d) { return { label: d.date, value: d.users }; }), { color: "var(--accent)" });
-    els["otherSitesTable"].innerHTML = "<thead><tr><th>Website</th><th>Visitors 7d</th><th>Visitors 30d</th><th>Visits 30d</th><th>Page views 30d</th></tr></thead><tbody>" +
-      o.sites.map(function (x) {
-        return "<tr><td>" + escapeHtml(x.host) + "</td><td>" + fmtNum(x.users7) + "</td><td>" + fmtNum(x.users30) + "</td><td>" + fmtNum(x.sessions30) + "</td><td>" + fmtNum(x.views30) + "</td></tr>";
+    var sites = o.sites, t = change(o.totals.users7, o.totals.usersPrev7);
+    var names = {};
+    sites.forEach(function (s) { names[s.name] = (names[s.name] || 0) + 1; });
+    sites.forEach(function (s) { if (names[s.name] > 1 && !/\(/.test(s.name)) s.name += " (" + sitePath(s).replace(/^\/|\/$/g, "") + ")"; });
+    byId("ot-users7").textContent = fmtNum(o.totals.users7);
+    byId("ot-users7-sub").innerHTML = '<span class="' + t.cls + '">' + t.text + "</span> on the week before";
+    byId("ot-views").textContent = fmtNum(o.totals.views30);
+    byId("ot-users30").textContent = fmtNum(o.totals.users30) + " visitors in 30 days";
+    byId("ot-active").textContent = sites.filter(function (s) { return s.users7 > 0; }).length + " of " + sites.length;
+
+    var ins = otherInsights(o);
+    byId("otInsights").innerHTML = ins.length ? ins.slice(0, 12).map(function (x) { return '<li class="' + x.cls + '">' + x.text + "</li>"; }).join("") : "<li>Nothing stands out yet. Highlights appear once there are a few days of visits.</li>";
+
+    byId("otGlance").innerHTML = "<thead><tr><th>Site</th><th>Visitors 7d</th><th>Change</th><th>Visitors 30d</th><th>Last 30 days</th><th>Time per visit</th><th>Returning</th><th>On phones</th><th>Top source</th><th>Last visit</th></tr></thead><tbody>" +
+      sites.map(function (s) {
+        var c = change(s.users7, s.usersPrev7), r = retShare(s), m = phoneShare(s), src = (s.sources || [])[0];
+        return "<tr><td>" + siteLink(s) + "<small>" + escapeHtml(sitePath(s)) + "</small></td><td>" + fmtNum(s.users7) + '</td><td class="' + c.cls + '">' + c.text + "</td><td>" + fmtNum(s.users30) +
+          "</td><td>" + spark(s.daily) + "</td><td>" + avgTime(s) + "</td><td>" + (r === null ? "–" : r + "%") + "</td><td>" + (m === null ? "–" : m + "%") + "</td><td>" + (src ? escapeHtml(sourceName(src.source)) : "–") +
+          "</td><td>" + (s.lastSeen ? shortDate(s.lastSeen) : "none in 90d") + "</td></tr>";
       }).join("") + "</tbody>";
-    renderRankedList(els["otherTopPages"], (o.topPages || []).map(function (p) {
-      return { title: (p.title || p.path) + "  ·  " + p.host + p.path, count: p.views };
-    }), "No page views yet");
-    renderRankedList(els["otherSources"], (o.sources || []).map(function (x) { return { title: CHANNEL_NAMES[x.channel] || x.channel, count: x.sessions }; }), "No visits yet");
+
+    byId("otSites").innerHTML = sites.map(function (s) {
+      var c = change(s.users7, s.usersPrev7), d = s.devices || {}, dt = (d.mobile || 0) + (d.desktop || 0) + (d.tablet || 0);
+      var html = '<article class="site-card"><h3>' + siteLink(s) + '</h3><div class="path">' + escapeHtml(s.key) + "</div>" +
+        '<div class="mini-kpis"><div>Visitors 7d<b>' + fmtNum(s.users7) + ' <small class="' + c.cls + '" style="font-size:11px">' + c.text + "</small></b></div><div>Visitors 30d<b>" + fmtNum(s.users30) +
+        "</b></div><div>Page views 30d<b>" + fmtNum(s.views30) + "</b></div><div>Time per visit<b>" + avgTime(s) + "</b></div></div>" + spark(s.daily, "spark");
+      if (!s.users30) return html + '<p class="quiet">' + (s.lastSeen ? "No visitors in the last 30 days; last seen " + shortDate(s.lastSeen) + "." : "No visitors in the last 90 days.") + "</p></article>";
+      if (dt) html += '<div class="split-bar">' + [["mobile", "var(--accent)"], ["desktop", "var(--gold)"], ["tablet", "var(--ink-faint)"]].map(function (k) {
+        return d[k[0]] ? '<div style="flex:' + d[k[0]] + ";background:" + k[1] + '"></div>' : "";
+      }).join("") + '</div><div class="split-legend">' + ["mobile", "desktop", "tablet"].filter(function (k) { return d[k]; }).map(function (k) { return (k === "mobile" ? "Phones" : k === "desktop" ? "Computers" : "Tablets") + " " + pct(d[k], dt) + "%"; }).join(" · ") +
+        (retShare(s) !== null ? " · Returning " + retShare(s) + "%" : "") + "</div>";
+      var rows = function (title, list, label, value) {
+        return list && list.length ? "<div><h4>" + title + "</h4>" + list.slice(0, 4).map(function (x) { return '<div class="row"><span title="' + escapeHtml(label(x)) + '">' + escapeHtml(label(x)) + "</span><span>" + value(x) + "</span></div>"; }).join("") + "</div>" : "";
+      };
+      html += '<div class="facts">' +
+        rows("Most-read pages", s.pages, function (x) { return (x.title && x.title !== "(not set)" ? x.title.replace(/^Neil Fletcher:\s*/i, "") : x.path); }, function (x) { return fmtNum(x.views); }) +
+        rows("How they find it", s.sources, function (x) { return sourceName(x.source); }, function (x) { return fmtNum(x.sessions); }) +
+        rows("Arrives from", s.referrers, function (x) { return x.from === "neilfletcher.github.io/" ? "Your build log homepage" : x.from === "(direct)" ? "Typed in or bookmarked" : x.from; }, function (x) { return fmtNum(x.views); }) +
+        rows("Countries", s.countries, function (x) { return x.country; }, function (x) { return fmtNum(x.users); }) + "</div>";
+      return html + "</article>";
+    }).join("");
+
+    lineChart(byId("otherUsersChart"), (o.dailyUsers || []).map(function (x) { return { label: x.date, value: x.users }; }), { color: "var(--accent)" });
+
+    // Heatmap: Monday first, 24 hours.
+    var grid = {}, max = 1;
+    (o.heatmap || []).forEach(function (c) { grid[c.dow + "-" + c.hour] = c.users; max = Math.max(max, c.users); });
+    var h = '<div></div>' + Array.apply(null, Array(24)).map(function (_, i) { return '<div class="h">' + (i % 3 === 0 ? String(i).padStart(2, "0") : "") + "</div>"; }).join("");
+    [1, 2, 3, 4, 5, 6, 0].forEach(function (dow) {
+      h += "<div>" + DAYS[dow].slice(0, 3) + "</div>";
+      for (var hr = 0; hr < 24; hr++) {
+        var v = grid[dow + "-" + hr] || 0;
+        h += '<div class="c" style="opacity:' + (v ? (0.15 + 0.85 * v / max).toFixed(2) : 0.05) + '" title="' + DAYS[dow] + " " + String(hr).padStart(2, "0") + ":00, " + v + " visitor" + (v === 1 ? "" : "s") + '"></div>';
+      }
+    });
+    byId("otHeat").innerHTML = o.heatmap && o.heatmap.length ? h : '<div class="empty-state" style="grid-column:1/-1">No visits yet</div>';
+
+    renderRankedList(byId("otherSources"), (o.sources || []).map(function (x) { return { title: sourceName(x.channel), count: x.sessions }; }), "No visits yet");
+    renderRankedList(byId("otCountries"), (o.countries || []).map(function (x) { return { title: x.country, count: x.users }; }), "No visits yet");
+    renderRankedList(byId("otOutbound"), (o.outbound || []).map(function (x) {
+      var label = x.url;
+      try { var u = new URL(x.url); label = u.hostname.replace(/^www\./, "") + (u.pathname.length > 1 ? u.pathname : ""); } catch (e) { /* keep */ }
+      return { title: x.text && x.text !== "(not set)" ? x.text + "  ·  " + label : label, count: x.clicks };
+    }), "No outbound clicks recorded yet (GA4 enhanced measurement records these automatically)");
   }
 
   function loadLiveVisitors() {

@@ -314,77 +314,167 @@ function scoped(client, hostFilter) {
   };
 }
 
+// ---------------------------------------------------------------- other sites
+// Everything in the GA4 property that isn't Solo Supper. Neil's GitHub Pages
+// projects all live on one host (neilfletcher.github.io/<project>/), so each
+// project folder counts as its own site, and the homepage (the build log) is
+// one more. Any other host counts as a site of its own.
+const HOME_HOST = 'neilfletcher.github.io';
+
+function siteKeyOf(host, path) {
+  host = host || '(not set)';
+  if (host !== HOME_HOST) return host + '/';
+  const seg = String(path || '/').split('/')[1] || '';
+  if (!seg || /\.html?$/i.test(seg)) return host + '/';
+  return host + '/' + seg + '/';
+}
+
+function reEscape(s) { return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+
+function siteFilter(key) {
+  const host = key.slice(0, key.indexOf('/'));
+  const seg = key.slice(key.indexOf('/') + 1).replace(/\/$/, '');
+  const byHost = { filter: { fieldName: 'hostName', stringFilter: { matchType: 'EXACT', value: host } } };
+  if (host !== HOME_HOST) return byHost;
+  const path = seg ? '/' + reEscape(seg) + '(/.*)?' : '/|/[^/]+\\.html?';
+  return { andGroup: { expressions: [byHost, { filter: { fieldName: 'pagePath', stringFilter: { matchType: 'FULL_REGEXP', value: path, caseSensitive: false } } }] } };
+}
+
+function rowsOf(res) { return (res && res.rows) || []; }
+function num(v) { return Number(v && v.value) || 0; }
+
 async function fetchOtherSites(analyticsClient, propertyId) {
   const property = `properties/${propertyId}`;
-  const client = scoped(analyticsClient, OTHER_FILTER);
-  const out = { configured: true, sites: [], dailyUsers: [], topPages: [], sources: [], totals: { users7: 0, users30: 0, views30: 0 } };
+  const all = scoped(analyticsClient, OTHER_FILTER);
+  const out = { configured: true, sites: [], dailyUsers: [], topPages: [], sources: [], heatmap: [], outbound: [], countries: [],
+    totals: { users7: 0, usersPrev7: 0, users30: 0, views30: 0 } };
+  const run = async (client, req) => (await client.runReport(Object.assign({ property }, req)))[0];
+  const R3 = [{ startDate: '6daysAgo', endDate: 'today', name: 'd7' }, { startDate: '13daysAgo', endDate: '7daysAgo', name: 'p7' }, { startDate: '29daysAgo', endDate: 'today', name: 'd30' }];
+  const D30 = [{ startDate: '29daysAgo', endDate: 'today' }];
+
   try {
-    const sites = {};
-    for (const [range, key] of [['7daysAgo', '7'], ['30daysAgo', '30']]) {
-      const [res] = await client.runReport({
-        property,
-        dateRanges: [{ startDate: range, endDate: 'today' }],
-        dimensions: [{ name: 'hostName' }],
-        metrics: [{ name: 'activeUsers' }, { name: 'sessions' }, { name: 'screenPageViews' }],
-      });
-      (res.rows || []).forEach((row) => {
-        const host = row.dimensionValues[0].value || '(not set)';
-        const site = sites[host] || (sites[host] = { host, users7: 0, users30: 0, sessions30: 0, views30: 0 });
-        site['users' + key] += Number(row.metricValues[0].value);
-        if (key === '30') { site.sessions30 += Number(row.metricValues[1].value); site.views30 += Number(row.metricValues[2].value); }
-      });
-    }
-    out.sites = Object.values(sites).sort((a, b) => b.views30 - a.views30);
-
-    // Totals across the other sites (people who visit two of them count once).
-    const totals = async (startDate) => {
-      const [res] = await client.runReport({ property, dateRanges: [{ startDate, endDate: 'today' }], metrics: [{ name: 'activeUsers' }, { name: 'screenPageViews' }] });
-      return res.rows && res.rows[0] ? res.rows[0].metricValues.map((v) => Number(v.value)) : [0, 0];
-    };
-    const t7 = await totals('7daysAgo');
-    const t30 = await totals('30daysAgo');
-    out.totals = { users7: t7[0], users30: t30[0], views30: t30[1] };
-
-    const [daily] = await client.runReport({
-      property,
-      dateRanges: [{ startDate: '30daysAgo', endDate: 'today' }],
-      dimensions: [{ name: 'date' }],
-      metrics: [{ name: 'activeUsers' }],
-      orderBys: [{ dimension: { dimensionName: 'date' } }],
+    // Totals across every other site.
+    const tot = await run(all, { dateRanges: R3, metrics: [{ name: 'activeUsers' }, { name: 'screenPageViews' }] });
+    rowsOf(tot).forEach((row) => {
+      const k = row.dimensionValues[0].value;
+      if (k === 'd7') out.totals.users7 = num(row.metricValues[0]);
+      if (k === 'p7') out.totals.usersPrev7 = num(row.metricValues[0]);
+      if (k === 'd30') { out.totals.users30 = num(row.metricValues[0]); out.totals.views30 = num(row.metricValues[1]); }
     });
-    out.dailyUsers = (daily.rows || []).map((row) => {
+
+    const daily = await run(all, { dateRanges: D30, dimensions: [{ name: 'date' }], metrics: [{ name: 'activeUsers' }], orderBys: [{ dimension: { dimensionName: 'date' } }] });
+    out.dailyUsers = rowsOf(daily).map((row) => {
       const d = row.dimensionValues[0].value;
-      return { date: `${d.slice(0, 4)}-${d.slice(4, 6)}-${d.slice(6, 8)}`, users: Number(row.metricValues[0].value) };
+      return { date: `${d.slice(0, 4)}-${d.slice(4, 6)}-${d.slice(6, 8)}`, users: num(row.metricValues[0]) };
     });
 
-    const [pages] = await client.runReport({
-      property,
-      dateRanges: [{ startDate: '30daysAgo', endDate: 'today' }],
+    // Find the sites: every host and project folder with page views in the last 90 days.
+    const pages = await run(all, {
+      dateRanges: [{ startDate: '89daysAgo', endDate: 'today' }],
       dimensions: [{ name: 'hostName' }, { name: 'pagePath' }, { name: 'pageTitle' }],
       metrics: [{ name: 'screenPageViews' }],
       orderBys: [{ metric: { metricName: 'screenPageViews' }, desc: true }],
-      limit: 12,
+      limit: 2000,
     });
-    out.topPages = (pages.rows || []).map((row) => ({
-      host: row.dimensionValues[0].value,
-      path: row.dimensionValues[1].value,
-      title: row.dimensionValues[2].value,
-      views: Number(row.metricValues[0].value),
-    }));
+    const found = {};
+    rowsOf(pages).forEach((row) => {
+      const host = row.dimensionValues[0].value, path = row.dimensionValues[1].value, title = row.dimensionValues[2].value;
+      const key = siteKeyOf(host, path);
+      const s = found[key] || (found[key] = { key, views90: 0, title: '' });
+      s.views90 += num(row.metricValues[0]);
+      if (!s.title && title && title !== '(not set)') s.title = title;
+    });
 
-    const [src] = await client.runReport({
-      property,
-      dateRanges: [{ startDate: '30daysAgo', endDate: 'today' }],
-      dimensions: [{ name: 'sessionSource' }, { name: 'sessionMedium' }],
-      metrics: [{ name: 'sessions' }],
-      limit: 1000,
-    });
+    const keys = Object.values(found).sort((a, b) => b.views90 - a.views90).slice(0, 15);
+    for (const f of keys) {
+      const client = scoped(analyticsClient, siteFilter(f.key));
+      const s = { key: f.key, url: 'https://' + f.key, name: f.key === HOME_HOST + '/' ? 'Build log (homepage)' : (f.title || f.key).replace(/^Neil Fletcher:\s*/i, ''),
+        views90: f.views90, users7: 0, usersPrev7: 0, users30: 0, newUsers30: 0, sessions30: 0, views30: 0, engagedSessions30: 0, engagementSec30: 0,
+        daily: [], devices: {}, sources: [], countries: [], returning: { new: 0, returning: 0 }, pages: [], referrers: [], lastSeen: null };
+
+      const t = await run(client, { dateRanges: R3, metrics: ['activeUsers', 'newUsers', 'sessions', 'screenPageViews', 'engagedSessions', 'userEngagementDuration'].map((name) => ({ name })) });
+      rowsOf(t).forEach((row) => {
+        const k = row.dimensionValues[0].value, m = row.metricValues.map(num);
+        if (k === 'd7') s.users7 = m[0];
+        if (k === 'p7') s.usersPrev7 = m[0];
+        if (k === 'd30') Object.assign(s, { users30: m[0], newUsers30: m[1], sessions30: m[2], views30: m[3], engagedSessions30: m[4], engagementSec30: m[5] });
+      });
+
+      const d = await run(client, { dateRanges: [{ startDate: '89daysAgo', endDate: 'today' }], dimensions: [{ name: 'date' }], metrics: [{ name: 'activeUsers' }], orderBys: [{ dimension: { dimensionName: 'date' } }] });
+      const byDay = {};
+      rowsOf(d).forEach((row) => { const v = row.dimensionValues[0].value; byDay[`${v.slice(0, 4)}-${v.slice(4, 6)}-${v.slice(6, 8)}`] = num(row.metricValues[0]); });
+      const seen = Object.keys(byDay).filter((k) => byDay[k] > 0).sort();
+      s.lastSeen = seen.length ? seen[seen.length - 1] : null;
+      for (let i = 29; i >= 0; i--) {
+        const day = new Date(Date.now() - i * DAY_MS).toISOString().slice(0, 10);
+        s.daily.push(byDay[day] || 0);
+      }
+
+      if (s.users30 > 0) {
+        const dev = await run(client, { dateRanges: D30, dimensions: [{ name: 'deviceCategory' }], metrics: [{ name: 'activeUsers' }] });
+        rowsOf(dev).forEach((row) => { s.devices[row.dimensionValues[0].value] = num(row.metricValues[0]); });
+
+        const src = await run(client, { dateRanges: D30, dimensions: [{ name: 'sessionSource' }, { name: 'sessionMedium' }], metrics: [{ name: 'sessions' }], limit: 500 });
+        const bySrc = {};
+        rowsOf(src).forEach((row) => {
+          const c = channelOf(row.dimensionValues[0].value, row.dimensionValues[1].value);
+          const label = c === 'other' ? row.dimensionValues[0].value : c;
+          bySrc[label] = (bySrc[label] || 0) + num(row.metricValues[0]);
+        });
+        s.sources = Object.entries(bySrc).sort((a, b) => b[1] - a[1]).slice(0, 5).map(([source, sessions]) => ({ source, sessions }));
+
+        const ctry = await run(client, { dateRanges: D30, dimensions: [{ name: 'country' }], metrics: [{ name: 'activeUsers' }], orderBys: [{ metric: { metricName: 'activeUsers' }, desc: true }], limit: 4 });
+        s.countries = rowsOf(ctry).map((row) => ({ country: row.dimensionValues[0].value, users: num(row.metricValues[0]) }));
+
+        const ret = await run(client, { dateRanges: D30, dimensions: [{ name: 'newVsReturning' }], metrics: [{ name: 'activeUsers' }] });
+        rowsOf(ret).forEach((row) => { const k = row.dimensionValues[0].value; if (k === 'new' || k === 'returning') s.returning[k] = num(row.metricValues[0]); });
+
+        const pg = await run(client, { dateRanges: D30, dimensions: [{ name: 'pagePath' }, { name: 'pageTitle' }], metrics: [{ name: 'screenPageViews' }, { name: 'userEngagementDuration' }], orderBys: [{ metric: { metricName: 'screenPageViews' }, desc: true }], limit: 5 });
+        s.pages = rowsOf(pg).map((row) => ({ path: row.dimensionValues[0].value, title: row.dimensionValues[1].value, views: num(row.metricValues[0]), engagementSec: num(row.metricValues[1]) }));
+
+        // Where visitors were just before: shows how much the homepage feeds each tool.
+        const ref = await run(client, { dateRanges: D30, dimensions: [{ name: 'pageReferrer' }], metrics: [{ name: 'screenPageViews' }], orderBys: [{ metric: { metricName: 'screenPageViews' }, desc: true }], limit: 25 });
+        const byRef = {};
+        rowsOf(ref).forEach((row) => {
+          let r = row.dimensionValues[0].value || '';
+          try { const u = new URL(r); r = u.hostname + (u.hostname === HOME_HOST ? u.pathname.replace(/^(\/[^/]*\/?).*/, '$1') : ''); } catch (e) { r = '(direct)'; }
+          if (siteKeyOf(r.split('/')[0], '/' + r.split('/').slice(1).join('/')) === s.key) return; // moving around inside the same site
+          byRef[r] = (byRef[r] || 0) + num(row.metricValues[0]);
+        });
+        s.referrers = Object.entries(byRef).sort((a, b) => b[1] - a[1]).slice(0, 4).map(([from, views]) => ({ from, views }));
+      }
+      out.sites.push(s);
+    }
+
+    // When people visit: day of week by hour, last 30 days (UK time, as set in GA4).
+    const hm = await run(all, { dateRanges: D30, dimensions: [{ name: 'dayOfWeek' }, { name: 'hour' }], metrics: [{ name: 'activeUsers' }], limit: 200 });
+    out.heatmap = rowsOf(hm).map((row) => ({ dow: Number(row.dimensionValues[0].value), hour: Number(row.dimensionValues[1].value), users: num(row.metricValues[0]) }));
+
+    const ctry = await run(all, { dateRanges: D30, dimensions: [{ name: 'country' }], metrics: [{ name: 'activeUsers' }], orderBys: [{ metric: { metricName: 'activeUsers' }, desc: true }], limit: 6 });
+    out.countries = rowsOf(ctry).map((row) => ({ country: row.dimensionValues[0].value, users: num(row.metricValues[0]) }));
+
+    const src = await run(all, { dateRanges: D30, dimensions: [{ name: 'sessionSource' }, { name: 'sessionMedium' }], metrics: [{ name: 'sessions' }], limit: 1000 });
     const by = {};
-    (src.rows || []).forEach((row) => {
+    rowsOf(src).forEach((row) => {
       const c = channelOf(row.dimensionValues[0].value, row.dimensionValues[1].value);
-      by[c] = (by[c] || 0) + Number(row.metricValues[0].value);
+      by[c] = (by[c] || 0) + num(row.metricValues[0]);
     });
     out.sources = Object.entries(by).sort((a, b) => b[1] - a[1]).map(([channel, sessions]) => ({ channel, sessions }));
+
+    // Links clicked out of the sites (GA4 records these automatically as "click").
+    try {
+      const clicks = (dims) => run(all, {
+        dateRanges: D30, dimensions: dims.map((name) => ({ name })), metrics: [{ name: 'eventCount' }],
+        dimensionFilter: { filter: { fieldName: 'eventName', stringFilter: { matchType: 'EXACT', value: 'click' } } },
+        orderBys: [{ metric: { metricName: 'eventCount' }, desc: true }], limit: 10,
+      });
+      // Link text makes Amazon links readable (book titles); fall back to the address alone.
+      let oc, withText = true;
+      try { oc = await clicks(['linkUrl', 'linkText']); } catch (e) { withText = false; oc = await clicks(['linkUrl']); }
+      out.outbound = rowsOf(oc).map((row) => ({ url: row.dimensionValues[0].value, text: withText ? row.dimensionValues[1].value : '', clicks: num(row.metricValues[0]) })).filter((x) => x.url && x.url !== '(not set)');
+    } catch (err) {
+      console.warn('Outbound clicks unavailable:', err.message);
+    }
   } catch (err) {
     console.warn('Other-sites report failed:', err.message);
     out.configured = false;

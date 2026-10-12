@@ -249,6 +249,83 @@
     return pool;
   }
 
+  /* ============================= CHOOSING DINNERS ============================= */
+  // Fill the week, Surprise me and batch lists all pick through pickDinners().
+  // Every allowed dish can come up, but favourites and dishes not tried yet
+  // come up more often, low-rated and just-cooked ones less often, and a week
+  // doesn't stack up the same kind of dish (no more three soups in four days).
+  var DISH_TYPES = [
+    ["soup", /soup|broth|chowder|ramen|\bpho\b|laksa|bisque|minestrone|caldo|sinigang|tom yum|harira|ribollita|gazpacho|borscht|mulligatawny|cock-a-leekie|cullen skink/i, 1],
+    ["salad", /salad|slaw|\bpoke\b/i, 1],
+    ["sandwich", /sandwich|\bwrap|burger|taco|burrito|quesadilla|toastie|\bsub\b|\bbao\b|pitta|panini|croque|smørrebrød|bánh mì|banh mi|hot dog/i, 2],
+    ["curry", /curry|dahl|\bdal\b|daal|masala|korma|vindaloo|madras|jalfrezi|rogan|balti|tikka|saag|bhuna|rendang|massaman/i, 2],
+    ["stew", /stew|casserole|tagine|goulash|ragout|hotpot|cassoulet|braise|chilli con|feijoada|lobio|\bwat\b|pot\b|one-pot/i, 2],
+    ["pasta", /pasta|spaghetti|penne|linguine|tagliatelle|pappardelle|fusilli|macaroni|lasagne|orzo|gnocchi|carbonara|noodle|udon|soba|pad thai|chow mein|lo mein|japchae|kway teow|dumpling|pierogi|varenyky|manti/i, 2],
+    ["rice", /rice|risotto|paella|pilaf|pilau|biryani|jambalaya|kedgeree|congee|pelau/i, 2]
+  ];
+  var dishTypeCache = {};
+  function dishType(r) {
+    if (dishTypeCache[r.id]) return dishTypeCache[r.id];
+    var t = "other";
+    for (var i = 0; i < DISH_TYPES.length; i++) if (DISH_TYPES[i][1].test(r.title)) { t = DISH_TYPES[i][0]; break; }
+    return (dishTypeCache[r.id] = t);
+  }
+  function dishTypeCap(t) { for (var i = 0; i < DISH_TYPES.length; i++) if (DISH_TYPES[i][0] === t) return DISH_TYPES[i][2]; return 7; }
+  var lastCookCache = null, lastCookLen = -1;
+  function lastCooked(id) {
+    var log = state.cookLog || [];
+    if (!lastCookCache || lastCookLen !== log.length) {
+      lastCookCache = {}; lastCookLen = log.length;
+      log.forEach(function (h) { if (!lastCookCache[h.id] || h.ts > lastCookCache[h.id]) lastCookCache[h.id] = h.ts; });
+    }
+    return lastCookCache[id] || 0;
+  }
+  // How keen we are on a dish: 5 stars 3x, 4 stars 2x, not tried yet 2x,
+  // tried but unrated 1.25x, 3 stars 1x, 2 stars 0.4x (1 star never comes up).
+  // Anything cooked in the last three weeks is less likely to come round again.
+  function prefWeight(r) {
+    var stars = state.ratings && state.ratings[r.id];
+    var w = stars === 5 ? 3 : stars === 4 ? 2 : stars === 3 ? 1 : stars === 2 ? 0.4 : (cookedCounts()[r.id] ? 1.25 : 2);
+    var last = lastCooked(r.id);
+    if (last && Date.now() - last < 21 * 86400000) w *= 0.35;
+    return w;
+  }
+  function weekTally(ids) {
+    var t = { types: {}, proteins: {}, cuisines: {} };
+    ids.forEach(function (id) { var r = RECIPES_BY_ID[id]; if (r) tallyAdd(t, r); });
+    return t;
+  }
+  function tallyAdd(t, r) {
+    var d = dishType(r);
+    t.types[d] = (t.types[d] || 0) + 1;
+    t.proteins[r.protein] = (t.proteins[r.protein] || 0) + 1;
+    t.cuisines[r.cuisine] = (t.cuisines[r.cuisine] || 0) + 1;
+  }
+  // 1 = fits the week fine; small = too much like what's already planned.
+  function varietyFactor(r, t) {
+    var f = 1, d = dishType(r), n = t.types[d] || 0;
+    if (d !== "other") f *= n >= dishTypeCap(d) ? 0.02 : Math.pow(0.5, n);
+    f *= Math.pow(0.6, t.proteins[r.protein] || 0);
+    f *= Math.pow(0.4, t.cuisines[r.cuisine] || 0);
+    return f;
+  }
+  function pickDinners(n, existingIds) {
+    existingIds = (existingIds || []).filter(Boolean);
+    var pool = suggestPool(freeRecipePool(RECIPES));
+    if (!pool.length) return [];
+    var tally = weekTally(existingIds), chosen = [];
+    for (var k = 0; k < n; k++) {
+      var cands = pool.filter(function (r) { return existingIds.indexOf(r.id) === -1 && chosen.indexOf(r.id) === -1; });
+      if (!cands.length) cands = pool; // more dinners than dishes: repeats are allowed
+      var weights = cands.map(function (r) { return prefWeight(r) * varietyFactor(r, tally); });
+      var total = weights.reduce(function (a, b) { return a + b; }, 0), x = Math.random() * total, pick = cands[cands.length - 1];
+      for (var i = 0; i < cands.length; i++) { x -= weights[i]; if (x <= 0) { pick = cands[i]; break; } }
+      chosen.push(pick.id);
+      tallyAdd(tally, pick);
+    }
+    return chosen;
+  }
+
   function newUid() { return "b" + Date.now().toString(36) + Math.random().toString(36).slice(2, 7); }
   var currentUser = null;       // Firebase auth user, or null when signed out
   var saveTimer = null;
@@ -775,18 +852,10 @@
     if (!n || n < 1) n = 1;
     if (n > 30) n = 30;
     input.value = n;
-    var usedIds = state.batch.map(function (b) { return b.id; });
-    var eligible = freeRecipePool(RECIPES);
-    var likedIds = suggestPool(eligible).map(function (r) { return r.id; });
-    var basePool = likedIds.length ? likedIds : eligible.map(function (r) { return r.id; });
-    var pool = shuffle(basePool.filter(function (id) { return usedIds.indexOf(id) === -1; }));
-    var pi = 0;
-    for (var k = 0; k < n; k++) {
-      if (pi >= pool.length) { pool = shuffle(basePool.slice()); pi = 0; }
-      var pickId = pool[pi++];
+    pickDinners(n, state.batch.map(function (b) { return b.id; })).forEach(function (pickId) {
       state.batch.push({ uid: newUid(), id: pickId, cookedAt: null });
       logHistory(pickId, "surprise");
-    }
+    });
     onStateChanged();
   });
   document.getElementById("batch-add-btn").addEventListener("click", function () {
@@ -855,10 +924,9 @@
           '<button type="button" class="btn btn-outline btn-sm" data-act="surprise">Surprise me</button></span>';
         empty.querySelector('[data-act="add"]').addEventListener("click", function (i) { return function () { openPicker({ type: "day", dayIdx: i }); }; }(idx));
         empty.querySelector('[data-act="surprise"]').addEventListener("click", function (i) { return function () {
-          var pool = suggestPool(freeRecipePool(RECIPES)).filter(function (x) { return W().plan.indexOf(x.id) === -1; });
-          if (!pool.length) pool = suggestPool(freeRecipePool(RECIPES));
-          var pick = pool[Math.floor(Math.random() * pool.length)];
-          applyPick({ type: "day", dayIdx: i }, pick.id, "surprise");
+          var pickId = pickDinners(1, W().plan)[0];
+          if (!pickId) return;
+          applyPick({ type: "day", dayIdx: i }, pickId, "surprise");
           onStateChanged();
         }; }(idx));
         card.appendChild(empty);
@@ -981,18 +1049,11 @@
     var undoSnap = JSON.stringify(syncPayload());
     state.newWeekNotice = false;
     setTimeout(function () { toast("Week filled", "Undo", function () { applyState(JSON.parse(undoSnap)); onStateChanged(); }); }, 0);
-    var used = W().plan.filter(Boolean);
-    // Never fill a day with a 1-star dish, same rule as Surprise me. Only
-    // fall back to the full list (including 1-star dishes) if every single
-    // recipe has been rated 1 star, so the week can still be filled.
-    var eligible = freeRecipePool(RECIPES);
-    var likedIds = suggestPool(eligible).map(function (r) { return r.id; });
-    var basePool = likedIds.length ? likedIds : eligible.map(function (r) { return r.id; });
-    var pool = shuffle(basePool.filter(function (id) { return used.indexOf(id) === -1; }));
-    var pi = 0;
-    days.forEach(function (d) {
-      if (pi >= pool.length) { pool = shuffle(basePool.slice()); pi = 0; }
-      W().plan[d] = pool[pi++];
+    // Weighted and varied (see pickDinners); 1-star dishes never come up.
+    var picks = pickDinners(days.length, W().plan);
+    days.forEach(function (d, i) {
+      if (!picks[i]) return;
+      W().plan[d] = picks[i];
       logHistory(W().plan[d], "fill");
     });
     onStateChanged();
@@ -1530,7 +1591,7 @@
     for (var attempt = 0; attempt < 8; attempt++) {
       var chosen = [], total = {};
       fixedIds.forEach(function (id) { addNeeds(total, id); });
-      var cuisines = {}, proteins = {}, spicy = 0, vegan = 0;
+      var cuisines = {}, proteins = {}, spicy = 0, vegan = 0, types = weekTally(fixedIds).types;
       fixedIds.forEach(function (id) { var r = RECIPES_BY_ID[id]; if (r) { cuisines[r.cuisine] = (cuisines[r.cuisine] || 0) + 1; proteins[r.protein] = (proteins[r.protein] || 0) + 1; } });
       for (var k = 0; k < n; k++) {
         var sample = shuffle(pool.slice()).slice(0, 140);
@@ -1544,7 +1605,9 @@
           s += Math.max(0, (proteins[r.protein] || 0) - 1) * 0.5;
           if (r.tags.indexOf("spicy") !== -1) s += Math.max(0, spicy - 1) * 0.5;
           if (r.tags.indexOf("vegan") !== -1) s += Math.max(0, vegan - 1) * 0.4;
-          if (state.ratings[r.id] >= 4) s -= 0.3;
+          var dt = dishType(r), dn = types[dt] || 0;
+          if (dt !== "other") s += dn >= dishTypeCap(dt) ? 4 : dn * 0.6;
+          s -= Math.log(prefWeight(r)) * 0.4; // favourites and new dishes a little more likely
           s += Math.random() * 0.35;
           if (s < pickScore) { pickScore = s; pickR = r; }
         });
@@ -1553,6 +1616,7 @@
         addNeeds(total, pickR.id);
         cuisines[pickR.cuisine] = (cuisines[pickR.cuisine] || 0) + 1;
         proteins[pickR.protein] = (proteins[pickR.protein] || 0) + 1;
+        types[dishType(pickR)] = (types[dishType(pickR)] || 0) + 1;
         if (pickR.tags.indexOf("spicy") !== -1) spicy++;
         if (pickR.tags.indexOf("vegan") !== -1) vegan++;
       }
@@ -2221,9 +2285,10 @@
       // Never suggest a dish rated 1 star. Fall back to the full list only
       // in the (unlikely) case every single recipe has been rated 1 star.
       // When not unlocked, only ever surprise with something already free.
-      var pool = suggestPool(freeRecipePool(RECIPES));
-      var pick = pool[Math.floor(Math.random() * pool.length)];
-      applyPick(ctx, pick.id, "surprise");
+      var around = ctx && (ctx.type === "batchAdd" || ctx.batchUid !== undefined) ? state.batch.map(function (b) { return b.id; }) : W().plan;
+      var pickId = pickDinners(1, around)[0];
+      if (!pickId) return;
+      applyPick(ctx, pickId, "surprise");
       onStateChanged();
       closePicker();
     });

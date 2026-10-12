@@ -320,6 +320,9 @@ function scoped(client, hostFilter) {
 // project folder counts as its own site, and the homepage (the build log) is
 // one more. Any other host counts as a site of its own.
 const HOME_HOST = 'neilfletcher.github.io';
+// Usage events the sites send (see window.ssTrack in each site), with an
+// optional "detail" parameter (a tab, bow type, room or section; never a person).
+const USAGE_EVENTS = ['spine_calculated', 'data_loaded', 'tab_viewed', 'sheet_connected', 'workout_logged', 'room_viewed', 'section_reached', 'step_ticked', 'project_opened'];
 
 function siteKeyOf(host, path) {
   host = host || '(not set)';
@@ -390,7 +393,7 @@ async function fetchOtherSites(analyticsClient, propertyId) {
       const client = scoped(analyticsClient, siteFilter(f.key));
       const s = { key: f.key, url: 'https://' + f.key, name: f.key === HOME_HOST + '/' ? 'Build log (homepage)' : (f.title || f.key).replace(/^Neil Fletcher:\s*/i, ''),
         views90: f.views90, users7: 0, usersPrev7: 0, users30: 0, newUsers30: 0, sessions30: 0, views30: 0, engagedSessions30: 0, engagementSec30: 0,
-        daily: [], devices: {}, sources: [], countries: [], returning: { new: 0, returning: 0 }, pages: [], referrers: [], lastSeen: null };
+        daily: [], devices: {}, sources: [], countries: [], returning: { new: 0, returning: 0 }, pages: [], referrers: [], lastSeen: null, actions: [] };
 
       const t = await run(client, { dateRanges: R3, metrics: ['activeUsers', 'newUsers', 'sessions', 'screenPageViews', 'engagedSessions', 'userEngagementDuration'].map((name) => ({ name })) });
       rowsOf(t).forEach((row) => {
@@ -441,6 +444,25 @@ async function fetchOtherSites(analyticsClient, propertyId) {
           if (siteKeyOf(r.split('/')[0], '/' + r.split('/').slice(1).join('/')) === s.key) return; // moving around inside the same site
           byRef[r] = (byRef[r] || 0) + num(row.metricValues[0]);
         });
+        // What people do: the usage events, with who did them and the top details.
+        const evFilter = { filter: { fieldName: 'eventName', inListFilter: { values: USAGE_EVENTS } } };
+        const ev = await run(client, { dateRanges: D30, dimensions: [{ name: 'eventName' }], metrics: [{ name: 'eventCount' }, { name: 'totalUsers' }], dimensionFilter: evFilter });
+        s.actions = rowsOf(ev).map((row) => ({ event: row.dimensionValues[0].value, count: num(row.metricValues[0]), users: num(row.metricValues[1]), details: [] }))
+          .sort((a, b) => b.count - a.count);
+        if (s.actions.length) {
+          try {
+            // Needs the event-scoped custom dimension "detail" in GA4 (Admin > Custom definitions).
+            const dt = await run(client, { dateRanges: D30, dimensions: [{ name: 'eventName' }, { name: 'customEvent:detail' }], metrics: [{ name: 'eventCount' }, { name: 'totalUsers' }], dimensionFilter: evFilter, orderBys: [{ metric: { metricName: 'eventCount' }, desc: true }], limit: 60 });
+            rowsOf(dt).forEach((row) => {
+              const a = s.actions.find((x) => x.event === row.dimensionValues[0].value), d = row.dimensionValues[1].value;
+              if (a && d && d !== '(not set)') a.details.push({ detail: d, count: num(row.metricValues[0]), users: num(row.metricValues[1]) });
+            });
+            s.detailsConfigured = true;
+          } catch (err) {
+            s.detailsConfigured = false;
+          }
+        }
+
         s.referrers = Object.entries(byRef).sort((a, b) => b[1] - a[1]).slice(0, 4).map(([from, views]) => ({ from, views }));
       }
       out.sites.push(s);

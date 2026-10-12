@@ -291,6 +291,12 @@
   .facts .row span:first-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .facts .row span:last-child { color: var(--ink-muted); font-variant-numeric: tabular-nums; }
   .quiet { color: var(--ink-faint); font-size: 13px; margin-top: 8px; }
+  .actions { margin-top: 10px; padding: 8px 12px 10px; background: var(--accent-soft); border-radius: 10px; }
+  .actions h4 { font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); margin: 2px 0 4px; font-weight: 600; }
+  .act { display: grid; grid-template-columns: 1fr auto; gap: 0 10px; font-size: 13px; padding: 3px 0; }
+  .act-v { font-weight: 600; font-variant-numeric: tabular-nums; }
+  .act-v small { font-weight: 400; color: var(--ink-muted); }
+  .act-d { grid-column: 1 / -1; font-size: 11.5px; color: var(--ink-muted); }
   .heat-scroll { overflow-x: auto; }
   .heat { display: grid; grid-template-columns: 34px repeat(24, minmax(14px, 1fr)); gap: 2px; font-size: 10px; color: var(--ink-faint); min-width: 420px; }
   .heat .c { height: 16px; border-radius: 3px; background: var(--accent); }
@@ -978,14 +984,20 @@
   function siteLink(s) { return '<a href="' + escapeHtml(s.url) + '" target="_blank" rel="noopener">' + escapeHtml(s.name) + "</a>"; }
   function sitePath(s) { return s.key.replace(/^neilfletcher\.github\.io/, "") || "/"; }
 
+  var ACTION_NAMES = { spine_calculated: "Spines calculated", data_loaded: "Records loaded", tab_viewed: "Tabs opened", sheet_connected: "Own sheet connected",
+    workout_logged: "Workouts logged", room_viewed: "Rooms looked at", section_reached: "Sections reached", step_ticked: "Steps ticked off", project_opened: "Projects opened" };
+  var MAIN_ACTION = { spine_calculated: "calculated a spine", sheet_connected: "connected their own sheet", workout_logged: "logged a workout", project_opened: "clicked through to one of your projects", step_ticked: "ticked off a build step" };
+  function act(s, ev) { return (s.actions || []).filter(function (a) { return a.event === ev; })[0]; }
+  function prettyDetail(d) { return String(d).replace(/[-_]/g, " ").replace(/^db /i, "DB "); }
+
   function otherInsights(o) {
     var out = [], sites = o.sites || [];
     var t = change(o.totals.users7, o.totals.usersPrev7);
-    if (o.totals.usersPrev7 || o.totals.users7) out.push({ cls: t.pct > 0 ? "up" : t.pct < 0 ? "down" : "", text: "Across all your sites: " + fmtNum(o.totals.users7) + " visitors in the last 7 days" + (o.totals.usersPrev7 ? ", " + (t.pct >= 0 ? "up " : "down ") + Math.abs(t.pct) + "% on the week before." : ".") });
+    if (o.totals.usersPrev7 || o.totals.users7) out.push({ p: 0, cls: t.pct > 0 ? "up" : t.pct < 0 ? "down" : "", text: "Across all your sites: " + fmtNum(o.totals.users7) + " visitors in the last 7 days" + (o.totals.usersPrev7 ? ", " + (t.pct >= 0 ? "up " : "down ") + Math.abs(t.pct) + "% on the week before." : ".") });
     sites.filter(function (s) { return s.users7 + s.usersPrev7 >= 4; }).forEach(function (s) {
       var c = change(s.users7, s.usersPrev7);
-      if (c.pct >= 30) out.push({ cls: "up", text: "<b>" + escapeHtml(s.name) + "</b> is growing: " + s.users7 + " visitors this week against " + s.usersPrev7 + " the week before." });
-      else if (c.pct <= -30) out.push({ cls: "down", text: "<b>" + escapeHtml(s.name) + "</b> is quieter: " + s.users7 + " visitors this week against " + s.usersPrev7 + " the week before." });
+      if (c.pct >= 30) out.push({ p: 2, cls: "up", text: "<b>" + escapeHtml(s.name) + "</b> is growing: " + s.users7 + " visitors this week against " + s.usersPrev7 + " the week before." });
+      else if (c.pct <= -30) out.push({ p: 2, cls: "down", text: "<b>" + escapeHtml(s.name) + "</b> is quieter: " + s.users7 + " visitors this week against " + s.usersPrev7 + " the week before." });
     });
     var top = sites.slice().sort(function (a, b) { return b.users30 - a.users30; })[0];
     if (top && top.users30) out.push({ cls: "", text: "<b>" + escapeHtml(top.name) + "</b> is your busiest site, with " + pct(top.users30, sites.reduce(function (a, s) { return a + s.users30; }, 0)) + "% of visitors across your sites this month." });
@@ -1000,10 +1012,30 @@
       var home = (s.referrers || []).filter(function (x) { return x.from === "neilfletcher.github.io/"; })[0];
       if (home && s.views30 >= 5 && home.views / s.views30 >= 0.3) out.push({ cls: "", text: "<b>" + escapeHtml(s.name) + "</b>: about " + pct(home.views, s.views30) + "% of its page views start from your build log homepage." });
     });
+    var missingDetail = false;
+    sites.forEach(function (s) {
+      if (s.detailsConfigured === false) missingDetail = true;
+      Object.keys(MAIN_ACTION).forEach(function (ev) {
+        var a = act(s, ev);
+        if (a && s.users30 >= 3) out.push({ p: 1, cls: "up", text: "<b>" + escapeHtml(s.name) + "</b>: " + Math.min(100, pct(a.users, s.users30)) + "% of visitors " + MAIN_ACTION[ev] + " (" + a.users + " of " + s.users30 + " this month)." });
+      });
+      var tv = act(s, "tab_viewed");
+      if (tv && tv.details.length && tv.count >= 5) out.push({ p: 1, cls: "", text: "Most-opened tab in <b>" + escapeHtml(s.name) + "</b>: " + escapeHtml(prettyDetail(tv.details[0].detail)) + " (" + pct(tv.details[0].count, tv.count) + "% of tab opens)." });
+      var rv = act(s, "room_viewed");
+      if (rv && rv.details.length > 1) out.push({ p: 1, cls: "", text: "In <b>" + escapeHtml(s.name) + "</b> the most looked-at room is " + escapeHtml(prettyDetail(rv.details[0].detail)) + "." });
+      var sr = act(s, "section_reached");
+      if (sr && sr.details.length > 2) {
+        var first = sr.details.slice().sort(function (a, b) { return b.users - a.users; })[0], last = sr.details.slice().sort(function (a, b) { return a.users - b.users; })[0];
+        if (first.users >= 3) out.push({ p: 1, cls: last.users / first.users < 0.4 ? "tip" : "up", text: "<b>" + escapeHtml(s.name) + "</b>: " + pct(last.users, first.users) + "% of readers get as far as the " + escapeHtml(prettyDetail(last.detail)) + " section." });
+      }
+      var po = act(s, "project_opened");
+      if (po && po.details.length) out.push({ p: 1, cls: "", text: "From your build log, the most-clicked project is " + escapeHtml(po.details[0].detail) + " (" + po.details[0].count + " clicks)." });
+    });
+    if (missingDetail) out.push({ p: 0, cls: "tip", text: "To see which tabs, rooms, sections and bow types people use, add the GA4 custom dimension <b>detail</b> (Admin, Custom definitions, event scope)." });
     var now = Date.now();
     sites.forEach(function (s) {
-      if (!s.lastSeen) out.push({ cls: "down", text: "<b>" + escapeHtml(s.name) + "</b> has had no visitors in the last 90 days." });
-      else if ((now - Date.parse(s.lastSeen + "T12:00:00Z")) / 86400000 > 14) out.push({ cls: "down", text: "<b>" + escapeHtml(s.name) + "</b> has been quiet since " + shortDate(s.lastSeen) + "." });
+      if (!s.lastSeen) out.push({ p: 2, cls: "down", text: "<b>" + escapeHtml(s.name) + "</b> has had no visitors in the last 90 days." });
+      else if ((now - Date.parse(s.lastSeen + "T12:00:00Z")) / 86400000 > 14) out.push({ p: 2, cls: "down", text: "<b>" + escapeHtml(s.name) + "</b> has been quiet since " + shortDate(s.lastSeen) + "." });
     });
     if (o.heatmap && o.heatmap.length) {
       var best = o.heatmap.slice().sort(function (a, b) { return b.users - a.users; })[0];
@@ -1015,7 +1047,8 @@
     if (amazon) out.push({ cls: "up", text: amazon + " click" + (amazon === 1 ? "" : "s") + " through to your books on Amazon this month." });
     var yt = (o.outbound || []).filter(function (x) { return /youtube\.com|youtu\.be/i.test(x.url); }).reduce(function (a, x) { return a + x.clicks; }, 0);
     if (yt) out.push({ cls: "up", text: yt + " click" + (yt === 1 ? "" : "s") + " through to your YouTube channel this month." });
-    return out;
+    // Most useful first: overall, then what people do, then changes, then the rest.
+    return out.map(function (x, i) { return { x: x, i: i }; }).sort(function (a, b) { return ((a.x.p === undefined ? 3 : a.x.p) - (b.x.p === undefined ? 3 : b.x.p)) || a.i - b.i; }).map(function (y) { return y.x; });
   }
 
   function renderOtherSites(o) {
@@ -1036,7 +1069,7 @@
     byId("ot-active").textContent = sites.filter(function (s) { return s.users7 > 0; }).length + " of " + sites.length;
 
     var ins = otherInsights(o);
-    byId("otInsights").innerHTML = ins.length ? ins.slice(0, 12).map(function (x) { return '<li class="' + x.cls + '">' + x.text + "</li>"; }).join("") : "<li>Nothing stands out yet. Highlights appear once there are a few days of visits.</li>";
+    byId("otInsights").innerHTML = ins.length ? ins.slice(0, 14).map(function (x) { return '<li class="' + x.cls + '">' + x.text + "</li>"; }).join("") : "<li>Nothing stands out yet. Highlights appear once there are a few days of visits.</li>";
 
     byId("otGlance").innerHTML = "<thead><tr><th>Site</th><th>Visitors 7d</th><th>Change</th><th>Visitors 30d</th><th>Last 30 days</th><th>Time per visit</th><th>Returning</th><th>On phones</th><th>Top source</th><th>Last visit</th></tr></thead><tbody>" +
       sites.map(function (s) {
@@ -1059,6 +1092,10 @@
       var rows = function (title, list, label, value) {
         return list && list.length ? "<div><h4>" + title + "</h4>" + list.slice(0, 4).map(function (x) { return '<div class="row"><span title="' + escapeHtml(label(x)) + '">' + escapeHtml(label(x)) + "</span><span>" + value(x) + "</span></div>"; }).join("") + "</div>" : "";
       };
+      if (s.actions && s.actions.length) html += '<div class="actions"><h4>What people do</h4>' + s.actions.map(function (a) {
+        return '<div class="act"><span class="act-n">' + escapeHtml(ACTION_NAMES[a.event] || a.event) + '</span><span class="act-v">' + fmtNum(a.count) + ' <small>(' + fmtNum(a.users) + (a.users === 1 ? " person" : " people") + ")</small></span>" +
+          (a.details.length ? '<div class="act-d">' + a.details.slice(0, 5).map(function (d) { return escapeHtml(prettyDetail(d.detail)) + " " + fmtNum(d.count); }).join(" · ") + "</div>" : "") + "</div>";
+      }).join("") + "</div>";
       html += '<div class="facts">' +
         rows("Most-read pages", s.pages, function (x) { return (x.title && x.title !== "(not set)" ? x.title.replace(/^Neil Fletcher:\s*/i, "") : x.path); }, function (x) { return fmtNum(x.views); }) +
         rows("How they find it", s.sources, function (x) { return sourceName(x.source); }, function (x) { return fmtNum(x.sessions); }) +

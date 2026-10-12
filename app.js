@@ -4052,7 +4052,24 @@
     toast(on ? "Swapped everywhere it comes up. Undo it from any recipe that uses it." : "Swap undone.");
   });
 
+  // Pro, always in reach at the top of the planner (not in the Android app,
+  // which sells its own unlock).
+  function renderProPill() {
+    var b = document.getElementById("header-pro-btn");
+    if (!b) return;
+    if (isNativeApp()) { b.hidden = true; return; }
+    var st = currentUser && ent ? proState(ent) : { pro: false, source: "none" };
+    b.hidden = false;
+    b.classList.toggle("is-pro", st.pro && st.source !== "trial");
+    var long = st.pro ? (st.source === "trial" ? "Pro trial: " + daysLeft(st.until) + (daysLeft(st.until) === 1 ? " day" : " days") : "Pro") : (st.source === "trial-ended" ? "Get Pro" : "Try Pro free");
+    b.innerHTML = '<span class="pp-long">' + esc(long) + '</span><span class="pp-short">Pro</span>';
+    b.setAttribute("aria-label", long);
+  }
+  var headerProBtn = document.getElementById("header-pro-btn");
+  if (headerProBtn) headerProBtn.addEventListener("click", function () { openProPaywall(); });
+
   function renderAll() {
+    renderProPill();
     if (checkWeekRollover()) setTimeout(scheduleSave, 0);
     ensureNext();
     // At the weekend, open on next week: that is the one worth planning.

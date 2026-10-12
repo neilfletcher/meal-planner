@@ -198,6 +198,15 @@ function sumNeeds(ids) {
 function packName(k) {
   return /(fillet|thigh|breast|tomato|sausage|onion|chop|steak|pepper|egg|bun|roll|flatbread|tortilla|chilli|courgette|avocado|lemon|lime)$/.test(k) ? PK.shopPlural(k) : k;
 }
+// The number fmtQty shows, so sums made from it add up (used + left = the pack).
+function roundQty(k, v) {
+  var p = PK.PACKS[k];
+  if (p.unit === "g") return v >= 100 ? Math.round(v / 10) * 10 : Math.max(5, Math.round(v / 5) * 5);
+  if (p.unit === "ml") return Math.max(5, Math.round(v / 5) * 5);
+  if (p.unit === "tin") return Math.round(v * 4) / 4;
+  if (p.unit === "rasher" || p.unit === "slice") return Math.max(1, Math.round(v));
+  return Math.max(0.25, Math.round(v * 4) / 4);
+}
 function fmtQty(k, v) {
   var p = PK.PACKS[k];
   if (p.unit === "g") return (v >= 100 ? Math.round(v / 10) * 10 : Math.max(5, Math.round(v / 5) * 5)) + " g";
@@ -258,7 +267,12 @@ var USEUP = Object.keys(PK.PACKS).map(function (k) {
   var name = packName(k), h1, slug;
   // Display only (slugs stay as they are, so published addresses never change).
   var shown = /mushroom$/.test(name) ? name + "s" : name;
-  if (p.unit === "tin") { h1 = "What to cook with half a tin of " + name; slug = "half-a-tin-of-" + slugify(k); }
+  if (p.unit === "tin") {
+    // The heading follows the maths: "half a tin" only when that's what's left.
+    var tinLeft = p.size - Math.round(typical * 4) / 4;
+    h1 = "What to cook with " + (tinLeft === 0.5 ? "half a tin" : "the rest of a tin") + " of " + name;
+    slug = "half-a-tin-of-" + slugify(k);
+  }
   else if (p.unit === "g" && p.size <= 30) { h1 = "Recipes to use up leftover " + k; slug = "leftover-" + slugify(k); }
   else if (/^(chicken|beef|pork|lamb|turkey|salmon|cod|white fish|trout|smoked|cooking chorizo|streaky bacon|ham)/.test(k)) { h1 = "What to cook with the rest of a pack of " + name; slug = "rest-of-a-pack-of-" + slugify(name); }
   else { h1 = "Recipes to use up " + shown; slug = "use-up-" + slugify(name); }
@@ -390,6 +404,7 @@ function header(rel, active) {
     link("cuisines", "cuisines/", "Cuisines") +
     link("useup", "use-up/", "Use it up") +
     link("planner", "plan/", "The planner") +
+    link("pro", "#pro", "Pro") +
     "</nav>" +
     '<div class="site-header-actions">' +
     '<a class="btn btn-ink" href="' + rel + 'plan/" data-planner-cta>Plan your week</a>' +
@@ -480,7 +495,7 @@ function sectionHead(eyebrow, h2, linkHref, linkText) {
     '<p class="lead">' + RECIPES.length + " recipes written for a single portion. The planner picks dinners that share their packs, so the spinach you open on Monday is finished by Thursday, and the shopping list adds it all up.</p>" +
     '<div class="btn-row"><a class="btn btn-primary btn-lg" href="plan/">Plan this week ' + ICON.arrow + "</a>" +
     '<a class="btn btn-outline btn-lg" href="recipes/">Browse recipes</a></div>' +
-    '<p class="small muted">About ten minutes of prep a night. Sign in and your week follows you to every device.</p>' +
+    '<p class="small muted">Every recipe, the planner and the shopping list are free. <a href="#pro">Pro</a> adds low-waste planning: try it free for 14 days.</p>' +
     "</div>" +
     '<div class="hero2-mosaic">' + mosaic.map(function (r, i) { return tile(r, i === 0 ? "tile-big" : "", i < 3); }).join("") + "</div>" +
     "</section>" +
@@ -488,6 +503,19 @@ function sectionHead(eyebrow, h2, linkHref, linkText) {
     '<section class="wrap section">' +
     sectionHead("", "Cook something tonight", "recipes/", "All " + RECIPES.length + " recipes") +
     '<div class="rgrid rgrid-big">' + tonight.map(function (r) { return card(r, rel); }).join("") + "</div></section>" +
+
+    '<section class="wrap section" id="pro"><div class="pro-band">' +
+    '<div class="pro-band-text"><span class="eyebrow">Solo Supper Pro</span>' +
+    '<h2 class="display-m">Waste less, plan ahead</h2>' +
+    '<p class="lead">The recipes, the planner and the shopping list are yours to use. Pro does the clever part: it plans around the packs you open and what is already in the fridge.</p>' +
+    '<div class="btn-row"><a class="btn btn-primary btn-lg" href="plan/?pro=plans">Try Pro free for 14 days ' + ICON.arrow + "</a></div>" +
+    '<p class="small muted">No card needed for the trial. Then &pound;14.99 a year or &pound;2.49 a month, prices include VAT. Cancel any time.</p></div>' +
+    '<ul class="pro-list">' +
+    '<li><h3>Low-waste weeks</h3><p>Dinners picked to share their packs, so the other half of the spinach gets eaten.</p></li>' +
+    '<li><h3>Use what I have</h3><p>Tell it what is in the fridge and it plans dinners that finish it off.</p></li>' +
+    '<li><h3>Plan next week</h3><p>Sort out next week on a Sunday, with this week&rsquo;s leftovers carried over.</p></li>' +
+    '<li><h3>Waste saved</h3><p>See the packs you finish instead of binning, and roughly what that saves.</p></li>' +
+    "</ul></div></section>" +
 
     '<section class="wrap section">' +
     sectionHead("", "What are you in the mood for?", "collections/", "All collections") +
@@ -515,19 +543,6 @@ function sectionHead(eyebrow, h2, linkHref, linkText) {
     "</ol>" +
     '<div class="btn-row"><a class="btn btn-primary btn-lg" href="plan/">Open the planner ' + ICON.arrow + "</a></div>" +
     "</div>" + recipeImg(BY_ID.d8, rel, "night-img") + "</div></section>" +
-
-    '<section class="wrap section"><div class="pro-band">' +
-    '<div class="pro-band-text"><span class="eyebrow">Solo Supper Pro</span>' +
-    '<h2 class="display-m">Waste less, plan ahead</h2>' +
-    '<p class="lead">The recipes, the planner and the shopping list are yours to use. Pro does the clever part: it plans around the packs you open and what is already in the fridge.</p>' +
-    '<div class="btn-row"><a class="btn btn-primary btn-lg" href="plan/?pro=plans">Try Pro free for 14 days ' + ICON.arrow + "</a></div>" +
-    '<p class="small muted">No card needed for the trial. Then &pound;14.99 a year or &pound;2.49 a month, prices include VAT. Cancel any time.</p></div>' +
-    '<ul class="pro-list">' +
-    '<li><h3>Low-waste weeks</h3><p>Dinners picked to share their packs, so the other half of the spinach gets eaten.</p></li>' +
-    '<li><h3>Use what I have</h3><p>Tell it what is in the fridge and it plans dinners that finish it off.</p></li>' +
-    '<li><h3>Plan next week</h3><p>Sort out next week on a Sunday, with this week&rsquo;s leftovers carried over.</p></li>' +
-    '<li><h3>Waste saved</h3><p>See the packs you finish instead of binning, and roughly what that saves.</p></li>' +
-    "</ul></div></section>" +
 
     '<section class="wrap section">' +
     sectionHead("", "Got half a pack left?", "use-up/", "Every leftover") +
@@ -833,10 +848,10 @@ CUISINES.forEach(function (cu) {
 (function buildUseUp() {
   USEUP.forEach(function (u) {
     var rel = "../../";
-    var p = u.pack, spare = Math.max(0, p.size - u.typical);
+    var p = u.pack, used = roundQty(u.key, u.typical), spare = Math.max(0, p.size - used);
     var lead = heroPick(u.users);
     var intro = (p.unit === "" ? packName(u.key).replace(/^./, function (c) { return c.toUpperCase(); }) + " come in a " + p.sold : u.key.replace(/^./, function (c) { return c.toUpperCase(); }) + (/s$/.test(u.key) ? " usually come" : " usually comes") + " as a " + p.sold) +
-      ". A dinner for one tends to use about " + fmtQty(u.key, u.typical) + (spare > 0 ? ", which leaves around " + fmtQty(u.key, spare) + " behind" : "") +
+      ". A dinner for one tends to use about " + fmtQty(u.key, used) + (spare > 0 ? ", which leaves around " + fmtQty(u.key, spare) + " behind" : "") +
       ". All " + u.users.length + " recipes here use it, so put two or three in the same week and the pack gets finished.";
     var body =
       '<div class="wrap"><nav class="crumbs" aria-label="Breadcrumb"><a href="' + rel + 'use-up/">Use it up</a><span aria-hidden="true">/</span><span aria-current="page">' + esc(u.h1) + "</span></nav></div>" +

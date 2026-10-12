@@ -99,6 +99,14 @@ button, input, select, textarea { font-family: inherit; color: inherit; }
 .tab-btn .count:empty { display: none; }
 
 .header-controls { display: flex; align-items: center; gap: 12px; padding: 12px 0; }
+.pro-pill { border: 1.5px solid var(--tomato); color: var(--tomato-deep); background: transparent; font-weight: 600; white-space: nowrap; }
+.pro-pill:hover { background: var(--tomato); color: var(--tomato-ink); }
+.pro-pill.is-pro { border-color: var(--olive); color: var(--olive); }
+.pro-pill.is-pro:hover { background: var(--olive); color: var(--olive-ink); }
+.pro-pill .pp-short { display: none; }
+@media (max-width: 560px) { .pro-pill { padding-left: 10px; padding-right: 10px; } .pro-pill .pp-long { display: none; } .pro-pill .pp-short { display: inline; } }
+/* Narrow phones: the logo alone, so the controls and settings always fit. */
+@media (max-width: 430px) { .app-bar .brand-name { display: none; } }
 .servings-control { display: flex; align-items: center; gap: 10px; }
 .servings-control .label { font-size: 14px; color: var(--ink-2); }
 .stepper { display: inline-flex; align-items: center; border: 1px solid var(--line-strong); border-radius: 999px; height: 44px; background: var(--plate); }

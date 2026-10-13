@@ -10,19 +10,23 @@
  *
  * Bump VERSION to clear old caches.
  */
-var VERSION = "v1";
+// Rewritten by scripts/build-site.js on every build, so the worker updates
+// whenever the planner's code changes and only ever precaches matching files.
+var ASSETS = ["/styles.css?v=dd4162fcfd","/app.js?v=213776eb74","/recipes-data.js?v=cf462667fc","/firebase-config.js?v=f95fd495bc","/assets/telemetry.js?v=40cfeaa34a","/assets/search.js?v=6597f3cfdf"]; // ASSETS_LINE
+var VERSION = "98b12a24"; // VERSION_LINE
 var CORE = "ss-core-" + VERSION;
 var PAGES = "ss-pages-" + VERSION;
 var IMAGES = "ss-img-" + VERSION;
 var KEEP = [CORE, PAGES, IMAGES];
 
 var CORE_FILES = [
-  "/plan/", "/styles.css", "/app.js", "/recipes-data.js", "/firebase-config.js",
+  "/plan/",
   "/favicon.svg", "/manifest.webmanifest", "/icons/icon-192.png",
   "https://www.gstatic.com/firebasejs/10.13.2/firebase-app-compat.js",
   "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth-compat.js",
   "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore-compat.js"
 ];
+CORE_FILES = CORE_FILES.concat(ASSETS);
 var MAX_PAGES = 80, MAX_IMAGES = 250;
 
 self.addEventListener("install", function (e) {
@@ -47,14 +51,19 @@ function trim(name, max) {
   });
 }
 
+// Saves a fresh copy. The event is kept alive until it is written, so a
+// slow download still updates the cache for next time.
 function save(name, req, res, max) {
   if (!res || !(res.ok || res.type === "opaque")) return;
   var copy = res.clone();
-  caches.open(name).then(function (c) { return c.put(req, copy); }).then(function () { if (max) return trim(name, max); }).catch(function () {});
+  var p = caches.open(name).then(function (c) { return c.put(req, copy); }).then(function () { if (max) return trim(name, max); }).catch(function () {});
+  return p;
 }
 
-// Ask the network; if it is slow or fails, answer from the cache.
-function networkFirst(req, name, max, fallback) {
+// Ask the network; if it is slow or fails, answer from the cache. Scripts
+// and styles are requested with ?v=<hash>, so a saved copy is always the
+// version the page was built with.
+function networkFirst(req, name, max, fallback, ev) {
   return new Promise(function (resolve) {
     var done = false;
     var finish = function (r) { if (!done && r) { done = true; resolve(r); } };
@@ -64,9 +73,11 @@ function networkFirst(req, name, max, fallback) {
       });
     };
     var timer = setTimeout(function () { fromCache().then(function (hit) { if (hit) finish(hit); }); }, 3000);
-    fetch(req).then(function (res) {
+    var net = fetch(req);
+    if (ev) ev.waitUntil(net.then(function (res) { return save(name, req, res.clone(), max); }).catch(function () {}));
+    net.then(function (res) {
       clearTimeout(timer);
-      save(name, req, res, max);
+      if (!ev) save(name, req, res, max);
       if (done) return;
       if (res.ok || req.mode !== "navigate") return finish(res);
       // A 404 or 500 page: show it unless we have a good saved copy.
@@ -105,11 +116,11 @@ self.addEventListener("fetch", function (e) {
   if (url.origin === self.location.origin) {
     if (url.pathname.indexOf("/api/") === 0 || url.pathname === "/sw.js" || url.pathname === "/admin.html") return;
     if (req.mode === "navigate") {
-      e.respondWith(networkFirst(req, PAGES, MAX_PAGES, function () { return offlinePage(url); }));
+      e.respondWith(networkFirst(req, PAGES, MAX_PAGES, function () { return offlinePage(url); }, e));
       return;
     }
     if (url.pathname.indexOf("/img/") === 0) { e.respondWith(cacheFirst(req, IMAGES, MAX_IMAGES)); return; }
-    if (/\.(js|css|svg|png|webmanifest|json)$/.test(url.pathname)) { e.respondWith(networkFirst(req, CORE)); return; }
+    if (/\.(js|css|svg|png|webmanifest|json)$/.test(url.pathname)) { e.respondWith(networkFirst(req, CORE, 0, null, e)); return; }
     return;
   }
 

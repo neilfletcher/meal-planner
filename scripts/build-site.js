@@ -24,6 +24,13 @@ var path = require("path");
 var vm = require("vm");
 
 var ROOT = path.resolve(__dirname, "..");
+// Short content hashes, added to script and style links as ?v=, so a page and
+// the code it was built with always arrive together (see sw.js).
+var ASSET_VER = {};
+["styles.css", "app.js", "recipes-data.js", "firebase-config.js", "assets/site.css", "assets/site.js", "assets/search.js", "assets/telemetry.js"].forEach(function (f) {
+  ASSET_VER[f] = require("crypto").createHash("sha1").update(fs.readFileSync(path.join(ROOT, f))).digest("hex").slice(0, 10);
+});
+function V(f) { return f + "?v=" + ASSET_VER[f]; }
 var SITE_URL = (process.env.SITE_URL || "https://solosupper.co.uk").replace(/\/+$/, "");
 var GA_ID = "G-JF54HQGVLT";
 var PRIVACY_URL = SITE_URL + "/privacy/";
@@ -395,7 +402,7 @@ function head(o) {
     '<link rel="manifest" href="' + o.rel + 'manifest.webmanifest">\n' +
     '<link rel="preconnect" href="https://fonts.googleapis.com">\n<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n' +
     '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..600;1,6..72,400..600&amp;family=Geist:wght@400;500;600;700&amp;family=Geist+Mono:wght@400;500;600&amp;display=swap">\n' +
-    '<link rel="stylesheet" href="' + o.rel + 'assets/site.css">\n' +
+    '<link rel="stylesheet" href="' + o.rel + V("assets/site.css") + '">\n' +
     (o.jsonld || []).map(function (j) { return '<script type="application/ld+json">' + JSON.stringify(j).replace(/</g, "\\u003c") + "</script>\n"; }).join("") +
     "</head>\n";
 }
@@ -438,9 +445,9 @@ function footer(rel) {
     '<div class="footer-base"><span>&copy; ' + YEAR + " Solo Supper</span><span>Every recipe written for one. Scaled for two when someone stays over.</span></div>" +
     "</div></footer>\n" +
     '<div class="consent" id="consent" role="region" aria-label="Usage statistics" hidden></div>\n' +
-    '<script src="' + rel + 'assets/telemetry.js"></script>\n' +
-    '<script src="' + rel + 'assets/search.js" defer></script>\n' +
-    '<script src="' + rel + 'assets/site.js" defer data-base="' + rel + '"></script>\n</body>\n</html>\n';
+    '<script src="' + rel + V("assets/telemetry.js") + '"></script>\n' +
+    '<script src="' + rel + V("assets/search.js") + '" defer></script>\n' +
+    '<script src="' + rel + V("assets/site.js") + '" defer data-base="' + rel + '"></script>\n</body>\n</html>\n';
 }
 
 function page(o, body) {
@@ -954,6 +961,24 @@ LEGAL.forEach(function (l) {
     '<img src="' + rel + 'icons/screen-shopping.png" alt="The shopping list, added up for the week" width="390" height="844" loading="lazy"></div>' +
     "</section>"));
   sitemap.push({ loc: "app/", pri: "0.5" });
+})();
+
+/* ------------------------------------------------------------ planner and worker versions */
+// The planner page is hand-written: stamp its script and style links, and
+// tell the service worker which versioned files to keep for offline use.
+(function () {
+  var planFile = path.join(ROOT, "plan", "index.html");
+  var html = fs.readFileSync(planFile, "utf8");
+  var html2 = html.replace(/((?:src|href)="\.\.\/)(styles\.css|app\.js|recipes-data\.js|firebase-config\.js|assets\/(?:telemetry|search)\.js)(?:\?v=[0-9a-f]+)?"/g,
+    function (m, pre, f) { return pre + V(f) + '"'; });
+  if (html2 !== html) fs.writeFileSync(planFile, html2);
+  var swFile = path.join(ROOT, "sw.js");
+  var sw = fs.readFileSync(swFile, "utf8");
+  var files = ["styles.css", "app.js", "recipes-data.js", "firebase-config.js", "assets/telemetry.js", "assets/search.js"];
+  var all = Object.keys(ASSET_VER).sort().map(function (k) { return ASSET_VER[k]; }).join("");
+  var sw2 = sw.replace(/var ASSETS = \[[^\]]*\]; \/\/ ASSETS_LINE/, "var ASSETS = " + JSON.stringify(files.map(function (f) { return "/" + V(f); })) + "; // ASSETS_LINE")
+    .replace(/var VERSION = "[^"]*"; \/\/ VERSION_LINE/, 'var VERSION = "' + require("crypto").createHash("sha1").update(all).digest("hex").slice(0, 8) + '"; // VERSION_LINE');
+  if (sw2 !== sw) fs.writeFileSync(swFile, sw2);
 })();
 
 /* ------------------------------------------------------------ search index */

@@ -3868,7 +3868,7 @@
     var last = +lsGet("soloSupper.newsletterChecked") || 0;
     if (isNativeApp() || Date.now() - last < 864e5) return;
     lsSet("soloSupper.newsletterChecked", String(Date.now()));
-    api("newsletter", {}).then(function (j) { nlRemember(j.state); }).catch(function () { /* try again tomorrow */ });
+    api("newsletter", {}).then(function (j) { nlRemember(nlRecent() || j.state); }).catch(function () { /* try again tomorrow */ });
   }
   function startEntitlement(user) {
     stopEntitlement();
@@ -4192,7 +4192,7 @@
   function loadNewsletterState() {
     if (!currentUser || nlBusy) return;
     nlBusy = true;
-    api("newsletter", {}).then(function (j) { nlState = j.state; nlFor = currentUser && currentUser.uid; nlRemember(j.state); })
+    api("newsletter", {}).then(function (j) { nlState = nlRecent() || j.state; nlFor = currentUser && currentUser.uid; nlRemember(j.state); })
       .catch(function () { nlState = "error"; nlFor = currentUser && currentUser.uid; })
       .then(function () { nlBusy = false; if (settingsOpen()) renderSettings(); });
   }
@@ -4209,19 +4209,23 @@
   // Kit only lets someone who unsubscribed back in if they sign up through a
   // Kit form themselves, so the browser submits the form (as the embed would),
   // then the site checks with Kit what happened.
+  // Kit's search runs minutes behind, so for 10 minutes after using the
+  // switch the site goes by what you chose, not by what the search says.
+  function nlRecent() {
+    try {
+      var r = JSON.parse(localStorage.getItem("soloSupper.nlChoice") || "null");
+      if (r && r.uid === (currentUser && currentUser.uid) && Date.now() - r.at < 600000) return r.state;
+    } catch (e) { /* no storage */ }
+    return "";
+  }
+  function nlChose(state) {
+    try { localStorage.setItem("soloSupper.nlChoice", JSON.stringify({ uid: currentUser && currentUser.uid, state: state, at: Date.now() })); } catch (e) { /* no storage */ }
+  }
   function kitFormSignup(formId, email) {
     var fd = new FormData();
     fd.append("email_address", email);
     return fetch("https://app.kit.com/forms/" + encodeURIComponent(formId) + "/subscriptions", { method: "POST", mode: "no-cors", body: fd })
-      .catch(function () { /* checked below */ });
-  }
-  function nlRecheck(tries) {
-    return new Promise(function (res) { setTimeout(res, 2500); })
-      .then(function () { return api("newsletter", {}); })
-      .then(function (j) {
-        if (j.state === "active" || j.state === "inactive" || tries <= 1) return j;
-        return nlRecheck(tries - 1);
-      });
+      .then(function () { return true; }, function () { return false; });
   }
   function nlResult(j, on) {
     nlState = j.state; nlRemember(j.state);
@@ -4238,11 +4242,15 @@
       var on = sw.checked;
       sw.disabled = true;
       api("newsletter", { set: on }).then(function (j) {
-        if (!on || !j.formId) return j;
-        var note = j.note;
-        return kitFormSignup(j.formId, j.email || currentUser.email)
-          .then(function () { return nlRecheck(2); })
-          .then(function (k) { k.note = note + "; now " + k.state; return k; });
+        if (!on) { j.state = "cancelled"; nlChose("cancelled"); return j; }
+        if (!j.formId) return j;
+        // The form is what re-subscribes people. If it went through, that's
+        // the answer; Kit's search won't show it for a few minutes.
+        return kitFormSignup(j.formId, j.email || currentUser.email).then(function (sent) {
+          if (sent) { j.state = "active"; nlChose("active"); }
+          j.note = (j.note || "") + (sent ? "; form sent" : "; form couldn't be sent");
+          return j;
+        });
       }).then(function (j) { nlResult(j, on); })
         .catch(function (e) { toast(e.message); }).then(function () { if (settingsOpen()) renderSettings(); });
     });

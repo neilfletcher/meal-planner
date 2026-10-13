@@ -1711,6 +1711,8 @@
     if (user && user.email && user.email.toLowerCase() === ALLOWED_EMAIL.toLowerCase()) {
       authGate.hidden = true;
       dashboardRoot.hidden = false;
+      // This browser is yours: keep it out of the site's analytics and counts.
+      try { localStorage.setItem("soloSupper.internal", "1"); } catch (e) { /* storage blocked */ }
       loadDashboardData();
       loadCodes();
       loadPromos();

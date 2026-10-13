@@ -272,7 +272,7 @@ export async function findUserByEmail(env, email) {
   return u ? { uid: u.localId, email: u.email || email } : null;
 }
 
-// Every sign-in account (uid and createdAt), up to 50,000.
+// Every sign-in account (uid, email and createdAt), up to 50,000.
 export async function listAuthUsers(env) {
   var out = [], total = 0;
   for (var offset = 0; offset < 50000; offset += 500) {
@@ -280,7 +280,7 @@ export async function listAuthUsers(env) {
     if (!r.ok) throw httpError(502, "Listing accounts failed: " + (await r.text()).slice(0, 200));
     var body = await r.json();
     total = parseInt(body.recordsCount, 10) || 0;
-    (body.userInfo || []).forEach(function (u) { out.push({ uid: u.localId, createdAt: parseInt(u.createdAt, 10) || 0 }); });
+    (body.userInfo || []).forEach(function (u) { out.push({ uid: u.localId, email: u.email || "", createdAt: parseInt(u.createdAt, 10) || 0 }); });
     if (!body.userInfo || body.userInfo.length < 500) break;
   }
   return { total: Math.max(total, out.length), users: out };

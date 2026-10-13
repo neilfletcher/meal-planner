@@ -25,7 +25,7 @@
   document.querySelectorAll("[data-amazon]").forEach(function (a) {
     a.addEventListener("click", function () {
       var parts = a.getAttribute("data-amazon").split(":");
-      try { navigator.sendBeacon("/api/book-click", new Blob([JSON.stringify({ book: parts[0], store: parts[1] })], { type: "application/json" })); } catch (e) { /* not counted */ }
+      if (lsGet("soloSupper.internal") !== "1") try { navigator.sendBeacon("/api/book-click", new Blob([JSON.stringify({ book: parts[0], store: parts[1] })], { type: "application/json" })); } catch (e) { /* not counted */ }
       track("amazon_click", { item_id: "book-" + parts[0], store: parts[1] });
     });
   });

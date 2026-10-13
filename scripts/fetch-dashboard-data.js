@@ -505,6 +505,10 @@ async function fetchOtherSites(analyticsClient, propertyId) {
   return out;
 }
 
+// Neil's own accounts are left out of every number (EXCLUDE_EMAILS can add more).
+const INTERNAL_EMAILS = String(process.env.EXCLUDE_EMAILS || 'neil.fletcher@gmail.com').toLowerCase().split(/[,\s]+/).filter(Boolean);
+const internalUids = new Set();
+
 async function fetchFirebaseSignups() {
   let users = [];
   let pageToken;
@@ -513,6 +517,10 @@ async function fetchFirebaseSignups() {
     users = users.concat(result.users);
     pageToken = result.pageToken;
   } while (pageToken);
+  users = users.filter((u) => {
+    if (u.email && INTERNAL_EMAILS.includes(u.email.toLowerCase())) { internalUids.add(u.uid); return false; }
+    return true;
+  });
 
   const now = Date.now();
 
@@ -596,7 +604,10 @@ async function fetchEngagement(titles, totalSignups) {
   const favouriteCounts = {};
   const touchedRecipeIds = new Set();
 
+  let skipped = 0;
   snapshot.forEach((doc) => {
+    // users/{uid}/planner/state: leave out Neil's own accounts.
+    if (internalUids.has(doc.ref.path.split('/')[1])) { skipped += 1; return; }
     const data = doc.data() || {};
 
     const plan = Array.isArray(data.plan) ? data.plan : [];
@@ -632,7 +643,7 @@ async function fetchEngagement(titles, totalSignups) {
     }
   });
 
-  const trackedAccounts = snapshot.size;
+  const trackedAccounts = snapshot.size - skipped;
   const totalRecipes = Object.keys(titles).length;
 
   // Cross-device usage - a separate, isolated doc per account
@@ -644,6 +655,7 @@ async function fetchEngagement(titles, totalSignups) {
   try {
     const deviceSnapshot = await db.collectionGroup('deviceLog').get();
     deviceSnapshot.forEach((doc) => {
+      if (internalUids.has(doc.ref.path.split('/')[1])) return;
       const ids = (doc.data() || {}).ids;
       deviceTrackedAccounts += 1;
       if (Array.isArray(ids) && ids.length > 1) multiDeviceAccounts += 1;

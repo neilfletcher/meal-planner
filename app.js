@@ -622,6 +622,11 @@
       currentUser = user;
       updateAccountUI(user);
       if (user) {
+        // Neil's own accounts: keep this browser out of the analytics.
+        if (user.email && INTERNAL_EMAILS.indexOf(user.email.toLowerCase()) !== -1 && lsGet("soloSupper.internal") !== "1") {
+          lsSet("soloSupper.internal", "1");
+          stopAnalytics();
+        }
         trackSignUp(user);
         startCloudSync(user);
         startEntitlement(user);
@@ -3188,9 +3193,12 @@
 
   /* ============================= ANALYTICS CONSENT ============================= */
   var GA_ID = "G-JF54HQGVLT";
+  var INTERNAL_EMAILS = ["neil.fletcher@gmail.com"];
   var CONSENT_KEY = "soloSupper.analyticsConsent";
   function analyticsConsent() { return lsGet(CONSENT_KEY); } // "yes" | "no" | null
   function loadAnalytics() {
+    // Your own browsers never send analytics (marked when you sign in as yourself).
+    if (lsGet("soloSupper.internal") === "1") { window["ga-disable-" + GA_ID] = true; return; }
     window["ga-disable-" + GA_ID] = false;
     if (window.__ssGaLoaded) return;
     window.__ssGaLoaded = true;

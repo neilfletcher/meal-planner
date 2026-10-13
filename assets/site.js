@@ -216,6 +216,8 @@
   var GA_ID = "G-JF54HQGVLT";
   var CONSENT_KEY = "soloSupper.analyticsConsent";
   function loadAnalytics() {
+    // Your own browsers never send analytics (marked when you sign in as yourself).
+    if (lsGet("soloSupper.internal") === "1") { window["ga-disable-" + GA_ID] = true; return; }
     window["ga-disable-" + GA_ID] = false;
     if (window.__ssGaLoaded) return;
     window.__ssGaLoaded = true;

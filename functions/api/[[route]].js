@@ -27,6 +27,21 @@ import { proState, addMonths, TRIAL_DAYS } from "../_shared/entitlement.js";
 
 var DAY = 86400000;
 
+// Your own accounts (testing, using it yourself) are left out of every
+// number on the admin page and out of the counts. EXCLUDE_EMAILS in
+// Cloudflare can list more, separated by commas.
+function internalEmails(env) {
+  return String(env.EXCLUDE_EMAILS || env.ADMIN_EMAILS || "neil.fletcher@gmail.com").toLowerCase().split(/[,\s]+/).filter(Boolean);
+}
+function isInternal(env, email) { return !!email && internalEmails(env).indexOf(String(email).toLowerCase()) !== -1; }
+async function internalUids(env) {
+  var out = {};
+  await Promise.all(internalEmails(env).map(function (e) {
+    return findUserByEmail(env, e).then(function (u) { if (u) out[u.uid] = 1; }).catch(function () {});
+  }));
+  return out;
+}
+
 function json(data, status) {
   return new Response(JSON.stringify(data), {
     status: status || 200,
@@ -264,7 +279,8 @@ async function admin(request, env) {
   // Which channels bring sign-ups and paying customers (first touch, for
   // people who allowed usage statistics; everyone else is "not known").
   if (body.action === "sources") {
-    var rows = await listCollection(env, "entitlements", null, 50000);
+    var srcSkip = await internalUids(env);
+    var rows = (await listCollection(env, "entitlements", null, 50000)).filter(function (r) { return !srcSkip[r.id] && !isInternal(env, r.data.email); });
     var bySrc = {}, byLanding = {}, total = { accounts: 0, paying: 0, everPaid: 0, known: 0 };
     rows.forEach(function (row) {
       var e = row.data, st = proState(e, now);
@@ -295,7 +311,10 @@ async function admin(request, env) {
 
   if (body.action === "liveCounts") {
     var lists = await Promise.all([listAuthUsers(env), listCollection(env, "entitlements", null, 50000)]);
-    var auth = lists[0], ents = lists[1];
+    var skip = {};
+    lists[0].users.forEach(function (u) { if (isInternal(env, u.email)) skip[u.uid] = 1; });
+    var auth = { total: lists[0].total - Object.keys(skip).length, users: lists[0].users.filter(function (u) { return !skip[u.uid]; }) };
+    var ents = lists[1].filter(function (r) { return !skip[r.id] && !isInternal(env, r.data.email); });
     var since = function (ms) { return auth.users.filter(function (u) { return u.createdAt > now - ms; }).length; };
     var c = { accounts: auth.total, newToday: since(DAY), new7: since(7 * DAY), new30: since(30 * DAY),
       paying: 0, monthly: 0, annual: 0, cancelling: 0, everPaid: 0, onTrial: 0, freePro: 0, trialEnded: 0 };
@@ -340,8 +359,12 @@ async function admin(request, env) {
     var bl = await Promise.all([
       listCollection(env, "purchases", null, 5000),
       listCollection(env, "bookStats", null, 2000),
-      listCollection(env, "entitlements", null, 50000)
+      listCollection(env, "entitlements", null, 50000),
+      internalUids(env)
     ]);
+    var bkSkip = bl[3];
+    bl[0] = bl[0].filter(function (r) { return !isInternal(env, r.data.email) && !(r.data.uid && bkSkip[r.data.uid]); });
+    bl[2] = bl[2].filter(function (r) { return !bkSkip[r.id] && !isInternal(env, r.data.email); });
     var keys = BOOK_IDS.map(bookKey);
     var per = {};
     BOOK_IDS.forEach(function (id) { per[id] = { id: id, title: BOOKS[id].title, alone: 0, bundle: 0, gifted: 0, subs: 0, co30: 0, dl30: 0, dlAll: 0, amz30: 0, amzAll: 0 }; });
@@ -613,7 +636,7 @@ async function bookCheckout(request, env) {
   if (user) { params.client_reference_id = user.uid; if (user.email) params.customer_email = user.email; }
   var session = await stripe(env, "POST", "checkout/sessions", params);
   var co = {}; co["co_" + bookKey(book)] = 1;
-  await countBook(env, co);
+  if (!(user && isInternal(env, user.email))) await countBook(env, co);
   return json({ url: session.url });
 }
 
@@ -663,21 +686,24 @@ async function bookLink(request, env) {
   var body = await readJson(request);
   var book = String(body.book || "");
   if (!BOOKS[book]) throw httpError(400, "Unknown book.");
-  var ok = false, via = "purchase";
+  var ok = false, via = "purchase", mine = false;
   if (body.s) {
     var rec = await paidBookSession(env, body.s);
+    mine = isInternal(env, rec.email);
     if (rec.refunded) throw httpError(410, "This purchase was refunded, so the download has been switched off.");
     ok = rec.books.indexOf(book) !== -1;
     if (rec.gift) via = "gift";
   } else {
-    via = (await ownedBooks(env, await requireUser(request, env)))[book] || "";
+    var who = await requireUser(request, env);
+    mine = isInternal(env, who.email);
+    via = (await ownedBooks(env, who))[book] || "";
     ok = !!via;
     if (via === "bought") via = "account";
   }
   if (!ok) throw httpError(403, "This book isn't on your account.");
   if (!env.BOOKS) throw httpError(503, "Downloads are being set up. Please try again later, or email us.");
   var dl = {}; dl["dl_" + bookKey(book)] = 1; dl["dlvia_" + via] = 1;
-  await countBook(env, dl);
+  if (!mine) await countBook(env, dl);
   return json({ url: await downloadUrl(env, siteOrigin(request, env), book) });
 }
 

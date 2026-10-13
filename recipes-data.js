@@ -431,19 +431,20 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d25", title: "Beef Massaman-Style Curry", tags: ["spicy"], cuisine: "Thailand", protein: "beef",
-      prep: 8, cook: 15,
+      prep: 8, cook: 20,
       ingredients: [
         ing(150, "g", "beef frying strips", "meat"), ing(2, "tbsp", "massaman or red curry paste", "store"),
         ing(200, "ml", "coconut milk", "store"), ing(1, "", "small potato, diced", "produce"),
         ing(1, "tbsp", "roasted peanuts", "store"), ing(70, "g", "jasmine rice", "store"),
-        ing(1, "tsp", "fish sauce", "store")
+        ing(1, "tsp", "fish sauce", "store"), ing(1, "tsp", "vegetable oil", "store")
       ],
       steps: [
         "Cook the rice according to the packet instructions.",
-        "Dice the potato into small chunks.",
-        "Heat a splash of the coconut milk in a saucepan over medium heat, add the curry paste and fry for 1 minute until fragrant.",
-        "Add the potato and stir to coat, then pour in the remaining coconut milk.",
-        "Simmer for 10–12 minutes until the potato is tender, then add the beef and simmer for 2 minutes until just cooked.",
+        "Dice the potato into 1.5cm chunks.",
+        "Heat the oil in a saucepan over high heat and fry the beef strips for 1–2 minutes until browned all over. Tip onto a plate.",
+        "Lower the heat to medium, add a splash of the coconut milk and the curry paste to the pan, and fry for 1 minute until fragrant.",
+        "Add the potato and stir to coat, then pour in the remaining coconut milk. Simmer for 15 minutes, stirring now and then, until the potato is tender when pierced with a knife.",
+        "Return the beef and any juices to the pan and simmer for 1 minute to warm through.",
         "Stir in the fish sauce, taste and adjust seasoning, then serve over the rice scattered with crushed peanuts."
       ]
     },

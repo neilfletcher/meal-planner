@@ -4229,6 +4229,24 @@
     window.addEventListener("appinstalled", function () { installPrompt = null; renderInstallNote(); track("pwa_installed", {}); });
   }
 
+  /* ============================= HEADER SEARCH =============================
+   * The same search box as the website (assets/search.js), over the built-in
+   * recipes and the person's own. Picking one opens it here.
+   */
+  if (window.SoloSearch) {
+    window.SoloSearch.init({
+      base: ASSET_BASE,
+      getItems: function () {
+        return RECIPES.map(function (r) {
+          return { i: r.id, t: r.title, u: recipeSlug(r.title), c: r.custom ? "Your recipe" : r.cuisine, p: proteinName(r.protein), m: r.prep + r.cook,
+            g: r.tags.filter(function (t) { return t !== "quick"; }), ph: PHOTO_SET[r.id] ? 1 : 0,
+            k: r.ingredients.map(function (i) { return String(i.item || "").split(/[,(]/)[0]; }).join(" ") };
+        });
+      },
+      onPick: function (it) { openRecipeModal(it.i, { fromLibrary: true }); }
+    });
+  }
+
   // Links in from the public recipe pages: plan/?add=d12 opens that recipe
   // ready to drop into a day; plan/?cook=d12 goes straight to cooking mode.
   (function handleDeepLink() {

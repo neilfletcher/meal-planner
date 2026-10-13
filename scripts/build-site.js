@@ -417,7 +417,8 @@ function header(rel, active) {
     link("pro", "#pro", "Pro") +
     "</nav>" +
     '<div class="site-header-actions">' +
-    '<a class="btn btn-ink" href="' + rel + 'plan/" data-planner-cta>Plan your week</a>' +
+    '<button type="button" class="ss-search-btn" data-search-open aria-label="Search recipes">' + ICON.search + "<span>Search</span><kbd>/</kbd></button>" +
+    '<a class="btn btn-ink" href="' + rel + 'plan/" data-planner-cta><span class="cta-long">Plan your week</span><span class="cta-short">Plan</span></a>' +
     "</div></div></header>\n";
 }
 
@@ -437,7 +438,8 @@ function footer(rel) {
     '<div class="footer-base"><span>&copy; ' + YEAR + " Solo Supper</span><span>Every recipe written for one. Scaled for two when someone stays over.</span></div>" +
     "</div></footer>\n" +
     '<div class="consent" id="consent" role="region" aria-label="Usage statistics" hidden></div>\n' +
-    '<script src="' + rel + 'assets/site.js" defer></script>\n</body>\n</html>\n';
+    '<script src="' + rel + 'assets/search.js" defer></script>\n' +
+    '<script src="' + rel + 'assets/site.js" defer data-base="' + rel + '"></script>\n</body>\n</html>\n';
 }
 
 function page(o, body) {
@@ -952,6 +954,14 @@ LEGAL.forEach(function (l) {
     "</section>"));
   sitemap.push({ loc: "app/", pri: "0.5" });
 })();
+
+/* ------------------------------------------------------------ search index */
+// What the header search box looks through (assets/search.js).
+out("assets/search-index.json", JSON.stringify(RECIPES.map(function (r) {
+  return { i: r.id, t: r.title, u: r.slug, c: r.cuisine, d: demonym(r.cuisine), p: PROTEIN_LABEL[r.protein] || r.protein, m: total(r),
+    g: r.tags.filter(function (t) { return t !== "quick"; }), ph: r.photo ? 1 : 0,
+    k: uniq(r.ingredients.map(function (i) { return i.item.split(/[,(]/)[0].trim().toLowerCase(); })).join(" ") };
+})));
 
 /* ------------------------------------------------------------ 404 */
 // The 404 page is served for any missing path, at any depth, so it links with full addresses.

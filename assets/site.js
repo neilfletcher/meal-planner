@@ -17,6 +17,11 @@
     });
   }
 
+  /* ---------- header search (assets/search.js) ---------- */
+  var me = document.querySelector("script[data-base]");
+  var BASE = me ? me.getAttribute("data-base") : "/";
+  if (window.SoloSearch) window.SoloSearch.init({ indexUrl: BASE + "assets/search-index.json", base: BASE });
+
   /* ---------- offline support and installing as an app (see /sw.js) ---------- */
   if ("serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost")) {
     window.addEventListener("load", function () { navigator.serviceWorker.register("/sw.js").catch(function () {}); });
@@ -24,7 +29,10 @@
 
   /* ---------- returning planners go straight to their week ---------- */
   if (lsGet("soloSupper.state.v1")) {
-    document.querySelectorAll("[data-planner-cta]").forEach(function (a) { a.textContent = "Your week"; });
+    document.querySelectorAll("[data-planner-cta]").forEach(function (a) {
+      var long = a.querySelector(".cta-long"), short = a.querySelector(".cta-short");
+      if (long) { long.textContent = "Your week"; if (short) short.textContent = "Week"; } else a.textContent = "Your week";
+    });
   }
 
   /* ---------- servings on recipe pages ---------- */
@@ -109,10 +117,14 @@
     var chips = document.querySelectorAll("[data-filter]");
     var filter = "all";
     var apply = function () {
-      var terms = (search.value || "").toLowerCase().split(/\s+/).filter(Boolean);
+      var raw = (search.value || "").toLowerCase(), maxMin = null;
+      var tm = raw.match(/\b(?:under|in|less than)\s*(\d{2})\s*(?:min|mins|minutes)?\b/);
+      if (tm) { maxMin = +tm[1]; raw = raw.replace(tm[0], " "); }
+      var terms = raw.split(/\s+/).filter(Boolean);
       var shown = 0;
       cards.forEach(function (c) {
         var ok = (filter === "all" || (" " + c.getAttribute("data-tags") + " ").indexOf(" " + filter + " ") !== -1) &&
+          (!maxMin || +c.getAttribute("data-t") <= maxMin) &&
           terms.every(function (t) { return c.getAttribute("data-s").indexOf(t) !== -1; });
         c.hidden = !ok;
         if (ok) shown++;

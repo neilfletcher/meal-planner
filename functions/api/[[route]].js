@@ -360,6 +360,30 @@ async function admin(request, env) {
     return json({ codes: rows.map(function (r) { return Object.assign({ code: r.id }, r.data); }) });
   }
 
+  // Cookbook PDFs given by hand. Kept as a purchase with amount 0 against an
+  // email address, so it works whether or not they have an account yet: the
+  // books appear under Your books once they sign in with that email.
+  if (body.action === "giveBooks") {
+    var gEmail = String(body.email || "").trim().toLowerCase();
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(gEmail)) throw httpError(400, "Enter a proper email address.");
+    var gBooks = (Array.isArray(body.books) ? body.books : []).filter(function (b) { return BOOKS[b]; });
+    if (!gBooks.length) throw httpError(400, "Pick at least one book.");
+    var gId = "gift-" + Date.now().toString(36) + "-" + Math.random().toString(36).slice(2, 8);
+    var gAcct = await findUserByEmail(env, gEmail).catch(function () { return null; });
+    await mergeDoc(env, "purchases/" + gId, { email: gEmail, books: gBooks, uid: gAcct ? gAcct.uid : "", gift: true, givenBy: user.email, note: String(body.note || "").slice(0, 120), amount: 0, currency: "", createdAt: now });
+    return json({ id: gId, email: gEmail, books: gBooks, hasAccount: !!gAcct });
+  }
+  if (body.action === "listBookGifts") {
+    var gRows = await queryWhere(env, "purchases", "gift", true, 300);
+    gRows.sort(function (a, b) { return (b.data.createdAt || 0) - (a.data.createdAt || 0); });
+    return json({ gifts: gRows.map(function (r) { return Object.assign({ id: r.id }, r.data); }) });
+  }
+  if (body.action === "removeBookGift") {
+    if (!/^gift-[a-z0-9-]+$/.test(String(body.id || ""))) throw httpError(400, "Unknown gift.");
+    await deleteDoc(env, "purchases/" + body.id);
+    return json({ removed: body.id });
+  }
+
   if (body.action === "lookup" || body.action === "grant" || body.action === "revoke") {
     var found = await findUserByEmail(env, body.email || "");
     if (!found) throw httpError(404, "No Solo Supper account uses that email yet. Send a gift code instead.");

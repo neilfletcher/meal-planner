@@ -255,6 +255,7 @@
   .src-table td { text-align: right; padding: 8px; border-bottom: 1px solid var(--border); font-variant-numeric: tabular-nums; }
   .src-table tr.hl td { font-weight: 600; }
   .src-scroll { overflow-x: auto; }
+  .gb-books label { display: inline-flex; align-items: center; gap: 6px; font-size: 13.5px; }
   .err-table td { vertical-align: top; }
   .err-table td.msg { text-align: left; max-width: 520px; }
   .err-table .where { display: block; font-size: 12px; color: var(--ink-muted); margin-top: 2px; font-family: "IBM Plex Mono", monospace; word-break: break-all; }
@@ -658,6 +659,28 @@
           <button class="ghost" id="grRevoke" type="button">Remove free Pro</button>
         </div>
         <p class="gc-msg" id="grMsg"></p>
+
+        <h3 class="gc-h">Give the cookbook PDFs</h3>
+        <p class="gc-msg">Works whether or not they have an account: the books show under Your books in the planner's settings once they sign in with this email. Gift codes and free Pro don't include the books.</p>
+        <div class="gc-row">
+          <label class="grow">Their email <input type="email" id="gbEmail" placeholder="name@example.com"></label>
+          <label class="grow">Note <input type="text" id="gbNote" maxlength="120" placeholder="e.g. Mum, or reviewer"></label>
+        </div>
+        <div class="gc-row gb-books">
+          <label><input type="checkbox" value="all" id="gbAll"> All four</label>
+          <label><input type="checkbox" value="asia" data-gb> Asia</label>
+          <label><input type="checkbox" value="mediterranean-middle-east" data-gb> Mediterranean &amp; Middle East</label>
+          <label><input type="checkbox" value="americas-africa" data-gb> Americas &amp; Africa</label>
+          <label><input type="checkbox" value="britain-europe" data-gb> Britain &amp; Europe</label>
+          <button class="primary" id="gbGive" type="button">Give books</button>
+        </div>
+        <p class="gc-msg" id="gbMsg"></p>
+        <div class="gc-table-wrap">
+          <table class="gc-table">
+            <thead><tr><th>Email</th><th>Books</th><th>Note</th><th>Given</th><th></th></tr></thead>
+            <tbody id="gbRows"><tr><td colspan="5" class="gc-used">Loading&hellip;</td></tr></tbody>
+          </table>
+        </div>
 
         <h3 class="gc-h">All codes</h3>
         <div class="gc-table-wrap">
@@ -1519,6 +1542,41 @@
       msg.textContent = j.email + ": " + how + ".";
     }).catch(function (e) { msg.className = "gc-msg err"; msg.textContent = e.message; });
   }
+  // ---------- give cookbook PDFs ----------
+  var BOOK_SHORT = { "asia": "Asia", "mediterranean-middle-east": "Med & Middle East", "americas-africa": "Americas & Africa", "britain-europe": "Britain & Europe" };
+  var gbAll = document.getElementById("gbAll"), gbBoxes = document.querySelectorAll("[data-gb]");
+  gbAll.addEventListener("change", function () { gbBoxes.forEach(function (b) { b.checked = gbAll.checked; }); });
+  gbBoxes.forEach(function (b) { b.addEventListener("change", function () { gbAll.checked = Array.prototype.every.call(gbBoxes, function (x) { return x.checked; }); }); });
+  function loadBookGifts() {
+    adminApi({ action: "listBookGifts" }).then(function (j) {
+      document.getElementById("gbRows").innerHTML = j.gifts.length ? j.gifts.map(function (g) {
+        var names = (g.books || []).length === 4 ? "All four" : (g.books || []).map(function (b) { return BOOK_SHORT[b] || b; }).join(", ");
+        return "<tr><td>" + gcEsc(g.email) + "</td><td>" + gcEsc(names) + "</td><td>" + gcEsc(g.note || "") + "</td><td>" + gcDate(g.createdAt) +
+          '</td><td><button class="ghost" type="button" data-gb-remove="' + gcEsc(g.id) + '">Remove</button></td></tr>';
+      }).join("") : '<tr><td colspan="5" class="gc-used">None given yet</td></tr>';
+      document.querySelectorAll("[data-gb-remove]").forEach(function (b) {
+        b.addEventListener("click", function () {
+          b.disabled = true;
+          adminApi({ action: "removeBookGift", id: b.getAttribute("data-gb-remove") }).then(loadBookGifts).catch(function () { b.disabled = false; b.textContent = "Try again"; });
+        });
+      });
+    }).catch(function (e) { document.getElementById("gbRows").innerHTML = '<tr><td colspan="5" class="gc-used">Couldn\'t load: ' + gcEsc(e.message) + "</td></tr>"; });
+  }
+  document.getElementById("gbGive").addEventListener("click", function () {
+    var btn = this, msg = document.getElementById("gbMsg");
+    var email = document.getElementById("gbEmail").value.trim();
+    var books = Array.prototype.filter.call(gbBoxes, function (b) { return b.checked; }).map(function (b) { return b.value; });
+    if (!email) { msg.className = "gc-msg err"; msg.textContent = "Enter their email first."; return; }
+    if (!books.length) { msg.className = "gc-msg err"; msg.textContent = "Tick at least one book."; return; }
+    btn.disabled = true; msg.className = "gc-msg"; msg.textContent = "Working\u2026";
+    adminApi({ action: "giveBooks", email: email, books: books, note: document.getElementById("gbNote").value }).then(function (j) {
+      msg.textContent = "Given to " + j.email + ". " + (j.hasAccount ? "They have an account, so the books are in Your books now." : "No account yet: the books appear when they sign in with this email.");
+      document.getElementById("gbEmail").value = ""; document.getElementById("gbNote").value = "";
+      gbAll.checked = false; gbBoxes.forEach(function (b) { b.checked = false; });
+      loadBookGifts();
+    }).catch(function (e) { msg.className = "gc-msg err"; msg.textContent = e.message; }).then(function () { btn.disabled = false; });
+  });
+
   document.getElementById("grGive").addEventListener("click", function () { grant("grant"); });
   document.getElementById("grCheck").addEventListener("click", function () { grant("lookup"); });
   document.getElementById("grRevoke").addEventListener("click", function () { grant("revoke"); });
@@ -1571,6 +1629,7 @@
       loadCodes();
       loadPromos();
       startLive();
+      loadBookGifts();
       loadSources();
       loadErrors();
     } else if (user) {

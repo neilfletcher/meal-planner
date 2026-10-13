@@ -191,7 +191,7 @@ After changing them, redeploy (Deployments > ... > Retry deployment) and check `
 
 ## The cookbook PDFs
 
-Sold on `/books/` and included with Pro (yearly: all four, monthly: Asia, once the first payment has gone through). Code: `functions/_shared/books.js`, the `book-*` routes in `functions/api/[[route]].js`, `assets/books.js`, and "Your books" in the planner's settings.
+Sold on `/books/`, included with Pro (yearly: all four, monthly: Asia, once the first payment has gone through), and given by hand from the admin page ("Give the cookbook PDFs"). Gift codes and free Pro do not include them. Code: `functions/_shared/books.js`, the `book-*` routes in `functions/api/[[route]].js`, `assets/books.js`, and "Your books" in the planner's settings.
 
 Setup, once:
 1. **Files.** Cloudflare > R2 > Create bucket `solo-supper-books` (private). Upload the four screen PDFs, named exactly `solo-supper-asia.pdf`, `solo-supper-mediterranean-middle-east.pdf`, `solo-supper-americas-africa.pdf`, `solo-supper-britain-europe.pdf`.

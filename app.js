@@ -4176,8 +4176,8 @@
   /* ---------- the weekly email, from settings ---------- */
   function newsletterSettingsHtml() {
     if (isNativeApp() || !window.firebaseAuth || !currentUser || !currentUser.email) return "";
-    if (lsGet("soloSupper.newsletter") === "yes") return "<h3>The weekly email</h3><p class=\"settings-note\">You're on the list: five dinners for one every Saturday, with the shopping list. To stop, use the unsubscribe link in any email.</p>";
-    return "<h3>The weekly email</h3><p class=\"settings-note\">Five dinners for one every Saturday, planned to share their ingredients, with the shopping list and a link that adds them all to your week. Free, and you can unsubscribe from any email.</p>" +
+    if (lsGet("soloSupper.newsletter") === "yes") return "<h3>The weekly email</h3><p class=\"settings-note\">You're on the list: two dinners for one that share a pack, every Saturday. To stop, use the unsubscribe link in any email.</p>";
+    return "<h3>The weekly email</h3><p class=\"settings-note\">Every Saturday: two dinners for one, paired so the second finishes what the first opens, with a link that adds both to your week, and one tip for the planner. Free, and you can unsubscribe from any email.</p>" +
       '<button type="button" class="btn btn-outline btn-sm" id="nl-join-btn">Send it to ' + esc(currentUser.email) + "</button>";
   }
   function wireNewsletterSettings() {

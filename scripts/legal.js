@@ -50,7 +50,7 @@ module.exports = [
       "<p><strong>Legal basis:</strong> legitimate interests (keeping the site working).</p>",
 
       "<h3>The weekly email</h3>",
-      "<p>If you sign up for the weekly email (on the website, in the planner, or by ticking the box when you buy a cookbook), your email address is kept by Kit, the service that sends it, with a note of where you signed up. You get one email a week with dinners, a shopping list and occasionally news about Solo Supper's books and Pro. Every email has an unsubscribe link, and unsubscribing stops them straight away. Kit records whether emails are opened and links clicked, so I can see what's useful.</p>",
+      "<p>If you sign up for the weekly email (on the website, in the planner, or by ticking the box when you buy a cookbook), your email address is kept by Kit, the service that sends it, with a note of where you signed up. You get one email a week with dinner ideas, tips for the planner and occasionally news about Solo Supper's books and Pro. Every email has an unsubscribe link, and unsubscribing stops them straight away. Kit records whether emails are opened and links clicked, so I can see what's useful.</p>",
       "<p><strong>Legal basis:</strong> your consent, which you can withdraw at any time by unsubscribing.</p>",
 
       "<h3>Emails</h3>",

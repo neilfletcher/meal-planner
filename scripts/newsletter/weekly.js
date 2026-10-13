@@ -20,6 +20,17 @@ var REPEAT_WEEKS = 10;
 var DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
 var OUT = path.join(U.ROOT, "newsletter");
 
+// Which cookbook each cuisine is in (from the book build's books.json), and
+// the prices on the books page (scripts/build-site.js BOOK_PDF_PRICE and BOOK_BUNDLE_PRICE).
+var BOOKS = [
+  { id: "asia", name: "Asia", c: ["China", "Japan", "Korea", "Thailand", "Vietnam", "Indonesia", "Malaysia", "Singapore", "Philippines", "Hawaii", "India", "Pakistan", "Sri Lanka"] },
+  { id: "mediterranean-middle-east", name: "Mediterranean & Middle East", c: ["Italy", "Greece", "Spain", "France", "Portugal", "Cyprus", "Lebanon", "Israel", "Turkey", "Iran", "Egypt", "Morocco", "Tunisia", "Georgia", "Armenia", "Uzbekistan"] },
+  { id: "americas-africa", name: "Americas & Africa", c: ["Mexico", "USA", "Canada", "Jamaica", "Cuba", "Puerto Rico", "Trinidad", "Brazil", "Peru", "Argentina", "Colombia", "Chile", "Nigeria", "Ghana", "Kenya", "Senegal", "Ethiopia", "South Africa"] },
+  { id: "britain-europe", name: "Britain & Europe", c: ["UK", "Ireland", "Germany", "Austria", "Switzerland", "Netherlands", "Belgium", "Denmark", "Sweden", "Norway", "Finland", "Poland", "Hungary", "Romania", "Russia", "Ukraine", "Australia", "New Zealand"] }
+];
+var PDF_PRICE = "4.99", BUNDLE_PRICE = "12.99";
+function bookFor(r) { return BOOKS.filter(function (b) { return b.c.indexOf(r.cuisine) !== -1; })[0] || null; }
+
 function arg(name) { var i = process.argv.indexOf("--" + name); return i === -1 ? null : (process.argv[i + 1] && !/^--/.test(process.argv[i + 1]) ? process.argv[i + 1] : true); }
 function log(s) { console.log("[newsletter] " + s); }
 
@@ -84,7 +95,7 @@ function listAnd(a) { return a.length < 2 ? a.join("") : a.slice(0, -1).join(", 
 function utm(url, content) { return url + (url.indexOf("?") === -1 ? "?" : "&") + "utm_source=newsletter&utm_medium=email&utm_campaign=weekly-" + WEEK + (content ? "&utm_content=" + content : ""); }
 var WEEK = "";
 
-function buildEmail(data, week, dinners) {
+function buildEmail(data, week, dinners, lifetime) {
   WEEK = week;
   var e = U.esc, site = data.siteUrl;
   var total = {};
@@ -130,16 +141,35 @@ function buildEmail(data, week, dinners) {
       '<p style="margin:12px 0 2px;font:600 12px/1.4 Menlo,Consolas,monospace;letter-spacing:.08em;text-transform:uppercase;color:#C2412A">' + DAYS[i] + "</p>" +
       '<p style="margin:0;font:22px/1.25 Georgia,serif"><a href="' + e(url) + '" style="color:#1A211D;text-decoration:none">' + e(r.title) + "</a></p>" +
       '<p style="margin:4px 0 0;font-size:14px;color:#636A63">' + U.minutes(r) + " minutes &middot; " + e(r.demonym || r.cuisine) + (partners.length ? " &middot; shares the " + e(listAnd(partners)) : "") + "</p>" +
+      (bookFor(r) ? '<p style="margin:2px 0 0;font-size:13px;color:#636A63">In <a href="' + e(utm(site + "/books/#" + bookFor(r).id, "dinner-book")) + '" style="color:#636A63">Solo Supper: ' + e(bookFor(r).name) + "</a></p>" : "") +
       "</td></tr>";
   }).join("");
 
-  var promos = [
-    ["The cookbooks", "All 442 recipes in four books, planned into weeks like this one, with every shopping list. As PDFs or on Amazon.", site + "/books/", "See the books"],
-    ["Plan around your packs", "Pro picks dinners that finish what you've opened, and plans around what's already in your fridge. Free for 14 days, no card needed.", site + "/plan/?pro=plans", "Try Pro free"],
-    ["Got half a pack left?", "Pick what's in your fridge and find a dinner that finishes it.", site + "/use-up/", "Use it up"]
-  ];
-  var wk = Math.floor(new Date(week + "T00:00:00Z").getTime() / (7 * 864e5));
-  var promo = promos[wk % promos.length];
+  // The books this week's dinners come from (most dinners first).
+  var inBooks = {};
+  dinners.forEach(function (r) { var b = bookFor(r); if (b) inBooks[b.id] = (inBooks[b.id] || 0) + 1; });
+  var weekBooks = BOOKS.filter(function (b) { return inBooks[b.id]; }).sort(function (a, b) { return inBooks[b.id] - inBooks[a.id]; });
+  var lead = weekBooks[0] || BOOKS[0];
+  var block = function (inner) { return '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:30px 0 0;background:#EFECE5;border-radius:12px"><tr><td style="padding:22px 22px 20px">' + inner + "</td></tr></table>"; };
+  var proBlock = block(
+    '<p style="margin:0 0 4px;font:600 12px/1.4 Menlo,Consolas,monospace;letter-spacing:.08em;text-transform:uppercase;color:#C2412A">Solo Supper Pro</p>' +
+    '<p style="margin:0 0 8px;font:normal 22px/1.25 Georgia,serif">Let it plan the week for you</p>' +
+    '<p style="margin:0 0 10px">Weeks like this one, picked in one tap: dinners that finish the packs you open, planned around what\u2019s already in your fridge, with next week sorted on a Sunday.' +
+    " Yearly is \u00a314.99 and includes all four cookbook PDFs.</p>" +
+    btn(utm(site + "/plan/?pro=plans", "pro"), "Try Pro free for 14 days") +
+    '<p style="margin:0;font-size:13px;color:#636A63">No card needed for the trial.</p>');
+  var bookBlock = block(
+    '<table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>' +
+    '<td width="96" valign="top" style="padding:0 16px 0 0"><a href="' + e(utm(site + "/books/#" + lead.id, "book-cover")) + '"><img src="' + e(site + "/img/books/" + lead.id + "-cover.webp") + '" width="96" alt="Solo Supper: ' + e(lead.name) + '" style="display:block;width:96px;height:auto;border-radius:4px;border:0"></a></td>' +
+    '<td valign="top"><p style="margin:0 0 4px;font:600 12px/1.4 Menlo,Consolas,monospace;letter-spacing:.08em;text-transform:uppercase;color:#C2412A">The cookbooks</p>' +
+    '<p style="margin:0 0 8px;font:normal 20px/1.25 Georgia,serif">' + (weekBooks.length > 1 ? "This week\u2019s dinners are in " + e(listAnd(weekBooks.map(function (b) { return b.name; }))) : "This week\u2019s dinners are in Solo Supper: " + e(lead.name)) + "</p>" +
+    '<p style="margin:0 0 10px">Every recipe measured for one and planned into weeks like this, with the shopping lists. PDF \u00a3' + PDF_PRICE + ", all four \u00a3" + BUNDLE_PRICE + ", or in paperback and Kindle.</p>" +
+    '<p style="margin:0"><a href="' + e(utm(site + "/books/#" + lead.id, "book")) + '" style="color:#C2412A;font-weight:600">Get Solo Supper: ' + e(lead.name) + ' &rarr;</a>' +
+    (weekBooks.length > 1 ? '<br><a href="' + e(utm(site + "/books/", "book-bundle")) + '" style="color:#C2412A;font-weight:600">Or all four PDFs, \u00a3' + BUNDLE_PRICE + " &rarr;</a>" : "") + "</p></td></tr></table>");
+  var ltBanner = lifetime && lifetime.on ? '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 18px;border:1.5px dashed #C9C3B6;border-radius:12px"><tr><td style="padding:14px 18px">' +
+    "<strong>Limited time: Pro for life, \u00a3" + (lifetime.amount / 100).toFixed(lifetime.amount % 100 ? 2 : 0) + " once.</strong> No subscription, all four cookbook PDFs included" +
+    (lifetime.until ? ", until " + e(new Date(lifetime.until - 1).toLocaleDateString("en-GB", { weekday: "long", day: "numeric", month: "long", timeZone: "Europe/London" })) : "") +
+    '. <a href="' + e(utm(site + "/plan/?pro=lifetime", "lifetime")) + '" style="color:#C2412A;font-weight:600">Get lifetime Pro</a></td></tr></table>' : "";
 
   var html =
     '<div style="background:#F7F5F0;padding:0">' +
@@ -147,6 +177,7 @@ function buildEmail(data, week, dinners) {
     '<tr><td style="padding:28px 20px 0">' +
     '<p style="margin:0 0 4px;font:600 12px/1.4 Menlo,Consolas,monospace;letter-spacing:.1em;text-transform:uppercase;color:#636A63">Solo Supper &middot; week of ' + e(weekNice) + "</p>" +
     '<h1 style="margin:0 0 12px;font:normal 32px/1.15 Georgia,serif">Five dinners, one shop</h1>' +
+    ltBanner +
     '<p style="margin:0 0 10px">Here’s a week of dinners for one that share their ingredients' + (shared.length ? ", so the " + e(listAnd(shared.slice(0, 3))) + " get used up, not thrown away" : "") + ". Cook them in any order you like.</p>" +
     btn(planUrl, "Add all five to my planner") +
     '<p style="margin:0;font-size:13px;color:#636A63">Fills your empty days from today, and the shopping list adds itself up.</p>' +
@@ -158,10 +189,8 @@ function buildEmail(data, week, dinners) {
       return '<p style="margin:10px 0 0"><strong style="font-weight:600">' + FRESH[c] + ":</strong> " + e(listAnd(Object.keys(other[c]).sort())) + "</p>";
     }).join("") +
     '<p style="margin:8px 0 0;font-size:14px;color:#636A63">Plus ' + Object.keys(cupboard).length + " cupboard things you may already have. The planner has the full list, with amounts.</p>" +
-    '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:34px 0 0;background:#EFECE5;border-radius:12px"><tr><td style="padding:22px 22px 18px">' +
-    '<p style="margin:0 0 6px;font:normal 20px/1.25 Georgia,serif">' + e(promo[0]) + "</p>" +
-    '<p style="margin:0 0 6px">' + e(promo[1]) + "</p>" +
-    '<p style="margin:0"><a href="' + e(utm(promo[2], "promo")) + '" style="color:#C2412A;font-weight:600">' + e(promo[3]) + " &rarr;</a></p></td></tr></table>" +
+    proBlock + bookBlock +
+    '<p style="margin:24px 0 0;font-size:14px;color:#636A63">Got half a pack left from last week? <a href="' + e(utm(site + "/use-up/", "use-up")) + '" style="color:#636A63">Find a dinner that finishes it</a>.</p>' +
     '<p style="margin:30px 0 30px">Happy cooking,<br>Neil</p>' +
     "</td></tr></table></div>";
   return { subject: subject, preview: preview, html: html, ids: dinners.map(function (r) { return r.id; }), shared: shared };
@@ -187,7 +216,10 @@ async function main() {
   var data = U.loadSiteData();
   var done = (history.weeks || []).filter(function (w) { return w.week === week; })[0];
   var dinners = done ? done.recipes.map(function (id) { return data.byId[id]; }) : chooseWeek(data, history, week);
-  var email = buildEmail(data, week, dinners);
+  // Lifetime Pro, if it's on offer right now (switched on from the admin page).
+  var lifetime = null;
+  try { var lr = await fetch(data.siteUrl + "/api/lifetime"); if (lr.ok) lifetime = await lr.json(); } catch (e) { /* no banner */ }
+  var email = buildEmail(data, week, dinners, lifetime);
   fs.mkdirSync(OUT, { recursive: true });
   var previewPath = path.join(OUT, week + ".html");
   fs.writeFileSync(previewPath, "<!doctype html><meta charset=utf-8><title>" + U.esc(email.subject) + "</title><body style=\"margin:0\">" + email.html + "\n");

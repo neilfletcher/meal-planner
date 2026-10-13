@@ -347,7 +347,10 @@ var ICON = {
   share: '<svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15V4M8 8l4-4 4 4M5 13v6h14v-6"/></svg>',
   basket: '<svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h16l-1.5 10h-13z"/><path d="M8 9l4-5 4 5"/></svg>',
   check: '<svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>',
-  menu: '<svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h16M4 16h16"/></svg>'
+  menu: '<svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h16M4 16h16"/></svg>',
+  print: '<svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 9V4h10v5"/><rect x="4" y="9" width="16" height="7" rx="1.5"/><path d="M7 14h10v6H7z"/></svg>',
+  pin: '<svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21v-6"/><path d="M8 4h8l-1 6 3 3H6l3-3z"/></svg>',
+  phone: '<svg class="i" viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="3" width="10" height="18" rx="2"/><path d="M11 18h2"/></svg>'
 };
 var LOGO = '<svg class="logo-mark" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="1.4"/><circle cx="14.6" cy="13.6" r="3.1" class="logo-dot"/></svg>';
 
@@ -428,7 +431,7 @@ function footer(rel) {
     '<div class="footer-brand"><a class="brand brand-light" href="' + rel + '">' + LOGO + "<span>Solo Supper</span></a>" +
     '<p class="footer-line">Good dinners, sized for <em>one</em>.</p></div>' +
     col("Recipes", [["Quick dinners for one", rel + "collections/quick-dinners-for-one/"], ["Vegetarian for one", rel + "collections/vegetarian-dinners-for-one/"], ["Fish for one", rel + "collections/fish-dinners-for-one/"], ["All recipes", rel + "recipes/"]]) +
-    col("Planner", [["Plan your week", rel + "plan/"], ["Use it up", rel + "use-up/"], ["Cuisines", rel + "cuisines/"], ["Collections", rel + "collections/"]]) +
+    col("Planner", [["Plan your week", rel + "plan/"], ["Get the app", rel + "app/"], ["Use it up", rel + "use-up/"], ["Cuisines", rel + "cuisines/"], ["Collections", rel + "collections/"]]) +
     col("About", [["Contact", "mailto:" + CONTACT_EMAIL], ["Privacy", rel + "privacy/"], ["Terms", rel + "terms/"], ["Refunds", rel + "refunds/"], ["Cookies", rel + "cookies/"], ["Cookie settings", "#cookie-settings"]]) +
     "</div>" +
     '<div class="footer-base"><span>&copy; ' + YEAR + " Solo Supper</span><span>Every recipe written for one. Scaled for two when someone stays over.</span></div>" +
@@ -648,7 +651,7 @@ RECIPES.forEach(function (r) {
     return '<div class="ing-group"><span class="eyebrow">' + esc(CAT_LABEL[c] || c) + "</span><ul>" +
       groups[c].map(function (i) {
         var scalable = i.amt !== null && i.amt !== undefined;
-        return '<li><span class="ing-amt mono"' + (scalable ? ' data-amt="' + i.amt + '" data-unit="' + esc(i.unit || "") + '"' : "") + ">" + esc(amtText(i)) + '</span><span class="ing-name">' + esc(i.item) + swapHtml(i) + "</span></li>";
+        return '<li class="p-ingredient"><span class="ing-amt mono"' + (scalable ? ' data-amt="' + i.amt + '" data-unit="' + esc(i.unit || "") + '"' : "") + ">" + esc(amtText(i)) + '</span><span class="ing-name">' + esc(i.item) + swapHtml(i) + "</span></li>";
       }).join("") + "</ul></div>";
   }).join("");
   var stepsHtml = r.steps.map(function (s, k) { return '<li id="step-' + (k + 1) + '"><span class="step-num">' + (k + 1) + '</span><p>' + esc(s) + "</p></li>"; }).join("");
@@ -665,19 +668,23 @@ RECIPES.forEach(function (r) {
     '<div class="wrap">' +
     '<nav class="crumbs" aria-label="Breadcrumb"><a href="' + rel + 'recipes/">Recipes</a><span aria-hidden="true">/</span>' +
     '<a href="' + cuisineHref + '">' + esc(demonym(r.cuisine)) + '</a><span aria-hidden="true">/</span><span aria-current="page">' + esc(r.title) + "</span></nav>" +
-    '<article class="recipe" data-recipe="' + r.id + '">' +
+    '<article class="recipe h-recipe" data-recipe="' + r.id + '">' +
     '<header class="recipe-head">' +
-    '<div class="recipe-media">' + recipeImg(r, rel, "recipe-img", null, true) + "</div>" +
+    '<div class="recipe-media">' + recipeImg(r, rel, "recipe-img u-photo", null, true) + "</div>" +
     '<div class="recipe-intro">' +
     '<span class="eyebrow">' + esc(r.cuisine) + " &middot; " + esc(protein) + " &middot; No. " + pad3(r.id) + "</span>" +
-    '<h1 class="display-l">' + esc(r.title) + "</h1>" +
-    '<p class="lead">' + esc(dek(r)) + "</p>" +
-    '<dl class="meta4"><div><dt>Prep</dt><dd>' + r.prep + ' min</dd></div><div><dt>Cook</dt><dd>' + r.cook + ' min</dd></div><div><dt>Total</dt><dd>' + total(r) + ' min</dd></div><div><dt>Serves</dt><dd data-serves>1</dd></div></dl>' +
+    '<h1 class="display-l p-name">' + esc(r.title) + "</h1>" +
+    '<p class="lead p-summary">' + esc(dek(r)) + "</p>" +
+    '<dl class="meta4"><div><dt>Prep</dt><dd>' + r.prep + ' min</dd></div><div><dt>Cook</dt><dd>' + r.cook + ' min</dd></div><div><dt>Total</dt><dd><time class="dt-duration" datetime="' + isoMin(total(r)) + '">' + total(r) + ' min</time></dd></div><div><dt>Serves</dt><dd class="p-yield" data-serves>1</dd></div></dl>' +
     '<div class="btn-row">' +
     '<a class="btn btn-primary btn-lg" href="' + rel + "plan/?add=" + r.id + '">' + ICON.cal + "Add to my week</a>" +
     '<a class="btn btn-ink btn-lg" href="' + rel + "plan/?cook=" + r.id + '">Start cooking</a>' +
-    '<button class="btn-icon btn-icon-lg" type="button" data-share aria-label="Share this recipe">' + ICON.share + "</button>" +
-    "</div>" +
+    '<span class="icon-group"><button class="btn-icon btn-icon-lg" type="button" data-share aria-label="Share this recipe" title="Share">' + ICON.share + "</button>" +
+    '<button class="btn-icon btn-icon-lg" type="button" data-print aria-label="Print this recipe" title="Print">' + ICON.print + "</button>" +
+    (r.photo ? '<a class="btn-icon btn-icon-lg" href="https://www.pinterest.com/pin/create/button/?url=' + encodeURIComponent(SITE_URL + "/recipes/" + r.slug + "/") +
+      "&amp;media=" + encodeURIComponent(SITE_URL + "/img/recipes/" + r.id + ".webp") + "&amp;description=" + encodeURIComponent(r.title + ", a dinner for one from Solo Supper") +
+      '" target="_blank" rel="noopener" aria-label="Save to Pinterest" title="Save to Pinterest">' + ICON.pin + "</a>" : "") +
+    "</span></div>" +
     (tagMarks(r) ? '<div class="marks">' + tagMarks(r) + "</div>" : "") +
     "</div></header>" +
     '<div class="recipe-body">' +
@@ -688,7 +695,8 @@ RECIPES.forEach(function (r) {
     ingHtml +
     '<a class="btn btn-outline btn-block" href="' + rel + "plan/?add=" + r.id + '">' + ICON.basket + "Add to my shopping list</a>" +
     "</aside>" +
-    '<section class="method" aria-labelledby="method-h"><h2 id="method-h">Method</h2><ol class="method-steps">' + stepsHtml + "</ol>" + cookNotesHtml() +
+    '<section class="method" aria-labelledby="method-h"><h2 id="method-h">Method</h2><ol class="method-steps e-instructions">' + stepsHtml + "</ol>" + cookNotesHtml() +
+    '<p class="print-only print-source">solosupper.co.uk/recipes/' + r.slug + "/</p>" +
     (colls.length ? '<div class="in-colls"><span class="eyebrow">Find more like this</span><div class="chips">' +
       colls.map(function (c) { return '<a class="chip" href="' + rel + "collections/" + c.slug + '/">' + esc(c.h1) + "</a>"; }).join("") +
       '<a class="chip" href="' + cuisineHref + '">' + esc(demonym(r.cuisine)) + " dinners for one</a></div></div>" : "") +
@@ -911,6 +919,39 @@ LEGAL.forEach(function (l) {
     '<section class="wrap"><article class="legal">' + html + "</article></section>"));
   sitemap.push({ loc: l.slug + "/", pri: "0.3" });
 });
+
+/* ------------------------------------------------------------ get the app */
+// How to put the planner on a home screen. It is a web app, so there is no
+// store: site.js shows an Install button where the browser offers one and
+// moves the visitor's own device to the top.
+(function () {
+  var rel = "../";
+  var dev = function (key, title, steps, note) {
+    return '<section class="app-dev" data-dev="' + key + '"><span class="eyebrow app-yours">On this device</span><h2>' + title + "</h2><ol>" +
+      steps.map(function (st) { return "<li>" + st + "</li>"; }).join("") + "</ol>" + (note ? '<p class="app-note">' + note + "</p>" : "") + "</section>";
+  };
+  out("app/index.html", page({
+    rel: rel, path: "app/", active: "planner", bodyClass: "page-app",
+    title: "Get the Solo Supper app | Solo Supper",
+    description: "Put Solo Supper on your home screen in a few taps. No app store: it installs from the website, opens straight to your week and keeps your shopping list working with no signal."
+  }, '<section class="wrap page-head"><div class="page-head-text"><span class="eyebrow">' + ICON.phone + " The app</span>" +
+    '<h1 class="display-m">Solo Supper on your <em>home screen</em>.</h1>' +
+    '<p class="lead">No app store needed: it installs straight from the website in a few taps. It opens to your week, and your shopping list still works in the shop with no signal.</p>' +
+    '<div class="btn-row"><button type="button" class="btn btn-primary btn-lg" data-install hidden>Install Solo Supper</button>' +
+    '<a class="btn btn-outline btn-lg" href="' + rel + 'plan/">Open the planner</a></div></div></section>' +
+    '<section class="wrap app-grid">' +
+    '<div class="app-devs">' +
+    dev("ios", "iPhone and iPad", ["Open <strong>solosupper.co.uk/plan</strong> in Safari.", "Tap the <strong>Share</strong> button: the square with an arrow pointing up.", "Scroll down, tap <strong>Add to Home Screen</strong>, then <strong>Add</strong>."],
+      "On recent versions of iOS this also works from Chrome and Edge, through their Share button.") +
+    dev("android", "Android", ["Open <strong>solosupper.co.uk/plan</strong> in Chrome.", "Tap <strong>Install</strong> when it pops up, or open the menu (the three dots) and choose <strong>Add to Home screen</strong> or <strong>Install app</strong>.", "Tap <strong>Install</strong>."]) +
+    dev("desktop", "Computer", ["In Chrome or Edge, click the install icon at the right-hand end of the address bar, or open the menu and choose <strong>Install Solo Supper</strong>.", "In Safari on a Mac, choose <strong>File</strong>, then <strong>Add to Dock</strong>."]) +
+    '<section class="app-dev app-faq"><h2>Is it the same as the website?</h2><p>Yes. It is the same Solo Supper, so every recipe stays free and Pro works just the same. It just opens on its own, without the browser around it.</p></section>' +
+    "</div>" +
+    '<div class="app-shots"><img src="' + rel + 'icons/screen-week.png" alt="The planner showing a week of dinners" width="390" height="844" loading="lazy">' +
+    '<img src="' + rel + 'icons/screen-shopping.png" alt="The shopping list, added up for the week" width="390" height="844" loading="lazy"></div>' +
+    "</section>"));
+  sitemap.push({ loc: "app/", pri: "0.5" });
+})();
 
 /* ------------------------------------------------------------ 404 */
 // The 404 page is served for any missing path, at any depth, so it links with full addresses.

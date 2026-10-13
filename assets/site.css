@@ -431,3 +431,51 @@ h1, .display, .display-l, .display-m, .week-range { letter-spacing: -0.02em; }
 .cook-notes summary { cursor: pointer; font-weight: 600; list-style-position: inside; }
 .cook-notes ul { margin: 10px 0 0; padding-left: 18px; }
 .cook-notes li { margin: 6px 0; font-size: 15px; line-height: 1.5; }
+
+/* ---------- get the app ---------- */
+.app-grid { display: flex; flex-wrap: wrap; gap: 48px; align-items: flex-start; padding-top: 24px; }
+.app-devs { flex: 999 1 420px; display: flex; flex-direction: column; gap: 20px; min-width: 0; }
+.app-dev { background: var(--plate); border: 1px solid var(--line); border-radius: 8px; padding: 24px 28px; }
+.app-dev h2 { font-size: 28px; line-height: 1.1; margin-bottom: 12px; }
+.app-dev ol { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 8px; font-size: 17px; line-height: 1.5; }
+.app-dev p { font-size: 16px; line-height: 1.55; color: var(--ink-2); }
+.app-note { margin-top: 12px; font-size: 15px !important; }
+.app-yours { display: none; margin-bottom: 8px; color: var(--tomato); }
+.app-dev.is-yours { border-color: var(--ink); }
+.app-dev.is-yours .app-yours { display: block; }
+.app-shots { flex: 1 1 300px; display: flex; gap: 16px; justify-content: center; }
+.app-shots img { width: 48%; max-width: 220px; height: auto; border-radius: 18px; border: 1px solid var(--line); box-shadow: 0 10px 30px rgba(26, 33, 29, 0.12); }
+
+/* ---------- printing a recipe ---------- */
+.print-only { display: none; }
+@media print {
+  @page { margin: 14mm; }
+  body { background: #fff; color: #000; }
+  .skip, .site-header, .site-footer, .consent, .crumbs, .recipe-media, .recipe-intro .btn-row, .recipe-intro .marks,
+  .ing-head .stepper, .ing-card .btn, .in-colls, .useup, .section, .ing-swap, .cook-notes { display: none !important; }
+  .wrap { max-width: none; padding: 0; }
+  .recipe-head { display: block; padding-top: 0; }
+  .recipe-intro .eyebrow { font-size: 9pt; }
+  .recipe-intro h1 { font-size: 24pt; margin: 4px 0 6px; }
+  .recipe-intro .lead { font-size: 11pt; color: #000; }
+  .meta4 { margin: 6px 0 0 !important; padding: 6px 0 !important; display: flex !important; gap: 28px; border-width: 1px 0 !important; }
+  .meta4 div { padding: 0 !important; }
+  .meta4 dt { font-size: 7.5pt !important; }
+  .meta4 dd { font-size: 12pt !important; margin: 0; }
+  .ing-group .eyebrow { font-size: 7.5pt; }
+  .ing-group ul { margin-top: 0; }
+  .recipe-body { display: block; padding-top: 14px; }
+  .ing-card { max-width: none; background: none; border: 1px solid #999; padding: 8px 12px; margin-bottom: 10px; gap: 4px; break-inside: avoid; }
+  .ing-head h2, .method h2 { font-size: 15pt; }
+  .ing-group ul { columns: 2; column-gap: 24px; }
+  .ing-group li { font-size: 10pt; padding: 1px 0; border: 0; break-inside: avoid; }
+  .method { gap: 6px; }
+  .method-steps li { padding: 4px 0; gap: 12px; border-top: 1px solid #ccc; break-inside: avoid; }
+  .method-steps p { font-size: 10.5pt; line-height: 1.4; max-width: none; }
+  .step-num { font-size: 14pt !important; }
+  .print-only { display: block; }
+  .print-source { margin-top: 12px; font-size: 9pt; color: #555; }
+  a { color: inherit; text-decoration: none; }
+}
+[data-install][hidden] { display: none; }
+.icon-group { display: flex; gap: 12px; }

@@ -714,3 +714,5 @@ h1, .display, .display-l, .display-m, .week-range { letter-spacing: -0.02em; }
 .cook-notes summary { cursor: pointer; font-weight: 600; list-style-position: inside; }
 .cook-notes ul { margin: 10px 0 0; padding-left: 18px; }
 .cook-notes li { margin: 6px 0; font-size: 15px; line-height: 1.5; }
+.banner-install { border-color: var(--line); }
+.banner-install b { font-weight: 600; }

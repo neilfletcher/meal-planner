@@ -71,6 +71,33 @@
     });
   });
 
+  /* ---------- print (assets/site.css has the print layout) ---------- */
+  document.querySelectorAll("[data-print]").forEach(function (b) {
+    b.addEventListener("click", function () { window.print(); });
+  });
+
+  /* ---------- get the app: install button and the visitor's own device first ---------- */
+  var installBtns = document.querySelectorAll("[data-install]"), installEvt = null;
+  window.addEventListener("beforeinstallprompt", function (e) {
+    e.preventDefault();
+    installEvt = e;
+    installBtns.forEach(function (b) { b.hidden = false; });
+  });
+  installBtns.forEach(function (b) {
+    b.addEventListener("click", function () {
+      if (!installEvt) return;
+      installEvt.prompt();
+      installEvt.userChoice.then(function () { installEvt = null; installBtns.forEach(function (x) { x.hidden = true; }); }).catch(function () {});
+    });
+  });
+  var devs = document.querySelector(".app-devs");
+  if (devs) {
+    var ua = navigator.userAgent;
+    var dev = (/iPhone|iPad|iPod/.test(ua) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1)) ? "ios" : /Android/.test(ua) ? "android" : "desktop";
+    var mine = devs.querySelector('[data-dev="' + dev + '"]');
+    if (mine) { mine.classList.add("is-yours"); devs.insertBefore(mine, devs.firstChild); }
+  }
+
   /* ---------- recipe index: search, filter, sort ---------- */
   var grid = document.getElementById("rx-grid");
   if (grid) {

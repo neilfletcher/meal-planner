@@ -530,6 +530,12 @@ body.modal-open { overflow: hidden; }
 .cook-overlay .btn-primary { background: #E8694F; border-color: #E8694F; color: #141A17; }
 .cook-overlay .btn-primary:hover { background: #F07D65; border-color: #F07D65; }
 .cook-ing-btn { align-self: flex-start; }
+.cook-tools { display: flex; gap: 8px; flex-wrap: wrap; }
+.cook-overlay .cook-ing-btn.has-keep { border-color: var(--yolk-on-night); color: var(--yolk-on-night); }
+.cook-keep-note { margin: 4px 0 0; padding: 12px 16px; list-style: none; border-left: 3px solid var(--yolk-on-night); background: #1C2420; border-radius: 0 8px 8px 0; font-size: 16px; line-height: 1.5; }
+.cook-keep-note li + li, .cook-keep-list li + li { margin-top: 8px; }
+.cook-keep-note strong, .cook-keep-list strong { color: var(--yolk-on-night); font-weight: 600; }
+.cook-keep-list { line-height: 1.5; }
 .cook-timer {
   background: var(--yolk-on-night); color: #141A17; border-radius: 999px; padding: 6px 6px 6px 14px; min-height: 40px;
   font-family: var(--mono); font-size: 13.5px; display: inline-flex; align-items: center; gap: 6px;

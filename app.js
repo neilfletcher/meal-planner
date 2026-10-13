@@ -3176,6 +3176,72 @@
       tl.innerHTML = timersHtml();
     };
   }
+  /* ---------- cooking mode: what to keep for later dinners ----------
+     Fresh ingredients this dinner opens that another planned dinner (later
+     this week or next) also uses, so the rest of the pepper isn't binned. */
+  function laterDinners(ctx, rid) {
+    var out = [];
+    if (state.mode === "batch") {
+      (state.batch || []).forEach(function (b, k) {
+        if (b.cookedAt || b.uid === ctx.batchUid) return;
+        out.push({ id: b.id, serves: state.servings, label: "Dinner " + (k + 1) });
+      });
+      return out;
+    }
+    var weeks = [state];
+    if (state.next && state.next.week === nextMondayKey() && Array.isArray(state.next.plan)) weeks.push(state.next);
+    var hasDay = ctx.dayIdx !== undefined;
+    var pos0 = hasDay && viewNext ? 1 : 0, from = hasDay ? ctx.dayIdx : todayIdx;
+    for (var pos = pos0; pos < weeks.length; pos++) {
+      var w = weeks[pos];
+      w.plan.forEach(function (id, d) {
+        if (!id || !RECIPES_BY_ID[id]) return;
+        if (pos === pos0 && (d < from || (d === from && (hasDay || id === rid)))) return;
+        if (w.cooked && w.cooked[d] && w.cooked[d].id === id) return;
+        if (w.leftovers && w.leftovers[d] && d > 0 && w.plan[d - 1] === id) return; // eating leftovers, not cooking
+        var g = w.guests && w.guests[d];
+        out.push({ id: id, serves: g >= 1 ? g : state.servings, label: (pos === 1 && !viewNext ? "Next " : "") + DOW_NAMES[d] });
+      });
+    }
+    return out;
+  }
+  function keepForLater(r, serves, ctx) {
+    var later = laterDinners(ctx || {}, r.id), seen = {}, items = [];
+    var need = recipeNeeds(r.id, serves);
+    ingredientsOf(r).forEach(function (i) {
+      var c = shopCanon(i, serves);
+      if (seen[c.key]) return;
+      seen[c.key] = 1;
+      var p = PACKS[c.name], left = null;
+      if (p) {
+        if (!(p.perish > 0) || !need[c.name]) return;
+        left = Math.ceil(need[c.name] / p.size - 0.08) * p.size - need[c.name];
+        if (left / p.size <= 0.1) left = 0;
+      } else if (!UNLISTED_PERISH[c.cat] || UNLISTED_KEEPS.test(c.name)) return;
+      // The dinners the rest goes to, in order, until it's used up (just the next one
+      // for ingredients without a known pack size).
+      var uses = [], rest = left;
+      later.forEach(function (pd) {
+        if (rest !== null && rest <= 0.05 * (p ? p.size : 1)) return;
+        if (rest === null && uses.length) return;
+        var lr = RECIPES_BY_ID[pd.id];
+        var j = ingredientsOf(lr).filter(function (x) { return shopCanon(x, pd.serves).key === c.key; })[0];
+        if (!j) return;
+        uses.push({ label: pd.label, title: lr.title, amt: (scaledAmtOnly(j, pd.serves) + " " + String(j.item).split(",")[0]).trim() });
+        if (rest !== null) rest -= recipeNeeds(pd.id, pd.serves)[c.name] || 0;
+      });
+      if (!uses.length && left === 0) return;
+      var word = c.name.split(" ").pop().replace(/(es|s)$/, "");
+      items.push({ name: c.name, uses: uses, re: new RegExp("\\b(" + c.name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "|" + word + ")(e?s)?\\b", "i") });
+    });
+    return items;
+  }
+  function keepLineHtml(k) {
+    if (!k.uses.length) return "<li><strong>The rest of the " + esc(k.name) + "</strong> isn't needed for any dinner you've planned. Plan one that uses it, or wrap it for the fridge or freezer.</li>";
+    return "<li><strong>Keep the rest of the " + esc(k.name) + "</strong> for " + k.uses.map(function (u) {
+      return esc(u.label) + "’s " + esc(u.title) + " (" + esc(u.amt) + ")";
+    }).join(" and ") + ".</li>";
+  }
   function renderCook() {
     var el = document.getElementById("cook-overlay");
     if (!cook || !el) return;
@@ -3186,6 +3252,10 @@
     }).join("");
     var cookServes = cook.ctx && cook.ctx.dayIdx !== undefined && state.mode !== "batch" ? dayServes(cook.ctx.dayIdx) : state.servings;
     var ings = ingredientsOf(r).map(function (x) { return '<li><span class="amt">' + scaledAmtOnly(x, cookServes) + "</span> " + esc(x.item) + "</li>"; }).join("");
+    if (!cook.keep) cook.keep = keepForLater(r, cookServes, cook.ctx);
+    var keeps = cook.keep.filter(function (k) { return k.uses.length; });
+    // Kept items this step mentions get a note right under the step.
+    var stepKeeps = cook.keep.filter(function (k) { return k.re.test(text); });
     var last = i === n - 1;
     el.innerHTML =
       '<div class="cook-inner">' +
@@ -3195,8 +3265,11 @@
       '<div class="cook-bar"><span style="width:' + Math.round(((i + 1) / n) * 100) + '%"></span></div>' +
       '<p class="cook-step">' + esc(text) + "</p>" +
       (timers ? '<div class="cook-timer-row">' + timers + "</div>" : "") +
-      '<button type="button" class="btn btn-ghost btn-sm cook-ing-btn" id="cook-ing-btn">' + (cook.showIng ? "Hide ingredients" : "Show ingredients") + "</button>" +
+      (stepKeeps.length ? '<ul class="cook-keep-note">' + stepKeeps.map(keepLineHtml).join("") + "</ul>" : "") +
+      '<div class="cook-tools"><button type="button" class="btn btn-ghost btn-sm cook-ing-btn" id="cook-ing-btn">' + (cook.showIng ? "Hide ingredients" : "Show ingredients") + "</button>" +
+      (cook.keep.length ? '<button type="button" class="btn btn-ghost btn-sm cook-ing-btn' + (keeps.length ? " has-keep" : "") + '" id="cook-keep-btn">' + (cook.showKeep ? "Hide" : "Keep for later") + (keeps.length ? " (" + keeps.length + ")" : "") + "</button>" : "") + "</div>" +
       (cook.showIng ? '<ul class="cook-ings">' + ings + "</ul>" : "") +
+      (cook.showKeep ? '<ul class="cook-ings cook-keep-list">' + cook.keep.slice().sort(function (a, b) { return b.uses.length - a.uses.length; }).map(keepLineHtml).join("") + "</ul>" : "") +
       '<div class="cook-nav">' +
       '<button type="button" class="btn btn-outline" id="cook-prev-btn"' + (i === 0 ? " disabled" : "") + ">" + ico("back") + "Back</button>" +
       (last ? '<button type="button" class="btn btn-primary" id="cook-done-btn">' + ico("check") + "Finished</button>"
@@ -3204,6 +3277,8 @@
       "</div></div>";
     document.getElementById("cook-close-btn").addEventListener("click", closeCookMode);
     document.getElementById("cook-ing-btn").addEventListener("click", function () { cook.showIng = !cook.showIng; renderCook(); });
+    var keepBtn = document.getElementById("cook-keep-btn");
+    if (keepBtn) keepBtn.addEventListener("click", function () { cook.showKeep = !cook.showKeep; renderCook(); });
     if (i > 0) document.getElementById("cook-prev-btn").addEventListener("click", function () { cook.step--; renderCook(); });
     if (!last) document.getElementById("cook-next-btn").addEventListener("click", function () { cook.step++; renderCook(); });
     else document.getElementById("cook-done-btn").addEventListener("click", function () {

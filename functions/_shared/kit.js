@@ -83,10 +83,11 @@ async function v3FormSubscribe(env, email) {
     headers: { "content-type": "application/json", accept: "application/json" },
     body: JSON.stringify({ api_key: env.KIT_API_KEY_V3, email: email })
   });
-  if (!r.ok) {
-    var j = await r.json().catch(function () { return {}; });
-    throw new Error(j.message || j.error || ("Kit v3 error " + r.status));
-  }
+  var j = await r.json().catch(function () { return {}; });
+  if (!r.ok) throw new Error(j.message || j.error || ("Kit v3 error " + r.status));
+  // Kit's search can lag a few seconds behind, so go by what this call says.
+  var sub = j.subscription || {};
+  return sub.state || (sub.subscriber && sub.subscriber.state) || "";
 }
 export async function resubscribe(env, email, source) {
   email = String(email).trim().toLowerCase();
@@ -95,9 +96,10 @@ export async function resubscribe(env, email, source) {
   if (state !== "active") {
     if (!env.KIT_FORM_ID) note = "KIT_FORM_ID isn't set";
     else if (env.KIT_API_KEY_V3) {
-      try { await v3FormSubscribe(env, email); note = "v3 form " + env.KIT_FORM_ID; }
+      var v3 = "";
+      try { v3 = await v3FormSubscribe(env, email); note = "v3 form " + env.KIT_FORM_ID + (v3 ? " said " + v3 : ""); }
       catch (e) { note = "v3 form " + env.KIT_FORM_ID + ": " + e.message; }
-      state = await subscriberState(env, email);
+      state = v3 === "active" || v3 === "inactive" ? v3 : await subscriberState(env, email);
     } else {
       try { await kit(env, "POST", "forms/" + env.KIT_FORM_ID + "/subscribers", { email_address: email }); note = "added to form " + env.KIT_FORM_ID + "; KIT_API_KEY_V3 isn't set"; }
       catch (e) { note = "form " + env.KIT_FORM_ID + ": " + e.message; }

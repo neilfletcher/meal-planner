@@ -4217,8 +4217,8 @@
         if (on && j.state === "active") { track("sign_up", { method: "newsletter", source: "planner" }); toast("You're on the list. The first one arrives on Saturday."); }
         else if (on && j.state === "inactive") toast("Kit has emailed you a link to confirm. Tap it and you're back on the list.");
         else if (on) toast("You unsubscribed earlier, so this couldn't switch it back on by itself. Email us and we'll add you back.");
-        if (j.note) try { console.info("Weekly email: " + j.state + " (" + j.note + ")"); } catch (e) { /* no console */ }
         else toast("Unsubscribed. No more weekly emails.");
+        if (j.note) try { console.info("Weekly email: " + j.state + " (" + j.note + ")"); } catch (e) { /* no console */ }
       }).catch(function (e) { toast(e.message); }).then(function () { if (settingsOpen()) renderSettings(); });
     });
   }

@@ -49,6 +49,10 @@ module.exports = [
       "<p>If one of the site's scripts breaks in your browser, it sends a short error report: the error message, which file and line, the page you were on and your browser type. It contains nothing that identifies you, and is used only to find and fix bugs.</p>",
       "<p><strong>Legal basis:</strong> legitimate interests (keeping the site working).</p>",
 
+      "<h3>The weekly email</h3>",
+      "<p>If you sign up for the weekly email (on the website, in the planner, or by ticking the box when you buy a cookbook), your email address is kept by Kit, the service that sends it, with a note of where you signed up. You get one email a week with dinners, a shopping list and occasionally news about Solo Supper's books and Pro. Every email has an unsubscribe link, and unsubscribing stops them straight away. Kit records whether emails are opened and links clicked, so I can see what's useful.</p>",
+      "<p><strong>Legal basis:</strong> your consent, which you can withdraw at any time by unsubscribing.</p>",
+
       "<h3>Emails</h3>",
       "<p>If you email me, I keep the conversation so I can reply and help. I send sign-in links and replies, and nothing else. There is no marketing email unless you have separately signed up for it.</p>",
 
@@ -59,6 +63,7 @@ module.exports = [
       "<li><strong>Google Analytics</strong>: usage statistics, only if you agree.</li>",
       "<li><strong>Cloudflare</strong>: hosts the website, protects it from attacks and forwards email sent to Solo Supper addresses.</li>",
       "<li><strong>Resend</strong>: sends email from Solo Supper addresses.</li>",
+      "<li><strong>Kit</strong>: sends the weekly email, only if you sign up for it.</li>",
       "<li><strong>Stripe and Onelink</strong> and <strong>Google Play</strong>: payments for Pro.</li>",
       "</ul>",
       "<p>Some of these services store data outside the UK, including in the United States. Where that happens, the transfer is covered by UK-approved safeguards such as the UK Extension to the EU-US Data Privacy Framework or standard contractual clauses.</p>",
@@ -66,6 +71,7 @@ module.exports = [
       "<h2>How long it is kept</h2>",
       "<ul>",
       "<li>Planner data in your account: until you ask for your account to be deleted.</li>",
+      "<li>The weekly email list: until you unsubscribe, then only a record that you did, so you aren't emailed again.</li>",
       "<li>Payment records: six years, as UK tax law requires.</li>",
       "<li>Usage statistics: no longer than 14 months.</li>",
       "<li>Emails: as long as needed to deal with your question, and no longer than two years.</li>",

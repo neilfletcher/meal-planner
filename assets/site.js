@@ -151,6 +151,28 @@
     });
   });
 
+  /* ---------- the weekly email sign-up (footer, recipe pages) ---------- */
+  document.querySelectorAll("form[data-newsletter]").forEach(function (f) {
+    var input = f.querySelector('input[type="email"]'), btn = f.querySelector("button"), msg = f.querySelector(".nl-msg");
+    if (lsGet("soloSupper.newsletter") === "yes") f.classList.add("is-joined");
+    f.addEventListener("submit", function (ev) {
+      ev.preventDefault();
+      var email = input.value.trim();
+      if (!/^[^@\s]+@[^@\s]+\.[^@\s]{2,}$/.test(email)) { msg.textContent = "That email address doesn't look right."; input.focus(); return; }
+      btn.disabled = true; btn.textContent = "Signing you up\u2026";
+      fetch(BASE + "api/subscribe", { method: "POST", headers: { "content-type": "application/json" },
+        body: JSON.stringify({ email: email, source: f.getAttribute("data-newsletter"), website: f.querySelector(".nl-hp").value }) })
+        .then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { if (!r.ok) throw new Error(j.error || "Something went wrong. Please try again."); }); })
+        .then(function () {
+          lsSet("soloSupper.newsletter", "yes");
+          f.classList.add("is-done");
+          msg.textContent = "You're on the list. The first one arrives on Saturday.";
+          if (window.gtag) window.gtag("event", "sign_up", { method: "newsletter", source: f.getAttribute("data-newsletter") });
+        })
+        .catch(function (e) { msg.textContent = e.message; btn.disabled = false; btn.textContent = "Sign me up"; });
+    });
+  });
+
   /* ---------- returning planners go straight to their week ---------- */
   if (lsGet("soloSupper.state.v1")) {
     document.querySelectorAll("[data-planner-cta]").forEach(function (a) {

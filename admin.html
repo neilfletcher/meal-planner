@@ -652,6 +652,25 @@
     </section>
 
 
+
+    <section class="block" id="nlBlock">
+      <div class="block-head">
+        <div>
+          <div class="eyebrow">The weekly email</div>
+          <h2>Who's signing up</h2>
+        </div>
+        <button class="ghost" id="nlReload" type="button">Update</button>
+      </div>
+      <div class="card">
+        <div class="kpi-row">
+          <div class="kpi"><div class="label">On the list</div><div class="value num" id="nl-size">&ndash;</div><div class="delta" id="nl-size-sub">active subscribers in Kit</div></div>
+          <div class="kpi"><div class="label">Sign-ups, 30 days</div><div class="value num" id="nl-30">&ndash;</div><div class="delta" id="nl-all">&nbsp;</div></div>
+          <div class="kpi"><div class="label">Where from, 30 days</div><div class="value" id="nl-src" style="font-size:15px;line-height:1.5">&ndash;</div><div class="delta">&nbsp;</div></div>
+        </div>
+        <p class="fine">Sign-ups from the website footer, recipe pages, the planner's settings and the tick box when buying a cookbook. Each Friday morning a draft of the next week's email appears in Kit (Broadcasts): check it, then send or schedule it for Saturday. Opens, clicks and unsubscribes are in Kit.</p>
+      </div>
+    </section>
+
     <section class="block" id="lifetimeBlock">
       <div class="block-head">
         <div>
@@ -1645,6 +1664,20 @@
     var w = {}; w[cb.getAttribute("data-lt-win")] = cb.checked;
     lifetimeCall({ action: "lifetimeSet", windows: w }, cb.checked ? "Ticked: it will switch on automatically each year." : "Unticked.");
   });
+
+  // ---------- the weekly email ----------
+  function loadNewsletter() {
+    adminApi({ action: "newsletter" }).then(function (j) {
+      setText("nl-size", j.listSize === null ? "\u2013" : j.listSize);
+      setText("nl-size-sub", !j.configured ? "KIT_API_KEY isn't set in Cloudflare" : j.kitError ? "Kit: " + j.kitError : "active subscribers in Kit");
+      setText("nl-30", j.last30.total || 0);
+      setText("nl-all", (j.allTime || 0) + " since counting began");
+      var names = { src_footer: "footer", src_recipe: "recipe pages", src_planner: "planner", src_books: "book buyers", src_home: "home page" };
+      var parts = Object.keys(names).filter(function (k) { return j.last30[k]; }).map(function (k) { return j.last30[k] + " " + names[k]; });
+      setText("nl-src", parts.length ? parts.join(", ") : "none yet");
+    }).catch(function (e) { setText("nl-size-sub", "Couldn't load: " + e.message); });
+  }
+  document.getElementById("nlReload").addEventListener("click", loadNewsletter);
   document.getElementById("bkReload").addEventListener("click", loadBooks);
   document.getElementById("bkRefunds").addEventListener("click", function () {
     var btn = this;
@@ -1810,6 +1843,7 @@
       loadBookGifts();
       loadBooks();
       loadLifetime();
+      loadNewsletter();
       loadSources();
       loadErrors();
     } else if (user) {

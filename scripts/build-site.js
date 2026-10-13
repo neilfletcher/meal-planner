@@ -430,6 +430,19 @@ function header(rel, active) {
     "</div></div></header>\n";
 }
 
+// The weekly email sign-up (assets/site.js sends it to /api/subscribe, which adds
+// the address to the list in Kit). "website" is a hidden trap for bots.
+var nlCount = 0;
+function nlForm(rel, source, lead, cls) {
+  var id = "nl-" + source + "-" + (++nlCount);
+  return '<form class="nl-form ' + (cls || "") + '" data-newsletter="' + source + '" novalidate>' +
+    '<label class="nl-label" for="' + id + '">' + lead + "</label>" +
+    '<div class="nl-row"><input type="email" id="' + id + '" name="email" placeholder="Your email address" autocomplete="email" required>' +
+    '<button type="submit" class="btn btn-primary">Sign me up</button></div>' +
+    '<input type="text" name="website" class="nl-hp" tabindex="-1" autocomplete="off" aria-hidden="true">' +
+    '<p class="nl-msg" aria-live="polite">Free, every Saturday. Unsubscribe from any email. <a href="' + rel + 'privacy/">Privacy</a></p></form>';
+}
+
 function footer(rel) {
   var col = function (title, links) {
     return '<nav class="footer-col" aria-label="' + esc(title) + '"><span class="eyebrow">' + esc(title) + "</span>" +
@@ -438,7 +451,8 @@ function footer(rel) {
   return '<footer class="site-footer"><div class="wrap">' +
     '<div class="footer-grid">' +
     '<div class="footer-brand"><a class="brand brand-light" href="' + rel + '">' + LOGO + "<span>Solo Supper</span></a>" +
-    '<p class="footer-line">Good dinners, sized for <em>one</em>.</p></div>' +
+    '<p class="footer-line">Good dinners, sized for <em>one</em>.</p>' +
+    nlForm(rel, "footer", "The weekly email: five dinners for one that share their ingredients, and the shopping list.", "nl-dark") + "</div>" +
     col("Recipes", [["Quick dinners for one", rel + "collections/quick-dinners-for-one/"], ["Vegetarian for one", rel + "collections/vegetarian-dinners-for-one/"], ["Fish for one", rel + "collections/fish-dinners-for-one/"], ["All recipes", rel + "recipes/"]]) +
     col("Planner", [["Plan your week", rel + "plan/"], ["The cookbooks", rel + "books/"], ["Get the app", rel + "app/"], ["Use it up", rel + "use-up/"], ["Cuisines", rel + "cuisines/"], ["Collections", rel + "collections/"]]) +
     col("About", [["Contact", "mailto:" + CONTACT_EMAIL], ["Privacy", rel + "privacy/"], ["Terms", rel + "terms/"], ["Refunds", rel + "refunds/"], ["Cookies", rel + "cookies/"], ["Cookie settings", "#cookie-settings"]]) +
@@ -835,6 +849,7 @@ RECIPES.forEach(function (r) {
       '<a class="chip" href="' + cuisineHref + '">' + esc(demonym(r.cuisine)) + " dinners for one</a></div></div>" : "") +
     "</section></div>" +
     "</article>" +
+    '<section class="wrap nl-band">' + nlForm(rel, "recipe", "<strong>Like this?</strong> Get five dinners like it every Saturday, planned so they share their ingredients, with the shopping list.") + "</section>" +
     (uu.picks.length
       ? '<section class="section useup" aria-labelledby="useup-h"><div class="useup-head"><h2 id="useup-h">Use up the rest</h2>' +
         '<p>Cooking this for one leaves ' + listAnd(uu.left.slice(0, 3).map(function (x) { return "<strong>" + esc(fmtLeft(x)) + "</strong>"; })) +
@@ -1082,6 +1097,7 @@ function amazonButtons(b) {
       '<p class="lead">' + b.count + " dinners for one from " + esc(b.from) + ", planned into weeks that share their ingredients.</p>" +
       '<div class="book-buy"><button type="button" class="btn btn-primary btn-lg" data-buy="' + b.id + '">PDF &pound;' + BOOK_PDF_PRICE + "</button>" +
       amazonButtons(b) + "</div>" +
+      '<label class="nl-tick"><input type="checkbox" data-nl-tick> Also send me the free weekly email (five dinners for one and the shopping list)</label>' +
       '<p class="small muted book-note" data-buy-msg="' + b.id + '"></p>' +
       '<p class="small muted">The PDF downloads straight after payment, so the 14-day right to cancel ends once you download it.</p>' +
       '<div class="book-pages scroll-x">' + [1, 2, 3, 4].map(function (k) {
@@ -1093,6 +1109,7 @@ function amazonButtons(b) {
     '<h1 class="display-m">Four books of <em>dinners for one</em>.</h1>' +
     '<p class="lead">Every recipe measured for one, and planned into weeks that share their ingredients, so the coconut milk you open on Monday gets finished on Thursday. Each week has its shopping list, what will be left over and what to do with it, and a photo of every dish.</p>' +
     '<div class="btn-row"><button type="button" class="btn btn-ink btn-lg" data-buy="all">All four PDFs &pound;' + BOOK_BUNDLE_PRICE + '</button><a class="btn btn-outline btn-lg" href="#pro-books">Free with Pro</a></div>' +
+    '<label class="nl-tick"><input type="checkbox" data-nl-tick> Also send me the free weekly email (five dinners for one and the shopping list)</label>' +
     '<p class="small muted" data-buy-msg="all"></p></div></section>' +
     '<section class="wrap books">' + BOOK_LIST.map(bookCard).join("") + "</section>" +
     '<section class="wrap section" id="pro-books"><div class="pro-band"><div class="pro-band-text"><span class="eyebrow">Solo Supper Pro</span>' +

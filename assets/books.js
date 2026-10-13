@@ -16,10 +16,15 @@
       try { ft = JSON.parse(lsGet("soloSupper.firstTouch") || "null"); } catch (e) { ft = null; }
       b.disabled = true; b.textContent = "Opening checkout\u2026"; msg(id, "");
       track("begin_checkout", { item_id: "book-" + id });
-      post("book-checkout", { book: id, source: ft && ft.src }).then(function (j) { location.href = j.url; })
+      var nlTick = document.querySelector("[data-nl-tick]");
+      post("book-checkout", { book: id, source: ft && ft.src, newsletter: !!(nlTick && nlTick.checked) }).then(function (j) { location.href = j.url; })
         .catch(function (e) { b.disabled = false; b.innerHTML = label; msg(id, e.message); });
     });
   });
+
+  // The "also send me the weekly email" ticks are one choice: ticking one ticks them all.
+  var ticks = document.querySelectorAll("[data-nl-tick]");
+  ticks.forEach(function (t) { t.addEventListener("change", function () { ticks.forEach(function (o) { o.checked = t.checked; }); }); });
 
   // Amazon buttons: count the click on our server (book and format only).
   document.querySelectorAll("[data-amazon]").forEach(function (a) {

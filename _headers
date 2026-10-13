@@ -17,6 +17,8 @@
   X-Robots-Tag: noindex
 /scripts/*
   X-Robots-Tag: noindex
+/newsletter/*
+  X-Robots-Tag: noindex
 /tests/*
   X-Robots-Tag: noindex
 

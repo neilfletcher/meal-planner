@@ -19,6 +19,7 @@
  *   POST /api/book-click      { book, store } counts a click through to Amazon
  *   GET  /api/lifetime        is lifetime Pro on sale right now, and its price
  *   POST /api/lifetime-confirm { s } signed-in user back from paying for lifetime Pro
+ *   POST /api/subscribe       { email, source } joins the weekly email (signed in: their own email)
  *
  * Signed-in calls send "Authorization: Bearer <Firebase ID token>".
  */
@@ -27,6 +28,7 @@ import { BOOKS, BOOK_IDS, bookPrice, subscriptionBooks, downloadUrl, checkDownlo
 import { stripe, priceFor, verifyWebhook, subscriptionFields } from "../_shared/stripe.js";
 import { proState, addMonths, TRIAL_DAYS } from "../_shared/entitlement.js";
 import { WINDOWS, upcomingWindows, lifetimeStatus } from "../_shared/lifetime.js";
+import { subscribe as kitSubscribe, SOURCES as KIT_SOURCES, kit } from "../_shared/kit.js";
 
 var DAY = 86400000;
 
@@ -494,6 +496,24 @@ async function admin(request, env) {
     });
   }
 
+  // The weekly email: sign-ups by day and source (counted here), and the
+  // list size from Kit.
+  if (body.action === "newsletter") {
+    var nrows = await listCollection(env, "newsletterStats", null, 400);
+    var ncut = new Date(now - 29 * DAY).toISOString().slice(0, 10), n30 = { total: 0 }, nAll = 0;
+    nrows.forEach(function (r) {
+      nAll += r.data.total || 0;
+      if (r.id < ncut) return;
+      Object.keys(r.data).forEach(function (k) { n30[k] = (n30[k] || 0) + r.data[k]; });
+    });
+    var listSize = null, kitError = "";
+    if (env.KIT_API_KEY) {
+      try { var ks = await kit(env, "GET", "subscribers?status=active&include_total_count=true&per_page=1"); listSize = ks.pagination && typeof ks.pagination.total_count === "number" ? ks.pagination.total_count : null; }
+      catch (e) { kitError = e.message; }
+    }
+    return json({ configured: !!env.KIT_API_KEY, kitError: kitError, listSize: listSize, last30: n30, allTime: nAll });
+  }
+
   if (body.action === "liveVisitors") {
     // Visitors in the last 30 minutes. Live data has no website field, so
     // Solo Supper pages are told apart by their titles, which all name it.
@@ -664,6 +684,40 @@ async function stripeWebhook(request, env) {
 }
 
 
+
+/* ------------------------------------------------------- the weekly email */
+// Sign-ups from the site's forms (footer, recipe pages, home page) and from
+// the planner. A hidden "website" field catches form-filling bots, and each
+// address and connection can only try a few times in a few minutes.
+var nlTries = new Map();
+function nlLimited(key) {
+  var now = Date.now(), t = (nlTries.get(key) || []).filter(function (x) { return now - x < 10 * 60000; });
+  t.push(now);
+  nlTries.set(key, t);
+  if (nlTries.size > 5000) nlTries.clear();
+  return t.length > 5;
+}
+async function newsletterSubscribe(request, env) {
+  var origin = request.headers.get("origin") || "";
+  if (origin && origin !== new URL(request.url).origin && !/^https:\/\/([a-z0-9-]+\.)?solosupper\.co\.uk$/.test(origin) && !/\.pages\.dev$/.test(origin)) return json({ ok: false }, 403);
+  var body = await readJson(request);
+  if (body.website) return json({ ok: true }); // a bot filled the hidden field
+  var email = body.email, source = KIT_SOURCES[body.source] && body.source !== "books" ? body.source : "footer";
+  if (request.headers.get("authorization")) {
+    var user = await requireUser(request, env);
+    if (!user.email || !user.emailVerified) throw httpError(400, "Your account doesn't have a confirmed email address.");
+    email = user.email; source = "planner";
+  }
+  var ip = request.headers.get("cf-connecting-ip") || "";
+  if (nlLimited("ip:" + ip) || nlLimited("e:" + String(email).toLowerCase())) throw httpError(429, "Too many tries. Please wait a few minutes.");
+  await kitSubscribe(env, email, source);
+  if (!isInternal(env, email)) {
+    var c = { total: 1 }; c["src_" + source] = 1;
+    try { await increment(env, "newsletterStats/" + new Date().toISOString().slice(0, 10), c); } catch (e) { /* not counted */ }
+  }
+  return json({ ok: true });
+}
+
 /* ---------------------------------------------------------- lifetime Pro */
 // See functions/_shared/lifetime.js for when the offer is on.
 var ltCache = { at: 0, data: null };
@@ -790,7 +844,7 @@ async function bookCheckout(request, env) {
     mode: "payment",
     line_items: { 0: { price: price, quantity: 1 } },
     managed_payments: { enabled: "true" },
-    metadata: { kind: "books", books: books, uid: user ? user.uid : "", firstSource: String(body.source || "").slice(0, 40) },
+    metadata: { kind: "books", books: books, uid: user ? user.uid : "", firstSource: String(body.source || "").slice(0, 40), newsletter: body.newsletter ? "1" : "" },
     success_url: origin + "/books/thanks/?s={CHECKOUT_SESSION_ID}",
     cancel_url: origin + "/books/"
   };
@@ -817,6 +871,13 @@ async function paidBookSession(env, sid) {
     source: String(s.metadata.firstSource || "").slice(0, 40),
     paymentIntent: typeof s.payment_intent === "string" ? s.payment_intent : (s.payment_intent && s.payment_intent.id) || ""
   };
+  // Ticked "send me the weekly email" on the books page.
+  if (s.metadata.newsletter === "1" && rec.email) {
+    try {
+      await kitSubscribe(env, rec.email, "books"); rec.newsletter = true;
+      if (!isInternal(env, rec.email)) await increment(env, "newsletterStats/" + new Date().toISOString().slice(0, 10), { total: 1, src_books: 1 });
+    } catch (e) { rec.newsletter = !!rec.newsletter; }
+  }
   await mergeDoc(env, "purchases/" + sid, rec);
   return rec;
 }
@@ -952,7 +1013,8 @@ var ROUTES = {
   "POST book-link": bookLink,
   "POST my-books": myBooks,
   "POST book-click": bookClick,
-  "POST lifetime-confirm": lifetimeConfirm
+  "POST lifetime-confirm": lifetimeConfirm,
+  "POST subscribe": newsletterSubscribe
 };
 
 export async function onRequest(context) {

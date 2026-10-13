@@ -1,0 +1,58 @@
+name: Weekly email draft
+
+# Every Friday morning: picks next week's five dinners and makes the email as a
+# DRAFT in Kit. Nothing is sent: open Kit > Broadcasts, check it, then send or
+# schedule it for Saturday morning. Needs the KIT_API_KEY repository secret.
+on:
+  schedule:
+    - cron: "0 6 * * 5"   # Fridays at 06:00 UTC
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "draft = make the Kit draft; preview = only make the preview (download it from the run's Artifacts)"
+        type: choice
+        options: [draft, preview]
+        default: draft
+      week:
+        description: "Monday of the week, YYYY-MM-DD (blank = next Monday)"
+        required: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: newsletter-weekly
+  cancel-in-progress: false
+
+jobs:
+  draft:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      KIT_API_KEY: ${{ secrets.KIT_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Make the email
+        run: |
+          ARGS=""
+          [ -n "${{ inputs.week }}" ] && ARGS="--week ${{ inputs.week }}"
+          [ "${{ inputs.mode || 'draft' }}" = "draft" ] && ARGS="$ARGS --draft"
+          node scripts/newsletter/weekly.js $ARGS
+
+      - name: Keep the preview
+        uses: actions/upload-artifact@v4
+        with:
+          name: weekly-email-preview
+          path: newsletter/*.html
+          retention-days: 30
+
+      - name: Save history (so dinners aren't repeated for 10 weeks)
+        run: |
+          git config user.name "Solo Supper autopilot"; git config user.email "hello@solosupper.co.uk"
+          git add newsletter/history.json 2>/dev/null || true
+          git diff --cached --quiet || (git commit -q -m "Weekly email draft" && git pull -q --rebase && git push -q)

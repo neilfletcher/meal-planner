@@ -3391,7 +3391,7 @@
     settingsModal.innerHTML =
       '<div class="modal-close-row"><button class="icon-btn" id="settings-close-btn" aria-label="Close">' + ico("close") + '</button></div>' +
       "<h2>Settings</h2>" +
-      accountSettingsHtml() + booksSettingsHtml() +
+      accountSettingsHtml() + booksSettingsHtml() + newsletterSettingsHtml() +
       installSettingsHtml() +
       "<h3>Never show me</h3>" +
       '<div class="chip-row">' + AVOID_OPTIONS.map(function (o) {
@@ -3427,6 +3427,7 @@
     document.getElementById("analytics-on").addEventListener("change", function (e) { setAnalyticsConsent(e.target.checked); });
     wireAccountSettings();
     wireBooksSettings();
+    wireNewsletterSettings();
     var inst = document.getElementById("install-app-btn");
     if (inst) inst.addEventListener("click", function () { closeSettings(); promptInstall(); });
     document.getElementById("newonly-on").addEventListener("change", function (e) { state.newOnly = e.target.checked; onStateChanged(); toast(state.newOnly ? "Suggestions now skip dishes you\u2019ve cooked." : "Suggestions can include dishes you\u2019ve cooked."); });
@@ -4162,6 +4163,27 @@
       return "<li><span>" + esc(b.title.replace(/^Solo Supper: /, "")) + '</span><button type="button" class="btn btn-outline btn-sm" data-book-dl="' + b.id + '">Download PDF</button></li>';
     }).join("") + "</ul>" + (mine.length < 4 ? '<p class="settings-note">The others are on ' + shop + ", or all four come with a yearly subscription.</p>" : "");
   }
+  /* ---------- the weekly email, from settings ---------- */
+  function newsletterSettingsHtml() {
+    if (isNativeApp() || !window.firebaseAuth || !currentUser || !currentUser.email) return "";
+    if (lsGet("soloSupper.newsletter") === "yes") return "<h3>The weekly email</h3><p class=\"settings-note\">You're on the list: five dinners for one every Saturday, with the shopping list. To stop, use the unsubscribe link in any email.</p>";
+    return "<h3>The weekly email</h3><p class=\"settings-note\">Five dinners for one every Saturday, planned to share their ingredients, with the shopping list and a link that adds them all to your week. Free, and you can unsubscribe from any email.</p>" +
+      '<button type="button" class="btn btn-outline btn-sm" id="nl-join-btn">Send it to ' + esc(currentUser.email) + "</button>";
+  }
+  function wireNewsletterSettings() {
+    var b = document.getElementById("nl-join-btn");
+    if (!b) return;
+    b.addEventListener("click", function () {
+      b.disabled = true; b.textContent = "Signing you up\u2026";
+      api("subscribe", { source: "planner" }).then(function () {
+        lsSet("soloSupper.newsletter", "yes");
+        track("sign_up", { method: "newsletter", source: "planner" });
+        toast("You're on the list. The first one arrives on Saturday.");
+        if (settingsOpen()) renderSettings();
+      }).catch(function (e) { b.disabled = false; b.textContent = "Send it to " + currentUser.email; toast(e.message); });
+    });
+  }
+
   function wireBooksSettings() {
     document.querySelectorAll("[data-book-dl]").forEach(function (b) {
       b.addEventListener("click", function () {
@@ -4560,7 +4582,30 @@
   (function handleDeepLink() {
     var q;
     try { q = new URLSearchParams(location.search); } catch (e) { return; }
-    var addId = q.get("add"), cookId = q.get("cook"), proBack = q.get("pro"), tab = q.get("tab");
+    var addId = q.get("add"), cookId = q.get("cook"), proBack = q.get("pro"), tab = q.get("tab"), weekIds = q.get("week");
+    // From the weekly email: plan/?week=d12,d40,... adds those dinners to the
+    // empty cooking days from today, running on into next week if needed.
+    if (weekIds) {
+      try { history.replaceState(null, "", location.pathname); } catch (e) { /* ignore */ }
+      var ids = weekIds.split(",").filter(function (id) { return RECIPES_BY_ID[id] && !isRecipeLocked(id); }).slice(0, 7);
+      if (!ids.length) return;
+      if (state.mode === "batch") {
+        withUndo("Added " + ids.length + " dinners", function () { ids.forEach(function (id) { addToBatch(id); }); });
+        return;
+      }
+      var slots = [];
+      [[state, todayIdx], [ensureNext(), 0]].forEach(function (pair) {
+        for (var d = pair[1]; d < 7; d++) if (!pair[0].plan[d] && isCookDay(d)) slots.push({ w: pair[0], d: d });
+      });
+      var placed = Math.min(ids.length, slots.length);
+      if (!placed) { toast("Every cooking day this week and next already has a dinner."); return; }
+      var spills = slots.slice(0, placed).some(function (sl) { return sl.w !== state; });
+      withUndo("Added " + placed + " dinner" + (placed === 1 ? "" : "s") + " from the weekly email" + (spills ? ", some in next week" : ""), function () {
+        for (var k = 0; k < placed; k++) { slots[k].w.plan[slots[k].d] = ids[k]; logHistory(ids[k], "newsletter"); }
+        onStateChanged();
+      });
+      return;
+    }
     if (tab && /^(planner|shopping|recipes|stats)$/.test(tab)) {
       try { history.replaceState(null, "", location.pathname); } catch (e) { /* ignore */ }
       var tb = document.getElementById("tab-" + tab + "-btn");

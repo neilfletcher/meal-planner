@@ -255,6 +255,11 @@
   .src-table td { text-align: right; padding: 8px; border-bottom: 1px solid var(--border); font-variant-numeric: tabular-nums; }
   .src-table tr.hl td { font-weight: 600; }
   .src-scroll { overflow-x: auto; }
+  .err-table td { vertical-align: top; }
+  .err-table td.msg { text-align: left; max-width: 520px; }
+  .err-table .where { display: block; font-size: 12px; color: var(--ink-muted); margin-top: 2px; font-family: "IBM Plex Mono", monospace; word-break: break-all; }
+  .err-table details { margin-top: 4px; font-size: 12px; color: var(--ink-muted); }
+  .err-table pre { white-space: pre-wrap; word-break: break-all; font-size: 11px; margin: 4px 0 0; }
   .legend { display: flex; gap: 16px; font-size: 12px; color: var(--ink-muted); margin: 4px 0 8px; }
   .legend i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; vertical-align: -1px; }
   .fine { font-size: 12px; color: var(--ink-faint); margin-top: 12px; }
@@ -381,24 +386,24 @@
     <div id="viewSolo">
     <div class="banner" id="waitingBanner">
       Traffic and sign-up numbers haven't synced yet. Once the GitHub Action in the meal-planner
-      repo has run at least once, this page will fill in automatically &mdash; no need to reload
+      repo has run at least once, this page will fill in automatically &ndash; no need to reload
       anything here.
     </div>
 
     <div class="overview" id="overview">
       <div class="hero-tile">
         <div class="label">Visitors, 7 days</div>
-        <div class="value num" id="ov-visitors">&mdash;</div>
+        <div class="value num" id="ov-visitors">&ndash;</div>
         <div class="sub" id="ov-visitors-sub">&nbsp;</div>
       </div>
       <div class="hero-tile">
         <div class="label">Sign-ups, 7 days</div>
-        <div class="value num" id="ov-signups">&mdash;</div>
+        <div class="value num" id="ov-signups">&ndash;</div>
         <div class="sub" id="ov-signups-sub">&nbsp;</div>
       </div>
       <div class="hero-tile">
         <div class="label">Returning users</div>
-        <div class="value num" id="ov-returning">&mdash;</div>
+        <div class="value num" id="ov-returning">&ndash;</div>
         <div class="sub" id="ov-returning-sub">last 28 days</div>
       </div>
       <div class="hero-tile">
@@ -418,10 +423,10 @@
       </div>
       <div class="card">
         <div class="kpi-row">
-          <div class="kpi"><div class="label">Signed up</div><div class="value num" id="lv-accounts">&mdash;</div><div class="delta" id="lv-new">&nbsp;</div></div>
-          <div class="kpi"><div class="label">Paying subscribers</div><div class="value num" id="lv-paying">&mdash;</div><div class="delta" id="lv-split">&nbsp;</div></div>
-          <div class="kpi"><div class="label">On free trial</div><div class="value num" id="lv-trial">&mdash;</div><div class="delta" id="lv-ended">&nbsp;</div></div>
-          <div class="kpi"><div class="label">Free Pro</div><div class="value num" id="lv-free">&mdash;</div><div class="delta">gift codes and grants</div></div>
+          <div class="kpi"><div class="label">Signed up</div><div class="value num" id="lv-accounts">&ndash;</div><div class="delta" id="lv-new">&nbsp;</div></div>
+          <div class="kpi"><div class="label">Paying subscribers</div><div class="value num" id="lv-paying">&ndash;</div><div class="delta" id="lv-split">&nbsp;</div></div>
+          <div class="kpi"><div class="label">On free trial</div><div class="value num" id="lv-trial">&ndash;</div><div class="delta" id="lv-ended">&nbsp;</div></div>
+          <div class="kpi"><div class="label">Free Pro</div><div class="value num" id="lv-free">&ndash;</div><div class="delta">gift codes and grants</div></div>
         </div>
         <div class="sub-eyebrow">Being read right now</div>
         <ul class="top-pages" id="soloNowPages"></ul>
@@ -438,10 +443,10 @@
       </div>
       <div class="card">
         <div class="kpi-row">
-          <div class="kpi"><div class="label">Users, 7d</div><div class="value num" id="tr-users">&mdash;</div><div class="delta" id="tr-users-30">&nbsp;</div></div>
-          <div class="kpi"><div class="label">Sessions, 7d</div><div class="value num" id="tr-sessions">&mdash;</div><div class="delta" id="tr-sessions-30">&nbsp;</div></div>
-          <div class="kpi"><div class="label">Page views, 7d</div><div class="value num" id="tr-views">&mdash;</div><div class="delta" id="tr-views-30">&nbsp;</div></div>
-          <div class="kpi"><div class="label">Avg. engagement</div><div class="value num" id="tr-engagement">&mdash;</div><div class="delta">per session</div></div>
+          <div class="kpi"><div class="label">Users, 7d</div><div class="value num" id="tr-users">&ndash;</div><div class="delta" id="tr-users-30">&nbsp;</div></div>
+          <div class="kpi"><div class="label">Sessions, 7d</div><div class="value num" id="tr-sessions">&ndash;</div><div class="delta" id="tr-sessions-30">&nbsp;</div></div>
+          <div class="kpi"><div class="label">Page views, 7d</div><div class="value num" id="tr-views">&ndash;</div><div class="delta" id="tr-views-30">&nbsp;</div></div>
+          <div class="kpi"><div class="label">Avg. engagement</div><div class="value num" id="tr-engagement">&ndash;</div><div class="delta">per session</div></div>
         </div>
         <div class="chart-wrap" id="usersChartWrap">
           <div class="empty-state">No traffic data yet</div>
@@ -482,6 +487,28 @@
     <section class="block">
       <div class="block-head">
         <div>
+          <div class="eyebrow">Live, from accounts</div>
+          <h2>Which channels bring paying customers</h2>
+        </div>
+        <button class="ghost" id="srcReload" type="button">Update</button>
+      </div>
+      <div class="card">
+        <div class="kpi-row">
+          <div class="kpi"><div class="label">Accounts</div><div class="value num" id="fs-accounts">&ndash;</div><div class="delta" id="fs-known">&nbsp;</div></div>
+          <div class="kpi"><div class="label">Paying now</div><div class="value num" id="fs-paying">&ndash;</div><div class="delta">&nbsp;</div></div>
+          <div class="kpi"><div class="label">Ever paid</div><div class="value num" id="fs-ever">&ndash;</div><div class="delta" id="fs-conv">&nbsp;</div></div>
+        </div>
+        <div class="sub-eyebrow">Where each account first came from</div>
+        <div class="src-scroll"><table class="src-table" id="fsTable"><tr><td>Loading&hellip;</td></tr></table></div>
+        <div class="sub-eyebrow" style="margin-top:18px">Pages people first landed on, for those who signed up</div>
+        <div class="src-scroll"><table class="src-table" id="fsLanding"></table></div>
+        <p class="fine">Recorded for people who allowed usage statistics, from the first page they ever opened (a link with utm_source=... wins over the referring site). Accounts made before 13 October 2026, or by people who said no, show as "not known".</p>
+      </div>
+    </section>
+
+    <section class="block">
+      <div class="block-head">
+        <div>
           <div class="eyebrow">Activation funnel</div>
           <h2>Where people drop off</h2>
         </div>
@@ -500,10 +527,10 @@
       </div>
       <div class="card">
         <div class="kpi-row">
-          <div class="kpi"><div class="label">Total accounts</div><div class="value num" id="su-total">&mdash;</div><div class="delta">all time</div></div>
-          <div class="kpi"><div class="label">New, 7 days</div><div class="value num" id="su-7">&mdash;</div><div class="delta">&nbsp;</div></div>
-          <div class="kpi"><div class="label">New, 30 days</div><div class="value num" id="su-30">&mdash;</div><div class="delta">&nbsp;</div></div>
-          <div class="kpi"><div class="label">Multi-device accounts</div><div class="value num" id="su-multidevice">&mdash;</div><div class="delta" id="su-multidevice-pct">&nbsp;</div></div>
+          <div class="kpi"><div class="label">Total accounts</div><div class="value num" id="su-total">&ndash;</div><div class="delta">all time</div></div>
+          <div class="kpi"><div class="label">New, 7 days</div><div class="value num" id="su-7">&ndash;</div><div class="delta">&nbsp;</div></div>
+          <div class="kpi"><div class="label">New, 30 days</div><div class="value num" id="su-30">&ndash;</div><div class="delta">&nbsp;</div></div>
+          <div class="kpi"><div class="label">Multi-device accounts</div><div class="value num" id="su-multidevice">&ndash;</div><div class="delta" id="su-multidevice-pct">&nbsp;</div></div>
         </div>
         <div class="chart-wrap" id="signupsChartWrap">
           <div class="empty-state">No sign-up data yet</div>
@@ -520,10 +547,10 @@
       </div>
       <div class="card">
         <div class="kpi-row">
-          <div class="kpi"><div class="label">Tracked accounts</div><div class="value num" id="en-tracked">&mdash;</div><div class="delta">have synced a plan</div></div>
-          <div class="kpi"><div class="label">Active meal plans</div><div class="value num" id="en-active">&mdash;</div><div class="delta" id="en-active-pct">&nbsp;</div></div>
-          <div class="kpi"><div class="label">Using shopping list</div><div class="value num" id="en-shopping">&mdash;</div><div class="delta" id="en-shopping-pct">&nbsp;</div></div>
-          <div class="kpi"><div class="label">Recipes ever tried</div><div class="value num" id="en-library">&mdash;</div><div class="delta" id="en-library-pct">&nbsp;</div></div>
+          <div class="kpi"><div class="label">Tracked accounts</div><div class="value num" id="en-tracked">&ndash;</div><div class="delta">have synced a plan</div></div>
+          <div class="kpi"><div class="label">Active meal plans</div><div class="value num" id="en-active">&ndash;</div><div class="delta" id="en-active-pct">&nbsp;</div></div>
+          <div class="kpi"><div class="label">Using shopping list</div><div class="value num" id="en-shopping">&ndash;</div><div class="delta" id="en-shopping-pct">&nbsp;</div></div>
+          <div class="kpi"><div class="label">Recipes ever tried</div><div class="value num" id="en-library">&ndash;</div><div class="delta" id="en-library-pct">&nbsp;</div></div>
         </div>
         <div class="engagement-lists">
           <div>
@@ -547,20 +574,20 @@
       </div>
       <div class="card">
         <div class="kpi-row">
-          <div class="kpi"><div class="label">Daily active</div><div class="value num" id="st-dau">&mdash;</div><div class="delta">yesterday</div></div>
-          <div class="kpi"><div class="label">Weekly active</div><div class="value num" id="st-wau">&mdash;</div><div class="delta">last 7d</div></div>
-          <div class="kpi"><div class="label">Monthly active</div><div class="value num" id="st-mau">&mdash;</div><div class="delta">last 30d</div></div>
-          <div class="kpi"><div class="label">Stickiness</div><div class="value num" id="st-ratio">&mdash;</div><div class="delta">DAU/MAU</div></div>
+          <div class="kpi"><div class="label">Daily active</div><div class="value num" id="st-dau">&ndash;</div><div class="delta">yesterday</div></div>
+          <div class="kpi"><div class="label">Weekly active</div><div class="value num" id="st-wau">&ndash;</div><div class="delta">last 7d</div></div>
+          <div class="kpi"><div class="label">Monthly active</div><div class="value num" id="st-mau">&ndash;</div><div class="delta">last 30d</div></div>
+          <div class="kpi"><div class="label">Stickiness</div><div class="value num" id="st-ratio">&ndash;</div><div class="delta">DAU/MAU</div></div>
         </div>
         <div class="retention-row" id="retentionRow">
           <div class="retention-bars" id="retentionBars"></div>
           <div class="retention-callout">
-            <div class="pct" id="retentionPct">&mdash;</div>
+            <div class="pct" id="retentionPct">&ndash;</div>
             <div class="cap">of active users in the last 28 days were returning visitors, not first-timers.</div>
           </div>
         </div>
         <div class="stat-line">
-          <div class="value num" id="en-dormant">&mdash;</div>
+          <div class="value num" id="en-dormant">&ndash;</div>
           <div class="label" id="en-dormant-label">accounts with no activity in 30+ days</div>
         </div>
       </div>
@@ -573,12 +600,17 @@
           <h2>Is anything broken</h2>
         </div>
       </div>
-      <div class="card health-card">
-        <div class="health-dot" id="healthDot"></div>
-        <div class="health-text">
-          <div class="value num" id="healthValue">&mdash;</div>
-          <div class="label" id="healthLabel">client-side errors, last 7 days</div>
+      <div class="card">
+        <div class="health-card">
+          <div class="health-dot" id="healthDot"></div>
+          <div class="health-text">
+            <div class="value num" id="healthValue">&ndash;</div>
+            <div class="label" id="healthLabel">errors in people's browsers, last 7 days</div>
+          </div>
+          <button class="ghost" id="errReload" type="button" style="margin-left:auto">Update</button>
         </div>
+        <div class="src-scroll"><table class="src-table err-table" id="errTable"></table></div>
+        <p class="fine">Errors in the site's own scripts, sent from visitors' browsers (no personal details). The same error from many people is one row with a count. Clear a row once it's fixed; if it comes back, it reappears. Uptime is checked every 15 minutes by GitHub, which emails you if the site or checkout settings break.</p>
       </div>
     </section>
 
@@ -765,7 +797,7 @@
   });
 
   function fmtNum(n) {
-    if (n === null || n === undefined || isNaN(n)) return "—";
+    if (n === null || n === undefined || isNaN(n)) return "\u2013";
     return Math.round(n).toLocaleString("en-GB");
   }
   function fmtDuration(sec) {
@@ -1203,7 +1235,7 @@
     var total = n + r;
     if (total === 0) {
       els["retentionBars"].innerHTML = '<div class="empty-state">No activity data yet</div>';
-      els["retentionPct"].textContent = "—";
+      els["retentionPct"].textContent = "\u2013";
       return;
     }
     var maxH = 110;
@@ -1260,20 +1292,15 @@
     renderRetention(data.retention.newVsReturning);
     var nvr = data.retention.newVsReturning || { new: 0, returning: 0 };
     var totalActive = nvr.new + nvr.returning;
-    els["ov-returning"].textContent = totalActive ? Math.round((nvr.returning / totalActive) * 100) + "%" : "—";
+    els["ov-returning"].textContent = totalActive ? Math.round((nvr.returning / totalActive) * 100) + "%" : "\u2013";
 
     var st = data.stickiness || { dau: 0, wau: 0, mau: 0, dauMauPct: 0 };
     els["st-dau"].textContent = fmtNum(st.dau);
     els["st-wau"].textContent = fmtNum(st.wau);
     els["st-mau"].textContent = fmtNum(st.mau);
-    els["st-ratio"].textContent = st.mau ? st.dauMauPct + "%" : "—";
+    els["st-ratio"].textContent = st.mau ? st.dauMauPct + "%" : "\u2013";
 
-    var health = data.siteHealth || { exceptions7d: 0 };
-    els["healthValue"].textContent = fmtNum(health.exceptions7d);
-    els["healthDot"].className = "health-dot" + (health.exceptions7d === 0 ? "" : health.exceptions7d <= 3 ? " warning" : " critical");
-    els["healthLabel"].textContent = health.exceptions7d === 0
-      ? "no client-side errors in the last 7 days"
-      : "client-side errors in the last 7 days";
+    // Site health now comes live from the error reports (loadErrors below).
 
     var eng = data.engagement || {};
     els["en-tracked"].textContent = fmtNum(eng.trackedAccounts);
@@ -1296,7 +1323,7 @@
       (eng.trackedAccounts ? " (" + dormant.pct + "% of tracked accounts)" : "");
 
     var xd = eng.crossDevice || { trackedAccounts: 0, multiDevice: 0, pct: 0 };
-    els["su-multidevice"].textContent = xd.trackedAccounts ? fmtNum(xd.multiDevice) : "—";
+    els["su-multidevice"].textContent = xd.trackedAccounts ? fmtNum(xd.multiDevice) : "\u2013";
     els["su-multidevice-pct"].textContent = xd.trackedAccounts ? xd.pct + "% of tracked accounts" : "not set up yet";
 
     renderFunnel([
@@ -1403,6 +1430,62 @@
     }).catch(function (e) { setText("lv-at", "Couldn't load live counts: " + e.message); });
   }
   document.getElementById("liveReload").addEventListener("click", loadLive);
+  // ---------- which channels bring paying customers ----------
+  function pct(a, b) { return b ? Math.round(a * 100 / b) + "%" : "\u2013"; }
+  function loadSources() {
+    adminApi({ action: "sources" }).then(function (j) {
+      var t = j.total;
+      setText("fs-accounts", t.accounts);
+      setText("fs-known", t.known + " with a known source");
+      setText("fs-paying", t.paying);
+      setText("fs-ever", t.everPaid);
+      setText("fs-conv", pct(t.everPaid, t.accounts) + " of accounts");
+      var rows = j.sources.map(function (r) {
+        var camps = Object.keys(r.campaigns || {}).sort(function (a, b) { return r.campaigns[b] - r.campaigns[a]; }).slice(0, 3)
+          .map(function (c) { return escapeHtml(c) + " (" + r.campaigns[c] + ")"; }).join(", ");
+        return "<tr><td>" + escapeHtml(r.source) + (camps ? '<span class="where" style="display:block;font-size:12px;color:var(--ink-muted)">' + camps + "</span>" : "") +
+          "</td><td>" + r.accounts + "</td><td>" + r.last30 + "</td><td>" + r.paying + "</td><td>" + r.everPaid + "</td><td>" + pct(r.everPaid, r.accounts) + "</td></tr>";
+      }).join("");
+      document.getElementById("fsTable").innerHTML = "<tr><th>Source</th><th>Accounts</th><th>New, 30d</th><th>Paying now</th><th>Ever paid</th><th>Paid rate</th></tr>" +
+        (rows || '<tr><td colspan="6">No accounts yet</td></tr>');
+      document.getElementById("fsLanding").innerHTML = j.landings.length
+        ? "<tr><th>First page</th><th>Accounts</th><th>Ever paid</th></tr>" + j.landings.map(function (l) {
+          return "<tr><td>" + escapeHtml(l.landing) + "</td><td>" + l.accounts + "</td><td>" + l.everPaid + "</td></tr>";
+        }).join("")
+        : '<tr><td>None recorded yet</td></tr>';
+    }).catch(function (e) { document.getElementById("fsTable").innerHTML = "<tr><td>Couldn't load: " + escapeHtml(e.message) + "</td></tr>"; });
+  }
+  document.getElementById("srcReload").addEventListener("click", loadSources);
+
+  // ---------- errors in people's browsers ----------
+  function loadErrors() {
+    adminApi({ action: "errors" }).then(function (j) {
+      var week = j.at - 7 * 86400000;
+      var recent = j.errors.filter(function (e) { return (e.lastAt || 0) > week; });
+      var hits = recent.reduce(function (n, e) { return n + (e.count || 0); }, 0);
+      setText("healthValue", recent.length ? recent.length + (recent.length === 1 ? " error" : " different errors") : "All clear");
+      document.getElementById("healthDot").className = "health-dot" + (!recent.length ? "" : hits <= 5 ? " warning" : " critical");
+      setText("healthLabel", recent.length ? "seen " + hits + " times in people's browsers in the last 7 days" : "no errors in people's browsers in the last 7 days");
+      var when = function (ms) { return ms ? new Date(ms).toLocaleString("en-GB", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" }) : ""; };
+      document.getElementById("errTable").innerHTML = j.errors.length
+        ? "<tr><th>Error</th><th>Times</th><th>Last seen</th><th></th></tr>" + j.errors.map(function (e) {
+          return '<tr><td class="msg">' + escapeHtml(e.message) +
+            '<span class="where">' + escapeHtml((e.app || "") + " \u00b7 " + (e.source || "?") + ":" + (e.line || 0) + " \u00b7 on " + (e.page || "?")) + "</span>" +
+            "<details><summary>Details</summary><div>" + escapeHtml(e.userAgent || "") + "</div><div>First seen " + when(e.firstAt) + "</div>" +
+            (e.stack ? "<pre>" + escapeHtml(e.stack) + "</pre>" : "") + "</details></td>" +
+            "<td>" + (e.count || 0) + "</td><td>" + when(e.lastAt) + '</td><td><button class="ghost" type="button" data-clear-err="' + e.id + '">Clear</button></td></tr>';
+        }).join("")
+        : "";
+      document.querySelectorAll("[data-clear-err]").forEach(function (b) {
+        b.addEventListener("click", function () {
+          b.disabled = true;
+          adminApi({ action: "clearError", id: b.getAttribute("data-clear-err") }).then(loadErrors).catch(function () { b.disabled = false; b.textContent = "Try again"; });
+        });
+      });
+    }).catch(function (e) { setText("healthValue", "\u2013"); setText("healthLabel", "Couldn't load errors: " + e.message); });
+  }
+  document.getElementById("errReload").addEventListener("click", loadErrors);
+
   function startLive() {
     loadLive();
     if (!liveTimer) liveTimer = setInterval(function () { if (!document.hidden) loadLive(); }, 60000);
@@ -1488,6 +1571,8 @@
       loadCodes();
       loadPromos();
       startLive();
+      loadSources();
+      loadErrors();
     } else if (user) {
       dashboardRoot.hidden = true;
       authGate.hidden = false;

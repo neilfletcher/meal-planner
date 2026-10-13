@@ -10,6 +10,7 @@
  *   POST /api/delete-account  deletes the account and everything stored with it
  *   POST /api/admin           admin only: gift codes, granting Pro, live counts
  *   POST /api/stripe-webhook  Stripe tells us about subscriptions
+ *   POST /api/log             a browser reports one of our scripts breaking
  *
  * Signed-in calls send "Authorization: Bearer <Firebase ID token>".
  */
@@ -59,13 +60,28 @@ function publicEntitlement(e) {
 
 /* ------------------------------------------------------------- handlers */
 
+// How someone first found the site (assets/telemetry.js), sent only by
+// browsers that allowed usage statistics. Kept with the account so the admin
+// page can show which channels lead to sign-ups and payments.
+function cleanTouch(t) {
+  if (!t || typeof t !== "object") return null;
+  var str = function (v, n) { return String(v || "").replace(/[^\w .\-\/:]/g, "").slice(0, n); };
+  var src = str(t.src, 40).toLowerCase();
+  if (!src) return null;
+  return { ftSource: src, ftMedium: str(t.med, 40).toLowerCase(), ftCampaign: str(t.camp, 60), ftLanding: str(t.land, 120), ftRef: str(t.ref, 80),
+    ftAt: Math.min(Date.now(), Number(t.at) || 0) };
+}
+
 async function account(request, env) {
   var user = await requireUser(request, env);
+  var body = await readJson(request);
+  var touch = cleanTouch(body.firstTouch);
   var path = "entitlements/" + user.uid;
   var doc = await getDoc(env, path);
+  if (doc && touch && !doc.data.ftSource) await mergeDoc(env, path, touch);
   if (!doc) {
     var now = Date.now();
-    var fresh = { email: user.email, createdAt: now, trialEndsAt: now + TRIAL_DAYS * DAY };
+    var fresh = Object.assign({ email: user.email, createdAt: now, trialEndsAt: now + TRIAL_DAYS * DAY }, touch || {});
     try {
       await commit(env, [{ path: path, data: fresh, exists: false }]);
     } catch (e) {
@@ -92,7 +108,7 @@ async function checkout(request, env) {
     line_items: { 0: { price: priceFor(env, plan), quantity: 1 } },
     managed_payments: { enabled: "true" },
     client_reference_id: user.uid,
-    metadata: { uid: user.uid, plan: plan },
+    metadata: { uid: user.uid, plan: plan, firstSource: e.ftSource || "unknown", firstCampaign: e.ftCampaign || "" },
     subscription_data: { metadata: { uid: user.uid } },
     success_url: origin + "/plan/?pro=success",
     cancel_url: origin + "/plan/?pro=cancelled"
@@ -225,6 +241,43 @@ async function admin(request, env) {
       return { path: "giftCodes/" + code, data: { months: months, note: note, createdAt: now, createdBy: user.email, redeemedBy: "", redeemedEmail: "", redeemedAt: 0 }, exists: false };
     }));
     return json({ codes: codes, months: months, note: note });
+  }
+
+  if (body.action === "errors") {
+    var errs = await listCollection(env, "clientErrors", "lastAt", 100);
+    return json({ errors: errs.map(function (r) { return Object.assign({ id: r.id }, r.data); }), at: now });
+  }
+
+  if (body.action === "clearError") {
+    var ids = (Array.isArray(body.ids) ? body.ids : [body.id]).filter(function (x) { return /^[a-f0-9]{20}$/.test(String(x)); }).slice(0, 100);
+    await Promise.all(ids.map(function (x) { return deleteDoc(env, "clientErrors/" + x); }));
+    return json({ cleared: ids.length });
+  }
+
+  // Which channels bring sign-ups and paying customers (first touch, for
+  // people who allowed usage statistics; everyone else is "not known").
+  if (body.action === "sources") {
+    var rows = await listCollection(env, "entitlements", null, 50000);
+    var bySrc = {}, byLanding = {}, total = { accounts: 0, paying: 0, everPaid: 0, known: 0 };
+    rows.forEach(function (row) {
+      var e = row.data, st = proState(e, now);
+      var key = e.ftSource || "not known";
+      var b2 = bySrc[key] = bySrc[key] || { source: key, accounts: 0, last30: 0, paying: 0, everPaid: 0, campaigns: {} };
+      b2.accounts++; total.accounts++;
+      if (e.ftSource) total.known++;
+      if ((e.createdAt || 0) > now - 30 * DAY) b2.last30++;
+      if (st.source === "stripe") { b2.paying++; total.paying++; }
+      if (e.stripeSub) { b2.everPaid++; total.everPaid++; }
+      if (e.ftCampaign) b2.campaigns[e.ftCampaign] = (b2.campaigns[e.ftCampaign] || 0) + 1;
+      if (e.ftLanding) {
+        var l = byLanding[e.ftLanding] = byLanding[e.ftLanding] || { landing: e.ftLanding, accounts: 0, everPaid: 0 };
+        l.accounts++;
+        if (e.stripeSub) l.everPaid++;
+      }
+    });
+    var sources = Object.keys(bySrc).map(function (k) { return bySrc[k]; }).sort(function (a, b) { return b.everPaid - a.everPaid || b.accounts - a.accounts; });
+    var landings = Object.keys(byLanding).map(function (k) { return byLanding[k]; }).sort(function (a, b) { return b.everPaid - a.everPaid || b.accounts - a.accounts; }).slice(0, 15);
+    return json({ sources: sources, landings: landings, total: total, at: now });
   }
 
   if (body.action === "dashboard") {
@@ -366,6 +419,35 @@ async function stripeWebhook(request, env) {
   return json({ received: true, ignored: event.type });
 }
 
+/* ------------------------------------------------------------- errors */
+// Browsers report errors in our own scripts here (assets/telemetry.js). The
+// same error from many people is one document with a count, so a bug that
+// hits everyone costs one write per report, not a pile of documents.
+async function logError(request, env) {
+  var origin = request.headers.get("origin") || "";
+  var self = new URL(request.url).origin;
+  if (origin && origin !== self && !/^https:\/\/([a-z0-9-]+\.)?solosupper\.co\.uk$/.test(origin) && !/\.pages\.dev$/.test(origin)) return json({ ok: false }, 403);
+  var text = await request.text();
+  if (text.length > 6000) return json({ ok: false }, 413);
+  var b;
+  try { b = JSON.parse(text); } catch (e) { return json({ ok: false }, 400); }
+  var str = function (v, n) { return String(v == null ? "" : v).slice(0, n); };
+  var msg = str(b.m, 300), src = str(b.s, 120), line = parseInt(b.l, 10) || 0;
+  if (!msg) return json({ ok: false }, 400);
+  var digest = await crypto.subtle.digest("SHA-1", new TextEncoder().encode(msg + "|" + src + "|" + line));
+  var id = Array.prototype.map.call(new Uint8Array(digest), function (x) { return ("0" + x.toString(16)).slice(-2); }).join("").slice(0, 20);
+  var path = "clientErrors/" + id, now = Date.now();
+  var doc = await getDoc(env, path);
+  var count = doc ? (doc.data.count || 0) : 0;
+  if (count >= 5000) return json({ ok: true }); // already well known
+  await mergeDoc(env, path, {
+    message: msg, source: src, line: line, col: parseInt(b.c, 10) || 0, stack: str(b.st, 1500),
+    page: str(b.p, 120), app: b.app === "planner" ? "planner" : "site", userAgent: str(b.ua, 200),
+    count: count + 1, firstAt: doc ? (doc.data.firstAt || now) : now, lastAt: now
+  });
+  return json({ ok: true });
+}
+
 function health(env) {
   var ok = function (v) { return !!v; };
   var sa = null;
@@ -387,7 +469,8 @@ var ROUTES = {
   "POST redeem": redeem,
   "POST delete-account": deleteAccount,
   "POST admin": admin,
-  "POST stripe-webhook": stripeWebhook
+  "POST stripe-webhook": stripeWebhook,
+  "POST log": logError
 };
 
 export async function onRequest(context) {

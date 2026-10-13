@@ -438,6 +438,7 @@ function footer(rel) {
     '<div class="footer-base"><span>&copy; ' + YEAR + " Solo Supper</span><span>Every recipe written for one. Scaled for two when someone stays over.</span></div>" +
     "</div></footer>\n" +
     '<div class="consent" id="consent" role="region" aria-label="Usage statistics" hidden></div>\n' +
+    '<script src="' + rel + 'assets/telemetry.js"></script>\n' +
     '<script src="' + rel + 'assets/search.js" defer></script>\n' +
     '<script src="' + rel + 'assets/site.js" defer data-base="' + rel + '"></script>\n</body>\n</html>\n';
 }

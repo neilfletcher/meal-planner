@@ -3114,6 +3114,7 @@
   function setAnalyticsConsent(yes) {
     lsSet(CONSENT_KEY, yes ? "yes" : "no");
     if (yes) loadAnalytics(); else stopAnalytics();
+    if (window.SoloTelemetry) { if (yes) window.SoloTelemetry.consented(); else window.SoloTelemetry.revoked(); }
     var b = document.getElementById("consent-banner");
     if (b) b.hidden = true;
   }
@@ -3123,8 +3124,8 @@
     if (c === "no") return;
     var b = document.getElementById("consent-banner");
     if (!b) return;
-    b.innerHTML = '<p><strong>Help improve Solo Supper?</strong> Allow anonymous usage statistics (Google Analytics). ' +
-      'No personal details, never sold. You can change this any time in Settings.</p>' +
+    b.innerHTML = '<p><strong>Help improve Solo Supper?</strong> Allow usage statistics (Google Analytics, and noting how you found us). ' +
+      'Never sold. You can change this any time in Settings.</p>' +
       '<div class="consent-actions"><button type="button" class="btn btn-sm" id="consent-no">No thanks</button>' +
       '<button type="button" class="btn btn-primary btn-sm" id="consent-yes">Allow</button></div>';
     b.hidden = false;
@@ -3191,7 +3192,7 @@
       '<label class="switch-row"><input type="checkbox" id="newonly-on"' + (state.newOnly ? " checked" : "") + "> Only suggest dishes I haven\u2019t cooked yet</label>" +
       '<p class="settings-note">Applies to Surprise me and the fill buttons. Dishes you\u2019ve ticked as cooked are skipped until there are too few left to fill a week.</p>' +
       "<h3>Privacy</h3>" +
-      '<label class="switch-row"><input type="checkbox" id="analytics-on"' + (analyticsConsent() === "yes" ? " checked" : "") + "> Share anonymous usage statistics</label>" +
+      '<label class="switch-row"><input type="checkbox" id="analytics-on"' + (analyticsConsent() === "yes" ? " checked" : "") + "> Share usage statistics</label>" +
       '<p class="settings-note">Helps show which features get used. No personal details, never sold.</p>';
     document.getElementById("settings-close-btn").addEventListener("click", closeSettings);
     settingsModal.querySelectorAll("[data-avoid]").forEach(function (b) {
@@ -3624,7 +3625,7 @@
   function startEntitlement(user) {
     stopEntitlement();
     if (!isNativeApp()) {
-      api("account").then(function (j) { if (currentUser && currentUser.uid === user.uid) setEntitlement(j.entitlement); }).catch(function () { /* server not reachable: Firestore below still works */ });
+      api("account", { firstTouch: window.SoloTelemetry ? window.SoloTelemetry.firstTouch() : null }).then(function (j) { if (currentUser && currentUser.uid === user.uid) setEntitlement(j.entitlement); }).catch(function () { /* server not reachable: Firestore below still works */ });
     }
     if (window.firebaseDb) {
       entUnsub = window.firebaseDb.collection("entitlements").doc(user.uid).onSnapshot(function (snap) {

@@ -182,7 +182,7 @@
   var banner = document.getElementById("consent");
   function showBanner() {
     if (!banner) return;
-    banner.innerHTML = '<p><strong>Help improve Solo Supper?</strong> Allow anonymous usage statistics (Google Analytics). No personal details, never sold. You can change this any time.</p>' +
+    banner.innerHTML = '<p><strong>Help improve Solo Supper?</strong> Allow usage statistics (Google Analytics, and noting how you found us). Never sold. You can change this any time.</p>' +
       '<div class="consent-actions"><button type="button" class="btn btn-outline" data-consent="no">No thanks</button>' +
       '<button type="button" class="btn btn-ink" data-consent="yes">Allow</button></div>';
     banner.hidden = false;
@@ -191,6 +191,7 @@
         var yes = b.getAttribute("data-consent") === "yes";
         lsSet(CONSENT_KEY, yes ? "yes" : "no");
         if (yes) loadAnalytics(); else stopAnalytics();
+        if (window.SoloTelemetry) { if (yes) window.SoloTelemetry.consented(); else window.SoloTelemetry.revoked(); }
         banner.hidden = true;
       });
     });

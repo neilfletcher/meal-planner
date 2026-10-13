@@ -181,3 +181,10 @@ After changing them, redeploy (Deployments > ... > Retry deployment) and check `
 ### Tests
 
 `node --experimental-default-type=module tests/api-test.mjs` tests `functions` with every outside service mocked (ID tokens, Firestore, Stripe, webhook signatures, gift-code races).
+
+## Keeping it running
+
+- **Uptime.** `.github/workflows/uptime.yml` checks the home page, a recipe page, the planner, the recipe data and `/api/health` (Firebase and Stripe settings) every 15 minutes. When something breaks, that run fails and GitHub emails you; while it stays broken you get a reminder every 6 hours rather than an email every 15 minutes.
+- **Errors in people's browsers.** `assets/telemetry.js` sends errors from the site's own scripts to `/api/log`, stored in Firestore under `clientErrors` (one document per distinct error, with a count). They show on the admin page under "Is anything broken", where you can clear them once fixed.
+- **Where customers come from.** For people who allow usage statistics, `assets/telemetry.js` remembers how they first arrived (utm_source, or the referring site) and the page they landed on, and `/api/account` saves it with their account as `ftSource`, `ftCampaign`, `ftLanding`. The admin page shows sign-ups and payments by source. Tag your own links with `?utm_source=...&utm_campaign=...` to tell them apart.
+- **Backups.** `.github/workflows/backup.yml` runs `scripts/backup-firestore.js` every night: every Firestore document and the list of sign-in accounts, encrypted with the `BACKUP_PASSPHRASE` GitHub secret and kept as a workflow artifact for 30 days (Actions > Nightly backup > a run > Artifacts). To open one: `BACKUP_PASSPHRASE=... node scripts/backup-decrypt.js solo-supper-YYYY-MM-DD.ssbk > backup.json`. Keep the passphrase in your password manager; without it the backups can't be read.

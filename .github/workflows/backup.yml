@@ -1,0 +1,49 @@
+name: Nightly backup
+
+# Copies everything in Firebase (Firestore and the sign-in accounts) into an
+# encrypted file, kept as a workflow artifact for 30 days. See
+# scripts/backup-firestore.js for how to open one.
+
+on:
+  schedule:
+    - cron: '23 2 * * *'   # 02:23 UTC every night
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+concurrency:
+  group: backup
+  cancel-in-progress: false
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        working-directory: scripts
+        run: npm install --no-audit --no-fund
+
+      - name: Back up Firebase
+        working-directory: scripts
+        env:
+          FIREBASE_SERVICE_ACCOUNT_KEY: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_KEY }}
+          BACKUP_PASSPHRASE: ${{ secrets.BACKUP_PASSPHRASE }}
+          OUT_DIR: ../backup-out
+        run: node backup-firestore.js
+
+      - name: Keep the backup for 30 days
+        uses: actions/upload-artifact@v4
+        with:
+          name: solo-supper-backup-${{ github.run_id }}
+          path: backup-out/*.ssbk
+          retention-days: 30
+          if-no-files-found: error
+          compression-level: 0

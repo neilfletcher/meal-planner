@@ -5,7 +5,7 @@
  *
  * {EMAIL} and {SITE} are filled in by the build.
  */
-var UPDATED = "11 October 2026";
+var UPDATED = "13 October 2026";
 
 module.exports = [
   {
@@ -38,11 +38,16 @@ module.exports = [
 
       "<h3>Usage statistics</h3>",
       "<p>If you say yes in the cookie banner, the site uses Google Analytics to count visits and see which pages and features are used. IP addresses are anonymised. If you say no, or ignore the banner, Google Analytics is not loaded. You can change your mind at any time from <a href=\"#cookie-settings\">cookie settings</a>.</p>",
+      "<p>If you say yes, your browser also remembers how you first found Solo Supper (for example Pinterest, a search engine or a link with a campaign name) and the page you arrived on. If you then create an account, that is saved with it, so I can see which channels lead to people signing up and subscribing. If you say no, it is not kept.</p>",
       "<p><strong>Legal basis:</strong> your consent.</p>",
 
       "<h3>Pro subscriptions</h3>",
       "<p>On the website, Pro is sold through Stripe's Managed Payments service, with Onelink (Stripe's checkout service, formerly Link) acting as the merchant of record. Onelink takes your payment details and handles payment, tax, receipts and renewal reminders; I never see your card details. I receive your email address, what you bought and whether your subscription is active, so that Pro can be switched on for your account. In the Android app, purchases go through Google Play in the same way.</p>",
       "<p><strong>Legal basis:</strong> contract, and keeping financial records the law requires.</p>",
+
+      "<h3>Error reports</h3>",
+      "<p>If one of the site's scripts breaks in your browser, it sends a short error report: the error message, which file and line, the page you were on and your browser type. It contains nothing that identifies you, and is used only to find and fix bugs.</p>",
+      "<p><strong>Legal basis:</strong> legitimate interests (keeping the site working).</p>",
 
       "<h3>Emails</h3>",
       "<p>If you email me, I keep the conversation so I can reply and help. I send sign-in links and replies, and nothing else. There is no marketing email unless you have separately signed up for it.</p>",
@@ -182,6 +187,7 @@ module.exports = [
       "<tbody>",
       "<tr><td>_ga</td><td>Cookie</td><td>Google Analytics: tells visits apart so they can be counted</td><td>2 years</td></tr>",
       "<tr><td>_ga_JF54HQGVLT</td><td>Cookie</td><td>Google Analytics: keeps track of the current visit</td><td>2 years</td></tr>",
+      "<tr><td>soloSupper.firstTouch</td><td>Local storage</td><td>How you first found Solo Supper and the page you arrived on, saved with your account if you create one</td><td>Until you clear it or say no</td></tr>",
       "</tbody></table></div>",
       "<p>If you say no, these are never set. If you said yes and change your mind, use <a href=\"#cookie-settings\">cookie settings</a>; you can also delete existing cookies in your browser settings.</p>",
 

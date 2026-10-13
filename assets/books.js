@@ -21,6 +21,15 @@
     });
   });
 
+  // Amazon buttons: count the click on our server (book and format only).
+  document.querySelectorAll("[data-amazon]").forEach(function (a) {
+    a.addEventListener("click", function () {
+      var parts = a.getAttribute("data-amazon").split(":");
+      try { navigator.sendBeacon("/api/book-click", new Blob([JSON.stringify({ book: parts[0], store: parts[1] })], { type: "application/json" })); } catch (e) { /* not counted */ }
+      track("amazon_click", { item_id: "book-" + parts[0], store: parts[1] });
+    });
+  });
+
   var box = document.getElementById("book-downloads");
   if (!box) return;
   var s = new URLSearchParams(location.search).get("s");

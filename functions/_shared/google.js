@@ -128,6 +128,19 @@ export async function gaRealtime(env, request) {
   return body;
 }
 
+// Standard report (dates in the past) from the same API.
+export async function gaReport(env, request) {
+  var token = await accessToken(env, "https://www.googleapis.com/auth/analytics.readonly");
+  var r = await fetch("https://analyticsdata.googleapis.com/v1beta/properties/" + encodeURIComponent(env.GA4_PROPERTY_ID) + ":runReport", {
+    method: "POST",
+    headers: { authorization: "Bearer " + token, "content-type": "application/json" },
+    body: JSON.stringify(request)
+  });
+  var body = await r.json().catch(function () { return {}; });
+  if (!r.ok) throw httpError(r.status === 403 ? 403 : 502, "Google Analytics: " + ((body.error && body.error.message) || r.status));
+  return body;
+}
+
 /* ---------------------------------------------------------------- Firestore */
 export function encodeValue(v) {
   if (v === null || v === undefined) return { nullValue: null };
@@ -212,6 +225,17 @@ export async function commit(env, writes) {
   }
   if (!r.ok) throw httpError(502, "Firestore commit failed: " + (await r.text()).slice(0, 200));
   return true;
+}
+
+// Adds to number fields in one document (made if missing), without reading
+// it first, so simultaneous counts never overwrite each other. Field names
+// must be plain identifiers (letters, digits, underscores).
+export async function increment(env, path, counts) {
+  var body = { writes: [{ transform: { document: docName(env, path), fieldTransforms: Object.keys(counts).map(function (k) {
+    return { fieldPath: k, increment: encodeValue(counts[k]) };
+  }) } }] };
+  var r = await gfetch(env, docsBase(env) + ":commit", { method: "POST", body: JSON.stringify(body) });
+  if (!r.ok) throw httpError(502, "Firestore count failed: " + (await r.text()).slice(0, 200));
 }
 
 export async function listCollection(env, collectionId, orderField, limit) {

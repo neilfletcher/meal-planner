@@ -429,9 +429,40 @@
           <div class="kpi"><div class="label">On free trial</div><div class="value num" id="lv-trial">&ndash;</div><div class="delta" id="lv-ended">&nbsp;</div></div>
           <div class="kpi"><div class="label">Free Pro</div><div class="value num" id="lv-free">&ndash;</div><div class="delta">gift codes and grants</div></div>
         </div>
+        <div class="sub-eyebrow">Money from subscriptions</div>
+        <div class="kpi-row">
+          <div class="kpi"><div class="label">Coming in a month</div><div class="value num" id="mn-mrr">&ndash;</div><div class="delta" id="mn-arr">&nbsp;</div></div>
+          <div class="kpi"><div class="label">Trial to paid</div><div class="value num" id="mn-conv">&ndash;</div><div class="delta" id="mn-conv-sub">&nbsp;</div></div>
+          <div class="kpi"><div class="label">Last 30 days</div><div class="value num" id="mn-new">&ndash;</div><div class="delta" id="mn-churn">&nbsp;</div></div>
+          <div class="kpi"><div class="label">Renewing in 30 days</div><div class="value num" id="mn-renew">&ndash;</div><div class="delta" id="mn-pastdue">&nbsp;</div></div>
+        </div>
         <div class="sub-eyebrow">Being read right now</div>
         <ul class="top-pages" id="soloNowPages"></ul>
         <div class="delta" id="lv-at" style="font-size:12px;color:var(--ink-faint);">&nbsp;</div>
+      </div>
+    </section>
+
+
+    <section class="block" id="booksBlock">
+      <div class="block-head">
+        <div>
+          <div class="eyebrow">Cookbook PDFs</div>
+          <h2>Book sales and downloads</h2>
+        </div>
+        <button class="ghost" id="bkReload" type="button">Update</button>
+      </div>
+      <div class="card">
+        <div class="kpi-row">
+          <div class="kpi"><div class="label">PDF sales</div><div class="value num" id="bk-sales">&ndash;</div><div class="delta" id="bk-sales-sub">&nbsp;</div></div>
+          <div class="kpi"><div class="label">Book money</div><div class="value num" id="bk-rev">&ndash;</div><div class="delta" id="bk-rev-sub">&nbsp;</div></div>
+          <div class="kpi"><div class="label">Checkouts finished, 30d</div><div class="value num" id="bk-conv">&ndash;</div><div class="delta" id="bk-conv-sub">&nbsp;</div></div>
+          <div class="kpi"><div class="label">Downloads, 30d</div><div class="value num" id="bk-dl">&ndash;</div><div class="delta" id="bk-dl-sub">&nbsp;</div></div>
+        </div>
+        <div class="sub-eyebrow">Book by book</div>
+        <div class="src-scroll"><table class="src-table" id="bkTable"><tr><td>Loading&hellip;</td></tr></table></div>
+        <div class="sub-eyebrow" style="margin-top:18px">Recent PDF purchases</div>
+        <div class="src-scroll"><table class="src-table" id="bkRecent"></table></div>
+        <p class="fine" id="bkNote">Sales, checkouts, downloads and Amazon clicks are counted on our server, so they include everyone (numbers only, nothing about who clicked). Amazon clicks show interest, not sales: KDP has the sales. "With a plan" is paid subscribers who get the book with Pro (yearly: all four, monthly: Asia). Refunds appear once Stripe sends "charge.refunded" to the webhook, and a refunded purchase can no longer download.</p>
       </div>
     </section>
 
@@ -1449,6 +1480,16 @@
       setText("lv-trial", c.onTrial);
       setText("lv-ended", c.trialEnded + " trials ended without paying");
       setText("lv-free", c.freePro);
+      var m = j.money || {};
+      var pounds = function (p) { return "\u00a3" + (p / 100).toFixed(2); };
+      setText("mn-mrr", pounds(m.mrr || 0));
+      setText("mn-arr", pounds((m.mrr || 0) * 12) + " a year at this rate, before fees" + (m.missingAmounts ? " (" + m.missingAmounts + " at list price)" : ""));
+      setText("mn-conv", m.trialsDone ? Math.round(m.trialsPaid * 100 / m.trialsDone) + "%" : "\u2013");
+      setText("mn-conv-sub", m.trialsPaid + " of " + m.trialsDone + " finished trials paid" + (m.paidInTrial ? "; " + m.paidInTrial + " paid before the trial ended" : ""));
+      setText("mn-new", "+" + (m.new30 || 0));
+      setText("mn-churn", "new subscriptions; " + (m.cancelled30 || 0) + " cancelled, " + (m.ended30 || 0) + " ended");
+      setText("mn-renew", m.renew30 || 0);
+      setText("mn-pastdue", pounds(m.renew30Amount || 0) + " due" + (m.pastDue ? "; " + m.pastDue + " payment" + (m.pastDue === 1 ? "" : "s") + " failing" : "; no failed payments"));
       setText("lv-at", "Updated " + new Date(j.at).toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" }) + ". Updates every minute while this page is open.");
     }).catch(function (e) { setText("lv-at", "Couldn't load live counts: " + e.message); });
   }
@@ -1479,6 +1520,40 @@
     }).catch(function (e) { document.getElementById("fsTable").innerHTML = "<tr><td>Couldn't load: " + escapeHtml(e.message) + "</td></tr>"; });
   }
   document.getElementById("srcReload").addEventListener("click", loadSources);
+
+  // ---------- cookbook PDFs ----------
+  function money(p, cur) { return (cur && cur !== "gbp" ? cur.toUpperCase() + " " : "\u00a3") + (p / 100).toFixed(2); }
+  function loadBooks() {
+    adminApi({ action: "books" }).then(function (j) {
+      var t = j.totals;
+      setText("bk-sales", t.sales);
+      setText("bk-sales-sub", t.sales30 + " in 30 days" + (t.refunds ? ", " + t.refunds + " refunded" : "") + (t.gifts ? ", " + t.gifts + " given free" : ""));
+      setText("bk-rev", money(t.revenue));
+      setText("bk-rev-sub", money(t.revenue30) + " in 30 days, before fees");
+      setText("bk-conv", t.co30 ? Math.round(t.paid30 * 100 / t.co30) + "%" : "\u2013");
+      setText("bk-conv-sub", t.paid30 + " paid of " + t.co30 + " started" + (j.ga.views30 ? "; " + j.ga.users30 + " people saw the books page" : ""));
+      setText("bk-dl", t.dl30);
+      var via = Object.keys(t.via30).map(function (k) { return t.via30[k] + " " + ({ purchase: "bought", account: "bought, from account", subscription: "with a plan", gift: "given" }[k] || k); });
+      setText("bk-dl-sub", (via.length ? via.join(", ") : "none yet") + "; " + t.dlAll + " all time");
+      document.getElementById("bkTable").innerHTML = "<tr><th>Book</th><th>Sold alone</th><th>In the bundle</th><th>Given</th><th>With a plan</th><th>Checkouts, 30d</th><th>Downloads, 30d</th><th>Amazon clicks, 30d</th></tr>" +
+        j.books.map(function (b) {
+          var sp = b.amzSplit || {}, split = [["paperback", "paperback"], ["kindle", "Kindle"], ["search", "search"]].filter(function (x) { return sp[x[0]]; }).map(function (x) { return sp[x[0]] + " " + x[1]; }).join(", ");
+          return "<tr><td>" + escapeHtml(b.title.replace(/^Solo Supper: /, "")) + "</td><td>" + b.alone + "</td><td>" + b.bundle + "</td><td>" + b.gifted + "</td><td>" + b.subs +
+            "</td><td>" + b.co30 + "</td><td>" + b.dl30 + "</td><td>" + b.amz30 + (split ? '<span class="where" style="display:block;font-size:12px;color:var(--ink-muted)">' + split + "</span>" : "") + "</td></tr>";
+        }).join("") +
+        "<tr><td>Bundle of four</td><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td>" + t.bundleCo30 + "</td><td>&ndash;</td><td>&ndash;</td></tr>";
+      var names = {};
+      j.books.forEach(function (b) { names[b.id] = b.title.replace(/^Solo Supper: /, ""); });
+      var when = function (ms) { return ms ? new Date(ms).toLocaleString("en-GB", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" }) : ""; };
+      document.getElementById("bkRecent").innerHTML = j.recent.length
+        ? "<tr><th>When</th><th>Email</th><th>Books</th><th>Paid</th><th>Came from</th></tr>" + j.recent.map(function (r) {
+          return "<tr><td>" + when(r.at) + "</td><td>" + escapeHtml(r.email) + "</td><td>" + (r.books.length === 4 ? "All four" : r.books.map(function (b) { return escapeHtml(names[b] || b); }).join(", ")) +
+            "</td><td>" + (r.refunded ? "<s>" + money(r.amount, r.currency) + "</s> refunded" : money(r.amount, r.currency)) + "</td><td>" + escapeHtml(r.source || "not known") + "</td></tr>";
+        }).join("")
+        : "<tr><td>No PDF sales yet</td></tr>";
+    }).catch(function (e) { document.getElementById("bkTable").innerHTML = "<tr><td>Couldn't load: " + escapeHtml(e.message) + "</td></tr>"; });
+  }
+  document.getElementById("bkReload").addEventListener("click", loadBooks);
 
   // ---------- errors in people's browsers ----------
   function loadErrors() {
@@ -1630,6 +1705,7 @@
       loadPromos();
       startLive();
       loadBookGifts();
+      loadBooks();
       loadSources();
       loadErrors();
     } else if (user) {

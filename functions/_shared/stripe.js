@@ -92,6 +92,11 @@ export function subscriptionFields(sub) {
     stripeStatus: sub.status,
     stripePeriodEnd: periodEnd ? periodEnd * 1000 : 0,
     stripeInterval: interval,
-    stripeCancelAtPeriodEnd: !!(sub.cancel_at_period_end || sub.cancel_at)
+    stripeCancelAtPeriodEnd: !!(sub.cancel_at_period_end || sub.cancel_at),
+    // For the admin page's money figures (pence, and when things happened).
+    stripeAmount: item && item.price && typeof item.price.unit_amount === "number" ? item.price.unit_amount * (item.quantity || 1) : 0,
+    stripeStartedAt: sub.start_date ? sub.start_date * 1000 : 0,
+    stripeCanceledAt: sub.canceled_at ? sub.canceled_at * 1000 : 0,
+    stripeEndedAt: sub.ended_at ? sub.ended_at * 1000 : 0
   };
 }

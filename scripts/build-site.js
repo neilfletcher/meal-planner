@@ -1062,9 +1062,10 @@ var BOOK_LIST = [
 ];
 // Until a book's Amazon links are in, its button searches Amazon for it.
 function amazonButtons(b) {
-  var a = function (href, text) { return '<a class="btn btn-outline btn-lg" href="' + esc(href) + '" target="_blank" rel="noopener">' + text + "</a>"; };
-  if (b.paperback || b.kindle) return (b.paperback ? a(b.paperback, "Paperback on Amazon") : "") + (b.kindle ? a(b.kindle, "Kindle") : "");
-  return a("https://www.amazon.co.uk/s?k=" + encodeURIComponent("Solo Supper " + b.name + " Neil Fletcher"), "Paperback or Kindle on Amazon");
+  // data-amazon lets assets/books.js count the click (a number per book, nothing about the person).
+  var a = function (href, text, store) { return '<a class="btn btn-outline btn-lg" href="' + esc(href) + '" target="_blank" rel="noopener" data-amazon="' + b.id + ":" + store + '">' + text + "</a>"; };
+  if (b.paperback || b.kindle) return (b.paperback ? a(b.paperback, "Paperback on Amazon", "paperback") : "") + (b.kindle ? a(b.kindle, "Kindle", "kindle") : "");
+  return a("https://www.amazon.co.uk/s?k=" + encodeURIComponent("Solo Supper " + b.name + " Neil Fletcher"), "Paperback or Kindle on Amazon", "search");
 }
 (function () {
   var rel = "../";

@@ -7,6 +7,7 @@
  *   trialEndsAt                       free trial, set once on first sign-in
  *   stripeCustomer, stripeSub, stripeStatus, stripePeriodEnd,
  *   stripeInterval, stripeCancelAtPeriodEnd   paid subscription
+ *   stripeAmount (pence), stripeStartedAt, stripeCanceledAt, stripeEndedAt   for the admin page
  *   giftUntil, giftLifetime           from a gift code
  *   grantUntil, grantLifetime         given by hand from the admin page
  *

@@ -16,10 +16,11 @@
  *   POST /api/book-link       { book, s? } -> a 15-minute download link
  *   GET  /api/book-file       the PDF itself, from a signed link
  *   POST /api/my-books        signed-in user: which books they have
+ *   POST /api/book-click      { book, store } counts a click through to Amazon
  *
  * Signed-in calls send "Authorization: Bearer <Firebase ID token>".
  */
-import { verifyIdToken, projectId, getDoc, mergeDoc, deleteDoc, commit, listCollection, queryWhere, listAuthUsers, gaRealtime, findUserByEmail, deleteAuthUser, httpError } from "../_shared/google.js";
+import { verifyIdToken, projectId, getDoc, mergeDoc, deleteDoc, commit, increment, listCollection, queryWhere, listAuthUsers, gaRealtime, gaReport, findUserByEmail, deleteAuthUser, httpError } from "../_shared/google.js";
 import { BOOKS, BOOK_IDS, bookPrice, subscriptionBooks, downloadUrl, checkDownload } from "../_shared/books.js";
 import { stripe, priceFor, verifyWebhook, subscriptionFields } from "../_shared/stripe.js";
 import { proState, addMonths, TRIAL_DAYS } from "../_shared/entitlement.js";
@@ -298,6 +299,11 @@ async function admin(request, env) {
     var since = function (ms) { return auth.users.filter(function (u) { return u.createdAt > now - ms; }).length; };
     var c = { accounts: auth.total, newToday: since(DAY), new7: since(7 * DAY), new30: since(30 * DAY),
       paying: 0, monthly: 0, annual: 0, cancelling: 0, everPaid: 0, onTrial: 0, freePro: 0, trialEnded: 0 };
+    // Money, in pence. Older subscriptions saved before amounts were kept
+    // fall back to the list prices until Stripe next tells us about them.
+    var m = { mrr: 0, pastDue: 0, renew30: 0, renew30Amount: 0, new30: 0, cancelled30: 0, ended30: 0,
+      trialsDone: 0, trialsPaid: 0, paidInTrial: 0, missingAmounts: 0 };
+    var stale = [];
     ents.forEach(function (row) {
       var e = row.data, st = proState(e, now);
       if (e.stripeSub) c.everPaid++;
@@ -305,11 +311,89 @@ async function admin(request, env) {
         c.paying++;
         if (e.stripeInterval === "year") c.annual++; else c.monthly++;
         if (e.stripeCancelAtPeriodEnd) c.cancelling++;
+        var amt = e.stripeAmount || (e.stripeInterval === "year" ? 1499 : 249);
+        if (!e.stripeAmount) { m.missingAmounts++; stale.push(row); }
+        m.mrr += e.stripeInterval === "year" ? amt / 12 : amt;
+        if (e.stripeStatus === "past_due") m.pastDue++;
+        if (!e.stripeCancelAtPeriodEnd && e.stripePeriodEnd > now && e.stripePeriodEnd < now + 30 * DAY) { m.renew30++; m.renew30Amount += amt; }
       } else if (st.source === "trial") c.onTrial++;
       else if (st.source === "gift" || st.source === "grant") c.freePro++;
       else if (st.source === "trial-ended") c.trialEnded++;
+      if (e.stripeStartedAt > now - 30 * DAY) m.new30++;
+      if (e.stripeCanceledAt > now - 30 * DAY) m.cancelled30++;
+      if (e.stripeEndedAt > now - 30 * DAY) m.ended30++;
+      // Trial to paid: of the trials that have finished, how many went on to pay.
+      if (e.trialEndsAt && e.trialEndsAt <= now) { m.trialsDone++; if (e.stripeSub) m.trialsPaid++; }
+      else if (e.trialEndsAt && e.stripeSub) m.paidInTrial++;
     });
-    return json({ counts: c, at: now });
+    m.mrr = Math.round(m.mrr);
+    // Fill in amounts for a few older subscriptions each time (cheap, and it stops once done).
+    await Promise.all(stale.slice(0, 5).map(function (row) {
+      return stripe(env, "GET", "subscriptions/" + row.data.stripeSub).then(function (sub) { return saveSubscription(env, row.id, sub); }).catch(function () {});
+    }));
+    return json({ counts: c, money: m, at: now });
+  }
+
+  // Cookbook PDFs: sales, refunds, gifts, subscriber copies, checkouts,
+  // downloads and clicks through to Amazon.
+  if (body.action === "books") {
+    var bl = await Promise.all([
+      listCollection(env, "purchases", null, 5000),
+      listCollection(env, "bookStats", null, 2000),
+      listCollection(env, "entitlements", null, 50000)
+    ]);
+    var keys = BOOK_IDS.map(bookKey);
+    var per = {};
+    BOOK_IDS.forEach(function (id) { per[id] = { id: id, title: BOOKS[id].title, alone: 0, bundle: 0, gifted: 0, subs: 0, co30: 0, dl30: 0, dlAll: 0, amz30: 0, amzAll: 0 }; });
+    var t = { sales: 0, sales30: 0, revenue: 0, revenue30: 0, refunds: 0, refunded: 0, gifts: 0, bundleCo30: 0, co30: 0, paid30: 0,
+      dl30: 0, dlAll: 0, amz30: 0, amzAll: 0, subsAll: 0, subsAsia: 0, via30: {} };
+    var recent = [];
+    bl[0].forEach(function (row) {
+      var p = row.data, books = (p.books || []).filter(function (b) { return BOOKS[b]; });
+      if (!books.length) return;
+      var d30 = (p.createdAt || 0) > now - 30 * DAY;
+      if (p.gift) { t.gifts++; books.forEach(function (b) { per[b].gifted++; }); return; }
+      recent.push({ id: row.id, at: p.createdAt || 0, email: p.email || "", books: books, amount: p.amount || 0, currency: p.currency || "",
+        source: p.source || "", refunded: !!p.refunded, refundedAmount: p.refundedAmount || 0 });
+      if (p.refunded) { t.refunds++; t.refunded += p.refundedAmount || p.amount || 0; return; }
+      t.sales++; t.revenue += (p.amount || 0) - (p.refundedAmount || 0);
+      if (d30) { t.sales30++; t.revenue30 += (p.amount || 0) - (p.refundedAmount || 0); t.paid30++; }
+      books.forEach(function (b) { if (books.length === BOOK_IDS.length) per[b].bundle++; else per[b].alone++; });
+    });
+    recent.sort(function (a, b) { return b.at - a.at; });
+    var cutoff = new Date(now - 29 * DAY).toISOString().slice(0, 10);
+    bl[1].forEach(function (row) {
+      var d = row.data, in30 = row.id >= cutoff;
+      BOOK_IDS.forEach(function (id, i) {
+        var k = keys[i], pb = per[id];
+        var dl = d["dl_" + k] || 0, amz = (d["amz_" + k + "_paperback"] || 0) + (d["amz_" + k + "_kindle"] || 0) + (d["amz_" + k + "_search"] || 0);
+        pb.dlAll += dl; pb.amzAll += amz; t.dlAll += dl; t.amzAll += amz;
+        if (in30) { pb.dl30 += dl; pb.amz30 += amz; pb.co30 += d["co_" + k] || 0; t.dl30 += dl; t.amz30 += amz; t.co30 += d["co_" + k] || 0; }
+        pb.amzSplit = pb.amzSplit || { paperback: 0, kindle: 0, search: 0 };
+        if (in30) ["paperback", "kindle", "search"].forEach(function (st) { pb.amzSplit[st] += d["amz_" + k + "_" + st] || 0; });
+      });
+      if (in30) {
+        t.bundleCo30 += d.co_all || 0; t.co30 += d.co_all || 0;
+        Object.keys(d).forEach(function (f) { if (/^dlvia_/.test(f)) t.via30[f.slice(6)] = (t.via30[f.slice(6)] || 0) + d[f]; });
+      }
+    });
+    // Subscribers who have the books with their plan (paid at least once).
+    bl[2].forEach(function (row) {
+      subscriptionBooks(row.data).forEach(function (b) { per[b].subs++; });
+      if (row.data.stripeSub) { if (row.data.stripeInterval === "year") t.subsAll++; else t.subsAsia++; }
+    });
+    // Visits to the books page (only people who allowed analytics).
+    var ga = { configured: !!env.GA4_PROPERTY_ID };
+    if (env.GA4_PROPERTY_ID) {
+      try {
+        var rep = await gaReport(env, { dateRanges: [{ startDate: "29daysAgo", endDate: "today" }], metrics: [{ name: "screenPageViews" }, { name: "activeUsers" }],
+          dimensionFilter: { filter: { fieldName: "pagePath", stringFilter: { matchType: "BEGINS_WITH", value: "/books/" } } } });
+        var r0 = rep.rows && rep.rows[0];
+        ga.views30 = r0 ? parseInt(r0.metricValues[0].value, 10) || 0 : 0;
+        ga.users30 = r0 ? parseInt(r0.metricValues[1].value, 10) || 0 : 0;
+      } catch (e) { ga.error = e.message; }
+    }
+    return json({ at: now, totals: t, books: BOOK_IDS.map(function (id) { return per[id]; }), recent: recent.slice(0, 50), ga: ga });
   }
 
   if (body.action === "liveVisitors") {
@@ -441,6 +525,18 @@ async function stripeWebhook(request, env) {
     return json({ received: true });
   }
 
+  // A refunded book switches its downloads off and shows on the admin page.
+  // (Add "charge.refunded" to the webhook's events in Stripe.)
+  if (event.type === "charge.refunded" && obj.payment_intent) {
+    var pi = typeof obj.payment_intent === "string" ? obj.payment_intent : obj.payment_intent.id;
+    var found = await stripe(env, "GET", "checkout/sessions", { payment_intent: pi, limit: 1 });
+    var cs = found.data && found.data[0];
+    if (!cs || !cs.metadata || cs.metadata.kind !== "books") return json({ received: true, ignored: "not a book purchase" });
+    try { await paidBookSession(env, cs.id); } catch (e) { /* recorded below either way */ }
+    await mergeDoc(env, "purchases/" + cs.id, { refunded: !!obj.refunded, refundedAmount: obj.amount_refunded || 0, refundedAt: Date.now() });
+    return json({ received: true });
+  }
+
   if (/^customer\.subscription\.(created|updated|deleted|paused|resumed)$/.test(event.type)) {
     // Events can arrive out of order, so always store the subscription as it is now.
     var current = obj;
@@ -455,6 +551,15 @@ async function stripeWebhook(request, env) {
 }
 
 /* ------------------------------------------------------------- books */
+// Daily counts for the admin page, one document per day: bookStats/2026-10-13
+// with fields such as co_asia (checkouts started), dl_asia (downloads) and
+// amz_asia_kindle (clicks through to Amazon). Numbers only, nothing about
+// who. Counting never gets in the way of the thing being counted.
+function bookKey(id) { return String(id).replace(/-/g, "_"); }
+async function countBook(env, counts) {
+  try { await increment(env, "bookStats/" + new Date().toISOString().slice(0, 10), counts); } catch (e) { /* not counted */ }
+}
+
 async function optionalUser(request, env) {
   try { return await requireUser(request, env); } catch (e) { return null; }
 }
@@ -478,6 +583,8 @@ async function bookCheckout(request, env) {
   };
   if (user) { params.client_reference_id = user.uid; if (user.email) params.customer_email = user.email; }
   var session = await stripe(env, "POST", "checkout/sessions", params);
+  var co = {}; co["co_" + bookKey(book)] = 1;
+  await countBook(env, co);
   return json({ url: session.url });
 }
 
@@ -493,7 +600,9 @@ async function paidBookSession(env, sid) {
     books: String(s.metadata.books || "").split(",").filter(function (b) { return BOOKS[b]; }),
     email: String((s.customer_details && s.customer_details.email) || s.customer_email || "").toLowerCase(),
     uid: s.metadata.uid || s.client_reference_id || "",
-    amount: s.amount_total || 0, currency: s.currency || "", createdAt: (s.created || 0) * 1000
+    amount: s.amount_total || 0, currency: s.currency || "", createdAt: (s.created || 0) * 1000,
+    source: String(s.metadata.firstSource || "").slice(0, 40),
+    paymentIntent: typeof s.payment_intent === "string" ? s.payment_intent : (s.payment_intent && s.payment_intent.id) || ""
   };
   await mergeDoc(env, "purchases/" + sid, rec);
   return rec;
@@ -501,6 +610,7 @@ async function paidBookSession(env, sid) {
 
 async function bookSession(request, env) {
   var rec = await paidBookSession(env, new URL(request.url).searchParams.get("s"));
+  if (rec.refunded) throw httpError(410, "This purchase was refunded, so the download has been switched off.");
   return json({ books: rec.books.map(function (b) { return { id: b, title: BOOKS[b].title }; }), email: rec.email });
 }
 
@@ -510,7 +620,7 @@ async function ownedBooks(env, user) {
   subscriptionBooks(doc && doc.data).forEach(function (b) { owned[b] = "subscription"; });
   var rows = await queryWhere(env, "purchases", "uid", user.uid, 50);
   if (user.email && user.emailVerified) rows = rows.concat(await queryWhere(env, "purchases", "email", String(user.email).toLowerCase(), 50));
-  rows.forEach(function (r) { (r.data.books || []).forEach(function (b) { if (BOOKS[b]) owned[b] = "bought"; }); });
+  rows.forEach(function (r) { if (!r.data.refunded) (r.data.books || []).forEach(function (b) { if (BOOKS[b]) owned[b] = "bought"; }); });
   return owned;
 }
 
@@ -524,11 +634,21 @@ async function bookLink(request, env) {
   var body = await readJson(request);
   var book = String(body.book || "");
   if (!BOOKS[book]) throw httpError(400, "Unknown book.");
-  var ok = false;
-  if (body.s) ok = (await paidBookSession(env, body.s)).books.indexOf(book) !== -1;
-  else ok = !!(await ownedBooks(env, await requireUser(request, env)))[book];
+  var ok = false, via = "purchase";
+  if (body.s) {
+    var rec = await paidBookSession(env, body.s);
+    if (rec.refunded) throw httpError(410, "This purchase was refunded, so the download has been switched off.");
+    ok = rec.books.indexOf(book) !== -1;
+    if (rec.gift) via = "gift";
+  } else {
+    via = (await ownedBooks(env, await requireUser(request, env)))[book] || "";
+    ok = !!via;
+    if (via === "bought") via = "account";
+  }
   if (!ok) throw httpError(403, "This book isn't on your account.");
   if (!env.BOOKS) throw httpError(503, "Downloads are being set up. Please try again later, or email us.");
+  var dl = {}; dl["dl_" + bookKey(book)] = 1; dl["dlvia_" + via] = 1;
+  await countBook(env, dl);
   return json({ url: await downloadUrl(env, siteOrigin(request, env), book) });
 }
 
@@ -544,6 +664,18 @@ async function bookFile(request, env) {
     "content-disposition": 'attachment; filename="' + BOOKS[id].title.replace(/[:&]/g, "").replace(/\s+/g, " ") + '.pdf"',
     "content-length": String(obj.size), "cache-control": "private, no-store"
   } });
+}
+
+// A click through to a book on Amazon (sent by assets/books.js).
+async function bookClick(request, env) {
+  var origin = request.headers.get("origin") || "";
+  if (origin && origin !== new URL(request.url).origin && !/^https:\/\/([a-z0-9-]+\.)?solosupper\.co\.uk$/.test(origin) && !/\.pages\.dev$/.test(origin)) return json({ ok: false }, 403);
+  var b = await readJson(request);
+  var store = { paperback: 1, kindle: 1, search: 1 }[b.store] ? b.store : "";
+  if (!BOOKS[b.book] || !store) return json({ ok: false }, 400);
+  var c = {}; c["amz_" + bookKey(b.book) + "_" + store] = 1;
+  await countBook(env, c);
+  return json({ ok: true });
 }
 
 /* ------------------------------------------------------------- errors */
@@ -601,7 +733,8 @@ var ROUTES = {
   "POST log": logError,
   "POST book-checkout": bookCheckout,
   "POST book-link": bookLink,
-  "POST my-books": myBooks
+  "POST my-books": myBooks,
+  "POST book-click": bookClick
 };
 
 export async function onRequest(context) {

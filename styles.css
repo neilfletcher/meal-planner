@@ -708,3 +708,9 @@ h1, .display, .display-l, .display-m, .week-range { letter-spacing: -0.02em; }
 .cc-item.is-done .cc-bar span { background: var(--tomato); }
 .mark-cooked { color: var(--olive); }
 #collect-try-btn .i { width: 16px; height: 16px; }
+
+/* Cook's notes: the kitchen conventions under each method */
+.cook-notes { margin-top: 18px; border-top: 1px solid var(--line); padding-top: 14px; }
+.cook-notes summary { cursor: pointer; font-weight: 600; list-style-position: inside; }
+.cook-notes ul { margin: 10px 0 0; padding-left: 18px; }
+.cook-notes li { margin: 6px 0; font-size: 15px; line-height: 1.5; }

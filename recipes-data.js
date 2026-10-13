@@ -7,7 +7,7 @@ window.SOLO_RECIPES = (function () {
   return [
     {
       id: "d1", title: "Sticky Hoisin Pork with Egg-Fried Rice", tags: ["quick"], cuisine: "China", protein: "pork",
-      prep: 6, cook: 10,
+      prep: 8, cook: 10,
       ingredients: [
         ing(150, "g", "pork loin steak, sliced into strips", "meat"), ing(2, "tbsp", "hoisin sauce", "store"),
         ing(1, "tsp", "soy sauce", "store"), ing(1, "", "garlic clove, finely chopped", "produce"),
@@ -56,7 +56,7 @@ window.SOLO_RECIPES = (function () {
         "Slice the chicken into bite-sized strips and trim the green beans.",
         "Heat a splash of the coconut milk (the thick part from the top) in a wok over medium-high heat, add the curry paste and fry for 1 minute until fragrant.",
         "Add the chicken and stir-fry for 2–3 minutes until sealed.",
-        "Pour in the remaining coconut milk and the green beans, and simmer for 6–8 minutes until the chicken is cooked through and the sauce has thickened slightly.",
+        "Pour in the remaining coconut milk and the green beans, and simmer for 6–8 minutes until the chicken is cooked through (75°C in the thickest part) and the sauce has thickened slightly.",
         "Stir in the fish sauce, taste and adjust seasoning, then serve over the rice scattered with basil or coriander."
       ]
     },
@@ -78,7 +78,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d5", title: "Spiced Chickpea & Spinach Curry", tags: ["vegetarian"], cuisine: "India", protein: "plant-based",
-      prep: 8, cook: 15,
+      prep: 8, cook: 19,
       ingredients: [
         ing(200, "g", "chickpeas, drained", "store"), ing(200, "g", "chopped tomatoes", "store"),
         ing(0.5, "", "onion, finely chopped", "produce"), ing(1, "", "garlic clove, finely chopped", "produce"),
@@ -89,7 +89,7 @@ window.SOLO_RECIPES = (function () {
       steps: [
         "Cook the rice according to the packet instructions.",
         "Finely chop the onion, garlic and ginger.",
-        "Heat the oil in a saucepan over medium heat and fry the onion for 3–4 minutes until soft.",
+        "Heat the oil in a saucepan over medium heat and fry the onion for 8 minutes until soft and translucent.",
         "Add the garlic, ginger, garam masala and cumin, and fry for 1 minute until fragrant.",
         "Stir in the chopped tomatoes and chickpeas, and simmer for 6–8 minutes until thickened.",
         "Stir through the spinach until wilted, season to taste, and serve with the rice."
@@ -105,7 +105,7 @@ window.SOLO_RECIPES = (function () {
       ],
       steps: [
         "Butterfly or flatten the chicken breast slightly for even cooking, then coat all over with the Cajun seasoning and half the olive oil.",
-        "Heat a frying pan over medium-high heat and cook the chicken for 4 minutes each side until charred and cooked through. Rest for 2 minutes, then slice.",
+        "Heat a frying pan over medium-high heat and cook the chicken for 4 minutes each side until charred and cooked through (75°C in the thickest part). Rest for 2 minutes, then slice.",
         "Meanwhile, dry-fry the sweetcorn in a separate small pan over high heat for 3–4 minutes until lightly charred.",
         "Stir the charred corn through the salsa with the remaining olive oil and a squeeze of lime.",
         "Serve the sliced chicken with the corn salsa spooned over."
@@ -113,7 +113,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d7", title: "Quick Matar Paneer", tags: ["vegetarian"], cuisine: "India", protein: "plant-based",
-      prep: 8, cook: 15,
+      prep: 10, cook: 20,
       ingredients: [
         ing(120, "g", "paneer, cubed", "dairy"), ing(60, "g", "frozen peas", "frozen"),
         ing(150, "g", "chopped tomatoes", "store"), ing(0.25, "", "onion, finely chopped", "produce"),
@@ -124,7 +124,7 @@ window.SOLO_RECIPES = (function () {
       steps: [
         "Cook the rice according to the packet instructions.",
         "Cut the paneer into cubes. Heat half the oil in a frying pan over medium-high heat and fry the paneer for 2–3 minutes, turning, until golden on a couple of sides. Set aside.",
-        "Finely chop the onion and garlic. Heat the remaining oil in the same pan and fry the onion for 3 minutes until soft.",
+        "Finely chop the onion and garlic. Heat the remaining oil in the same pan and fry the onion for 8 minutes until soft and translucent.",
         "Add the garlic, ginger, garam masala and turmeric, and cook for 1 minute until fragrant.",
         "Stir in the chopped tomatoes and simmer for 5 minutes until thickened.",
         "Season to taste, then add the peas and paneer, and simmer for 2–3 minutes until the peas are cooked through. Serve with the rice."
@@ -132,7 +132,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d8", title: "One-Pan Chorizo & Butter Bean Stew", tags: ["quick"], cuisine: "Spain", protein: "pork",
-      prep: 6, cook: 12,
+      prep: 8, cook: 16,
       ingredients: [
         ing(60, "g", "cooking chorizo", "meat"), ing(200, "g", "butter beans, drained", "store"),
         ing(200, "g", "chopped tomatoes", "store"), ing(0.5, "", "onion, finely chopped", "produce"),
@@ -142,8 +142,8 @@ window.SOLO_RECIPES = (function () {
       steps: [
         "Slice the chorizo and finely chop the onion and garlic.",
         "Fry the chorizo in a dry saucepan over medium heat for 2–3 minutes until it releases its red oil.",
-        "Add the onion and garlic and cook for 3–4 minutes until softened.",
-        "Stir in the smoked paprika, chopped tomatoes and butter beans, and simmer for 8–10 minutes until thickened.",
+        "Add the onion and cook for 8 minutes until soft and translucent, adding the garlic for the last minute.",
+        "Stir in the smoked paprika for 30 seconds until fragrant, then add the chopped tomatoes and butter beans and simmer for 8–10 minutes until thickened.",
         "Season to taste, scatter with chopped parsley, and serve with crusty bread for dunking."
       ]
     },
@@ -176,14 +176,14 @@ window.SOLO_RECIPES = (function () {
       steps: [
         "Cook the rice according to the packet instructions.",
         "Flatten the chicken breast slightly, then coat in flour, dip in beaten egg, and press into the panko breadcrumbs to coat all over.",
-        "Heat the vegetable oil in a frying pan over medium heat and fry the chicken for 4–5 minutes each side until deep golden and cooked through. Drain on kitchen paper and slice.",
+        "Heat the vegetable oil in a frying pan over medium heat and fry the chicken for 4–5 minutes each side until deep golden and cooked through (75°C in the thickest part). Drain on kitchen paper and slice.",
         "Meanwhile, warm the katsu sauce through in a small pan.",
         "Season to taste, then serve the sliced katsu chicken over the rice, spooning the warmed curry sauce over the top."
       ]
     },
     {
       id: "d11", title: "Creamy Garlic Mushroom Tagliatelle", tags: ["vegetarian"], cuisine: "Italy", protein: "plant-based",
-      prep: 6, cook: 10,
+      prep: 7, cook: 10,
       ingredients: [
         ing(80, "g", "tagliatelle", "store"), ing(150, "g", "chestnut mushrooms, sliced", "produce"),
         ing(2, "", "garlic cloves, finely chopped", "produce"), ing(80, "ml", "double cream", "dairy"),
@@ -196,12 +196,12 @@ window.SOLO_RECIPES = (function () {
         "Heat the butter and olive oil in a large frying pan over medium-high heat, add the mushrooms and fry for 4–5 minutes until golden and any liquid has evaporated.",
         "Add the garlic and thyme leaves and cook for 30 seconds until fragrant.",
         "Pour in the cream, bring to a gentle simmer, and stir in the parmesan until melted into a silky sauce.",
-        "Drain the pasta, reserving a splash of cooking water, and toss it through the sauce, loosening with the pasta water if needed."
+        "Scoop out a splash of the cooking water, then drain the pasta and toss it through the sauce, loosening with the pasta water if needed."
       ]
     },
     {
       id: "d12", title: "Moroccan-Spiced Lamb with Couscous", tags: [], cuisine: "Morocco", protein: "lamb",
-      prep: 8, cook: 10,
+      prep: 8, cook: 16,
       ingredients: [
         ing(150, "g", "lamb mince", "meat"), ing(60, "g", "couscous", "store"),
         ing(80, "ml", "vegetable stock", "store"), ing(0.5, "tsp", "ground cumin", "spice"),
@@ -212,7 +212,7 @@ window.SOLO_RECIPES = (function () {
       steps: [
         "Put the couscous in a bowl, pour over the hot stock, cover and leave for 5 minutes until absorbed.",
         "Finely chop the onion, garlic and dried apricots.",
-        "Heat the olive oil in a frying pan over medium-high heat and fry the onion for 2 minutes until softened.",
+        "Heat the olive oil in a frying pan over medium-high heat and fry the onion for 8 minutes until soft and translucent.",
         "Add the lamb mince, breaking it up with a spoon, and fry for 4–5 minutes until browned.",
         "Stir in the garlic, cumin, cinnamon and apricots, and cook for 2 more minutes.",
         "Season to taste, then fluff the couscous with a fork and serve the spiced lamb on top, scattered with torn mint leaves."
@@ -229,7 +229,7 @@ window.SOLO_RECIPES = (function () {
       steps: [
         "Cook the rice according to the packet instructions.",
         "Season the chicken thighs with salt and rub with half the olive oil.",
-        "Heat a frying pan over medium-high heat and cook the chicken for 5–6 minutes each side until charred and cooked through, adding the peri-peri sauce for the last 1–2 minutes to glaze.",
+        "Heat a frying pan over medium-high heat and cook the chicken for 5–6 minutes each side until charred and cooked through (75°C in the thickest part), adding the peri-peri sauce for the last 1–2 minutes to glaze.",
         "While the chicken cooks, toss the broccoli in the remaining olive oil and cook in a separate hot griddle or frying pan for 4–5 minutes, turning, until charred and just tender.",
         "Season to taste, then slice the chicken and serve over the rice with the charred broccoli, finished with a squeeze of lemon."
       ]
@@ -253,7 +253,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d15", title: "Turkey & Sweetcorn Chilli", tags: ["quick"], cuisine: "USA", protein: "turkey",
-      prep: 8, cook: 15,
+      prep: 8, cook: 20,
       ingredients: [
         ing(150, "g", "turkey mince", "meat"), ing(60, "g", "sweetcorn", "frozen"),
         ing(100, "g", "kidney beans, drained", "store"), ing(200, "g", "chopped tomatoes", "store"),
@@ -264,9 +264,9 @@ window.SOLO_RECIPES = (function () {
       steps: [
         "Cook the rice according to the packet instructions.",
         "Finely chop the onion and garlic.",
-        "Heat the oil in a saucepan over medium heat and fry the onion for 2–3 minutes until soft.",
+        "Heat the oil in a saucepan over medium heat and fry the onion for 8 minutes until soft and translucent.",
         "Add the turkey mince and garlic, breaking up the mince with a spoon, and cook for 4–5 minutes until browned.",
-        "Stir in the chilli powder and cumin, then add the chopped tomatoes, kidney beans and sweetcorn. Simmer for 8–10 minutes until thickened.",
+        "Stir in the chilli powder and cumin for 30 seconds until fragrant, then add the chopped tomatoes, kidney beans and sweetcorn. Simmer for 8–10 minutes until thickened.",
         "Season to taste and serve with the rice."
       ]
     },
@@ -284,7 +284,7 @@ window.SOLO_RECIPES = (function () {
         "Halve the new potatoes and cut the red onion into wedges. Toss both with half the olive oil on a baking tray and roast for 10 minutes.",
         "Meanwhile, toss the chicken thighs through the honey mustard sauce to coat.",
         "Push the potatoes to one side and add the chicken to the tray, scattering with thyme sprigs.",
-        "Roast for a further 15–18 minutes until the chicken is cooked through and the potatoes are tender, turning everything halfway.",
+        "Roast for a further 15–18 minutes until the chicken is cooked through (75°C in the thickest part) and the potatoes are tender, turning everything halfway.",
         "Taste and adjust the seasoning before serving."
       ]
     },
@@ -324,7 +324,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d19", title: "Spiced Red Lentil Dahl with Flatbread", tags: ["vegetarian", "vegan"], cuisine: "India", protein: "plant-based",
-      prep: 8, cook: 15,
+      prep: 8, cook: 20,
       ingredients: [
         ing(75, "g", "red lentils", "store"), ing(100, "g", "chopped tomatoes", "store"),
         ing(0.25, "", "onion, finely chopped", "produce"), ing(1, "", "garlic clove, finely chopped", "produce"),
@@ -334,7 +334,7 @@ window.SOLO_RECIPES = (function () {
       ],
       steps: [
         "Rinse the red lentils under cold water.",
-        "Finely chop the onion and garlic. Heat the oil in a saucepan over medium heat and fry the onion for 3 minutes until soft.",
+        "Finely chop the onion and garlic. Heat the oil in a saucepan over medium heat and fry the onion for 8 minutes until soft and translucent.",
         "Add the garlic, ginger, turmeric and cumin, and cook for 1 minute until fragrant.",
         "Stir in the lentils, chopped tomatoes and stock, and bring to the boil.",
         "Reduce the heat and simmer for 12–15 minutes, stirring occasionally, until the lentils are soft and the dahl has thickened.",
@@ -353,7 +353,7 @@ window.SOLO_RECIPES = (function () {
       steps: [
         "Cook the rice according to the packet instructions.",
         "Slice the chicken, pepper and red onion into strips.",
-        "Toss the chicken with the fajita seasoning and oil. Heat a frying pan over high heat and fry the chicken for 5–6 minutes until cooked through, then set aside.",
+        "Toss the chicken with the fajita seasoning and oil. Heat a frying pan over high heat and fry the chicken for 5–6 minutes until cooked through with no pink inside, then set aside.",
         "Add the pepper and onion to the pan and cook for 3–4 minutes until softened and charred at the edges, then return the chicken and toss well.",
         "Serve over the rice with a squeeze of lime and scattered coriander."
       ]
@@ -369,7 +369,7 @@ window.SOLO_RECIPES = (function () {
       ],
       steps: [
         "Put the new potatoes in a pan of salted water, bring to the boil and cook for 12–15 minutes until tender.",
-        "Meanwhile, season the pork chop and fry in the olive oil over medium-high heat for 4–5 minutes each side until cooked through. Rest on a plate.",
+        "Meanwhile, season the pork chop and fry in the olive oil over medium-high heat for 4–5 minutes each side until cooked through (65–70°C in the middle). Rest on a plate for 3 minutes.",
         "Thinly slice the apple and add to the same pan with the butter, frying for 2 minutes until just softened.",
         "Stir in the mustard sauce and simmer for 2–3 minutes until warmed through.",
         "Drain the potatoes and serve alongside the pork chop, spooning the apple and mustard sauce over the top."
@@ -395,7 +395,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d23", title: "Sausage & Butter Bean Cassoulet", tags: [], cuisine: "France", protein: "pork",
-      prep: 6, cook: 15,
+      prep: 8, cook: 19,
       ingredients: [
         ing(2, "", "pork sausages", "meat"), ing(200, "g", "butter beans, drained", "store"),
         ing(150, "g", "chopped tomatoes", "store"), ing(1, "", "small carrot, finely diced", "produce"),
@@ -405,7 +405,7 @@ window.SOLO_RECIPES = (function () {
       steps: [
         "Finely dice the carrot and onion, and chop the garlic.",
         "Heat the oil in a saucepan over medium heat and brown the sausages all over, about 4–5 minutes, then remove and slice into thick chunks.",
-        "Add the carrot and onion to the same pan and cook for 4 minutes until softening.",
+        "Add the carrot and onion to the same pan and cook for 8 minutes until soft and translucent.",
         "Add the garlic and thyme, then stir in the chopped tomatoes and butter beans, and return the sausage to the pan.",
         "Simmer for 8–10 minutes until the sauce has thickened and the sausage is cooked through.",
         "Taste and adjust the seasoning before serving."
@@ -477,14 +477,14 @@ window.SOLO_RECIPES = (function () {
       ],
       steps: [
         "Slice the chicken into strips and toss with the cumin, cinnamon, paprika, a pinch of salt and the olive oil.",
-        "Heat a frying pan over medium-high heat and cook the chicken for 6–7 minutes, turning occasionally, until browned and cooked through.",
+        "Heat a frying pan over medium-high heat and cook the chicken for 6–7 minutes, turning occasionally, until browned and cooked through (75°C in the thickest part).",
         "Meanwhile, thinly slice the red onion and warm the flatbread.",
         "Spread the tzatziki over the flatbread, top with the spiced chicken and red onion, then fold or roll to serve."
       ]
     },
     {
       id: "d28", title: "Sausage & Lentil One-Pot", tags: [], cuisine: "France", protein: "pork",
-      prep: 6, cook: 18,
+      prep: 8, cook: 21,
       ingredients: [
         ing(2, "", "pork sausages", "meat"), ing(150, "g", "green or brown lentils, drained", "store"),
         ing(150, "g", "chopped tomatoes", "store"), ing(1, "", "small carrot, diced", "produce"),
@@ -494,7 +494,7 @@ window.SOLO_RECIPES = (function () {
       steps: [
         "Dice the carrot and onion, and chop the garlic.",
         "Heat the oil in a saucepan over medium heat and brown the sausages all over, about 5 minutes, then remove and slice.",
-        "Add the carrot and onion to the pan and cook for 4–5 minutes until softened.",
+        "Add the carrot and onion to the pan and cook for 8 minutes until soft and translucent.",
         "Add the garlic and rosemary, then stir in the chopped tomatoes and lentils, and return the sausage to the pan.",
         "Simmer for 8–10 minutes until thickened and the sausage is cooked through.",
         "Taste and adjust the seasoning before serving."
@@ -502,7 +502,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d29", title: "Sweet & Sour Pork", tags: [], cuisine: "China", protein: "pork",
-      prep: 6, cook: 15,
+      prep: 7, cook: 15,
       ingredients: [
         ing(150, "g", "pork loin steak, cubed", "meat"), ing(80, "g", "pineapple chunks, tinned", "store"),
         ing(0.5, "", "pepper, sliced", "produce"), ing(150, "g", "shop-bought sweet and sour sauce", "store"),
@@ -530,14 +530,14 @@ window.SOLO_RECIPES = (function () {
         "Preheat the oven to 200°C (fan 180°C).",
         "Put the cherry tomatoes and whole garlic cloves in a small baking dish, sit the block of feta in the middle, and drizzle everything with the olive oil and chilli flakes.",
         "Bake for 20 minutes until the tomatoes have burst and the feta is soft and lightly golden.",
-        "Meanwhile, cook the pasta in salted boiling water according to the packet instructions, then drain, reserving a splash of cooking water.",
+        "Meanwhile, cook the pasta in salted boiling water according to the packet instructions, scoop out a splash of the cooking water, then drain.",
         "Mash the roasted garlic, tomatoes and feta together in the dish to make a sauce, loosening with the pasta water if needed.",
         "Toss through the pasta and scatter with torn basil."
       ]
     },
     {
       id: "d31", title: "Chicken & Chorizo Jambalaya", tags: ["spicy"], cuisine: "USA", protein: "chicken",
-      prep: 8, cook: 25,
+      prep: 11, cook: 35,
       ingredients: [
         ing(100, "g", "chicken thigh, diced", "meat"), ing(40, "g", "cooking chorizo, sliced", "meat"),
         ing(70, "g", "basmati or long-grain rice", "store"), ing(150, "g", "chopped tomatoes", "store"),
@@ -548,9 +548,9 @@ window.SOLO_RECIPES = (function () {
       steps: [
         "Dice the onion and pepper, and chop the garlic.",
         "Heat a saucepan over medium heat and fry the chorizo for 2 minutes until it releases its oil, then add the chicken and brown for 3–4 minutes.",
-        "Add the onion, pepper and garlic, and cook for 3 minutes until softening.",
-        "Stir in the rice and Cajun seasoning, then add the chopped tomatoes and stock.",
-        "Bring to a simmer, cover and cook for 15–18 minutes, stirring occasionally, until the rice is tender and the liquid is absorbed."
+        "Add the onion and pepper and cook for 8 minutes until soft, adding the garlic for the last minute.",
+        "Stir in the rice and Cajun seasoning for 1 minute until the rice is coated and the spices smell toasty, then add the chopped tomatoes and stock.",
+        "Bring to a simmer, cover and cook for 15–18 minutes, stirring occasionally, until the rice is tender and the liquid is absorbed. Take off the heat and leave covered for 5 minutes, then fluff up with a fork."
       ]
     },
     {
@@ -587,7 +587,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d34", title: "Spiced Squash & Coconut Soup", tags: ["vegetarian", "vegan"], cuisine: "Thailand", protein: "plant-based",
-      prep: 8, cook: 15,
+      prep: 8, cook: 20,
       ingredients: [
         ing(250, "g", "butternut squash, cubed", "produce"), ing(150, "ml", "coconut milk", "store"),
         ing(250, "ml", "vegetable stock", "store"), ing(0.25, "", "onion, finely chopped", "produce"),
@@ -597,7 +597,7 @@ window.SOLO_RECIPES = (function () {
       ],
       steps: [
         "Finely chop the onion and garlic.",
-        "Heat the oil in a saucepan over medium heat and fry the onion for 3 minutes until soft.",
+        "Heat the oil in a saucepan over medium heat and fry the onion for 8 minutes until soft and translucent.",
         "Add the garlic, ginger and curry powder, and cook for 1 minute until fragrant.",
         "Add the squash, coconut milk and stock, and bring to the boil.",
         "Simmer for 12–15 minutes until the squash is tender, then blend with a stick blender until smooth.",
@@ -614,7 +614,7 @@ window.SOLO_RECIPES = (function () {
       ],
       steps: [
         "Cube the chicken and toss with the yoghurt and the tikka paste to coat. Thread onto a skewer if you have one.",
-        "Heat a griddle or frying pan over medium-high heat and cook the chicken for 8–10 minutes, turning regularly, until charred and cooked through.",
+        "Heat a griddle or frying pan over medium-high heat and cook the chicken for 8–10 minutes, turning regularly, until charred and cooked through with no pink inside.",
         "Taste and adjust the seasoning.",
         "Warm the flatbread and serve alongside the chicken with the mint yoghurt dip for dipping."
       ]
@@ -672,7 +672,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d39", title: "Sausage, Kale & White Bean Stew", tags: [], cuisine: "Italy", protein: "pork",
-      prep: 6, cook: 15,
+      prep: 7, cook: 19,
       ingredients: [
         ing(2, "", "pork sausages", "meat"), ing(200, "g", "cannellini beans, drained", "store"),
         ing(150, "g", "chopped tomatoes", "store"), ing(null, "large handful", "kale or cavolo nero", "produce"),
@@ -682,7 +682,7 @@ window.SOLO_RECIPES = (function () {
       steps: [
         "Chop the onion and garlic, and roughly tear the kale.",
         "Heat the oil in a saucepan over medium heat and brown the sausages all over, about 5 minutes, then remove and slice.",
-        "Add the onion and garlic to the pan and cook for 3–4 minutes until softened.",
+        "Add the onion to the pan and cook for 8 minutes until soft and translucent, adding the garlic for the last minute.",
         "Stir in the chopped tomatoes and cannellini beans, and return the sausage to the pan. Simmer for 8 minutes.",
         "Stir through the kale for the last 2–3 minutes until wilted, then season to taste."
       ]
@@ -716,7 +716,7 @@ window.SOLO_RECIPES = (function () {
       steps: [
         "Finely slice the ginger and garlic.",
         "Bring the chicken stock to a simmer in a saucepan with the ginger, garlic and soy sauce.",
-        "Add the sliced chicken and simmer for 5–6 minutes until cooked through.",
+        "Add the sliced chicken and simmer for 5–6 minutes until cooked through with no pink inside.",
         "Add the noodles and pak choi, and cook for a further 3–4 minutes until the noodles are tender.",
         "Season to taste, then ladle into a bowl and scatter with sliced spring onion."
       ]
@@ -748,14 +748,14 @@ window.SOLO_RECIPES = (function () {
       steps: [
         "Cook the rice according to the packet instructions with the turmeric and saffron stirred into the water.",
         "Meanwhile, toss the chicken with the crushed garlic, a squeeze of lemon and half the olive oil.",
-        "Heat the remaining oil in a frying pan over medium-high heat and cook the chicken for 6–7 minutes each side until golden and cooked through.",
+        "Heat the remaining oil in a frying pan over medium-high heat and cook the chicken for 6–7 minutes each side until golden and cooked through (75°C in the thickest part).",
         "Roughly chop the dried apricots and stir through the cooked rice.",
         "Season to taste, then slice the chicken and serve over the saffron rice."
       ]
     },
     {
       id: "d44", title: "Pork Meatballs in Tomato Sauce with Spaghetti", tags: [], cuisine: "Italy", protein: "pork",
-      prep: 5, cook: 15,
+      prep: 7, cook: 15,
       ingredients: [
         ing(6, "", "shop-bought pork meatballs", "meat"), ing(1, "", "garlic clove, finely chopped", "produce"),
         ing(0.5, "tsp", "dried oregano", "spice"), ing(200, "g", "chopped tomatoes", "store"),
@@ -787,7 +787,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d46", title: "Jerk Chicken with Rice and Peas", tags: ["spicy"], cuisine: "Jamaica", protein: "chicken",
-      prep: 8, cook: 15,
+      prep: 8, cook: 20,
       ingredients: [
         ing(180, "g", "chicken thigh fillets", "meat"), ing(1.5, "tbsp", "jerk seasoning", "spice"),
         ing(60, "g", "basmati rice", "store"), ing(100, "ml", "coconut milk", "store"),
@@ -796,8 +796,8 @@ window.SOLO_RECIPES = (function () {
       ],
       steps: [
         "Rub the chicken all over with the jerk seasoning.",
-        "Put the rice in a small pan with the coconut milk, 80 ml water and a pinch of salt. Cover and simmer gently for 12 minutes, stirring in the kidney beans for the last 5 minutes to heat through.",
-        "Meanwhile, heat a frying pan over medium-high heat and cook the chicken for 6–7 minutes each side until charred and cooked through.",
+        "Put the rice in a small pan with the coconut milk, 80 ml water and a pinch of salt. Cover and simmer gently for 12 minutes, stirring in the kidney beans for the last 5 minutes to heat through, until the rice is tender and the liquid absorbed. Take off the heat and leave covered for 5 minutes, then fluff up with a fork.",
+        "Meanwhile, heat a frying pan over medium-high heat and cook the chicken for 6–7 minutes each side until charred and cooked through (75°C in the thickest part).",
         "Slice the chicken and serve over the rice and peas, scattered with sliced spring onion and a squeeze of lime."
       ]
     },
@@ -820,7 +820,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d48", title: "Beef Ragu with Pappardelle", tags: [], cuisine: "Italy", protein: "beef",
-      prep: 8, cook: 20,
+      prep: 10, cook: 24,
       ingredients: [
         ing(150, "g", "beef mince", "meat"), ing(200, "g", "chopped tomatoes", "store"),
         ing(1, "", "small carrot, finely diced", "produce"), ing(0.25, "", "onion, finely diced", "produce"),
@@ -830,7 +830,7 @@ window.SOLO_RECIPES = (function () {
       ],
       steps: [
         "Finely dice the carrot and onion, and chop the garlic.",
-        "Heat the oil in a saucepan over medium heat and fry the carrot and onion for 4 minutes until softened.",
+        "Heat the oil in a saucepan over medium heat and fry the carrot and onion for 8 minutes until soft and translucent.",
         "Add the beef mince and garlic, and cook for 5–6 minutes, breaking up the mince, until browned.",
         "Stir in the chopped tomatoes and oregano, and simmer for 10–12 minutes until thickened.",
         "Meanwhile, cook the pasta in salted boiling water according to the packet instructions, then drain.",
@@ -848,7 +848,7 @@ window.SOLO_RECIPES = (function () {
       ],
       steps: [
         "Slice the chicken breast horizontally into two thin escalopes and dust lightly with flour.",
-        "Heat the olive oil in a frying pan over medium-high heat and fry the chicken for 3 minutes each side until golden and cooked through. Remove to a plate.",
+        "Heat the olive oil in a frying pan over medium-high heat and fry the chicken for 3 minutes each side until golden and cooked through (75°C in the thickest part). Remove to a plate.",
         "Add the butter, capers, stock and a squeeze of lemon to the pan, scraping up any bits, and simmer for 1–2 minutes until slightly thickened.",
         "Meanwhile, cook the green beans in boiling water for 4–5 minutes until just tender.",
         "Season to taste, then spoon the caper sauce over the chicken and serve with the green beans."
@@ -1009,13 +1009,13 @@ window.SOLO_RECIPES = (function () {
         "Preheat the oven to 200°C (fan 180°C).",
         "Toss the potatoes with half the oil on a baking tray and roast for 10 minutes.",
         "Toss the chicken with the remaining oil, the dried herbs, crushed garlic and lemon zest, then add to the tray with the potatoes.",
-        "Squeeze over the lemon juice and roast for a further 16–18 minutes until the chicken is cooked through and the potatoes are tender.",
+        "Squeeze over the lemon juice and roast for a further 16–18 minutes until the chicken is cooked through (75°C in the thickest part) and the potatoes are tender.",
         "Taste and adjust the seasoning before serving."
       ]
     },
     {
       id: "d60", title: "Chorizo & New Potato Traybake with Peppers", tags: ["spicy"], cuisine: "Spain", protein: "pork",
-      prep: 6, cook: 25,
+      prep: 7, cook: 25,
       ingredients: [
         ing(80, "g", "cooking chorizo, sliced", "meat"), ing(150, "g", "new potatoes, halved", "produce"),
         ing(1, "", "pepper, sliced", "produce"), ing(1, "tbsp", "olive oil", "store"),
@@ -1056,7 +1056,7 @@ window.SOLO_RECIPES = (function () {
       steps: [
         "Preheat the oven to 200°C (fan 180°C).",
         "Toss the chicken, tomatoes and red onion with the oil and oregano on a baking tray.",
-        "Roast for 20–22 minutes until the chicken is cooked through.",
+        "Roast for 20–22 minutes until the chicken is cooked through (75°C in the thickest part).",
         "Season to taste, then scatter over the feta and olives and roast for a final 3 minutes to warm through."
       ]
     },
@@ -1088,7 +1088,7 @@ window.SOLO_RECIPES = (function () {
         ing(1, "tsp", "vegetable oil", "store")
       ],
       steps: [
-        "Heat the oil in a saucepan over medium-high heat and brown the pork mince for 3–4 minutes, breaking it up as it cooks.",
+        "Heat the oil in a saucepan over medium-high heat and brown the pork mince for 3–4 minutes, breaking it up as it cooks, until no pink remains.",
         "Sprinkle over the sugar and cook for 1–2 minutes, stirring, until it melts, darkens and coats the meat.",
         "Stir in the fish sauce, garlic and ginger with a splash of water, and simmer for 5 minutes until sticky.",
         "Season to taste, then serve over the rice, scattered with sliced spring onion."
@@ -1108,7 +1108,7 @@ window.SOLO_RECIPES = (function () {
       ],
       steps: [
         "Toss the chicken in the cornflour to coat.",
-        "Heat a splash of oil in a wok over high heat and stir-fry the chicken for 4–5 minutes until browned and cooked through.",
+        "Heat a splash of oil in a wok over high heat and stir-fry the chicken for 4–5 minutes until browned and cooked through with no pink inside.",
         "Add the pepper, garlic and chilli flakes, and stir-fry for 2 minutes.",
         "Pour in the soy sauce, vinegar and sugar, simmer for 1–2 minutes, then stir through the peanuts.",
         "Season to taste, then serve over the rice."
@@ -1192,7 +1192,7 @@ window.SOLO_RECIPES = (function () {
         "Cook the rice according to the packet instructions.",
         "Fry the curry paste and crushed garlic in a splash of oil for 1 minute until fragrant.",
         "Add the chicken and cook for 3–4 minutes until sealed.",
-        "Stir in the passata and simmer for 6–8 minutes until the chicken is cooked through.",
+        "Stir in the passata and simmer for 6–8 minutes until the chicken is cooked through with no pink inside.",
         "Stir through the cream, taste and adjust seasoning, then serve over the rice scattered with coriander."
       ]
     },
@@ -1215,7 +1215,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d72", title: "Chana Masala with Rice", tags: ["vegetarian", "vegan"], cuisine: "India", protein: "plant-based",
-      prep: 8, cook: 15,
+      prep: 8, cook: 20,
       ingredients: [
         ing(200, "g", "tinned chickpeas, drained", "store"), ing(150, "g", "chopped tomatoes", "store"),
         ing(0.5, "", "onion, diced", "produce"), ing(1, "", "garlic clove, finely chopped", "produce"),
@@ -1225,7 +1225,7 @@ window.SOLO_RECIPES = (function () {
       ],
       steps: [
         "Cook the rice according to the packet instructions.",
-        "Fry the onion and garlic in a splash of oil for 3 minutes until softening.",
+        "Fry the onion in a splash of oil for 8 minutes until soft and translucent, adding the garlic for the last minute.",
         "Stir in the curry powder and cumin, and fry for 1 minute until fragrant.",
         "Add the chickpeas and chopped tomatoes, and simmer for 10 minutes until thickened.",
         "Season to taste, then serve over the rice, scattered with coriander."
@@ -1233,7 +1233,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d73", title: "Lamb Keema Curry with Peas", tags: [], cuisine: "India", protein: "lamb",
-      prep: 8, cook: 18,
+      prep: 8, cook: 23,
       ingredients: [
         ing(180, "g", "lamb mince", "meat"), ing(60, "g", "frozen peas", "frozen"),
         ing(150, "g", "chopped tomatoes", "store"), ing(0.5, "", "onion, diced", "produce"),
@@ -1243,7 +1243,7 @@ window.SOLO_RECIPES = (function () {
       ],
       steps: [
         "Cook the rice according to the packet instructions.",
-        "Fry the onion and garlic in a splash of oil for 3 minutes.",
+        "Fry the onion in a splash of oil for 8 minutes until soft and translucent, adding the garlic for the last minute.",
         "Add the lamb mince and brown for 4–5 minutes, breaking it up as it cooks.",
         "Stir in the curry powder, then add the chopped tomatoes and simmer for 8 minutes.",
         "Season to taste, then stir through the peas and cook for a final 2 minutes, then serve over the rice."
@@ -1260,7 +1260,7 @@ window.SOLO_RECIPES = (function () {
       steps: [
         "Cook the rice according to the packet instructions, then stir through the chopped mint.",
         "Mix the tandoori paste with the yoghurt and coat the chicken.",
-        "Heat a griddle or frying pan over medium-high heat and cook the chicken for 5–6 minutes, turning occasionally, until charred and cooked through.",
+        "Heat a griddle or frying pan over medium-high heat and cook the chicken for 5–6 minutes, turning occasionally, until charred and cooked through with no pink inside.",
         "Season to taste, then serve over the minted rice with a squeeze of lemon."
       ]
     },
@@ -1290,7 +1290,7 @@ window.SOLO_RECIPES = (function () {
       steps: [
         "Cook the rice according to the packet instructions, then stir through the lemon zest, a squeeze of juice and the chopped parsley.",
         "Toss the chicken with the za'atar and olive oil.",
-        "Heat a frying pan over medium-high heat and cook the chicken for 6–7 minutes, turning occasionally, until cooked through.",
+        "Heat a frying pan over medium-high heat and cook the chicken for 6–7 minutes, turning occasionally, until cooked through with no pink inside.",
         "Season to taste, then serve the chicken over the lemon rice."
       ]
     },
@@ -1306,7 +1306,7 @@ window.SOLO_RECIPES = (function () {
       steps: [
         "Toss the red onion with the vinegar and set aside to quick-pickle while you cook.",
         "Toss the turkey with the sumac and olive oil.",
-        "Heat a frying pan over medium-high heat and cook the turkey for 3–4 minutes each side until cooked through.",
+        "Heat a frying pan over medium-high heat and cook the turkey for 3–4 minutes each side until cooked through with no pink inside.",
         "Warm the flatbread and spread with the hummus.",
         "Season to taste, then top with the sliced turkey and drained pickled onion."
       ]
@@ -1358,7 +1358,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d81", title: "Jamaican-Style Chicken Curry with Rice and Peas", tags: ["spicy"], cuisine: "Jamaica", protein: "chicken",
-      prep: 8, cook: 20,
+      prep: 8, cook: 25,
       ingredients: [
         ing(180, "g", "chicken thigh, diced", "meat"), ing(1.5, "tbsp", "curry powder", "spice"),
         ing(150, "ml", "coconut milk", "store"), ing(0.5, "", "onion, diced", "produce"),
@@ -1368,15 +1368,15 @@ window.SOLO_RECIPES = (function () {
       ],
       steps: [
         "Cook the rice according to the packet instructions, stirring in the kidney beans for the last 5 minutes.",
-        "Fry the onion and garlic in a splash of oil for 3 minutes.",
+        "Fry the onion in a splash of oil for 8 minutes until soft and translucent, adding the garlic for the last minute.",
         "Stir in the curry powder and fry for 1 minute, then add the chicken and brown for 3–4 minutes.",
-        "Pour in the coconut milk and simmer for 12–15 minutes until the chicken is cooked through and the sauce has thickened.",
+        "Pour in the coconut milk and simmer for 12–15 minutes until the chicken is cooked through with no pink inside and the sauce has thickened.",
         "Season to taste, then serve with the rice and peas."
       ]
     },
     {
       id: "d82", title: "Cuban-Style Black Bean Rice Bowl", tags: ["vegetarian", "vegan", "quick"], cuisine: "Cuba", protein: "plant-based",
-      prep: 6, cook: 10,
+      prep: 7, cook: 14,
       ingredients: [
         ing(150, "g", "tinned black beans, drained", "store"), ing(150, "g", "cooked rice", "store"),
         ing(0.5, "", "pepper, diced", "produce"), ing(0.25, "", "red onion, diced", "produce"),
@@ -1385,14 +1385,14 @@ window.SOLO_RECIPES = (function () {
         ing(1, "tbsp", "vegetable oil", "store")
       ],
       steps: [
-        "Fry the pepper, onion and garlic in a splash of oil for 4 minutes until softening.",
-        "Stir in the cumin, then add the black beans and a splash of water, and simmer for 5 minutes.",
+        "Fry the pepper and onion in a splash of oil for 8 minutes until soft and translucent, adding the garlic for the last minute.",
+        "Stir in the cumin for 30 seconds until fragrant, then add the black beans and a splash of water and simmer for 5 minutes until the beans are hot and the liquid has mostly gone.",
         "Season to taste, then serve over the rice with a squeeze of lime."
       ]
     },
     {
       id: "d83", title: "Spanish-Style Chicken and Chorizo Rice", tags: ["spicy"], cuisine: "Spain", protein: "chicken",
-      prep: 8, cook: 20,
+      prep: 10, cook: 25,
       ingredients: [
         ing(100, "g", "chicken thigh, diced", "meat"), ing(40, "g", "cooking chorizo, sliced", "meat"),
         ing(70, "g", "paella or short-grain rice", "store"), ing(150, "g", "chopped tomatoes", "store"),
@@ -1402,8 +1402,8 @@ window.SOLO_RECIPES = (function () {
       steps: [
         "Fry the chorizo in a saucepan for 2 minutes until it releases its oil, then add the chicken and brown for 3–4 minutes.",
         "Add the pepper and garlic, and cook for 2 minutes.",
-        "Stir in the rice and smoked paprika, then add the chopped tomatoes and stock.",
-        "Bring to a simmer, cover and cook for 15–18 minutes, stirring occasionally, until the rice is tender.",
+        "Stir in the rice and smoked paprika for 1 minute until the rice is coated and the paprika smells toasty, then add the chopped tomatoes and stock.",
+        "Bring to a simmer, cover and cook for 15–18 minutes, stirring occasionally, until the rice is tender. Take off the heat and leave covered for 5 minutes, then fluff up with a fork.",
         "Taste and adjust the seasoning before serving."
       ]
     },
@@ -1448,7 +1448,7 @@ window.SOLO_RECIPES = (function () {
       ],
       steps: [
         "Cook the rice according to the packet instructions.",
-        "Mix the lamb mince with the oregano, cumin and crushed garlic.",
+        "Mix the lamb mince with ¼ tsp salt, the oregano, cumin and crushed garlic.",
         "Fry over medium-high heat for 6–7 minutes, breaking it up, until browned and cooked through.",
         "Season to taste, then serve over the rice with the tzatziki and cherry tomatoes."
       ]
@@ -1462,7 +1462,7 @@ window.SOLO_RECIPES = (function () {
         ing(1, "tbsp", "olive oil", "store"), ing(null, "small handful", "fresh dill or parsley", "produce")
       ],
       steps: [
-        "Cook the orzo in salted boiling water according to the packet instructions, then drain, reserving a splash of the cooking water.",
+        "Cook the orzo in salted boiling water according to the packet instructions, scoop out a splash of the cooking water, then drain.",
         "Toss the warm orzo with the olive oil, lemon zest and a squeeze of juice, loosening with the reserved water if needed.",
         "Stir through the cherry tomatoes and most of the feta.",
         "Scatter with the remaining feta and dill or parsley to serve."
@@ -1494,7 +1494,7 @@ window.SOLO_RECIPES = (function () {
         ing(30, "g", "rocket", "produce"), ing(15, "g", "parmesan, grated", "dairy")
       ],
       steps: [
-        "Cook the pasta in salted boiling water according to the packet instructions, then drain, reserving a splash of the cooking water.",
+        "Cook the pasta in salted boiling water according to the packet instructions, scoop out a splash of the cooking water, then drain.",
         "Meanwhile, break the sausage meat into a hot frying pan and brown for 5–6 minutes, crumbling it as it cooks.",
         "Add the garlic and chilli flakes, and cook for 1 minute.",
         "Toss the pasta through the sausage with a splash of the cooking water, then fold through the rocket until just wilted.",
@@ -1509,7 +1509,7 @@ window.SOLO_RECIPES = (function () {
         ing(100, "g", "cherry tomatoes, halved", "produce"), ing(15, "g", "parmesan, grated", "dairy")
       ],
       steps: [
-        "Cook the gnocchi in salted boiling water according to the packet instructions until they float, then drain, reserving a splash of the cooking water.",
+        "Cook the gnocchi in salted boiling water according to the packet instructions until they float, scoop out a splash of the cooking water, then drain.",
         "Toss the gnocchi with the pesto and cherry tomatoes, loosening with the reserved water if needed.",
         "Scatter with parmesan to serve."
       ]
@@ -1523,7 +1523,7 @@ window.SOLO_RECIPES = (function () {
         ing(2, "tbsp", "breadcrumbs", "store"), ing(null, "small handful", "fresh parsley, chopped", "produce")
       ],
       steps: [
-        "Cook the spaghetti in salted boiling water according to the packet instructions, then drain, reserving a splash of the cooking water.",
+        "Cook the spaghetti in salted boiling water according to the packet instructions, scoop out a splash of the cooking water, then drain.",
         "Meanwhile, toast the breadcrumbs in a dry pan for 2–3 minutes until golden, then tip out.",
         "In the same pan, gently fry the garlic and chilli flakes in the olive oil for 1–2 minutes until fragrant but not coloured.",
         "Toss the spaghetti through the garlic oil with a splash of the cooking water and the parsley.",
@@ -1548,7 +1548,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d93", title: "French-Style Chicken Chasseur", tags: [], cuisine: "France", protein: "chicken",
-      prep: 8, cook: 20,
+      prep: 8, cook: 24,
       ingredients: [
         ing(180, "g", "chicken thigh", "meat"), ing(100, "g", "chestnut mushrooms, sliced", "produce"),
         ing(0.5, "", "onion, diced", "produce"), ing(100, "g", "chopped tomatoes", "store"),
@@ -1559,8 +1559,8 @@ window.SOLO_RECIPES = (function () {
       steps: [
         "Cook the new potatoes in boiling salted water for 15–18 minutes until tender, then drain.",
         "Meanwhile, brown the chicken in a splash of oil for 4–5 minutes, then set aside.",
-        "Fry the onion and mushrooms in the same pan for 4 minutes.",
-        "Return the chicken to the pan with the tomatoes, stock and tarragon, and simmer for 10–12 minutes until the chicken is cooked through and the sauce has thickened.",
+        "Fry the onion and mushrooms in the same pan for 8 minutes until the onion is soft and the mushrooms golden.",
+        "Return the chicken to the pan with the tomatoes, stock and tarragon, and simmer for 10–12 minutes until the chicken is cooked through (75°C in the thickest part) and the sauce has thickened.",
         "Serve with the potatoes."
       ]
     },
@@ -1590,14 +1590,14 @@ window.SOLO_RECIPES = (function () {
       ],
       steps: [
         "Cook the potato in boiling salted water for 15 minutes until tender, then drain and mash with the butter and a splash of milk if you have it.",
-        "Meanwhile, brown the beef mince with the onion and carrot in a hot pan for 5–6 minutes.",
-        "Stir in the tomato puree and stock, and simmer for 10 minutes until thickened.",
+        "Meanwhile, brown the beef mince with the onion and carrot in a hot pan for 6–8 minutes, breaking it up, until no pink remains and the onion has softened.",
+        "Stir in the tomato purée and fry for 1 minute until it darkens, then add the stock and simmer for 10 minutes until thickened.",
         "Spoon the mince into a bowl or dish and top with the mash."
       ]
     },
     {
       id: "d96", title: "Bangers and Colcannon Mash with Onion Gravy", tags: [], cuisine: "Ireland", protein: "pork",
-      prep: 6, cook: 22,
+      prep: 7, cook: 24,
       ingredients: [
         ing(3, "", "pork sausages", "meat"), ing(250, "g", "potato, peeled and cubed", "produce"),
         ing(60, "g", "cabbage or kale, shredded", "produce"), ing(15, "g", "butter", "dairy"),
@@ -1607,7 +1607,7 @@ window.SOLO_RECIPES = (function () {
       steps: [
         "Cook the potato in boiling salted water for 15 minutes until tender.",
         "Meanwhile, grill or fry the sausages for 12–15 minutes, turning occasionally, until browned and cooked through.",
-        "Fry the onion in a splash of oil for 6–8 minutes until softened and golden, then stir in the stock and cornflour mixed with a splash of water, and simmer for 2 minutes until thickened into a gravy.",
+        "Fry the onion in a splash of oil for 10 minutes until soft and golden, then stir in the stock and cornflour mixed with a splash of water, and simmer for 2 minutes until thickened into a gravy.",
         "Steam or boil the cabbage for the final 3 minutes of the potatoes' cooking time, then drain everything and mash together with the butter.",
         "Serve the sausages over the colcannon mash with the onion gravy."
       ]
@@ -1678,7 +1678,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d101", title: "Ethiopian-Inspired Spiced Red Lentil Stew", tags: ["vegetarian", "vegan"], cuisine: "Ethiopia", protein: "plant-based",
-      prep: 8, cook: 20,
+      prep: 8, cook: 24,
       ingredients: [
         ing(80, "g", "dried red lentils", "store"), ing(150, "g", "chopped tomatoes", "store"),
         ing(0.5, "", "onion, diced", "produce"), ing(1, "", "garlic clove, finely chopped", "produce"),
@@ -1688,7 +1688,7 @@ window.SOLO_RECIPES = (function () {
       ],
       steps: [
         "Rinse the lentils well.",
-        "Fry the onion and garlic in a splash of oil for 3–4 minutes until softening.",
+        "Fry the onion in a splash of oil for 8 minutes until soft and translucent, adding the garlic for the last minute.",
         "Stir in the paprika, ginger, cinnamon and chilli flakes, and cook for 1 minute until fragrant.",
         "Season to taste, then add the lentils, chopped tomatoes and 300ml water, and simmer for 15 minutes, stirring occasionally, until the lentils are tender and the stew has thickened."
       ]
@@ -1726,8 +1726,8 @@ window.SOLO_RECIPES = (function () {
       ]
     },
     {
-      id: "d104", title: "Polish-Style Potato & Curd Cheese Bake", tags: ["vegetarian", "quick"], cuisine: "Poland", protein: "plant-based",
-      prep: 8, cook: 20,
+      id: "d104", title: "Polish-Style Potato & Curd Cheese Bake", tags: ["vegetarian"], cuisine: "Poland", protein: "plant-based",
+      prep: 8, cook: 25,
       ingredients: [
         ing(250, "g", "potato, sliced thin", "produce"), ing(100, "g", "cottage cheese or curd cheese", "dairy"),
         ing(0.5, "", "onion, sliced", "produce"), ing(1, "tbsp", "soured cream", "dairy"),
@@ -1735,7 +1735,7 @@ window.SOLO_RECIPES = (function () {
       ],
       steps: [
         "Preheat the oven to 200°C (fan 180°C).",
-        "Boil the potato slices in salted water for 6 minutes until just tender, then drain. Meanwhile, fry the onion in the butter over medium heat for 5 minutes until soft and golden.",
+        "Boil the potato slices in salted water for 6 minutes until just tender, then drain. Meanwhile, fry the onion in the butter over medium heat for 10 minutes until soft and golden.",
         "Layer the potato slices in a small ovenproof dish with the fried onion and cottage cheese.",
         "Bake for 14 minutes until bubbling and golden on top.",
         "Dollop with soured cream and scatter with chives to serve."
@@ -1752,14 +1752,14 @@ window.SOLO_RECIPES = (function () {
       ],
       steps: [
         "Halve any larger new potatoes and boil for 12–15 minutes until a knife slides in easily, then drain.",
-        "Fry the chicken in a splash of oil over medium-high heat for 6–7 minutes until browned and cooked through.",
+        "Fry the chicken in a splash of oil over medium-high heat for 6–7 minutes until browned and cooked through with no pink inside.",
         "Stir in the flour, then pour in the stock and simmer for 2 minutes until slightly thickened.",
         "Season to taste, then stir in the soured cream and most of the dill, and serve over the potatoes, scattered with the rest of the dill."
       ]
     },
     {
       id: "d106", title: "Hungarian-Style Chicken Paprikash", tags: ["quick"], cuisine: "Hungary", protein: "chicken",
-      prep: 8, cook: 15,
+      prep: 8, cook: 19,
       ingredients: [
         ing(160, "g", "chicken thigh, diced", "meat"), ing(0.5, "", "onion, diced", "produce"),
         ing(1, "tbsp", "sweet paprika", "spice"), ing(2, "tbsp", "soured cream", "dairy"),
@@ -1768,7 +1768,7 @@ window.SOLO_RECIPES = (function () {
       ],
       steps: [
         "Cook the noodles according to the packet instructions.",
-        "Fry the onion in a splash of oil over medium heat for 4 minutes until soft.",
+        "Fry the onion in a splash of oil over medium heat for 8 minutes until soft and translucent.",
         "Add the chicken and cook for 6–7 minutes until browned.",
         "Taste and adjust the seasoning.",
         "Take off the heat and stir in the paprika (it burns easily), then add the chopped tomatoes and simmer for 4 minutes, then take off the heat, stir through the soured cream and serve over the noodles."
@@ -1776,7 +1776,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d107", title: "Hungarian Beef Goulash-Style Stew", tags: [], cuisine: "Hungary", protein: "beef",
-      prep: 9, cook: 20,
+      prep: 9, cook: 24,
       ingredients: [
         ing(160, "g", "beef rump steak, cut into strips", "meat"), ing(1, "", "small potato, cut into 1.5cm cubes", "produce"),
         ing(0.5, "", "red pepper, sliced", "produce"), ing(1.5, "tbsp", "sweet paprika", "spice"),
@@ -1786,8 +1786,8 @@ window.SOLO_RECIPES = (function () {
       ],
       steps: [
         "Sear the beef in a splash of oil in a saucepan over high heat for 1–2 minutes until browned but still pink inside. Tip onto a plate.",
-        "Lower the heat to medium, add the onion and red pepper and cook for 4 minutes, then add the garlic for 1 minute.",
-        "Stir in the paprika, then add the potato and stock. Cover and simmer for 12–15 minutes until a knife slides easily into the potato.",
+        "Lower the heat to medium, add the onion and red pepper and cook for 8 minutes until soft and translucent, then add the garlic for 1 minute.",
+        "Stir in the paprika for 30 seconds until fragrant, then add the potato and stock. Cover and simmer for 12–15 minutes until a knife slides easily into the potato.",
         "Return the beef and its juices and simmer for 1 minute to heat through. Season and serve in a bowl, with bread if you like."
       ]
     },
@@ -1808,7 +1808,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d109", title: "Israeli-Style Shakshuka", tags: ["vegetarian", "spicy", "quick"], cuisine: "Israel", protein: "plant-based",
-      prep: 6, cook: 12,
+      prep: 7, cook: 15,
       ingredients: [
         ing(2, "", "eggs", "dairy"), ing(200, "g", "chopped tomatoes", "store"),
         ing(0.5, "", "red pepper, sliced", "produce"), ing(0.5, "", "onion, diced", "produce"),
@@ -1817,8 +1817,8 @@ window.SOLO_RECIPES = (function () {
         ing(1, "tbsp", "vegetable oil", "store")
       ],
       steps: [
-        "Fry the onion and red pepper in a splash of oil over medium heat for 5 minutes until softening.",
-        "Stir in the cumin and chilli flakes, then add the chopped tomatoes and simmer for 5 minutes until thickened.",
+        "Fry the onion and red pepper in a splash of oil over medium heat for 8 minutes until soft and translucent.",
+        "Stir in the cumin and chilli flakes for 30 seconds until fragrant, then add the chopped tomatoes and simmer for 5 minutes until thickened.",
         "Make two wells in the sauce, crack in the eggs, cover and cook for 4–5 minutes until the whites are set.",
         "Season to taste, then serve straight from the pan with the flatbread."
       ]
@@ -1882,7 +1882,7 @@ window.SOLO_RECIPES = (function () {
       steps: [
         "Cook the rice according to the packet instructions.",
         "Fry the onion and beef mince in a splash of oil over medium-high heat for 6–7 minutes, breaking up the mince, until browned.",
-        "Stir in the cumin and cinnamon, then add the chopped tomatoes and simmer for 5 minutes.",
+        "Stir in the cumin and cinnamon for 30 seconds until fragrant, then add the chopped tomatoes and simmer for 5 minutes until thickened.",
         "Season to taste, then serve the spiced beef over the rice."
       ]
     },
@@ -1921,8 +1921,8 @@ window.SOLO_RECIPES = (function () {
     }
 ,
     {
-      id: "d116", title: "West African-Style Jollof Rice with Chicken", tags: ["spicy", "quick"], cuisine: "Nigeria", protein: "chicken",
-      prep: 8, cook: 18,
+      id: "d116", title: "West African-Style Jollof Rice with Chicken", tags: ["spicy"], cuisine: "Nigeria", protein: "chicken",
+      prep: 8, cook: 27,
       ingredients: [
         ing(150, "g", "chicken thigh, diced", "meat"), ing(70, "g", "rice", "store"),
         ing(150, "g", "chopped tomatoes", "store"), ing(0.5, "", "red pepper, sliced", "produce"),
@@ -1931,10 +1931,10 @@ window.SOLO_RECIPES = (function () {
         ing(1, "tbsp", "vegetable oil", "store")
       ],
       steps: [
-        "Fry the onion and red pepper in a splash of oil over medium heat for 4 minutes.",
+        "Fry the onion and red pepper in a splash of oil over medium heat for 8 minutes until soft and translucent.",
         "Add the chicken and cook for 5 minutes until browned.",
-        "Stir in the paprika, chilli flakes, chopped tomatoes and rice, then add 150ml water.",
-        "Cover and simmer for 15–16 minutes, stirring once, until the rice is tender and the liquid absorbed.",
+        "Stir in the paprika and chilli flakes for 30 seconds until fragrant, then add the chopped tomatoes, rice and 150ml water.",
+        "Cover and simmer for 15–16 minutes, stirring once, until the rice is tender and the liquid absorbed. Take off the heat and leave covered for 5 minutes, then fluff up with a fork.",
         "Taste and adjust the seasoning before serving."
       ]
     },
@@ -1981,7 +1981,7 @@ window.SOLO_RECIPES = (function () {
       steps: [
         "Cook the rice according to the packet instructions.",
         "Fry the chicken with the curry powder, turmeric and chilli flakes in a splash of oil over medium-high heat for 5 minutes.",
-        "Pour in the coconut milk and simmer for 10 minutes until the chicken is cooked through and the sauce has thickened.",
+        "Pour in the coconut milk and simmer for 10 minutes until the chicken is cooked through with no pink inside and the sauce has thickened.",
         "Season to taste, then serve over the rice."
       ]
     },
@@ -2025,7 +2025,7 @@ window.SOLO_RECIPES = (function () {
       ],
       steps: [
         "Cook the rice according to the packet instructions.",
-        "Toss the chicken with the curry powder and a splash of oil, then fry over medium-high heat for 6–7 minutes until cooked through.",
+        "Toss the chicken with the curry powder and a splash of oil, then fry over medium-high heat for 6–7 minutes until cooked through with no pink inside.",
         "Whisk the peanut butter, soy sauce, chilli flakes and a splash of hot water into a smooth sauce.",
         "Season to taste, then serve the chicken over the rice, drizzled with the satay sauce."
       ]
@@ -2040,7 +2040,7 @@ window.SOLO_RECIPES = (function () {
         ing(1, "tbsp", "vegetable oil", "store")
       ],
       steps: [
-        "Fry the chicken in a splash of oil over high heat for 5 minutes until cooked through, then push to one side.",
+        "Fry the chicken in a splash of oil over high heat for 5 minutes until cooked through with no pink inside, then push to one side.",
         "Add the cold rice, peas, soy sauce and chilli flakes, and stir-fry for 3–4 minutes until hot through.",
         "Push everything to one side, crack in the egg and scramble until just set, then mix through.",
         "Season to taste, then serve hot."
@@ -2074,14 +2074,14 @@ window.SOLO_RECIPES = (function () {
       ],
       steps: [
         "Cook the noodles according to the packet instructions, then drain.",
-        "Fry the chicken with the curry powder in a splash of oil over high heat for 5–6 minutes until cooked through.",
+        "Fry the chicken with the curry powder in a splash of oil over high heat for 5–6 minutes until cooked through with no pink inside.",
         "Stir in the ketchup and chilli sauce, then add the noodles and beansprouts and toss for 2 minutes.",
         "Season to taste, then serve hot."
       ]
     },
     {
       id: "d126", title: "Singapore-Style Turmeric Rice Bowl", tags: ["quick"], cuisine: "Singapore", protein: "chicken",
-      prep: 7, cook: 15,
+      prep: 7, cook: 20,
       ingredients: [
         ing(150, "g", "chicken thigh, diced", "meat"), ing(70, "g", "rice", "store"),
         ing(0.5, "tsp", "ground turmeric", "spice"), ing(1, "", "garlic clove, finely chopped", "produce"),
@@ -2091,13 +2091,13 @@ window.SOLO_RECIPES = (function () {
       steps: [
         "Fry the chicken and garlic in a splash of oil over medium-high heat for 5 minutes.",
         "Stir in the turmeric and rice, then pour in the stock.",
-        "Cover and simmer for 14–15 minutes until the rice is tender and the liquid absorbed.",
+        "Cover and simmer for 14–15 minutes until the rice is tender and the liquid absorbed. Take off the heat and leave covered for 5 minutes, then fluff up with a fork.",
         "Season to taste, then serve with the sliced cucumber."
       ]
     },
     {
       id: "d127", title: "Pakistani-Style Chicken Karahi", tags: ["spicy", "quick"], cuisine: "Pakistan", protein: "chicken",
-      prep: 8, cook: 15,
+      prep: 10, cook: 15,
       ingredients: [
         ing(160, "g", "chicken thigh, diced", "meat"), ing(150, "g", "chopped tomatoes", "store"),
         ing(1, "", "green chilli, sliced", "produce"), ing(1, "tsp", "ground ginger", "spice"),
@@ -2108,7 +2108,7 @@ window.SOLO_RECIPES = (function () {
       steps: [
         "Fry the chicken in a splash of oil over medium-high heat for 5 minutes until browned.",
         "Add the garlic, fresh ginger, ground ginger and cumin and fry for 1 minute, then add the chopped tomatoes and green chilli.",
-        "Simmer for 10 minutes until the chicken is cooked through and the sauce has thickened, then stir in the garam masala.",
+        "Simmer for 10 minutes until the chicken is cooked through with no pink inside and the sauce has thickened, then stir in the garam masala.",
         "Season to taste, then serve with the flatbread."
       ]
     },
@@ -2123,7 +2123,7 @@ window.SOLO_RECIPES = (function () {
       ],
       steps: [
         "Rinse the lentils, then simmer with the turmeric and 300ml water for 12 minutes until soft.",
-        "Meanwhile, fry the onion and garlic in a splash of oil for 5 minutes until golden.",
+        "Meanwhile, fry the onion in a splash of oil for 10 minutes until soft and golden, adding the garlic for the last minute.",
         "Stir the cumin and chilli flakes into the onions, then stir this through the cooked lentils.",
         "Season and serve."
       ]
@@ -2137,7 +2137,7 @@ window.SOLO_RECIPES = (function () {
         ing(1, "", "flatbread", "bakery"), ing(2, "tbsp", "natural yoghurt", "dairy")
       ],
       steps: [
-        "Mix the beef mince with the cumin, chilli flakes and garlic, and shape into two long kebabs.",
+        "Mix the beef mince with ¼ tsp salt, the cumin, chilli flakes and garlic, and shape into two long kebabs.",
         "Fry or griddle over medium-high heat for 8–9 minutes, turning, until cooked through.",
         "Warm the flatbread.",
         "Season to taste, then serve the kebabs in the flatbread with a dollop of yoghurt."
@@ -2154,9 +2154,9 @@ window.SOLO_RECIPES = (function () {
         ing(1, "tbsp", "vegetable oil", "store")
       ],
       steps: [
-        "Mix the mince with the breadcrumbs and egg yolk, and shape into small meatballs.",
+        "Mix the mince with ¼ tsp salt, the breadcrumbs and egg yolk, and shape into small meatballs.",
         "Fry in a splash of oil over medium heat for 8–9 minutes, turning, until browned and cooked through.",
-        "Pour in the stock and soured cream, and simmer for 2 minutes until the sauce comes together.",
+        "Pour in the stock and simmer for 2 minutes, then take off the heat and stir in the soured cream until the sauce comes together.",
         "Season to taste, then serve with the cranberry sauce on the side."
       ]
     },
@@ -2177,7 +2177,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d132", title: "Brazilian-Style Black Bean & Rice Bowl", tags: ["vegetarian", "vegan", "quick"], cuisine: "Brazil", protein: "plant-based",
-      prep: 7, cook: 15,
+      prep: 7, cook: 19,
       ingredients: [
         ing(1, "tin", "black beans, drained", "store"), ing(70, "g", "rice", "store"),
         ing(0.5, "", "onion, diced", "produce"), ing(1, "", "garlic clove, finely chopped", "produce"),
@@ -2186,7 +2186,7 @@ window.SOLO_RECIPES = (function () {
       ],
       steps: [
         "Cook the rice according to the packet instructions.",
-        "Fry the onion and garlic in a splash of oil over medium heat for 4 minutes.",
+        "Fry the onion in a splash of oil over medium heat for 8 minutes until soft and translucent, adding the garlic for the last minute.",
         "Add the black beans and a splash of water, and simmer for 6–7 minutes, mashing some of the beans for a thicker sauce.",
         "Season to taste, then serve over the rice with the orange segments and coriander."
       ]
@@ -2209,7 +2209,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d134", title: "Brazilian-Style Beef & Pepper Skewers", tags: ["quick"], cuisine: "Brazil", protein: "beef",
-      prep: 9, cook: 15,
+      prep: 9, cook: 17,
       ingredients: [
         ing(160, "g", "beef rump steak, cubed", "meat"), ing(0.5, "", "red pepper, chunked", "produce"),
         ing(0.5, "", "onion, chunked", "produce"), ing(1, "", "garlic clove, crushed", "produce"),
@@ -2219,7 +2219,7 @@ window.SOLO_RECIPES = (function () {
       steps: [
         "Cook the rice according to the packet instructions.",
         "Toss the beef, pepper and onion with the garlic and a splash of oil.",
-        "Thread onto skewers (or leave loose) and griddle over high heat for 5–6 minutes, turning, until charred outside and pink inside.",
+        "Thread onto skewers (or leave loose) and griddle over high heat for 5–6 minutes, turning, until charred outside and pink inside, then rest for 2 minutes.",
         "Season to taste, then serve over the rice."
       ]
     },
@@ -2250,7 +2250,7 @@ window.SOLO_RECIPES = (function () {
       ],
       steps: [
         "Cook the rice according to the packet instructions.",
-        "Fry the chicken in a splash of oil over medium-high heat for 6–7 minutes until cooked through.",
+        "Fry the chicken in a splash of oil over medium-high heat for 6–7 minutes until cooked through with no pink inside.",
         "Blitz or finely chop the coriander with the garlic, yoghurt and chilli flakes into a sauce.",
         "Season to taste, then serve the chicken over the rice with the green sauce."
       ]
@@ -2267,7 +2267,7 @@ window.SOLO_RECIPES = (function () {
       steps: [
         "Halve any larger new potatoes and boil for 12–15 minutes until a knife slides in easily, then drain.",
         "Mix the parsley, garlic, vinegar, chilli flakes and a splash of oil into a chimichurri sauce.",
-        "Fry the steak over high heat for 2–3 minutes each side for medium, then rest for 3 minutes.",
+        "Fry the steak over high heat for 2–3 minutes each side for medium (60°C in the middle, or 55°C for medium-rare), then rest for 3 minutes.",
         "Season to taste, then slice the steak and serve with the potatoes and chimichurri spooned over."
       ]
     },
@@ -2305,7 +2305,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d140", title: "Australian-Style Lamb Chops with Mint", tags: ["quick"], cuisine: "Australia", protein: "lamb",
-      prep: 7, cook: 15,
+      prep: 7, cook: 18,
       ingredients: [
         ing(2, "", "lamb chops", "meat"), ing(null, "handful", "fresh mint, chopped", "produce"),
         ing(1, "tbsp", "natural yoghurt", "dairy"), ing(120, "g", "new potatoes", "produce"),
@@ -2313,14 +2313,14 @@ window.SOLO_RECIPES = (function () {
       ],
       steps: [
         "Boil the potatoes for 12–15 minutes, adding the green beans for the last 4 minutes, until a knife slides easily into the potatoes, then drain.",
-        "Fry the lamb chops over medium-high heat for 3–4 minutes each side until browned and cooked to your liking.",
+        "Fry the lamb chops over medium-high heat for 3–4 minutes each side until browned and cooked to your liking (about 55°C in the middle for pink), then rest for 3 minutes.",
         "Stir the mint through the yoghurt.",
         "Season to taste, then serve the chops with the potatoes, beans and minted yoghurt."
       ]
     },
     {
       id: "d141", title: "Russian-Style Beetroot Soup", tags: ["vegetarian", "quick"], cuisine: "Russia", protein: "plant-based",
-      prep: 7, cook: 12,
+      prep: 7, cook: 16,
       ingredients: [
         ing(150, "g", "cooked beetroot, diced", "produce"), ing(0.5, "", "onion, diced", "produce"),
         ing(300, "ml", "vegetable stock", "store"), ing(2, "tbsp", "soured cream", "dairy"),
@@ -2328,7 +2328,7 @@ window.SOLO_RECIPES = (function () {
         ing(1, "tbsp", "vegetable oil", "store")
       ],
       steps: [
-        "Fry the onion in a splash of oil over medium heat for 4 minutes until soft.",
+        "Fry the onion in a splash of oil over medium heat for 8 minutes until soft and translucent.",
         "Add the beetroot and stock, and simmer for 8 minutes.",
         "Blitz or mash roughly to your preferred texture.",
         "Season to taste, then serve with a dollop of soured cream, dill and the crusty bread."
@@ -2345,7 +2345,7 @@ window.SOLO_RECIPES = (function () {
       ],
       steps: [
         "Cook the rice according to the packet instructions.",
-        "Fry the chicken in a splash of oil over medium-high heat for 5–6 minutes until cooked through, then set aside. Fry the onion and mushrooms in the same pan for 4 minutes until golden.",
+        "Fry the chicken in a splash of oil over medium-high heat for 5–6 minutes until cooked through with no pink inside, then set aside. Fry the onion and mushrooms in the same pan for 4 minutes until golden.",
         "Return the chicken with the soured cream, mustard and a splash of water, and warm through for 1 minute.",
         "Season to taste, then serve over the rice."
       ]
@@ -2399,7 +2399,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d146", title: "Dutch-Style Pea Soup with Sausage", tags: ["quick"], cuisine: "Netherlands", protein: "pork",
-      prep: 7, cook: 13,
+      prep: 7, cook: 17,
       ingredients: [
         ing(1, "", "smoked sausage, sliced", "meat"), ing(150, "g", "frozen peas", "frozen"),
         ing(0.5, "", "onion, diced", "produce"), ing(250, "ml", "vegetable stock", "store"),
@@ -2407,7 +2407,7 @@ window.SOLO_RECIPES = (function () {
         ing(1, "tbsp", "vegetable oil", "store")
       ],
       steps: [
-        "Fry the onion in a splash of oil over medium heat for 4 minutes until soft.",
+        "Fry the onion in a splash of oil over medium heat for 8 minutes until soft and translucent.",
         "Add the stock and peas, and simmer for 6 minutes.",
         "Blitz or mash roughly, then stir in the sausage slices and warm through for 2 minutes.",
         "Season to taste, then serve with the crusty bread."
@@ -2424,7 +2424,7 @@ window.SOLO_RECIPES = (function () {
       ],
       steps: [
         "Preheat the oven to 190°C (fan 170°C).",
-        "Fry the onion and beef mince in a splash of oil over medium-high heat for 6–7 minutes, breaking up the mince.",
+        "Fry the onion and beef mince in a splash of oil over medium-high heat for 6–7 minutes, breaking up the mince, until browned with no pink left.",
         "Stir in the curry powder and raisins, then spoon into a small ovenproof dish.",
         "Whisk the egg with the milk and pour over the top.",
         "Bake for 12–14 minutes until the egg topping is set and golden.",
@@ -2524,7 +2524,7 @@ window.SOLO_RECIPES = (function () {
       steps: [
         "Pour 90 ml hot stock over the couscous, cover and leave for 5 minutes, then fluff with a fork.",
         "Fry the chicken with the cinnamon and cumin in a splash of oil over medium-high heat for 5 minutes.",
-        "Add the apricots and chopped tomatoes, and simmer for 8–9 minutes until the chicken is cooked through.",
+        "Add the apricots and chopped tomatoes, and simmer for 8–9 minutes until the chicken is cooked through with no pink inside.",
         "Season to taste, then serve over the couscous."
       ]
     },
@@ -2539,7 +2539,7 @@ window.SOLO_RECIPES = (function () {
       ],
       steps: [
         "Pour 90 ml hot stock over the couscous, cover and leave for 5 minutes, then fluff with a fork.",
-        "Mix the mince with the cumin, paprika and chilli flakes, and shape into small oval koftas.",
+        "Mix the mince with ¼ tsp salt, the cumin, paprika and chilli flakes, and shape into small oval koftas.",
         "Fry over medium-high heat for 7–8 minutes, turning, until browned and cooked through.",
         "Season to taste, then serve over the couscous, scattered with coriander."
       ]
@@ -2557,7 +2557,7 @@ window.SOLO_RECIPES = (function () {
         "Cook the rice according to the packet instructions.",
         "Fry the curry paste in a splash of oil over medium heat for 1 minute until fragrant.",
         "Add the chicken and cook for 3–4 minutes, then pour in the coconut milk and add the green beans.",
-        "Simmer for 6–7 minutes until the chicken is cooked through, then serve over the rice.",
+        "Simmer for 6–7 minutes until the chicken is cooked through with no pink inside, then serve over the rice.",
         "Taste and adjust the seasoning before serving."
       ]
     },
@@ -2571,7 +2571,7 @@ window.SOLO_RECIPES = (function () {
         ing(1, "tbsp", "vegetable oil", "store")
       ],
       steps: [
-        "Fry the chicken in a splash of oil over high heat for 5 minutes until cooked through.",
+        "Fry the chicken in a splash of oil over high heat for 5 minutes until cooked through with no pink inside.",
         "Add the cold rice and peas, and stir-fry for 3–4 minutes until hot through.",
         "Stir in the pineapple, soy sauce and chilli flakes, and toss for 1 minute.",
         "Season to taste, then serve hot."
@@ -2579,7 +2579,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d157", title: "Indian-Style Egg Curry", tags: ["vegetarian", "spicy", "quick"], cuisine: "India", protein: "plant-based",
-      prep: 7, cook: 15,
+      prep: 7, cook: 19,
       ingredients: [
         ing(2, "", "eggs", "dairy"), ing(150, "g", "chopped tomatoes", "store"),
         ing(0.5, "", "onion, diced", "produce"), ing(1, "tsp", "mild curry powder", "spice"),
@@ -2589,7 +2589,7 @@ window.SOLO_RECIPES = (function () {
       steps: [
         "Cook the rice according to the packet instructions.",
         "Boil the eggs for 8 minutes, then cool, peel and halve.",
-        "Fry the onion in a splash of oil over medium heat for 4 minutes, then stir in the curry powder and turmeric.",
+        "Fry the onion in a splash of oil over medium heat for 8 minutes until soft and translucent, then stir in the curry powder and turmeric.",
         "Season to taste, then add the chopped tomatoes and simmer for 6 minutes, then nestle in the eggs and warm through before serving over the rice."
       ]
     },
@@ -2619,7 +2619,7 @@ window.SOLO_RECIPES = (function () {
         ing(1, "tbsp", "vegetable oil", "store")
       ],
       steps: [
-        "Fry the chicken in a splash of oil over medium-high heat for 6–7 minutes until cooked through.",
+        "Fry the chicken in a splash of oil over medium-high heat for 6–7 minutes until cooked through with no pink inside.",
         "Shred with two forks, then stir through the barbecue sauce and warm for 2 minutes.",
         "Toss the coleslaw mix with the mayonnaise.",
         "Season to taste, then pile the pulled chicken into the bun with the coleslaw."
@@ -2637,14 +2637,14 @@ window.SOLO_RECIPES = (function () {
       steps: [
         "Preheat the oven to 200°C (fan 180°C).",
         "Toss the sweet potato wedges with the paprika and a splash of oil, and roast for 20–25 minutes, turning once, until tender and golden.",
-        "Shape the turkey mince into a patty and fry over medium-high heat for 4–5 minutes each side until cooked through.",
+        "Shape the turkey mince into a patty and fry over medium-high heat for 4–5 minutes each side until cooked through with no pink inside.",
         "Toast the bun.",
         "Season to taste, then build the burger with the patty and ketchup, and serve with the wedges."
       ]
     },
     {
       id: "d161", title: "Spanish-Style Garlic Mushrooms Tapas Bowl", tags: ["vegetarian", "vegan", "quick"], cuisine: "Spain", protein: "plant-based",
-      prep: 6, cook: 8,
+      prep: 7, cook: 8,
       ingredients: [
         ing(200, "g", "chestnut mushrooms, halved", "produce"), ing(2, "", "garlic cloves, sliced", "produce"),
         ing(0.5, "tsp", "smoked paprika", "spice"), ing(null, "small handful", "fresh parsley, chopped", "produce"),
@@ -2692,14 +2692,14 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d164", title: "British-Style Leek & Potato Soup", tags: ["vegetarian", "quick"], cuisine: "UK", protein: "plant-based",
-      prep: 7, cook: 19,
+      prep: 7, cook: 23,
       ingredients: [
         ing(1, "", "leek, sliced", "produce"), ing(200, "g", "potato, chunked", "produce"),
         ing(300, "ml", "vegetable stock", "store"), ing(1, "tbsp", "butter", "dairy"),
         ing(1, "tbsp", "double cream", "dairy"), ing(1, "slice", "crusty bread", "bakery")
       ],
       steps: [
-        "Melt the butter in a saucepan and fry the leek over medium heat for 4 minutes until soft.",
+        "Melt the butter in a saucepan and fry the leek over medium heat for 8 minutes until soft and translucent.",
         "Add the potato and stock, and simmer for 15 minutes until the potato is tender.",
         "Blitz or mash until smooth, then stir through the cream.",
         "Season to taste, then serve with the crusty bread."
@@ -2716,7 +2716,7 @@ window.SOLO_RECIPES = (function () {
       ],
       steps: [
         "Cook the rice according to the packet instructions, steaming the pak choi over the top for the last 3 minutes.",
-        "Fry the chicken in a splash of oil over medium-high heat for 6–7 minutes until browned and cooked through.",
+        "Fry the chicken in a splash of oil over medium-high heat for 6–7 minutes until browned and cooked through with no pink inside.",
         "Stir in the soy sauce and honey, and cook for 2 minutes until glazed.",
         "Season to taste, then serve over the rice with the pak choi."
       ]
@@ -2749,7 +2749,7 @@ window.SOLO_RECIPES = (function () {
         "Cook the pasta according to the packet instructions.",
         "Fry the chicken and onion in a splash of oil over medium-high heat for 5 minutes.",
         "Add the mushrooms and cook for 3 minutes, then stir in the tomatoes and oregano.",
-        "Simmer for 8 minutes until the chicken is cooked through, then serve over the pasta.",
+        "Simmer for 8 minutes until the chicken is cooked through with no pink inside, then serve over the pasta.",
         "Taste and adjust the seasoning before serving."
       ]
     },
@@ -2765,21 +2765,21 @@ window.SOLO_RECIPES = (function () {
       steps: [
         "Preheat the oven to 200°C (fan 180°C).",
         "Toss the potatoes and cherry tomatoes with a splash of oil on a baking tray, and roast for 10 minutes.",
-        "Add the chicken to the tray and roast for a further 15–18 minutes until cooked through.",
+        "Add the chicken to the tray and roast for a further 15–18 minutes until cooked through (75°C in the thickest part).",
         "Top the chicken with the mozzarella for the final 3 minutes to melt.",
         "Season to taste, then scatter with basil and drizzle with balsamic vinegar to serve."
       ]
     },
     {
       id: "d169", title: "Portuguese-Style Chouriço & Bean Stew", tags: ["spicy", "quick"], cuisine: "Portugal", protein: "pork",
-      prep: 7, cook: 13,
+      prep: 8, cook: 16,
       ingredients: [
         ing(1, "", "chorizo sausage, sliced", "meat"), ing(1, "tin", "butter beans, drained", "store"),
         ing(150, "g", "chopped tomatoes", "store"), ing(0.5, "", "onion, diced", "produce"),
         ing(1, "", "garlic clove, finely chopped", "produce"), ing(1, "slice", "crusty bread", "bakery")
       ],
       steps: [
-        "Fry the chorizo and onion in a splash of oil over medium heat for 5 minutes until the chorizo releases its oil.",
+        "Fry the chorizo and onion in a splash of oil over medium heat for 8 minutes until the onion is soft and the chorizo has released its oil.",
         "Add the garlic, butter beans and chopped tomatoes, and simmer for 8 minutes.",
         "Season and serve with the crusty bread."
       ]
@@ -2801,7 +2801,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d171", title: "French-Style Summer Vegetable Stew", tags: ["vegetarian", "vegan", "quick"], cuisine: "France", protein: "plant-based",
-      prep: 8, cook: 14,
+      prep: 10, cook: 16,
       ingredients: [
         ing(0.5, "", "courgette, diced", "produce"), ing(0.5, "", "red pepper, diced", "produce"),
         ing(150, "g", "chopped tomatoes", "store"), ing(0.5, "", "onion, diced", "produce"),
@@ -2809,7 +2809,7 @@ window.SOLO_RECIPES = (function () {
         ing(1, "tbsp", "vegetable oil", "store")
       ],
       steps: [
-        "Fry the onion, courgette and red pepper in a splash of oil over medium heat for 6 minutes.",
+        "Fry the onion, courgette and red pepper in a splash of oil over medium heat for 8 minutes until soft and translucent.",
         "Add the garlic and herbs, and cook for 1 minute.",
         "Stir in the chopped tomatoes and simmer for 8 minutes until the vegetables are tender.",
         "Season and serve, with crusty bread if you like."
@@ -2864,7 +2864,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d175", title: "Mexican-Style Chicken Tinga Tacos", tags: ["spicy", "quick"], cuisine: "Mexico", protein: "chicken",
-      prep: 8, cook: 12,
+      prep: 8, cook: 16,
       ingredients: [
         ing(160, "g", "chicken breast, shredded after cooking", "meat"), ing(150, "g", "chopped tomatoes", "store"),
         ing(0.5, "", "onion, sliced", "produce"), ing(1, "tsp", "chipotle paste", "store"),
@@ -2872,8 +2872,8 @@ window.SOLO_RECIPES = (function () {
         ing(1, "tbsp", "vegetable oil", "store")
       ],
       steps: [
-        "Slice the chicken breast in half horizontally, then poach or fry until cooked through, about 8 minutes. Shred with two forks.",
-        "Fry the onion in a splash of oil over medium heat for 4 minutes.",
+        "Slice the chicken breast in half horizontally, then poach or fry until cooked through with no pink inside, about 8 minutes. Shred with two forks.",
+        "Fry the onion in a splash of oil over medium heat for 8 minutes until soft and translucent.",
         "Stir in the chipotle paste and chopped tomatoes, add the shredded chicken and simmer for 5 minutes.",
         "Season to taste, then serve in the tortillas, scattered with coriander."
       ]
@@ -2889,10 +2889,9 @@ window.SOLO_RECIPES = (function () {
       ],
       steps: [
         "Cook the rice according to the packet instructions.",
-        "Fry the turkey mince in a splash of oil over medium-high heat for 5 minutes, breaking it up, until browned.",
-        "Stir in the paprika and chilli flakes, then add the black beans and chopped tomatoes.",
-        "Taste and adjust the seasoning.",
-        "Simmer for 8 minutes and serve over the rice."
+        "Fry the turkey mince in a splash of oil over medium-high heat for 5 minutes, breaking it up, until browned with no pink left.",
+        "Stir in the paprika and chilli flakes for 30 seconds until fragrant, then add the black beans and chopped tomatoes and simmer for 8 minutes until thickened.",
+        "Taste and adjust the seasoning, then serve over the rice."
       ]
     },
     {
@@ -2922,7 +2921,7 @@ window.SOLO_RECIPES = (function () {
       ],
       steps: [
         "Cook the bulgur wheat according to the packet instructions.",
-        "Fry the chicken and garlic in a splash of oil over medium-high heat for 8 minutes until browned and cooked through.",
+        "Fry the chicken and garlic in a splash of oil over medium-high heat for 8 minutes until browned and cooked through with no pink inside.",
         "Stir in the oregano and a squeeze of lemon.",
         "Season to taste, then serve the chicken over the bulgur."
       ]
@@ -2937,7 +2936,7 @@ window.SOLO_RECIPES = (function () {
       ],
       steps: [
         "Cook the bulgur wheat according to the packet instructions.",
-        "Mix the mince with the cumin and cinnamon, and shape into small koftas.",
+        "Mix the mince with ¼ tsp salt, the cumin and cinnamon, and shape into small koftas.",
         "Fry over medium-high heat for 7–8 minutes, turning, until browned and cooked through.",
         "Season to taste, then serve over the bulgur, scattered with parsley."
       ]
@@ -3015,7 +3014,7 @@ window.SOLO_RECIPES = (function () {
       ],
       steps: [
         "Cook the rice according to the packet instructions.",
-        "Fry the lamb mince in a splash of oil over medium-high heat for 5 minutes, breaking it up.",
+        "Fry the lamb mince in a splash of oil over medium-high heat for 5 minutes, breaking it up, until browned with no pink left.",
         "Stir in the turmeric, cinnamon, rinsed lentils and chopped tomatoes, plus 200ml water.",
         "Taste and adjust the seasoning.",
         "Simmer for 15 minutes, stirring often, until the lentils are soft, then serve over the rice."
@@ -3023,7 +3022,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d185", title: "Jamaican-Style Jerk Pork Chops", tags: ["spicy", "quick"], cuisine: "Jamaica", protein: "pork",
-      prep: 8, cook: 15,
+      prep: 8, cook: 18,
       ingredients: [
         ing(1, "", "pork chop", "meat"), ing(1, "tsp", "jerk seasoning", "spice"),
         ing(0.5, "", "lime", "produce"), ing(70, "g", "rice", "store"),
@@ -3032,13 +3031,13 @@ window.SOLO_RECIPES = (function () {
       steps: [
         "Cook the rice with the peas according to the packet instructions.",
         "Rub the pork chop with the jerk seasoning and a squeeze of lime.",
-        "Fry or griddle over medium-high heat for 5–6 minutes each side until cooked through.",
+        "Fry or griddle over medium-high heat for 5–6 minutes each side until cooked through (65–70°C in the middle), then rest for 3 minutes.",
         "Serve with the rice and peas."
       ]
     },
     {
       id: "d186", title: "Jamaican-Style Callaloo-Inspired Greens", tags: ["vegetarian", "vegan", "quick"], cuisine: "Jamaica", protein: "plant-based",
-      prep: 7, cook: 15,
+      prep: 7, cook: 18,
       ingredients: [
         ing(150, "g", "kale or spinach, shredded", "produce"), ing(0.5, "", "onion, diced", "produce"),
         ing(0.5, "", "red pepper, diced", "produce"), ing(0.25, "tsp", "chilli flakes", "spice"),
@@ -3047,7 +3046,7 @@ window.SOLO_RECIPES = (function () {
       ],
       steps: [
         "Cook the rice according to the packet instructions.",
-        "Fry the onion and red pepper in a splash of oil over medium heat for 5 minutes.",
+        "Fry the onion and red pepper in a splash of oil over medium heat for 8 minutes until soft and translucent.",
         "Add the greens and chilli flakes, and cook for 4–5 minutes until wilted.",
         "Season to taste, then serve over the rice."
       ]
@@ -3063,7 +3062,7 @@ window.SOLO_RECIPES = (function () {
       steps: [
         "Cook the rice according to the packet instructions.",
         "Combine the chicken, soy sauce, vinegar, garlic and bay leaf in a pan with 100ml water.",
-        "Simmer for 15 minutes until the chicken is cooked through and the sauce has reduced.",
+        "Simmer for 15 minutes until the chicken is cooked through with no pink inside and the sauce has reduced.",
         "Season to taste, then serve over the rice."
       ]
     },
@@ -3124,7 +3123,7 @@ window.SOLO_RECIPES = (function () {
         ing(1, "tbsp", "butter", "dairy")
       ],
       steps: [
-        "Fry the chicken in a splash of oil over medium-high heat for 7–8 minutes until browned and cooked through.",
+        "Fry the chicken in a splash of oil over medium-high heat for 7–8 minutes until browned and cooked through with no pink inside.",
         "Warm the chopped tomatoes in a separate small pan for 4 minutes.",
         "Tear the flatbread onto a plate, top with the chicken and tomato sauce.",
         "Taste and adjust the seasoning.",
@@ -3133,7 +3132,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d192", title: "Turkish-Style Red Lentil Soup", tags: ["vegetarian", "quick"], cuisine: "Turkey", protein: "plant-based",
-      prep: 6, cook: 15,
+      prep: 6, cook: 19,
       ingredients: [
         ing(80, "g", "dried red lentils", "store"), ing(0.5, "", "onion, diced", "produce"),
         ing(0.5, "tsp", "ground cumin", "spice"), ing(0.5, "tsp", "smoked paprika", "spice"),
@@ -3141,8 +3140,8 @@ window.SOLO_RECIPES = (function () {
         ing(1, "tbsp", "vegetable oil", "store")
       ],
       steps: [
-        "Fry the onion in a splash of oil over medium heat for 4 minutes until soft.",
-        "Rinse the lentils, add to the pan with the cumin, paprika and 400ml water.",
+        "Fry the onion in a splash of oil over medium heat for 8 minutes until soft and translucent.",
+        "Stir in the cumin and paprika for 30 seconds until fragrant, then add the rinsed lentils and 400ml water.",
         "Simmer for 12 minutes until the lentils are soft, then blitz or mash until smooth.",
         "Season to taste, then serve with a squeeze of lemon and the crusty bread."
       ]
@@ -3173,8 +3172,8 @@ window.SOLO_RECIPES = (function () {
       ],
       steps: [
         "Cook the rice according to the packet instructions.",
-        "Fry the onion and beef mince in a splash of oil over medium-high heat for 6–7 minutes, breaking up the mince.",
-        "Stir in the cumin, raisins and chopped tomatoes, and simmer for 5 minutes.",
+        "Fry the onion and beef mince in a splash of oil over medium-high heat for 6–7 minutes, breaking up the mince, until browned with no pink left.",
+        "Stir in the cumin for 30 seconds until fragrant, then add the raisins and chopped tomatoes and simmer for 5 minutes until thickened.",
         "Season to taste, then serve over the rice."
       ]
     },
@@ -3222,7 +3221,7 @@ window.SOLO_RECIPES = (function () {
       ],
       steps: [
         "Boil the potato cubes in salted water for 10–12 minutes until a knife slides in easily, then drain.",
-        "Meanwhile, fry the onion in a splash of oil over a medium heat for 6–8 minutes until soft and golden. Tip onto a plate.",
+        "Meanwhile, fry the onion in a splash of oil over a medium heat for 10 minutes until soft and golden. Tip onto a plate.",
         "Turn the heat to high and sear the beef for 1–2 minutes until browned but still pink inside. Add to the onion.",
         "Pour the stout and stock into the pan and bubble for 4–5 minutes until reduced by about a third.",
         "Return the beef, onion and potato, heat through for 1 minute, season and serve, with bread if you like."
@@ -3230,14 +3229,14 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d198", title: "Irish-Style Smoked Fish Chowder", tags: ["fish", "quick"], cuisine: "Ireland", protein: "fish",
-      prep: 8, cook: 14,
+      prep: 8, cook: 18,
       ingredients: [
         ing(150, "g", "smoked haddock fillet", "meat"), ing(1, "", "leek, sliced", "produce"),
         ing(150, "g", "potato, diced", "produce"), ing(150, "ml", "milk", "dairy"),
         ing(1, "tbsp", "butter", "dairy")
       ],
       steps: [
-        "Melt the butter and fry the leek over medium heat for 4 minutes until soft.",
+        "Melt the butter and fry the leek over medium heat for 8 minutes until soft and translucent.",
         "Add the potato and 150ml water, and simmer for 8 minutes until nearly tender.",
         "Add the fish and milk, and simmer gently for 5–6 minutes until the fish flakes easily.",
         "Season and serve."
@@ -3245,7 +3244,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d199", title: "Ethiopian-Style Spiced Chicken (Doro Wat)", tags: ["spicy", "quick"], cuisine: "Ethiopia", protein: "chicken",
-      prep: 8, cook: 16,
+      prep: 8, cook: 19,
       ingredients: [
         ing(160, "g", "chicken thigh, diced", "meat"), ing(150, "g", "chopped tomatoes", "store"),
         ing(0.5, "", "onion, diced", "produce"), ing(0.5, "tsp", "smoked paprika", "spice"),
@@ -3253,16 +3252,16 @@ window.SOLO_RECIPES = (function () {
         ing(1, "tbsp", "vegetable oil", "store")
       ],
       steps: [
-        "Fry the onion in a splash of oil over medium heat for 5 minutes until soft.",
+        "Fry the onion in a splash of oil over medium heat for 8 minutes until soft and translucent.",
         "Add the chicken and cook for 5 minutes until browned.",
-        "Stir in the paprika, ginger and chilli flakes, then add the chopped tomatoes.",
-        "Simmer for 8 minutes until the chicken is cooked through, and serve.",
-        "Taste and adjust the seasoning before serving."
+        "Stir in the paprika, ginger and chilli flakes for 30 seconds until fragrant, then add the chopped tomatoes.",
+        "Simmer for 8 minutes until the chicken is cooked through with no pink inside and the sauce has thickened.",
+        "Taste and adjust the seasoning, then serve."
       ]
     },
     {
       id: "d200", title: "Ethiopian-Style Spiced Collard Greens", tags: ["vegetarian", "vegan", "quick"], cuisine: "Ethiopia", protein: "plant-based",
-      prep: 7, cook: 15,
+      prep: 8, cook: 17,
       ingredients: [
         ing(150, "g", "kale or spring greens, shredded", "produce"), ing(0.5, "", "onion, sliced", "produce"),
         ing(0.5, "", "carrot, sliced", "produce"), ing(0.25, "tsp", "ground ginger", "spice"),
@@ -3271,7 +3270,7 @@ window.SOLO_RECIPES = (function () {
       ],
       steps: [
         "Cook the rice according to the packet instructions.",
-        "Fry the onion, carrot and garlic in a splash of oil over medium heat for 6 minutes.",
+        "Fry the onion and carrot in a splash of oil over medium heat for 8 minutes until soft and translucent, adding the garlic for the last minute.",
         "Add the greens and ginger, and cook for 5–6 minutes until wilted and tender.",
         "Season to taste, then serve over the rice."
       ]
@@ -3303,7 +3302,7 @@ window.SOLO_RECIPES = (function () {
         ing(1, "tbsp", "vegetable oil", "store")
       ],
       steps: [
-        "Fry the chicken in a splash of oil over high heat for 5 minutes until cooked through, then push to one side.",
+        "Fry the chicken in a splash of oil over high heat for 5 minutes until cooked through with no pink inside, then push to one side.",
         "Add the cold rice, soy sauce, sweet soy sauce and chilli flakes, and stir-fry for 3–4 minutes.",
         "Push everything to one side, crack in the egg and scramble until just set, then mix through.",
         "Season to taste, then serve hot."
@@ -3337,13 +3336,13 @@ window.SOLO_RECIPES = (function () {
       steps: [
         "Cook the rice according to the packet instructions.",
         "Fry the chicken and garlic in a splash of oil over medium-high heat for 6 minutes until browned.",
-        "Stir in the coriander, walnuts and stock, and simmer for 6–7 minutes until the chicken is cooked through and the sauce has thickened.",
+        "Stir in the ground coriander for 30 seconds until fragrant, then add the walnuts and stock and simmer for 6–7 minutes until the chicken is cooked through with no pink inside and the sauce has thickened.",
         "Season to taste, then serve over the rice."
       ]
     },
     {
       id: "d205", title: "Armenian-Style Lamb & Bulgur Pilaf", tags: ["quick"], cuisine: "Armenia", protein: "lamb",
-      prep: 8, cook: 15,
+      prep: 8, cook: 20,
       ingredients: [
         ing(150, "g", "lamb mince", "meat"), ing(60, "g", "bulgur wheat", "store"),
         ing(0.5, "", "onion, diced", "produce"), ing(150, "g", "chopped tomatoes", "store"),
@@ -3351,9 +3350,9 @@ window.SOLO_RECIPES = (function () {
         ing(1, "tbsp", "vegetable oil", "store")
       ],
       steps: [
-        "Fry the onion and lamb mince in a splash of oil over medium-high heat for 6 minutes, breaking up the mince.",
-        "Stir in the cumin, chopped tomatoes and bulgur, then add 150ml water.",
-        "Cover and simmer for 10–12 minutes until the bulgur is tender and the liquid absorbed.",
+        "Fry the onion and lamb mince in a splash of oil over medium-high heat for 6 minutes, breaking up the mince, until browned with no pink left.",
+        "Stir in the cumin for 30 seconds until fragrant, then add the chopped tomatoes, bulgur and 150ml water.",
+        "Cover and simmer for 10–12 minutes until the bulgur is tender and the liquid absorbed. Take off the heat and leave covered for 5 minutes, then fluff up with a fork.",
         "Season and serve."
       ]
     },
@@ -3377,7 +3376,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d207", title: "Ukrainian-Style Beetroot & Beef Stew", tags: ["quick"], cuisine: "Ukraine", protein: "beef",
-      prep: 8, cook: 14,
+      prep: 8, cook: 17,
       ingredients: [
         ing(150, "g", "beef rump steak, cut into strips", "meat"), ing(100, "g", "cooked beetroot, diced", "produce"),
         ing(0.5, "", "onion, diced", "produce"), ing(200, "ml", "beef stock", "store"),
@@ -3386,7 +3385,7 @@ window.SOLO_RECIPES = (function () {
       ],
       steps: [
         "Sear the beef in a splash of oil over high heat for 1–2 minutes until browned but still pink inside. Tip onto a plate.",
-        "Add the onion and cook over a medium heat for 4–5 minutes, then pour in the stock and simmer for 5 minutes to reduce a little.",
+        "Add the onion and cook over a medium heat for 8 minutes until soft and translucent, then pour in the stock and simmer for 5 minutes until reduced by about a third.",
         "Stir in the beetroot and warm through for 2 minutes, then return the beef for 1 minute.",
         "Season to taste, then serve with a dollop of soured cream."
       ]
@@ -3408,8 +3407,8 @@ window.SOLO_RECIPES = (function () {
       ]
     },
     {
-      id: "d209", title: "Uzbek-Style Beef Plov Rice", tags: ["quick"], cuisine: "Uzbekistan", protein: "beef",
-      prep: 8, cook: 22,
+      id: "d209", title: "Uzbek-Style Beef Plov Rice", tags: [], cuisine: "Uzbekistan", protein: "beef",
+      prep: 8, cook: 31,
       ingredients: [
         ing(150, "g", "beef rump steak, cut into 2cm cubes", "meat"), ing(70, "g", "rice", "store"),
         ing(0.5, "", "carrot, grated", "produce"), ing(0.5, "", "onion, sliced", "produce"),
@@ -3418,14 +3417,14 @@ window.SOLO_RECIPES = (function () {
       ],
       steps: [
         "Sear the beef in a splash of oil over high heat for 3 minutes, turning, until browned all over. Tip onto a plate.",
-        "Fry the onion over a medium heat for 4 minutes, then add the carrot and cumin and cook for 2 minutes.",
-        "Stir in the rice and stock, cover and simmer for 14–15 minutes until the rice is tender and the liquid absorbed.",
+        "Fry the onion over a medium heat for 8 minutes until soft and translucent, then add the carrot and cumin and cook for 2 minutes.",
+        "Stir in the rice and stock, cover and simmer for 14–15 minutes until the rice is tender and the liquid absorbed. Take off the heat and leave covered for 5 minutes, then fluff up with a fork.",
         "Scatter the beef over the rice, cover, take off the heat and leave for 2 minutes to warm through. Season and serve."
       ]
     },
     {
       id: "d210", title: "Uzbek-Style Chicken & Chickpea Rice", tags: ["quick"], cuisine: "Uzbekistan", protein: "chicken",
-      prep: 7, cook: 15,
+      prep: 7, cook: 20,
       ingredients: [
         ing(150, "g", "chicken thigh, diced", "meat"), ing(70, "g", "rice", "store"),
         ing(1, "tin", "chickpeas, drained", "store"), ing(0.5, "", "carrot, grated", "produce"),
@@ -3435,13 +3434,13 @@ window.SOLO_RECIPES = (function () {
       steps: [
         "Fry the chicken with the cumin in a splash of oil over medium-high heat for 5 minutes.",
         "Add the carrot and chickpeas, and cook for 2 minutes.",
-        "Stir in the rice and 150ml water, cover and simmer for 14 minutes until tender.",
+        "Stir in the rice and 150ml water, cover and simmer for 14 minutes until tender. Take off the heat and leave covered for 5 minutes, then fluff up with a fork.",
         "Season to taste, then serve hot."
       ]
     },
     {
       id: "d211", title: "Colombian-Style Chicken & Rice (Arroz con Pollo)", tags: ["quick"], cuisine: "Colombia", protein: "chicken",
-      prep: 8, cook: 16,
+      prep: 8, cook: 21,
       ingredients: [
         ing(160, "g", "chicken thigh, diced", "meat"), ing(70, "g", "rice", "store"),
         ing(0.5, "", "red pepper, diced", "produce"), ing(150, "g", "chopped tomatoes", "store"),
@@ -3450,8 +3449,8 @@ window.SOLO_RECIPES = (function () {
       ],
       steps: [
         "Fry the chicken and red pepper in a splash of oil over medium-high heat for 5 minutes.",
-        "Stir in the cumin, chopped tomatoes and rice, then add 150ml water.",
-        "Cover and simmer for 14–15 minutes until the rice is tender and the liquid absorbed.",
+        "Stir in the cumin for 30 seconds until fragrant, then add the chopped tomatoes, rice and 150ml water.",
+        "Cover and simmer for 14–15 minutes until the rice is tender and the liquid absorbed. Take off the heat and leave covered for 5 minutes, then fluff up with a fork.",
         "Season and serve."
       ]
     },
@@ -3465,7 +3464,7 @@ window.SOLO_RECIPES = (function () {
         ing(1, "tbsp", "vegetable oil", "store")
       ],
       steps: [
-        "Fry the onion and beef mince in a splash of oil over medium-high heat for 6 minutes, breaking up the mince.",
+        "Fry the onion and beef mince in a splash of oil over medium-high heat for 6 minutes, breaking up the mince, until browned with no pink left.",
         "Add the potato, cumin and 150ml water, cover and simmer for 8 minutes, then add the chopped tomatoes.",
         "Simmer for 5 minutes until the potato is tender.",
         "Season and serve."
@@ -3578,7 +3577,7 @@ window.SOLO_RECIPES = (function () {
       steps: [
         "Cook the rice according to the packet instructions.",
         "Fry the chicken with the curry powder in a splash of oil over medium-high heat for 5 minutes.",
-        "Add the chopped tomatoes and coconut milk, and simmer for 8–9 minutes until the chicken is cooked through.",
+        "Add the chopped tomatoes and coconut milk, and simmer for 8–9 minutes until the chicken is cooked through with no pink inside.",
         "Season to taste, then serve over the rice."
       ]
     },
@@ -3640,7 +3639,7 @@ window.SOLO_RECIPES = (function () {
       ],
       steps: [
         "Boil the potato cubes in salted water for 10–12 minutes until a knife slides in easily, then drain.",
-        "Meanwhile, fry the onion in a splash of oil over a medium heat for 8 minutes until soft and golden. Tip onto a plate.",
+        "Meanwhile, fry the onion in a splash of oil over a medium heat for 10 minutes until soft and golden. Tip onto a plate.",
         "Turn the heat to high and sear the beef for 1–2 minutes until browned but still pink inside. Add to the onion.",
         "Pour the ale, stock, mustard and sugar into the pan and bubble for 4 minutes until slightly reduced and glossy.",
         "Return the beef, onion and potato, heat through for 1 minute, season and serve."
@@ -3657,7 +3656,7 @@ window.SOLO_RECIPES = (function () {
       ],
       steps: [
         "Fry the chicken, leek and carrot in a splash of oil over medium heat for 5 minutes.",
-        "Pour in the stock and simmer for 8–9 minutes until the chicken is cooked through.",
+        "Pour in the stock and simmer for 8–9 minutes until the chicken is cooked through with no pink inside.",
         "Stir in the cream and warm through.",
         "Season and serve, with bread if you like."
       ]
@@ -3687,7 +3686,7 @@ window.SOLO_RECIPES = (function () {
       ],
       steps: [
         "Cook the pasta according to the packet instructions.",
-        "Fry the chicken and mushrooms in a splash of oil over medium-high heat for 8 minutes until the chicken is cooked through.",
+        "Fry the chicken and mushrooms in a splash of oil over medium-high heat for 8 minutes until the chicken is cooked through with no pink inside.",
         "Stir in the cream and mustard, and simmer for 2 minutes until thickened.",
         "Season to taste, then serve over the pasta."
       ]
@@ -3717,7 +3716,7 @@ window.SOLO_RECIPES = (function () {
       ],
       steps: [
         "Halve any larger new potatoes and boil for 12–15 minutes until a knife slides in easily, then drain.",
-        "Mix the pork mince with the breadcrumbs and egg yolk, and shape into small meatballs.",
+        "Mix the pork mince with ¼ tsp salt, the breadcrumbs and egg yolk, and shape into small meatballs.",
         "Fry over medium heat for 8–9 minutes, turning, until browned and cooked through.",
         "Season to taste, then serve with the potatoes and cranberry sauce."
       ]
@@ -3747,7 +3746,7 @@ window.SOLO_RECIPES = (function () {
       ],
       steps: [
         "Boil the potato for 15 minutes until tender, then drain and mash with the butter.",
-        "Mix the pork mince with the flour and egg yolk, and shape into oval patties.",
+        "Mix the pork mince with ¼ tsp salt, the flour and egg yolk, and shape into oval patties.",
         "Fry over medium heat for 4–5 minutes each side until browned and cooked through.",
         "Season to taste, then serve with the mash."
       ]
@@ -3785,7 +3784,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d233", title: "Canadian-Style Maple Pork Chops", tags: ["quick"], cuisine: "Canada", protein: "pork",
-      prep: 7, cook: 15,
+      prep: 7, cook: 18,
       ingredients: [
         ing(1, "", "pork chop", "meat"), ing(1.5, "tbsp", "maple syrup", "store"),
         ing(1, "tsp", "Dijon mustard", "store"), ing(120, "g", "new potatoes", "produce"),
@@ -3794,13 +3793,13 @@ window.SOLO_RECIPES = (function () {
       steps: [
         "Boil the potatoes for 12–15 minutes, adding the green beans for the last 4 minutes, until a knife slides easily into the potatoes, then drain.",
         "Fry the pork chop over medium-high heat for 4–5 minutes each side until nearly cooked through.",
-        "Stir the maple syrup and mustard together, pour over the chop and cook for 1–2 minutes until glazed.",
+        "Stir the maple syrup and mustard together, pour over the chop and cook for 1–2 minutes until glazed and cooked through (65–70°C in the middle). Rest for 3 minutes.",
         "Season to taste, then serve with the potatoes and beans."
       ]
     },
     {
       id: "d234", title: "Puerto Rican-Style Rice with Pigeon Peas", tags: ["vegetarian", "vegan", "quick"], cuisine: "Puerto Rico", protein: "plant-based",
-      prep: 7, cook: 15,
+      prep: 7, cook: 20,
       ingredients: [
         ing(70, "g", "rice", "store"), ing(1, "tin", "pigeon peas or black-eyed beans, drained", "store"),
         ing(0.5, "", "red pepper, diced", "produce"), ing(0.5, "tsp", "ground cumin", "spice"),
@@ -3809,8 +3808,8 @@ window.SOLO_RECIPES = (function () {
       ],
       steps: [
         "Fry the red pepper and garlic in a splash of oil over medium heat for 4 minutes.",
-        "Stir in the cumin, then add the rice and pigeon peas, plus 150ml water.",
-        "Cover and simmer for 14 minutes until the rice is tender and the liquid absorbed.",
+        "Stir in the cumin for 30 seconds until fragrant, then add the rice, pigeon peas and 150ml water.",
+        "Cover and simmer for 14 minutes until the rice is tender and the liquid absorbed. Take off the heat and leave covered for 5 minutes, then fluff up with a fork.",
         "Season and serve."
       ]
     },
@@ -3844,7 +3843,7 @@ window.SOLO_RECIPES = (function () {
         "Poach the chicken for 12–15 minutes until cooked through (juices run clear), then remove and rest for 5 minutes before slicing.",
         "While the chicken poaches, mix the shredded spring onion and grated ginger in a heatproof bowl with a pinch of salt.",
         "Heat the vegetable oil in a small pan until just smoking, then carefully pour it over the ginger and spring onion so it sizzles. Stir in the sesame oil and soy sauce.",
-        "Slice the chicken and arrange over the rice with the sliced cucumber, then spoon the ginger-scallion oil over the top."
+        "Slice the chicken and arrange over the rice with the sliced cucumber, then spoon the ginger and spring onion oil over the top."
       ]
     },
     {
@@ -3887,7 +3886,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d239", title: "Chinese-Style Cumin Lamb Stir-Fry with Peppers", tags: ["quick", "spicy"], cuisine: "China", protein: "lamb",
-      prep: 8, cook: 10,
+      prep: 10, cook: 10,
       ingredients: [
         ing(150, "g", "lamb leg steak, thinly sliced", "meat"), ing(1, "tsp", "cumin seeds", "spice"),
         ing(0.5, "tsp", "chilli flakes", "spice"), ing(1, "", "red pepper, sliced", "produce"),
@@ -3906,8 +3905,8 @@ window.SOLO_RECIPES = (function () {
       ]
     },
     {
-      id: "d240", title: "Greek Avgolemono Chicken & Orzo Soup", tags: ["quick"], cuisine: "Greece", protein: "chicken",
-      prep: 8, cook: 20,
+      id: "d240", title: "Greek Avgolemono Chicken & Orzo Soup", tags: [], cuisine: "Greece", protein: "chicken",
+      prep: 8, cook: 24,
       ingredients: [
         ing(150, "g", "chicken breast, diced", "meat"), ing(500, "ml", "chicken stock", "store"),
         ing(40, "g", "orzo", "store"), ing(1, "", "egg", "dairy"),
@@ -3916,7 +3915,7 @@ window.SOLO_RECIPES = (function () {
         ing(1, "sprig", "fresh dill, chopped", "produce")
       ],
       steps: [
-        "Heat the olive oil in a saucepan and sauté the onion and carrot for 3–4 minutes until softened.",
+        "Heat the olive oil in a saucepan and sauté the onion and carrot for 8 minutes until soft and translucent.",
         "Add the stock and bring to the boil, then add the chicken and orzo and simmer for 10–12 minutes until the chicken is cooked and the orzo is tender.",
         "Whisk the egg and lemon juice together in a bowl. Ladle a little hot stock into the egg mixture, whisking constantly to temper it.",
         "Remove the soup from the heat and stir in the egg-lemon mixture, stirring until silky (do not let it boil again or it will curdle).",
@@ -3924,8 +3923,8 @@ window.SOLO_RECIPES = (function () {
       ]
     },
     {
-      id: "d241", title: "Greek-Style Baked Cod Plaki with Tomatoes and Olives", tags: ["quick", "fish"], cuisine: "Greece", protein: "fish",
-      prep: 8, cook: 20,
+      id: "d241", title: "Greek-Style Baked Cod Plaki with Tomatoes and Olives", tags: ["fish"], cuisine: "Greece", protein: "fish",
+      prep: 8, cook: 24,
       ingredients: [
         ing(1, "", "cod fillet, about 180g", "meat"), ing(0.5, "", "onion, sliced", "produce"),
         ing(1, "", "garlic clove, sliced", "produce"), ing(200, "g", "chopped tomatoes (tinned)", "store"),
@@ -3935,7 +3934,7 @@ window.SOLO_RECIPES = (function () {
       ],
       steps: [
         "Preheat the oven to 200°C (180°C fan).",
-        "Heat the olive oil in an ovenproof pan and sauté the onion and garlic for 3–4 minutes until soft.",
+        "Heat the olive oil in an ovenproof pan and sauté the onion for 8 minutes until soft and translucent, adding the garlic for the last minute.",
         "Stir in the chopped tomatoes, oregano and olives and simmer for 5 minutes.",
         "Nestle the cod fillet into the sauce and spoon a little sauce over the top.",
         "Transfer to the oven and bake for 12–15 minutes until the fish flakes easily.",
@@ -3943,8 +3942,8 @@ window.SOLO_RECIPES = (function () {
       ]
     },
     {
-      id: "d242", title: "Greek Beef Giouvetsi with Orzo", tags: ["quick"], cuisine: "Greece", protein: "beef",
-      prep: 9, cook: 20,
+      id: "d242", title: "Greek Beef Giouvetsi with Orzo", tags: [], cuisine: "Greece", protein: "beef",
+      prep: 10, cook: 25,
       ingredients: [
         ing(150, "g", "beef rump steak, cut into 2cm pieces", "meat"), ing(60, "g", "orzo", "store"),
         ing(200, "g", "chopped tomatoes", "store"), ing(0.5, "", "onion, diced", "produce"),
@@ -3954,15 +3953,15 @@ window.SOLO_RECIPES = (function () {
       ],
       steps: [
         "Heat the olive oil in a saucepan over high heat and sear the beef for 1–2 minutes until browned. Tip onto a plate.",
-        "Lower the heat, add the onion and garlic and cook for 3 minutes until softened.",
-        "Stir in the chopped tomatoes, cinnamon and stock and bring to a simmer.",
+        "Lower the heat, add the onion and cook for 8 minutes until soft and translucent, adding the garlic for the last minute.",
+        "Stir in the cinnamon for 30 seconds until fragrant, then add the chopped tomatoes and stock and bring to a simmer.",
         "Add the orzo and cook for 8–10 minutes, stirring often, until tender and the sauce has thickened. Add a splash of water if it dries out.",
         "Season to taste, then return the beef and its juices for 1–2 minutes, then spoon into a bowl and scatter with the cheese and parsley."
       ]
     },
     {
-      id: "d243", title: "Greek Gigantes-Style Butter Beans in Tomato Sauce", tags: ["vegetarian", "vegan", "quick"], cuisine: "Greece", protein: "plant-based",
-      prep: 7, cook: 20,
+      id: "d243", title: "Greek Gigantes-Style Butter Beans in Tomato Sauce", tags: ["vegetarian", "vegan"], cuisine: "Greece", protein: "plant-based",
+      prep: 8, cook: 24,
       ingredients: [
         ing(400, "g", "butter beans (tinned), drained", "store"), ing(200, "g", "chopped tomatoes", "store"),
         ing(0.5, "", "onion, diced", "produce"), ing(1, "", "garlic clove, minced", "produce"),
@@ -3971,8 +3970,8 @@ window.SOLO_RECIPES = (function () {
         ing(1, "slice", "crusty bread, to serve", "bakery")
       ],
       steps: [
-        "Heat the olive oil in a saucepan and sauté the onion and garlic for 3–4 minutes until softened.",
-        "Stir in the chopped tomatoes, oregano and paprika and bring to a simmer.",
+        "Heat the olive oil in a saucepan and sauté the onion for 8 minutes until soft and translucent, adding the garlic for the last minute.",
+        "Stir in the paprika and oregano for 30 seconds until fragrant, then add the chopped tomatoes and bring to a simmer.",
         "Add the drained butter beans and simmer gently for 12–15 minutes, stirring occasionally, until the sauce has thickened and the beans are heated through.",
         "Season to taste and scatter with chopped parsley.",
         "Serve with crusty bread."
@@ -3997,7 +3996,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d245", title: "New Orleans-Style Blackened Fish with Dirty Rice", tags: ["quick", "spicy", "fish"], cuisine: "USA", protein: "fish",
-      prep: 9, cook: 16,
+      prep: 9, cook: 19,
       ingredients: [
         ing(1, "", "white fish fillet, about 180g (e.g. haddock)", "meat"), ing(1, "tsp", "paprika", "spice"),
         ing(0.5, "tsp", "cayenne pepper", "spice"), ing(0.5, "tsp", "garlic powder", "spice"),
@@ -4009,7 +4008,7 @@ window.SOLO_RECIPES = (function () {
       steps: [
         "Mix the paprika, cayenne, garlic powder, thyme and oregano together and press firmly onto both sides of the fish fillet.",
         "Heat half the oil in a frying pan over high heat and cook the fish for 2–3 minutes per side until blackened and cooked through. Set aside.",
-        "Add the remaining oil to the pan and fry the chorizo, onion, pepper and celery for 4–5 minutes until softened.",
+        "Add the remaining oil to the pan and fry the chorizo, onion, pepper and celery for 8 minutes until soft and translucent.",
         "Stir in the cooked rice and toss well for 2–3 minutes to heat through and pick up the spiced oil.",
         "Season to taste, then serve the dirty rice topped with the blackened fish."
       ]
@@ -4036,7 +4035,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d247", title: "Korean Dak Galbi-Style Spicy Chicken with Rice Cakes", tags: ["quick", "spicy"], cuisine: "Korea", protein: "chicken",
-      prep: 9, cook: 16,
+      prep: 11, cook: 16,
       ingredients: [
         ing(180, "g", "chicken thigh, diced", "meat"), ing(100, "g", "Korean rice cakes (tteok)", "frozen"),
         ing(1, "tbsp", "gochujang", "store"), ing(1, "tsp", "gochugaru (Korean chilli flakes)", "spice"),
@@ -4050,7 +4049,7 @@ window.SOLO_RECIPES = (function () {
         "Mix the gochujang, gochugaru, soy sauce, honey, garlic and ginger in a bowl. Toss the chicken in half the sauce.",
         "Heat the oil in a frying pan or wok over medium-high heat, add the chicken and stir-fry for 5–6 minutes until browned and nearly cooked through.",
         "Add the cabbage and carrot and stir-fry for 2–3 minutes until starting to soften.",
-        "Add the rice cakes, remaining sauce and a splash of water, and cook for 4–5 minutes, stirring, until the rice cakes are soft and the chicken is cooked through.",
+        "Add the rice cakes, remaining sauce and a splash of water, and cook for 4–5 minutes, stirring, until the rice cakes are soft and the chicken is cooked through with no pink inside.",
         "Season to taste, then scatter with spring onion to serve."
       ]
     },
@@ -4075,7 +4074,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d249", title: "Korean Japchae Glass Noodles with Pork", tags: ["quick"], cuisine: "Korea", protein: "pork",
-      prep: 9, cook: 12,
+      prep: 10, cook: 12,
       ingredients: [
         ing(60, "g", "sweet potato glass noodles (dangmyeon)", "store"), ing(120, "g", "pork loin, thinly sliced", "meat"),
         ing(0.5, "", "carrot, julienned", "produce"), ing(0.25, "", "onion, sliced", "produce"),
@@ -4094,7 +4093,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d250", title: "Vietnamese-Style Turmeric Dill Fish (Chả Cá) with Rice Noodles", tags: ["quick", "fish"], cuisine: "Vietnam", protein: "fish",
-      prep: 9, cook: 10,
+      prep: 11, cook: 10,
       ingredients: [
         ing(180, "g", "white fish fillet (e.g. haddock), cut into chunks", "meat"), ing(1, "tsp", "ground turmeric", "spice"),
         ing(1, "tsp", "fresh ginger, grated", "produce"), ing(1, "", "garlic clove, minced", "produce"),
@@ -4133,8 +4132,8 @@ window.SOLO_RECIPES = (function () {
       ]
     },
     {
-      id: "d252", title: "Irish-Style Lamb Shepherd's Pie Mash Cup", tags: ["quick"], cuisine: "Ireland", protein: "lamb",
-      prep: 9, cook: 20,
+      id: "d252", title: "Irish-Style Lamb Shepherd's Pie Mash Cup", tags: [], cuisine: "Ireland", protein: "lamb",
+      prep: 9, cook: 24,
       ingredients: [
         ing(180, "g", "lamb mince", "meat"), ing(0.5, "", "onion, diced", "produce"),
         ing(1, "", "carrot, diced", "produce"), ing(1, "tbsp", "tomato purée", "store"),
@@ -4145,9 +4144,9 @@ window.SOLO_RECIPES = (function () {
       ],
       steps: [
         "Boil the potatoes in salted water for 12–15 minutes until tender, then drain and mash with the butter and milk.",
-        "Meanwhile, heat the oil in a frying pan and brown the lamb mince for 4–5 minutes, breaking it up as it cooks.",
-        "Add the onion and carrot and cook for 3–4 minutes until softened.",
-        "Stir in the tomato purée, stock, Worcestershire sauce and thyme, and simmer for 6–8 minutes until thickened.",
+        "Meanwhile, heat the oil in a frying pan and brown the lamb mince for 4–5 minutes, breaking it up as it cooks, until no pink remains.",
+        "Add the onion and carrot and cook for 8 minutes until soft and translucent.",
+        "Stir in the tomato purée and fry for 1 minute until it darkens, then add the stock, Worcestershire sauce and thyme and simmer for 6–8 minutes until thickened.",
         "Spoon the lamb mixture into a mug or small dish, top with the mash, and serve (or flash under a hot grill for 3–4 minutes to brown the top)."
       ]
     },
@@ -4169,8 +4168,8 @@ window.SOLO_RECIPES = (function () {
       ]
     },
     {
-      id: "d254", title: "Hungarian-Style Paprika Fish Soup (Halászlé)", tags: ["quick", "spicy", "fish"], cuisine: "Hungary", protein: "fish",
-      prep: 9, cook: 20,
+      id: "d254", title: "Hungarian-Style Paprika Fish Soup (Halászlé)", tags: ["spicy", "fish"], cuisine: "Hungary", protein: "fish",
+      prep: 10, cook: 23,
       ingredients: [
         ing(180, "g", "white fish fillet (e.g. pollock or haddock), cut into chunks", "meat"), ing(0.5, "", "onion, finely chopped", "produce"),
         ing(1, "tbsp", "sweet paprika", "spice"), ing(0.5, "tsp", "hot paprika", "spice"),
@@ -4179,7 +4178,7 @@ window.SOLO_RECIPES = (function () {
         ing(1, "handful", "fresh parsley, chopped", "produce")
       ],
       steps: [
-        "Heat the oil in a saucepan and sauté the onion for 4–5 minutes until soft.",
+        "Heat the oil in a saucepan and sauté the onion for 8 minutes until soft and translucent.",
         "Remove the pan from the heat and stir in the sweet and hot paprika (this stops it burning and turning bitter).",
         "Add the tomato, green pepper and stock, return to the heat and simmer for 10 minutes.",
         "Add the fish chunks and simmer gently for 6–8 minutes until just cooked through.",
@@ -4225,8 +4224,8 @@ window.SOLO_RECIPES = (function () {
       ]
     },
     {
-      id: "d257", title: "Nigerian-Style Efo Riro Spinach & Turkey Stew", tags: ["quick", "spicy"], cuisine: "Nigeria", protein: "turkey",
-      prep: 9, cook: 20,
+      id: "d257", title: "Nigerian-Style Efo Riro Spinach & Turkey Stew", tags: ["spicy"], cuisine: "Nigeria", protein: "turkey",
+      prep: 13, cook: 20,
       ingredients: [
         ing(150, "g", "turkey breast, diced", "meat"), ing(200, "g", "spinach, roughly chopped", "produce"),
         ing(0.5, "", "onion, chopped", "produce"), ing(0.5, "", "red pepper, chopped", "produce"),
@@ -4238,7 +4237,7 @@ window.SOLO_RECIPES = (function () {
         "Finely chop the onion, red pepper and chilli together (or blitz in a food processor) to form a base paste.",
         "Heat the palm oil in a saucepan over medium heat, add the pepper paste, garlic and ginger, and cook for 5–6 minutes until softened and fragrant.",
         "Add the chopped tomatoes and stock powder and simmer for 5 minutes.",
-        "Add the turkey and cook for 8–10 minutes until cooked through.",
+        "Add the turkey and cook for 8–10 minutes until cooked through with no pink inside.",
         "Stir in the spinach and cook for a further 2–3 minutes until just wilted.",
         "Season to taste and serve."
       ]
@@ -4263,7 +4262,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d259", title: "Pakistani-Style Chapli Kebab with Yoghurt Chutney", tags: ["quick", "spicy"], cuisine: "Pakistan", protein: "beef",
-      prep: 9, cook: 12,
+      prep: 13, cook: 12,
       ingredients: [
         ing(180, "g", "beef mince", "meat"), ing(0.25, "", "onion, finely diced", "produce"),
         ing(1, "", "tomato, finely diced (seeds removed)", "produce"), ing(1, "", "green chilli, finely chopped", "produce"),
@@ -4273,7 +4272,7 @@ window.SOLO_RECIPES = (function () {
         ing(3, "tbsp", "natural yoghurt", "dairy"), ing(0.5, "tsp", "fresh mint, chopped", "produce")
       ],
       steps: [
-        "Mix the beef mince with the onion, tomato, chilli, coriander seeds, cumin seeds, chilli powder, gram flour and fresh coriander until well combined.",
+        "Mix the beef mince with ¼ tsp salt, the onion, tomato, chilli, coriander seeds, cumin seeds, chilli powder, gram flour and fresh coriander until well combined.",
         "Shape into 2 flat, wide patties.",
         "Heat the oil in a frying pan over medium heat and fry the patties for 4–5 minutes per side until well browned and cooked through.",
         "Mix the yoghurt with the mint to make a quick chutney.",
@@ -4294,7 +4293,7 @@ window.SOLO_RECIPES = (function () {
       steps: [
         "Mix the breadcrumbs with the parmesan and oregano on a plate.",
         "Dust the flattened chicken breast in flour, dip in the beaten egg, then coat well in the breadcrumb mixture.",
-        "Heat the vegetable oil in a frying pan over medium heat and fry the chicken for 3–4 minutes per side until golden and cooked through.",
+        "Heat the vegetable oil in a frying pan over medium heat and fry the chicken for 3–4 minutes per side until golden and cooked through (75°C in the thickest part).",
         "Toss the sliced tomato and red onion with the olive oil, a squeeze of lemon and seasoning.",
         "Serve the milanesa with the tomato salad alongside."
       ]
@@ -4318,7 +4317,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d262", title: "Dutch-Style Herring Salad with Pickled Onion and Apple", tags: ["quick", "fish"], cuisine: "Netherlands", protein: "fish",
-      prep: 7, cook: 12,
+      prep: 8, cook: 12,
       ingredients: [
         ing(120, "g", "soused herring fillets", "meat"), ing(0.5, "", "apple, diced", "produce"),
         ing(0.25, "", "red onion, finely sliced", "produce"), ing(2, "", "baby potatoes, boiled and diced", "produce"),
@@ -4344,7 +4343,7 @@ window.SOLO_RECIPES = (function () {
         ing(null, "to taste", "salt and pepper", "spice")
       ],
       steps: [
-        "Season the chicken breast and pan-fry in the vegetable oil over medium heat for 6–7 minutes per side until cooked through. Rest and slice.",
+        "Season the chicken breast and pan-fry in the vegetable oil over medium heat for 6–7 minutes per side until cooked through (75°C in the thickest part). Rest and slice.",
         "Meanwhile, boil the potatoes, carrots and onion together in salted water for 15–18 minutes until very tender.",
         "Drain well and mash together with the butter, milk and mustard until smooth-ish (a little texture is traditional).",
         "Season the hutspot mash to taste.",
@@ -4353,7 +4352,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d264", title: "Armenian-Style Chicken Khorovats Skewers", tags: ["quick"], cuisine: "Armenia", protein: "chicken",
-      prep: 9, cook: 12,
+      prep: 10, cook: 12,
       ingredients: [
         ing(180, "g", "chicken thigh, cut into chunks", "meat"), ing(0.5, "", "onion, cut into wedges", "produce"),
         ing(0.5, "", "red pepper, cut into chunks", "produce"), ing(2, "tbsp", "olive oil", "store"),
@@ -4386,7 +4385,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d266", title: "Chilean-Style Pork Chop with Pebre Salsa", tags: ["quick"], cuisine: "Chile", protein: "pork",
-      prep: 8, cook: 12,
+      prep: 10, cook: 12,
       ingredients: [
         ing(1, "", "pork loin chop", "meat"), ing(1, "", "tomato, finely diced", "produce"),
         ing(0.25, "", "red onion, finely diced", "produce"), ing(1, "", "garlic clove, minced", "produce"),
@@ -4396,14 +4395,14 @@ window.SOLO_RECIPES = (function () {
       ],
       steps: [
         "Mix the tomato, red onion, garlic, chilli and coriander with the red wine vinegar and olive oil to make the pebre salsa. Season and set aside.",
-        "Season the pork chop and pan-fry in the vegetable oil over medium-high heat for 4–5 minutes per side until cooked through and golden.",
+        "Season the pork chop and pan-fry in the vegetable oil over medium-high heat for 4–5 minutes per side until cooked through (65–70°C in the middle) and golden, then rest for 3 minutes.",
         "Rest the pork chop for a couple of minutes.",
         "Serve topped with a generous spoonful of pebre salsa."
       ]
     },
     {
-      id: "d267", title: "Chilean-Style Porotos Granados Bean & Squash Stew", tags: ["vegetarian", "vegan", "quick"], cuisine: "Chile", protein: "plant-based",
-      prep: 9, cook: 20,
+      id: "d267", title: "Chilean-Style Porotos Granados Bean & Squash Stew", tags: ["vegetarian", "vegan"], cuisine: "Chile", protein: "plant-based",
+      prep: 9, cook: 23,
       ingredients: [
         ing(400, "g", "borlotti or cannellini beans (tinned), drained", "store"), ing(150, "g", "butternut squash, diced", "produce"),
         ing(80, "g", "sweetcorn kernels", "frozen"), ing(0.5, "", "onion, diced", "produce"),
@@ -4412,7 +4411,7 @@ window.SOLO_RECIPES = (function () {
         ing(200, "ml", "vegetable stock", "store"), ing(1, "handful", "fresh basil, torn", "produce")
       ],
       steps: [
-        "Heat the olive oil in a saucepan and sauté the onion, pepper and garlic for 4–5 minutes until softened.",
+        "Heat the olive oil in a saucepan and sauté the onion and pepper for 8 minutes until soft and translucent, adding the garlic for the last minute.",
         "Add the squash, paprika and stock, bring to a simmer, cover and cook for 10–12 minutes until the squash is tender.",
         "Stir in the beans and sweetcorn and simmer for a further 5 minutes until heated through and the stew has thickened slightly.",
         "Season to taste and scatter with torn basil to serve."
@@ -4432,13 +4431,13 @@ window.SOLO_RECIPES = (function () {
         "Mix the lemon juice, mustard, garlic and chilli together and toss with the chicken and half the sliced onion. Marinate for 10 minutes if time allows.",
         "Heat the oil in a frying pan over medium-high heat and brown the chicken, 3–4 minutes per side, then remove and set aside.",
         "Add the remaining onion to the pan and cook over medium heat for 8–10 minutes, stirring often, until soft and golden.",
-        "Return the chicken and marinade to the pan, cover and simmer for 8–10 minutes until the chicken is cooked through.",
+        "Return the chicken and marinade to the pan, cover and simmer for 8–10 minutes until the chicken is cooked through (75°C in the thickest part).",
         "Season to taste, then serve over rice, scattered with parsley."
       ]
     },
     {
-      id: "d269", title: "Senegalese-Style Beef Mafé Peanut Stew with Rice", tags: ["quick", "spicy"], cuisine: "Senegal", protein: "beef",
-      prep: 9, cook: 18,
+      id: "d269", title: "Senegalese-Style Beef Mafé Peanut Stew with Rice", tags: ["spicy"], cuisine: "Senegal", protein: "beef",
+      prep: 10, cook: 22,
       ingredients: [
         ing(180, "g", "beef rump steak, cut into 2cm pieces", "meat"), ing(2, "tbsp", "smooth peanut butter", "store"),
         ing(200, "g", "chopped tomatoes", "store"), ing(0.5, "", "onion, diced", "produce"),
@@ -4448,8 +4447,8 @@ window.SOLO_RECIPES = (function () {
       ],
       steps: [
         "Heat a little oil in a saucepan and sear the beef over high heat for 1–2 minutes until browned. Tip onto a plate.",
-        "Lower the heat, add the onion, garlic and ginger and cook for 3–4 minutes until softened.",
-        "Stir in the chopped tomatoes, chilli powder and stock and simmer for 8 minutes.",
+        "Lower the heat, add the onion and cook for 8 minutes until soft and translucent, adding the garlic and ginger for the last minute.",
+        "Stir in the chilli powder for 30 seconds until fragrant, then add the chopped tomatoes and stock and simmer for 8 minutes until slightly thickened.",
         "Stir in the peanut butter until dissolved and simmer for 3 minutes until thickened.",
         "Season to taste, then return the beef and its juices for 1–2 minutes, then serve over rice scattered with coriander."
       ]
@@ -4481,7 +4480,7 @@ window.SOLO_RECIPES = (function () {
         ing(1, "tbsp", "vegetable oil", "store"), ing(null, "to taste", "salt and pepper", "spice")
       ],
       steps: [
-        "Season the chicken breast and pan-fry in the vegetable oil over medium heat for 6–7 minutes per side until cooked through. Rest and slice.",
+        "Season the chicken breast and pan-fry in the vegetable oil over medium heat for 6–7 minutes per side until cooked through (75°C in the thickest part). Rest and slice.",
         "Blanch the kale in boiling water for 2–3 minutes, then drain well, squeezing out excess water, and chop finely.",
         "Melt the butter in a small pan, stir in the flour and cook for 1 minute, then gradually whisk in the milk to make a smooth sauce.",
         "Stir the kale into the sauce with a pinch of nutmeg and simmer for 2–3 minutes until thickened.",
@@ -4490,7 +4489,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d272", title: "Puerto Rican-Style Pollo Guisado Chicken Stew", tags: [], cuisine: "Puerto Rico", protein: "chicken",
-      prep: 9, cook: 25,
+      prep: 11, cook: 29,
       ingredients: [
         ing(180, "g", "chicken thigh, diced", "meat"), ing(0.25, "", "onion, diced", "produce"),
         ing(0.25, "", "green pepper, diced", "produce"), ing(1, "", "garlic clove, minced", "produce"),
@@ -4501,9 +4500,9 @@ window.SOLO_RECIPES = (function () {
       ],
       steps: [
         "Heat the olive oil in a saucepan and brown the chicken pieces over medium-high heat for 3–4 minutes.",
-        "Add the onion, pepper and garlic and cook for 3–4 minutes until softened.",
+        "Add the onion and pepper and cook for 8 minutes until soft and translucent, adding the garlic for the last minute.",
         "Stir in the tomato purée, oregano and cumin, cook for 1 minute, then add the stock and potato.",
-        "Bring to a simmer, cover and cook for 15–18 minutes until the potato and chicken are cooked through.",
+        "Bring to a simmer, cover and cook for 15–18 minutes until the potato and chicken are cooked through with no pink inside.",
         "Stir in the olives, season to taste, and scatter with coriander to serve."
       ]
     },
@@ -4527,7 +4526,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d274", title: "Goan Pork Vindaloo with Rice", tags: ["spicy"], cuisine: "India", protein: "pork",
-      prep: 8, cook: 20,
+      prep: 10, cook: 23,
       ingredients: [
         ing(180, "g", "pork loin steak, cut into 2cm cubes", "meat"), ing(2, "tbsp", "vindaloo curry paste", "store"),
         ing(1, "tbsp", "malt vinegar", "store"), ing(1, "", "onion, sliced", "produce"),
@@ -4538,8 +4537,8 @@ window.SOLO_RECIPES = (function () {
       ],
       steps: [
         "Toss the pork with the vindaloo paste and vinegar in a bowl and set aside to marinate while you prep everything else.",
-        "Heat the oil in a pan and fry the onion for 5 minutes until soft, then add the garlic and ginger and cook for 1 minute.",
-        "Stir in the tomato, cumin and 100ml water and simmer for 6–8 minutes until thick.",
+        "Heat the oil in a pan and fry the onion for 8 minutes until soft and translucent, then add the garlic and ginger and cook for 1 minute.",
+        "Stir in the cumin for 30 seconds until fragrant, then add the tomato and 100ml water and simmer for 6–8 minutes until thick.",
         "Add the pork with its marinade and simmer for 5–6 minutes, stirring, until cooked through. Add a splash of water if it looks dry.",
         "Meanwhile, cook the rice according to the packet instructions.",
         "Season to taste, then serve the vindaloo over the rice, scattered with coriander."
@@ -4565,8 +4564,8 @@ window.SOLO_RECIPES = (function () {
       ]
     },
     {
-      id: "d276", title: "Chettinad Chicken with Curry Leaves", tags: ["spicy", "quick"], cuisine: "India", protein: "chicken",
-      prep: 9, cook: 18,
+      id: "d276", title: "Chettinad Chicken with Curry Leaves", tags: ["spicy"], cuisine: "India", protein: "chicken",
+      prep: 13, cook: 23,
       ingredients: [
         ing(160, "g", "chicken thigh, diced", "meat"), ing(2, "tbsp", "vegetable oil", "store"),
         ing(0.5, "tsp", "mustard seeds", "spice"), ing(10, "", "fresh curry leaves", "produce"),
@@ -4578,9 +4577,9 @@ window.SOLO_RECIPES = (function () {
       ],
       steps: [
         "Heat the oil in a pan and splutter the mustard seeds and curry leaves for 30 seconds.",
-        "Add the onion and cook for 5 minutes until golden, then add the garlic, ginger and dried chillies and cook for 1 minute.",
+        "Add the onion and cook for 10 minutes until soft and golden, then add the garlic, ginger and dried chillies and cook for 1 minute.",
         "Stir in the coriander, fennel, pepper and chicken, and cook for 4–5 minutes until browned.",
-        "Add the chopped tomato and 100ml water, cover and simmer for 10–12 minutes until the chicken is cooked through and the sauce has thickened.",
+        "Add the chopped tomato and 100ml water, cover and simmer for 10–12 minutes until the chicken is cooked through with no pink inside and the sauce has thickened.",
         "Meanwhile cook the rice according to the packet instructions.",
         "Season to taste, then serve the chicken over the rice."
       ]
@@ -4627,7 +4626,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d279", title: "Chicken Mole Poblano-Style", tags: ["spicy"], cuisine: "Mexico", protein: "chicken",
-      prep: 9, cook: 20,
+      prep: 9, cook: 24,
       ingredients: [
         ing(180, "g", "chicken breast", "meat"), ing(1, "tbsp", "vegetable oil", "store"),
         ing(0.5, "", "onion, finely chopped", "produce"), ing(1, "", "garlic clove, crushed", "produce"),
@@ -4640,15 +4639,15 @@ window.SOLO_RECIPES = (function () {
       steps: [
         "Cook the rice according to the packet instructions.",
         "Season the chicken and fry in the oil for 3–4 minutes on each side until browned. Remove and set aside.",
-        "Soften the onion and garlic in the same pan for 4 minutes.",
-        "Stir in the mole paste (or chilli powder), cinnamon, peanut butter and stock, and simmer for 3 minutes.",
-        "Return the chicken to the pan, cover and simmer for 6–8 minutes until cooked through, stirring in the cocoa powder to deepen the sauce.",
+        "Soften the onion in the same pan for 8 minutes until soft and translucent, adding the garlic for the last minute.",
+        "Stir in the mole paste (or chilli powder) and cinnamon for 30 seconds until fragrant, then add the peanut butter and stock and simmer for 3 minutes until smooth.",
+        "Return the chicken to the pan, cover and simmer for 6–8 minutes until cooked through (75°C in the thickest part), stirring in the cocoa powder to deepen the sauce.",
         "Slice the chicken, spoon the sauce over and scatter with sesame seeds. Serve with the rice."
       ]
     },
     {
       id: "d280", title: "Huevos Rancheros with Refried Beans", tags: ["vegetarian", "quick"], cuisine: "Mexico", protein: "plant-based",
-      prep: 7, cook: 12,
+      prep: 10, cook: 16,
       ingredients: [
         ing(2, "", "eggs", "dairy"), ing(2, "tbsp", "vegetable oil", "store"),
         ing(2, "", "small corn tortillas", "bakery"), ing(200, "g", "tinned chopped tomatoes", "store"),
@@ -4657,7 +4656,7 @@ window.SOLO_RECIPES = (function () {
         ing(30, "g", "cheese, grated", "dairy"), ing(1, "tbsp", "fresh coriander, chopped", "produce")
       ],
       steps: [
-        "Heat half the oil and soften the onion and garlic for 4 minutes. Add the tomatoes and chilli powder, and simmer for 8 minutes to a thick sauce.",
+        "Heat half the oil and soften the onion for 8 minutes until soft and translucent, adding the garlic for the last minute. Add the tomatoes and chilli powder, and simmer for 8 minutes to a thick sauce.",
         "Meanwhile warm the refried beans in a small pan with a splash of water.",
         "Warm the tortillas in a dry pan.",
         "Fry the eggs in the remaining oil to your liking.",
@@ -4666,7 +4665,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d281", title: "Beef Birria Tacos with Consommé", tags: ["spicy"], cuisine: "Mexico", protein: "beef",
-      prep: 9, cook: 25,
+      prep: 13, cook: 25,
       ingredients: [
         ing(180, "g", "beef rump steak, thinly sliced", "meat"), ing(1, "tbsp", "chipotle paste", "store"),
         ing(1, "tsp", "ground cumin", "spice"), ing(0.5, "tsp", "dried oregano", "spice"),
@@ -4684,8 +4683,8 @@ window.SOLO_RECIPES = (function () {
       ]
     },
     {
-      id: "d282", title: "Spanish Albóndigas in Almond-Tomato Sauce", tags: ["quick"], cuisine: "Spain", protein: "pork",
-      prep: 9, cook: 20,
+      id: "d282", title: "Spanish Albóndigas in Almond-Tomato Sauce", tags: [], cuisine: "Spain", protein: "pork",
+      prep: 9, cook: 24,
       ingredients: [
         ing(150, "g", "pork mince", "meat"), ing(2, "tbsp", "breadcrumbs", "bakery"),
         ing(1, "tbsp", "milk", "dairy"), ing(1, "", "egg yolk", "dairy"),
@@ -4695,16 +4694,16 @@ window.SOLO_RECIPES = (function () {
         ing(null, "pinch", "smoked paprika", "spice"), ing(1, "", "crusty bread roll", "bakery")
       ],
       steps: [
-        "Soak the breadcrumbs in the milk, then mix with the pork mince, egg yolk, half the garlic and the parsley. Shape into small meatballs.",
+        "Soak the breadcrumbs in the milk, then mix with the pork mince, ¼ tsp salt, egg yolk, half the garlic and the parsley. Shape into small meatballs.",
         "Heat half the oil and brown the meatballs all over, 4–5 minutes. Remove and set aside.",
-        "Add the remaining oil and soften the onion and remaining garlic for 4 minutes, then stir in the paprika, tomatoes and almonds. Simmer for 5 minutes.",
+        "Add the remaining oil and soften the onion for 8 minutes until soft and translucent, adding the garlic for the last minute, then stir in the paprika, tomatoes and almonds. Simmer for 5 minutes.",
         "Return the meatballs to the sauce, cover and simmer for 8–10 minutes until cooked through.",
         "Season to taste, then serve with the crusty bread."
       ]
     },
     {
       id: "d283", title: "Catalan-Style Chicken with Almonds and Sherry", tags: [], cuisine: "Spain", protein: "chicken",
-      prep: 8, cook: 22,
+      prep: 8, cook: 26,
       ingredients: [
         ing(200, "g", "chicken thighs", "meat"), ing(1, "tbsp", "olive oil", "store"),
         ing(0.5, "", "onion, chopped", "produce"), ing(1, "", "garlic clove, crushed", "produce"),
@@ -4714,16 +4713,16 @@ window.SOLO_RECIPES = (function () {
       ],
       steps: [
         "Heat the oil in a pan and brown the chicken all over, 5–6 minutes. Remove and set aside.",
-        "Soften the onion and garlic in the same pan for 4 minutes.",
+        "Soften the onion in the same pan for 8 minutes until soft and translucent, adding the garlic for the last minute.",
         "Add the almonds and torn bread and toast for 1–2 minutes, then pour in the sherry and let it bubble for 1 minute.",
-        "Add the stock and bay leaf, return the chicken to the pan, cover and simmer for 15–18 minutes until the chicken is cooked through.",
+        "Add the stock and bay leaf, return the chicken to the pan, cover and simmer for 15–18 minutes until the chicken is cooked through (75°C in the thickest part).",
         "Taste and adjust the seasoning.",
         "Mash some of the almonds and bread into the sauce with a fork to thicken slightly, stir through the parsley and serve."
       ]
     },
     {
       id: "d284", title: "Spanish White Bean & Spinach Stew (Potaje)", tags: ["vegetarian", "vegan", "quick"], cuisine: "Spain", protein: "plant-based",
-      prep: 7, cook: 15,
+      prep: 8, cook: 18,
       ingredients: [
         ing(1, "tbsp", "olive oil", "store"), ing(0.5, "", "onion, chopped", "produce"),
         ing(1, "", "garlic clove, crushed", "produce"), ing(0.5, "", "red pepper, chopped", "produce"),
@@ -4733,7 +4732,7 @@ window.SOLO_RECIPES = (function () {
         ing(1, "", "crusty bread roll", "bakery")
       ],
       steps: [
-        "Heat the oil and soften the onion, garlic and pepper for 5 minutes.",
+        "Heat the oil and soften the onion and pepper for 8 minutes until soft and translucent, adding the garlic for the last minute.",
         "Stir in the paprika and cumin and cook for 30 seconds.",
         "Add the tomatoes, butter beans and stock, and simmer for 10 minutes.",
         "Stir in the spinach and cook for 2–3 minutes until wilted.",
@@ -4742,7 +4741,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d285", title: "Bacalhau à Brás-Style Salt Cod with Potato and Egg", tags: ["fish", "quick"], cuisine: "Portugal", protein: "fish",
-      prep: 9, cook: 15,
+      prep: 9, cook: 18,
       ingredients: [
         ing(150, "g", "skinless white fish fillet", "meat"), ing(150, "g", "potatoes, cut into thin matchsticks", "produce"),
         ing(2, "tbsp", "olive oil", "store"), ing(0.5, "", "onion, thinly sliced", "produce"),
@@ -4752,7 +4751,7 @@ window.SOLO_RECIPES = (function () {
       steps: [
         "Fry the potato matchsticks in 1 tbsp of the oil over medium heat for 8–10 minutes until golden and tender. Drain on paper and set aside.",
         "Poach or pan-fry the fish for 3–4 minutes until just cooked, then flake into pieces.",
-        "In the same pan, heat the remaining oil and soften the onion and garlic for 5 minutes.",
+        "In the same pan, heat the remaining oil and soften the onion for 8 minutes until soft and translucent, adding the garlic for the last minute.",
         "Add the flaked fish and fried potatoes to the pan, then pour in the beaten eggs.",
         "Stir gently over low heat for 1–2 minutes until the eggs are just set but still creamy, taking care not to scramble too far.",
         "Scatter with olives and parsley to serve."
@@ -4776,7 +4775,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d287", title: "Kuku Sabzi (Persian Herb Frittata)", tags: ["vegetarian", "quick"], cuisine: "Iran", protein: "plant-based",
-      prep: 9, cook: 12,
+      prep: 10, cook: 12,
       ingredients: [
         ing(3, "", "eggs", "dairy"), ing(1, "handful", "fresh parsley, chopped", "produce"),
         ing(1, "handful", "fresh coriander, chopped", "produce"), ing(1, "small handful", "fresh dill, chopped", "produce"),
@@ -4794,7 +4793,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d288", title: "Fesenjan-Style Chicken with Pomegranate and Walnut", tags: [], cuisine: "Iran", protein: "chicken",
-      prep: 8, cook: 22,
+      prep: 8, cook: 26,
       ingredients: [
         ing(180, "g", "chicken thighs", "meat"), ing(40, "g", "walnuts, finely ground", "store"),
         ing(1, "tbsp", "vegetable oil", "store"), ing(0.5, "", "onion, chopped", "produce"),
@@ -4805,15 +4804,15 @@ window.SOLO_RECIPES = (function () {
       steps: [
         "Cook the rice according to the packet instructions.",
         "Heat the oil in a pan and brown the chicken pieces all over, 4–5 minutes. Remove and set aside.",
-        "Soften the onion in the same pan for 4 minutes.",
+        "Soften the onion in the same pan for 8 minutes until soft and translucent.",
         "Add the ground walnuts and toast for 1–2 minutes, then stir in the stock, pomegranate molasses and cinnamon.",
-        "Return the chicken to the pan, cover and simmer for 15 minutes until cooked through and the sauce is thick and glossy, adding a pinch of sugar to balance if needed.",
+        "Return the chicken to the pan, cover and simmer for 15 minutes until cooked through (75°C in the thickest part) and the sauce is thick and glossy, adding a pinch of sugar to balance if needed.",
         "Season to taste, then serve the chicken and sauce over the rice, scattered with pomegranate seeds."
       ]
     },
     {
       id: "d289", title: "Turkish Menemen with Feta and Crusty Bread", tags: ["vegetarian", "quick"], cuisine: "Turkey", protein: "plant-based",
-      prep: 7, cook: 10,
+      prep: 8, cook: 13,
       ingredients: [
         ing(2, "", "eggs", "dairy"), ing(1, "tbsp", "olive oil", "store"),
         ing(0.5, "", "green pepper, sliced", "produce"), ing(0.5, "", "onion, sliced", "produce"),
@@ -4822,7 +4821,7 @@ window.SOLO_RECIPES = (function () {
         ing(1, "", "crusty bread roll", "bakery")
       ],
       steps: [
-        "Heat the oil and soften the onion and pepper for 5 minutes.",
+        "Heat the oil and soften the onion and pepper for 8 minutes until soft and translucent.",
         "Add the tomato and chilli flakes, and cook for 4–5 minutes until softened and saucy.",
         "Beat the eggs lightly and pour into the pan, stirring gently until just set but still soft, about 2–3 minutes.",
         "Scatter with feta and parsley.",
@@ -4841,7 +4840,7 @@ window.SOLO_RECIPES = (function () {
         ing(1, "", "flatbread", "bakery")
       ],
       steps: [
-        "Mix the beef mince with the grated onion, garlic, cumin, cinnamon and parsley, and shape into 4–5 oval köfte.",
+        "Mix the beef mince with ¼ tsp salt, the grated onion, garlic, cumin, cinnamon and parsley, and shape into 4–5 oval köfte.",
         "Heat the oil in a pan and fry the köfte for 8–10 minutes, turning occasionally, until browned and cooked through.",
         "Meanwhile mix the yoghurt with the extra garlic and a pinch of salt.",
         "Warm the flatbread.",
@@ -4850,7 +4849,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d291", title: "Ethiopian Beef Tibs with Peppers and Rosemary", tags: ["spicy", "quick"], cuisine: "Ethiopia", protein: "beef",
-      prep: 8, cook: 12,
+      prep: 12, cook: 12,
       ingredients: [
         ing(180, "g", "beef sirloin, thinly sliced", "meat"), ing(1, "tbsp", "vegetable oil", "store"),
         ing(0.5, "", "onion, sliced", "produce"), ing(0.5, "", "red pepper, sliced", "produce"),
@@ -4869,7 +4868,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d292", title: "Ethiopian Shiro Wat (Spiced Chickpea Flour Stew)", tags: ["vegan", "vegetarian", "spicy"], cuisine: "Ethiopia", protein: "plant-based",
-      prep: 7, cook: 15,
+      prep: 8, cook: 19,
       ingredients: [
         ing(3, "tbsp", "gram (chickpea) flour", "store"), ing(1, "tbsp", "vegetable oil", "store"),
         ing(0.5, "", "onion, finely chopped", "produce"), ing(2, "", "garlic cloves, crushed", "produce"),
@@ -4878,7 +4877,7 @@ window.SOLO_RECIPES = (function () {
         ing(1, "", "flatbread", "bakery")
       ],
       steps: [
-        "Heat the oil and cook the onion for 5–6 minutes until soft and golden.",
+        "Heat the oil and cook the onion for 10 minutes until soft and golden.",
         "Add the garlic, ginger and berbere, and cook for 1 minute until fragrant.",
         "Stir in the chopped tomato and cook for 2 minutes.",
         "Whisk the gram flour with a splash of the stock to make a smooth paste, then stir into the pan with the remaining stock.",
@@ -4924,7 +4923,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d295", title: "Sri Lankan-Style Devilled Chicken", tags: ["spicy", "quick"], cuisine: "Sri Lanka", protein: "chicken",
-      prep: 9, cook: 15,
+      prep: 13, cook: 15,
       ingredients: [
         ing(180, "g", "chicken breast, diced", "meat"), ing(0.5, "tsp", "curry powder", "spice"),
         ing(1, "tbsp", "vegetable oil", "store"), ing(0.5, "", "onion, sliced", "produce"),
@@ -4937,7 +4936,7 @@ window.SOLO_RECIPES = (function () {
       steps: [
         "Cook the rice according to the packet instructions.",
         "Toss the chicken with the curry powder and a pinch of salt.",
-        "Heat the oil in a wok or frying pan and stir-fry the chicken for 5–6 minutes until browned and cooked through. Remove and set aside.",
+        "Heat the oil in a wok or frying pan and stir-fry the chicken for 5–6 minutes until browned and cooked through with no pink inside. Remove and set aside.",
         "Add the onion and peppers to the pan and stir-fry for 4–5 minutes until slightly charred at the edges.",
         "Add the garlic, ginger and chilli, and cook for 1 minute.",
         "Return the chicken to the pan with the ketchup, soy sauce and chilli flakes, tossing to coat well. Cook for 2 minutes.",
@@ -4946,7 +4945,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d296", title: "Sri Lankan-Style Black Pepper Beef Curry", tags: ["spicy"], cuisine: "Sri Lanka", protein: "beef",
-      prep: 8, cook: 18,
+      prep: 10, cook: 21,
       ingredients: [
         ing(180, "g", "beef sirloin, thinly sliced", "meat"), ing(1, "tbsp", "vegetable oil", "store"),
         ing(0.5, "", "onion, sliced", "produce"), ing(2, "", "garlic cloves, crushed", "produce"),
@@ -4958,7 +4957,7 @@ window.SOLO_RECIPES = (function () {
       steps: [
         "Cook the rice according to the packet instructions.",
         "Heat the oil over high heat and sear the beef for 1–2 minutes until browned. Tip onto a plate.",
-        "Lower the heat and soften the onion, garlic, ginger and curry leaves for 5 minutes.",
+        "Lower the heat and soften the onion and curry leaves for 8 minutes until the onion is soft and translucent, adding the garlic and ginger for the last minute.",
         "Stir in the black pepper, coriander and turmeric and cook for 1 minute.",
         "Pour in the coconut milk and 50ml water and simmer uncovered for 6–8 minutes until thickened.",
         "Season to taste, then return the beef and its juices for 1–2 minutes, then serve with the rice."
@@ -4966,7 +4965,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d297", title: "Swedish Pytt i Panna with Fried Egg", tags: [], cuisine: "Sweden", protein: "pork",
-      prep: 9, cook: 23,
+      prep: 10, cook: 23,
       ingredients: [
         ing(150, "g", "potatoes, diced", "produce"), ing(100, "g", "cooked ham, diced", "meat"),
         ing(0.5, "", "onion, diced", "produce"), ing(1, "tbsp", "butter", "dairy"),
@@ -4984,7 +4983,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d298", title: "Swedish Kalops-Style Beef and Root Vegetable Stew", tags: [], cuisine: "Sweden", protein: "beef",
-      prep: 9, cook: 22,
+      prep: 9, cook: 25,
       ingredients: [
         ing(180, "g", "beef rump steak, cut into 2cm cubes", "meat"), ing(1, "tbsp", "butter", "dairy"),
         ing(0.5, "", "onion, chopped", "produce"), ing(1, "", "carrot, sliced", "produce"),
@@ -4995,7 +4994,7 @@ window.SOLO_RECIPES = (function () {
       steps: [
         "Boil the potatoes in salted water for 15–18 minutes until tender.",
         "Meanwhile, melt the butter in a pan over high heat and sear the beef for 1–2 minutes until browned. Tip onto a plate.",
-        "Soften the onion and carrot in the same pan for 5 minutes.",
+        "Soften the onion and carrot in the same pan for 8 minutes until soft and translucent.",
         "Stir the flour into the vegetables, then gradually add the stock, stirring to avoid lumps. Add the allspice and bay leaf and simmer for 10 minutes until the carrot is tender.",
         "Return the beef and its juices for 1–2 minutes, then remove the bay leaf.",
         "Serve with the potatoes and pickled beetroot."
@@ -5016,7 +5015,7 @@ window.SOLO_RECIPES = (function () {
         "Coat the chicken breast in flour, then beaten egg, then breadcrumbs.",
         "Heat the oil in an ovenproof pan and fry the chicken for 3 minutes each side until golden.",
         "Mix the passata with the oregano and spread over the chicken, then top with the mozzarella.",
-        "Transfer to the oven and bake for 8–10 minutes until the chicken is cooked through and the cheese is melted and bubbling.",
+        "Transfer to the oven and bake for 8–10 minutes until the chicken is cooked through (75°C in the thickest part) and the cheese is melted and bubbling.",
         "Season to taste, then serve with a side salad."
       ]
     },
@@ -5040,7 +5039,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d301", title: "South African-Style Boerewors with Pap and Chakalaka", tags: ["spicy"], cuisine: "South Africa", protein: "beef",
-      prep: 8, cook: 20,
+      prep: 8, cook: 22,
       ingredients: [
         ing(150, "g", "boerewors sausage (or good pork sausage)", "meat"), ing(60, "g", "quick-cook polenta or maize meal", "store"),
         ing(200, "ml", "water", "store"), ing(1, "tbsp", "butter", "dairy"),
@@ -5052,14 +5051,14 @@ window.SOLO_RECIPES = (function () {
       steps: [
         "Grill or fry the sausage over medium heat for 12–15 minutes, turning occasionally, until cooked through and browned.",
         "Meanwhile bring the water to the boil, whisk in the polenta and cook for 5–6 minutes, stirring, until thick (ordinary maize meal needs 15 minutes, covered, on a low heat). Stir in the butter.",
-        "For the chakalaka, heat the oil and soften the onion, pepper and carrot for 5–6 minutes.",
+        "For the chakalaka, heat the oil and soften the onion, pepper and carrot for 8 minutes until soft and translucent.",
         "Stir in the curry powder and chilli flakes, cook for 1 minute, then add the tomatoes and simmer for 5 minutes.",
         "Season to taste, then serve the sausage with the pap and chakalaka spooned alongside."
       ]
     },
     {
       id: "d302", title: "South African-Style Cape Malay Fish Curry", tags: ["quick"], cuisine: "South Africa", protein: "fish",
-      prep: 8, cook: 18,
+      prep: 8, cook: 21,
       ingredients: [
         ing(180, "g", "white fish fillet, cut into chunks", "meat"), ing(1, "tbsp", "vegetable oil", "store"),
         ing(0.5, "", "onion, chopped", "produce"), ing(1, "", "garlic clove, crushed", "produce"),
@@ -5070,7 +5069,7 @@ window.SOLO_RECIPES = (function () {
       ],
       steps: [
         "Cook the rice according to the packet instructions.",
-        "Heat the oil and soften the onion and garlic for 5 minutes.",
+        "Heat the oil and soften the onion for 8 minutes until soft and translucent, adding the garlic for the last minute.",
         "Stir in the ginger, curry powder and turmeric, and cook for 1 minute.",
         "Add the apricot jam, lemon juice, bay leaf and coconut milk, and simmer for 5 minutes.",
         "Add the fish chunks and simmer gently for 6–8 minutes until just cooked through.",
@@ -5111,13 +5110,13 @@ window.SOLO_RECIPES = (function () {
         "Mix the mashed potato with the curd cheese and a little of the diced onion to make the filling.",
         "Place a spoonful of filling in the centre of each wrapper, dampen the edges with water and fold into a half-moon, pressing to seal.",
         "Bring a pan of water to a gentle boil and cook the dumplings for 3–4 minutes until they float and are cooked through.",
-        "Meanwhile melt the butter in a small pan and fry the remaining onion for 4–5 minutes until golden.",
+        "Meanwhile melt the butter in a small pan and fry the remaining onion for 10 minutes until soft and golden.",
         "Drain the dumplings, toss through the buttery onion, and serve with soured cream and chives."
       ]
     },
     {
       id: "d305", title: "Trinidadian-Style Beef Pelau", tags: [], cuisine: "Trinidad", protein: "beef",
-      prep: 9, cook: 25,
+      prep: 9, cook: 35,
       ingredients: [
         ing(150, "g", "beef rump steak, cut into 2cm cubes", "meat"), ing(1, "tbsp", "brown sugar", "store"),
         ing(1, "tbsp", "vegetable oil", "store"), ing(0.5, "", "onion, chopped", "produce"),
@@ -5129,9 +5128,9 @@ window.SOLO_RECIPES = (function () {
       steps: [
         "Heat the oil in a pot until hot, add the sugar and let it caramelise to a dark brown, 1–2 minutes, watching closely so it doesn't burn.",
         "Add the beef immediately and stir to coat in the caramel for 1–2 minutes. Lift the beef onto a plate.",
-        "Add the onion, garlic, thyme and chilli to the pot and cook for 3 minutes.",
+        "Add the onion, thyme and chilli to the pot and cook for 8 minutes until soft and translucent, adding the garlic for the last minute.",
         "Stir in the rice, peas and carrot, then pour in the coconut milk and 100ml water.",
-        "Cover and simmer for 18–20 minutes until the rice is tender, stirring once halfway through. Stir the beef back in for the last 2 minutes.",
+        "Cover and simmer for 18–20 minutes until the rice is tender, stirring once halfway through and stirring the beef back in for the last 2 minutes. Take off the heat and leave covered for 5 minutes.",
         "Taste and adjust the seasoning before serving."
       ]
     },
@@ -5208,7 +5207,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d310", title: "Norwegian-Style Lapskaus (Beef and Cabbage Stew)", tags: [], cuisine: "Norway", protein: "beef",
-      prep: 9, cook: 25,
+      prep: 9, cook: 28,
       ingredients: [
         ing(180, "g", "beef rump steak, cut into 2cm cubes", "meat"), ing(1, "tbsp", "butter", "dairy"),
         ing(0.5, "", "onion, chopped", "produce"), ing(1, "", "carrot, sliced", "produce"),
@@ -5218,7 +5217,7 @@ window.SOLO_RECIPES = (function () {
       ],
       steps: [
         "Melt the butter in a pot over high heat and sear the beef for 1–2 minutes until browned. Tip onto a plate.",
-        "Soften the onion and carrot in the same pot for 5 minutes.",
+        "Soften the onion and carrot in the same pot for 8 minutes until soft and translucent.",
         "Add the potato, stock and bay leaf, cover and simmer for 10 minutes.",
         "Add the cabbage and simmer for 6–8 minutes until the potato and cabbage are tender.",
         "Return the beef and its juices for 1–2 minutes, season and scatter with parsley to serve."
@@ -5244,7 +5243,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d312", title: "Cullen Skink-Style Smoked Haddock Chowder", tags: ["quick", "fish"], cuisine: "UK", protein: "fish",
-      prep: 8, cook: 15,
+      prep: 8, cook: 19,
       ingredients: [
         ing(150, "g", "smoked haddock fillet", "meat"), ing(1, "", "potato, diced", "produce"),
         ing(1, "", "small onion, chopped", "produce"), ing(15, "g", "butter", "dairy"),
@@ -5253,7 +5252,7 @@ window.SOLO_RECIPES = (function () {
         ing(null, "to taste", "black pepper", "spice")
       ],
       steps: [
-        "Melt the butter in a saucepan and soften the onion for 3–4 minutes.",
+        "Melt the butter in a saucepan and soften the onion for 8 minutes until soft and translucent.",
         "Add the potato, stock and bay leaf, cover and simmer for 10 minutes until the potato is tender.",
         "Pour in the milk and lay the haddock on top, then poach gently for 5–6 minutes until the fish flakes easily.",
         "Lift out the fish, remove the skin and flake it back into the soup, lightly crushing some potato as you stir.",
@@ -5290,7 +5289,7 @@ window.SOLO_RECIPES = (function () {
       ],
       steps: [
         "Cook the rice according to the packet instructions.",
-        "Meanwhile, poach the chicken breast in a pan of gently simmering water for 10–12 minutes until cooked through, then drain, cool slightly and dice.",
+        "Meanwhile, poach the chicken breast in a pan of gently simmering water for 10–12 minutes until cooked through (75°C in the thickest part), then drain, cool slightly and dice.",
         "Mix the mayonnaise, curry powder, mango chutney and lemon juice in a bowl.",
         "Fold the diced chicken and sultanas through the dressing.",
         "Season to taste, then spoon over the warm rice and scatter with flaked almonds and spring onion."
@@ -5315,7 +5314,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d316", title: "Beef Bourguignon-Style Beef with Mushrooms", tags: [], cuisine: "France", protein: "beef",
-      prep: 9, cook: 25,
+      prep: 10, cook: 29,
       ingredients: [
         ing(180, "g", "beef rump steak, cut into 2cm cubes", "meat"), ing(1, "", "rasher smoked bacon, chopped", "meat"),
         ing(1, "", "small onion, sliced", "produce"), ing(1, "", "carrot, sliced", "produce"),
@@ -5327,14 +5326,14 @@ window.SOLO_RECIPES = (function () {
       steps: [
         "Melt the butter over high heat and sear the beef for 1–2 minutes until browned. Tip onto a plate.",
         "Fry the bacon and mushrooms in the same pan for 4 minutes until golden. Add to the beef.",
-        "Soften the onion, carrot and garlic for 4 minutes.",
-        "Add the wine, stock, tomato purée, thyme and bay leaf and simmer uncovered for 12–15 minutes until the carrot is tender and the sauce has reduced by half.",
+        "Soften the onion and carrot for 8 minutes until soft and translucent, adding the garlic for the last minute.",
+        "Stir in the tomato purée and fry for 1 minute until it darkens, then add the wine, stock, thyme and bay leaf and simmer uncovered for 12–15 minutes until the carrot is tender and the sauce has reduced by half.",
         "Return the beef, bacon and mushrooms for 1–2 minutes. Remove the bay leaf, season and serve."
       ]
     },
     {
       id: "d317", title: "Salmon en Papillote with Fennel and Lemon", tags: ["quick", "fish"], cuisine: "France", protein: "fish",
-      prep: 7, cook: 15,
+      prep: 8, cook: 15,
       ingredients: [
         ing(150, "g", "salmon fillet", "meat"), ing(0.5, "", "fennel bulb, thinly sliced", "produce"),
         ing(0.5, "", "lemon, thinly sliced", "produce"), ing(60, "g", "cherry tomatoes, halved", "produce"),
@@ -5351,7 +5350,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d318", title: "French Green Lentil Salad with Soft-Boiled Egg and Dijon Dressing", tags: ["quick", "vegetarian"], cuisine: "France", protein: "plant-based",
-      prep: 6, cook: 8,
+      prep: 7, cook: 8,
       ingredients: [
         ing(250, "g", "ready-cooked puy lentils", "store"), ing(1, "", "egg", "dairy"),
         ing(20, "g", "rocket", "produce"), ing(60, "g", "cherry tomatoes, halved", "produce"),
@@ -5457,7 +5456,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d324", title: "Jamaican-Style Escovitch Fish with Pickled Peppers", tags: ["quick", "spicy", "fish"], cuisine: "Jamaica", protein: "fish",
-      prep: 9, cook: 12,
+      prep: 9, cook: 15,
       ingredients: [
         ing(150, "g", "white fish fillet", "meat"), ing(2, "tbsp", "plain flour", "store"),
         ing(2, "tbsp", "vegetable oil", "store"), ing(2, "tbsp", "white wine vinegar", "store"),
@@ -5468,14 +5467,14 @@ window.SOLO_RECIPES = (function () {
       steps: [
         "Season the fish and dust lightly in flour.",
         "Fry in the oil for 3–4 minutes each side until golden and cooked through, then set aside.",
-        "In the same pan, soften the onion, carrot and peppers with the allspice, chilli flakes and thyme for 4–5 minutes.",
+        "In the same pan, soften the onion, carrot and peppers for 8 minutes until soft, adding the allspice, chilli flakes and thyme for the last minute.",
         "Add the vinegar and a splash of water, and simmer for 3–4 minutes.",
         "Spoon the pickled vegetables over the fish to serve."
       ]
     },
     {
       id: "d325", title: "Jamaican-Style Brown Stew Chicken", tags: [], cuisine: "Jamaica", protein: "chicken",
-      prep: 9, cook: 30,
+      prep: 10, cook: 35,
       ingredients: [
         ing(2, "", "chicken thighs, bone-in", "meat"), ing(1, "tsp", "brown sugar", "store"),
         ing(1, "tbsp", "soy sauce", "store"), ing(1, "tsp", "ground allspice", "spice"),
@@ -5488,14 +5487,14 @@ window.SOLO_RECIPES = (function () {
       steps: [
         "Marinate the chicken in the soy sauce, garlic, ginger and allspice for 5 minutes.",
         "Heat the oil and sugar in a pan over medium-high heat until the sugar turns dark amber, then add the chicken and brown well on all sides.",
-        "Add the onion, pepper and thyme, and cook for 2–3 minutes.",
+        "Add the onion, pepper and thyme, and cook for 8 minutes until soft and translucent.",
         "Pour in the stock, cover and simmer for 20–25 minutes until the chicken is tender and the sauce has thickened.",
         "Season to taste, then scatter with spring onion to serve."
       ]
     },
     {
       id: "d326", title: "Cuban-Style Ropa Vieja-Inspired Beef and Peppers", tags: [], cuisine: "Cuba", protein: "beef",
-      prep: 9, cook: 18,
+      prep: 10, cook: 22,
       ingredients: [
         ing(180, "g", "beef rump steak, thinly sliced", "meat"), ing(1, "", "onion, sliced", "produce"),
         ing(0.5, "", "each red and green pepper, sliced", "produce"), ing(1, "", "garlic clove, crushed", "produce"),
@@ -5506,7 +5505,7 @@ window.SOLO_RECIPES = (function () {
       steps: [
         "Cook the rice according to the packet instructions.",
         "Sear the beef strips in a hot pan for 1–2 minutes until browned, then set aside.",
-        "Soften the onion, peppers and garlic in the same pan for 3–4 minutes.",
+        "Soften the onion and peppers in the same pan for 8 minutes until soft and translucent, adding the garlic for the last minute.",
         "Add the tomatoes, cumin, paprika and bay leaf and simmer for 10 minutes until thick.",
         "Season to taste, then return the beef with the olives for 1–2 minutes, remove the bay leaf and serve with the rice."
       ]
@@ -5614,7 +5613,7 @@ window.SOLO_RECIPES = (function () {
       steps: [
         "Cook the rice according to the packet instructions.",
         "Fry the shallot, garlic, sambal and lemongrass paste for 2–3 minutes until fragrant.",
-        "Stir in the tamarind paste, turmeric and stock, and simmer for 5 minutes.",
+        "Stir in the turmeric for 30 seconds, then add the tamarind paste and stock and simmer for 5 minutes.",
         "Add the fish and green beans, and simmer gently for 6–8 minutes until the fish is just cooked through.",
         "Season to taste, then serve with the rice."
       ]
@@ -5639,7 +5638,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d334", title: "Brazilian-Style Moqueca Fish Stew", tags: ["fish"], cuisine: "Brazil", protein: "fish",
-      prep: 9, cook: 18,
+      prep: 11, cook: 21,
       ingredients: [
         ing(150, "g", "white fish fillet, cubed", "meat"), ing(150, "ml", "coconut milk", "store"),
         ing(1, "", "tomato, chopped", "produce"), ing(0.5, "", "red pepper, sliced", "produce"),
@@ -5651,7 +5650,7 @@ window.SOLO_RECIPES = (function () {
       steps: [
         "Cook the rice according to the packet instructions.",
         "Marinate the fish briefly in half the lime juice and a pinch of salt.",
-        "Soften the onion, garlic and pepper in the oil for 4–5 minutes.",
+        "Soften the onion and pepper in the oil for 8 minutes until soft and translucent, adding the garlic for the last minute.",
         "Add the tomato, chilli flakes and coconut milk, and simmer for 5 minutes.",
         "Add the fish and simmer gently for 5–6 minutes until just cooked through.",
         "Stir through the coriander and remaining lime juice, and serve with rice."
@@ -5668,8 +5667,8 @@ window.SOLO_RECIPES = (function () {
       ],
       steps: [
         "Season the steak generously with the garlic and coarse salt, and rest at room temperature while a pan heats.",
-        "Sear the steak for 3–4 minutes each side for medium, then rest for 5 minutes and slice.",
-        "Meanwhile, melt the butter in a small pan and fry the onion until soft.",
+        "Sear the steak for 3–4 minutes each side for medium (60°C in the middle, or 55°C for medium-rare), then rest for 5 minutes and slice.",
+        "Meanwhile, melt the butter in a small pan and fry the onion for 8 minutes until soft and translucent.",
         "Stir in the cassava flour and toast for 3–4 minutes until golden and crumbly, seasoning to taste.",
         "Serve the sliced steak with the farofa, scattered with spring onion and any pan juices."
       ]
@@ -5686,10 +5685,10 @@ window.SOLO_RECIPES = (function () {
       ],
       steps: [
         "Cook the tagliatelle according to the packet instructions.",
-        "Sear the beef strips in a hot pan for 2 minutes, then remove and set aside.",
-        "Fry the onion and mushrooms in the same pan for 4–5 minutes until golden.",
-        "Add the garlic, paprika and stock, and simmer for 3–4 minutes.",
-        "Stir in the soured cream and mustard, return the beef and warm through for 2 minutes without boiling.",
+        "Sear the beef strips in a hot pan for 2 minutes until browned, then remove and set aside.",
+        "Fry the onion and mushrooms in the same pan for 8 minutes until the onion is soft and the mushrooms golden.",
+        "Add the garlic and paprika and fry for 30 seconds until fragrant, then pour in the stock and simmer for 3–4 minutes until reduced by about a third.",
+        "Take the pan off the heat and stir in the soured cream and mustard, then return the beef and warm through gently for 2 minutes without boiling.",
         "Season to taste, then scatter with parsley and serve with the tagliatelle."
       ]
     },
@@ -5747,7 +5746,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d340", title: "Uzbek-Style Lamb Shashlik Skewers", tags: ["quick"], cuisine: "Uzbekistan", protein: "lamb",
-      prep: 9, cook: 10,
+      prep: 9, cook: 12,
       ingredients: [
         ing(150, "g", "lamb leg steak, cut into 2.5cm cubes", "meat"), ing(0.5, "", "onion, grated", "produce"),
         ing(1, "tsp", "ground cumin", "spice"), ing(1, "tsp", "coriander seeds, crushed", "spice"),
@@ -5758,14 +5757,14 @@ window.SOLO_RECIPES = (function () {
       steps: [
         "Toss the lamb cubes with the grated onion, cumin, coriander seeds, paprika, oil and salt.",
         "Leave to marinate briefly while the grill or a griddle pan heats.",
-        "Thread the lamb onto skewers and grill or griddle for 8–10 minutes, turning, until charred and cooked to preference.",
+        "Thread the lamb onto skewers and grill or griddle for 8–10 minutes, turning, until charred and cooked to preference, then rest for 2 minutes.",
         "Toss the sliced onion with the sumac.",
         "Serve the skewers with warm flatbread and the sumac onion."
       ]
     },
     {
       id: "d341", title: "Uzbek-Style Lagman Noodle Soup with Beef", tags: [], cuisine: "Uzbekistan", protein: "beef",
-      prep: 9, cook: 18,
+      prep: 11, cook: 21,
       ingredients: [
         ing(150, "g", "beef sirloin, cut into strips", "meat"), ing(100, "g", "udon noodles", "store"),
         ing(0.5, "", "onion, sliced", "produce"), ing(1, "", "carrot, sliced", "produce"),
@@ -5776,16 +5775,16 @@ window.SOLO_RECIPES = (function () {
       ],
       steps: [
         "Brown the beef strips in a hot pan, then set aside.",
-        "Soften the onion, carrot, pepper and garlic in the same pan for 4–5 minutes.",
-        "Add the tomato, stock, cumin and chilli flakes, and simmer for 10 minutes.",
+        "Soften the onion, carrot and pepper in the same pan for 8 minutes until soft and translucent, adding the garlic for the last minute.",
+        "Add the cumin and chilli flakes and fry for 30 seconds until fragrant, then add the tomato and stock and simmer for 10 minutes.",
         "Return the beef for 1–2 minutes to heat through.",
         "Meanwhile, cook the noodles according to the packet instructions, drain and divide into a bowl.",
         "Season to taste, then ladle the soup over the noodles and scatter with coriander."
       ]
     },
     {
-      id: "d342", title: "Ghanaian-Style Red Red Bean Stew with Fried Plantain", tags: ["quick", "vegan", "vegetarian"], cuisine: "Ghana", protein: "plant-based",
-      prep: 9, cook: 20,
+      id: "d342", title: "Ghanaian-Style Red Red Bean Stew with Fried Plantain", tags: ["vegan", "vegetarian"], cuisine: "Ghana", protein: "plant-based",
+      prep: 9, cook: 24,
       ingredients: [
         ing(400, "g", "tinned black-eyed beans", "store"), ing(1, "tbsp", "tomato purée", "store"),
         ing(0.5, "", "onion, chopped", "produce"), ing(1, "", "garlic clove, crushed", "produce"),
@@ -5794,7 +5793,7 @@ window.SOLO_RECIPES = (function () {
         ing(1, "", "ripe plantain, sliced", "produce")
       ],
       steps: [
-        "Soften the onion, garlic, ginger and chilli flakes in half the oil for 3–4 minutes.",
+        "Soften the onion in half the oil for 8 minutes until soft and translucent, adding the garlic, ginger and chilli flakes for the last minute.",
         "Stir in the tomato purée and paprika, and cook for 2 minutes.",
         "Add the beans with a little of their tin liquid, and simmer for 10 minutes until thickened, seasoning to taste.",
         "Meanwhile, fry the plantain slices in the remaining oil for 3–4 minutes each side until golden and caramelised.",
@@ -5884,7 +5883,7 @@ window.SOLO_RECIPES = (function () {
         "Preheat the oven to 200°C (fan 180°C).",
         "Toss the chicken thighs, kumara and carrot with the oil, garlic, thyme and seasoning in a roasting tray.",
         "Roast for 30 minutes.",
-        "Add the cabbage wedge and a splash of stock to the tray, and return to the oven for a further 10 minutes until the chicken is cooked through and the vegetables are tender."
+        "Add the cabbage wedge and a splash of stock to the tray, and return to the oven for a further 10 minutes until the chicken is cooked through (75°C in the thickest part) and the vegetables are tender."
       ]
     },
     {
@@ -5914,7 +5913,7 @@ window.SOLO_RECIPES = (function () {
       steps: [
         "Lay a sage leaf or two on each piece of flattened chicken and wrap tightly with a slice of prosciutto.",
         "Dust lightly with flour, shaking off any excess.",
-        "Heat the oil in a frying pan over medium-high heat and fry the chicken, prosciutto-side down first, for 2–3 minutes each side until golden and cooked through. Remove and keep warm.",
+        "Heat the oil in a frying pan over medium-high heat and fry the chicken, prosciutto-side down first, for 2–3 minutes each side until golden and cooked through with no pink inside. Remove and keep warm.",
         "Add the wine and butter to the pan, scraping up any bits, and let it bubble for 1–2 minutes until slightly reduced.",
         "Spoon the sauce over the chicken and serve with a lemon wedge."
       ]
@@ -5939,7 +5938,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d351", title: "Pork with Gremolata (Milanese Ossobuco-Style)", tags: [], cuisine: "Italy", protein: "pork",
-      prep: 9, cook: 22,
+      prep: 13, cook: 25,
       ingredients: [
         ing(180, "g", "pork loin steak", "meat"), ing(1, "tbsp", "plain flour", "store"),
         ing(1, "tbsp", "olive oil", "store"), ing(0.5, "", "onion, diced", "produce"),
@@ -5950,7 +5949,7 @@ window.SOLO_RECIPES = (function () {
       ],
       steps: [
         "Dust the pork in flour and season. Heat the oil in a pan over medium-high heat and brown the pork for 2 minutes each side, then remove.",
-        "Add the onion, carrot and celery to the pan and soften for 4–5 minutes.",
+        "Add the onion, carrot and celery to the pan and soften for 8 minutes until soft and translucent.",
         "Add the tomatoes, stock and wine and simmer uncovered for 8 minutes. Return the pork, cover and cook gently for 6–8 minutes until just cooked through.",
         "Meanwhile, mix the garlic, lemon zest and parsley together for the gremolata.",
         "Scatter the gremolata over the pork just before serving."
@@ -5958,7 +5957,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d352", title: "Moroccan-Style Fish Tagine with Chermoula", tags: ["fish"], cuisine: "Morocco", protein: "fish",
-      prep: 9, cook: 22,
+      prep: 10, cook: 22,
       ingredients: [
         ing(160, "g", "white fish fillet (cod or haddock)", "meat"), ing(2, "", "garlic cloves, finely chopped", "produce"),
         ing(2, "tbsp", "coriander, chopped", "produce"), ing(1, "tsp", "ground cumin", "spice"),
@@ -5975,8 +5974,8 @@ window.SOLO_RECIPES = (function () {
       ]
     },
     {
-      id: "d353", title: "Moroccan Harira-Style Lentil & Chickpea Soup", tags: ["vegan", "vegetarian", "quick"], cuisine: "Morocco", protein: "plant-based",
-      prep: 8, cook: 22,
+      id: "d353", title: "Moroccan Harira-Style Lentil & Chickpea Soup", tags: ["vegan", "vegetarian"], cuisine: "Morocco", protein: "plant-based",
+      prep: 10, cook: 25,
       ingredients: [
         ing(40, "g", "red lentils", "store"), ing(100, "g", "tinned chickpeas, drained", "store"),
         ing(200, "g", "tinned chopped tomatoes", "store"), ing(0.5, "", "onion, diced", "produce"),
@@ -5987,7 +5986,7 @@ window.SOLO_RECIPES = (function () {
         ing(1, "tbsp", "vegetable oil", "store")
       ],
       steps: [
-        "Soften the onion and celery in a splash of oil over medium heat for 4–5 minutes, then add the garlic and spices and cook for 1 minute.",
+        "Soften the onion and celery in a splash of oil over medium heat for 8 minutes until soft and translucent, then add the garlic and spices and cook for 1 minute.",
         "Add the lentils, chickpeas, tomatoes and stock. Bring to a simmer.",
         "Cook for 18–20 minutes, stirring occasionally, until the lentils are soft and the soup has thickened.",
         "Season to taste, then stir through the coriander and a squeeze of lemon before serving."
@@ -5995,7 +5994,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d354", title: "Moroccan-Style Grilled Lamb Chops (Mechoui-Spiced)", tags: ["quick"], cuisine: "Morocco", protein: "lamb",
-      prep: 8, cook: 10,
+      prep: 10, cook: 10,
       ingredients: [
         ing(2, "", "lamb chops (about 200g)", "meat"), ing(1, "", "garlic clove, crushed", "produce"),
         ing(1, "tsp", "ground cumin", "spice"), ing(1, "tsp", "paprika", "spice"),
@@ -6013,7 +6012,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d355", title: "Thai-Style Tom Yum Soup with Chicken and Mushrooms", tags: ["quick", "spicy"], cuisine: "Thailand", protein: "chicken",
-      prep: 8, cook: 12,
+      prep: 10, cook: 12,
       ingredients: [
         ing(120, "g", "chicken breast, sliced", "meat"), ing(400, "ml", "chicken stock", "store"),
         ing(1, "", "lemongrass stalk, bruised", "produce"), ing(2, "", "kaffir lime leaves", "produce"),
@@ -6024,7 +6023,7 @@ window.SOLO_RECIPES = (function () {
       ],
       steps: [
         "Bring the stock to a simmer with the lemongrass, lime leaves and ginger, and simmer for 5 minutes to infuse.",
-        "Add the chicken, mushrooms and cherry tomatoes, and simmer for 6–8 minutes until the chicken is cooked through.",
+        "Add the chicken, mushrooms and cherry tomatoes, and simmer for 6–8 minutes until the chicken is cooked through with no pink inside.",
         "Stir in the fish sauce, lime juice and chilli, and taste, adjusting the balance of sour, salty and hot.",
         "Ladle into a bowl and scatter with coriander to serve."
       ]
@@ -6083,7 +6082,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d359", title: "Lebanese-Style Spiced Fish with Tahini (Samke Harra-Inspired)", tags: ["quick", "fish", "spicy"], cuisine: "Lebanon", protein: "fish",
-      prep: 9, cook: 12,
+      prep: 9, cook: 15,
       ingredients: [
         ing(160, "g", "white fish fillet", "meat"), ing(1, "tbsp", "olive oil", "store"),
         ing(2, "tbsp", "tahini", "store"), ing(1, "", "lemon, juiced", "produce"),
@@ -6095,13 +6094,13 @@ window.SOLO_RECIPES = (function () {
       steps: [
         "Heat the oil in a frying pan and fry the fish for 3–4 minutes each side until just cooked. Remove and keep warm.",
         "Whisk the tahini with the lemon juice, garlic and a splash of water until smooth and pourable.",
-        "In the same pan, soften the onion and pepper with the chilli and cumin for 4–5 minutes.",
+        "In the same pan, soften the onion and pepper for 8 minutes until soft, adding the chilli and cumin for the last minute.",
         "Season to taste, then spoon the tahini sauce over the fish, top with the onion and pepper mixture, and scatter with pine nuts and coriander."
       ]
     },
     {
       id: "d360", title: "Lebanese-Style Fattoush Salad with Grilled Halloumi", tags: ["quick", "vegetarian"], cuisine: "Lebanon", protein: "plant-based",
-      prep: 9, cook: 8,
+      prep: 11, cook: 8,
       ingredients: [
         ing(100, "g", "halloumi, sliced", "dairy"), ing(1, "", "pitta bread", "bakery"),
         ing(2, "handfuls", "mixed salad leaves", "produce"), ing(1, "", "tomato, chopped", "produce"),
@@ -6120,7 +6119,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d361", title: "Filipino-Style Sinigang na Baboy (Sour Pork & Vegetable Soup)", tags: [], cuisine: "Philippines", protein: "pork",
-      prep: 9, cook: 18,
+      prep: 11, cook: 18,
       ingredients: [
         ing(150, "g", "pork tenderloin, thinly sliced", "meat"), ing(400, "ml", "water or light stock", "store"),
         ing(1, "tbsp", "tamarind paste", "store"), ing(0.5, "", "onion, sliced", "produce"),
@@ -6156,7 +6155,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d363", title: "German-Style Chicken Jäger-Style with Creamy Mushroom Sauce", tags: ["quick"], cuisine: "Germany", protein: "chicken",
-      prep: 9, cook: 15,
+      prep: 9, cook: 18,
       ingredients: [
         ing(150, "g", "chicken breast, flattened", "meat"), ing(1, "tbsp", "plain flour", "store"),
         ing(1, "", "egg, beaten", "dairy"), ing(30, "g", "breadcrumbs", "store"),
@@ -6167,15 +6166,15 @@ window.SOLO_RECIPES = (function () {
       ],
       steps: [
         "Coat the chicken in flour, then egg, then breadcrumbs.",
-        "Heat the oil in a frying pan and fry the chicken for 4–5 minutes each side until golden and cooked through. Remove and keep warm.",
-        "In the same pan, melt the butter and fry the onion and mushrooms for 4–5 minutes until softened.",
-        "Add the stock and simmer for 2–3 minutes to reduce slightly, then stir in the soured cream.",
+        "Heat the oil in a frying pan and fry the chicken for 4–5 minutes each side until golden and cooked through (75°C in the thickest part). Remove and keep warm.",
+        "In the same pan, melt the butter and fry the onion and mushrooms for 8 minutes until the onion is soft and the mushrooms golden.",
+        "Add the stock and simmer for 2–3 minutes until reduced by about a third, then take off the heat and stir in the soured cream.",
         "Season to taste, then spoon the mushroom sauce over the schnitzel and scatter with parsley."
       ]
     },
     {
-      id: "d364", title: "German-Style Potato & Leek Soup (Kartoffelsuppe-Inspired)", tags: ["quick", "vegetarian"], cuisine: "Germany", protein: "plant-based",
-      prep: 8, cook: 20,
+      id: "d364", title: "German-Style Potato & Leek Soup (Kartoffelsuppe-Inspired)", tags: ["vegetarian"], cuisine: "Germany", protein: "plant-based",
+      prep: 8, cook: 23,
       ingredients: [
         ing(200, "g", "potato, diced", "produce"), ing(1, "", "leek, sliced", "produce"),
         ing(15, "g", "butter", "dairy"), ing(400, "ml", "vegetable stock", "store"),
@@ -6183,7 +6182,7 @@ window.SOLO_RECIPES = (function () {
         ing(1, "tbsp", "chives, chopped", "produce")
       ],
       steps: [
-        "Melt the butter in a pan and soften the leek for 4–5 minutes.",
+        "Melt the butter in a pan and soften the leek for 8 minutes until soft and translucent.",
         "Add the potato and stock, bring to a simmer, and cook for 15–18 minutes until the potato is tender.",
         "Roughly mash some of the potato in the pan to thicken the soup slightly.",
         "Stir in the milk or cream and nutmeg, and season to taste.",
@@ -6192,7 +6191,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d365", title: "Polish-Style Bigos (Hunter's Stew) with Pork and Sausage", tags: [], cuisine: "Poland", protein: "pork",
-      prep: 9, cook: 25,
+      prep: 9, cook: 30,
       ingredients: [
         ing(100, "g", "pork loin steak, diced", "meat"), ing(60, "g", "smoked sausage, sliced", "meat"),
         ing(150, "g", "sauerkraut, drained", "store"), ing(80, "g", "white cabbage, shredded", "produce"),
@@ -6202,8 +6201,8 @@ window.SOLO_RECIPES = (function () {
       ],
       steps: [
         "Heat the oil in a pan and brown the pork and sausage for 2–3 minutes, then tip onto a plate.",
-        "Add the onion and soften for 2–3 minutes.",
-        "Stir in the sauerkraut, cabbage, tomato puree, paprika and bay leaf, then pour in the stock.",
+        "Add the onion and soften for 8 minutes until soft and translucent.",
+        "Stir in the tomato purée and paprika and fry for 1 minute until the purée darkens, then add the sauerkraut, cabbage, bay leaf and stock.",
         "Cover and simmer for 18–20 minutes, stirring occasionally, until the cabbage is tender and the stew has thickened.",
         "Season to taste, then return the pork and sausage for the last 4–5 minutes until the pork is cooked through. Remove the bay leaf before serving."
       ]
@@ -6226,7 +6225,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d367", title: "Tunisian-Style Ojja with Merguez and Eggs", tags: ["spicy"], cuisine: "Tunisia", protein: "lamb",
-      prep: 8, cook: 18,
+      prep: 10, cook: 21,
       ingredients: [
         ing(2, "", "merguez sausages (about 120g)", "meat"), ing(0.5, "", "red pepper, sliced", "produce"),
         ing(0.5, "", "onion, sliced", "produce"), ing(1, "", "garlic clove, chopped", "produce"),
@@ -6236,7 +6235,7 @@ window.SOLO_RECIPES = (function () {
       ],
       steps: [
         "Fry the sliced merguez in a pan over medium heat for 4–5 minutes until browned. Remove and set aside.",
-        "In the same pan, soften the pepper, onion and garlic for 4–5 minutes.",
+        "In the same pan, soften the pepper and onion for 8 minutes until soft and translucent, adding the garlic for the last minute.",
         "Stir in the tomatoes, harissa and cumin, return the sausage to the pan, and simmer for 8–10 minutes.",
         "Make two wells in the sauce and crack in the eggs. Cover and cook for 4–5 minutes until the eggs are just set.",
         "Season to taste, then scatter with coriander and serve with crusty bread."
@@ -6296,7 +6295,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d371", title: "Peruvian-Style Fish Ceviche with Sweet Potato and Corn", tags: ["quick", "fish"], cuisine: "Peru", protein: "fish",
-      prep: 9, cook: 12,
+      prep: 10, cook: 12,
       ingredients: [
         ing(150, "g", "firm white fish fillet (sea bass, bream or cod), diced", "meat"), ing(4, "", "limes, juiced", "produce"),
         ing(0.25, "", "red onion, very thinly sliced", "produce"), ing(1, "", "red chilli, finely sliced", "produce"),
@@ -6313,7 +6312,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d372", title: "Peruvian-Style Beef Anticuchos with Aji Panca", tags: ["quick", "spicy"], cuisine: "Peru", protein: "beef",
-      prep: 8, cook: 18,
+      prep: 8, cook: 20,
       ingredients: [
         ing(150, "g", "beef rump or sirloin, cubed", "meat"), ing(1, "tbsp", "aji panca paste (or smoked paprika and chilli paste)", "store"),
         ing(1, "", "garlic clove, crushed", "produce"), ing(0.5, "tsp", "ground cumin", "spice"),
@@ -6321,15 +6320,16 @@ window.SOLO_RECIPES = (function () {
         ing(0.5, "", "corn on the cob, halved", "produce"), ing(1, "", "small potato, boiled and sliced", "produce")
       ],
       steps: [
-        "Boil the potato and corn in salted water for 12–15 minutes until tender, then drain and slice the potato. Meanwhile, mix the aji panca paste (or paprika and chilli paste), garlic, cumin, vinegar and oil into a marinade and coat the beef. Marinate for 5 minutes.",
+        "Boil the potato and corn in salted water for 12–15 minutes until a knife slides easily into the potato, then drain and slice the potato.",
+        "Meanwhile, mix the aji panca paste (or paprika and chilli paste), garlic, cumin, vinegar and oil into a marinade, coat the beef and leave for 5 minutes.",
         "Thread the beef onto skewers.",
-        "Grill or fry over high heat for 2–3 minutes each side until charred and cooked to your liking.",
+        "Grill or fry over high heat for 2–3 minutes each side until charred and cooked to your liking, then rest for 2 minutes.",
         "Serve the skewers with the corn and potato."
       ]
     },
     {
       id: "d373", title: "Austrian-Style Beef Goulash (Saftgulasch)", tags: [], cuisine: "Austria", protein: "beef",
-      prep: 9, cook: 20,
+      prep: 9, cook: 22,
       ingredients: [
         ing(150, "g", "beef rump steak, cut into strips", "meat"), ing(1, "", "onion, sliced", "produce"),
         ing(1, "tbsp", "sweet paprika", "spice"), ing(0.5, "tsp", "caraway seeds", "spice"),
@@ -6339,15 +6339,15 @@ window.SOLO_RECIPES = (function () {
       ],
       steps: [
         "Heat the oil over high heat and sear the beef for 1–2 minutes until browned. Tip onto a plate.",
-        "Lower the heat, add the onion and cook for 6–8 minutes until soft and golden.",
-        "Stir in the paprika, caraway and garlic for 1 minute, then add the tomato puree and stock.",
+        "Lower the heat, add the onion and cook for 10 minutes until soft and golden.",
+        "Stir in the tomato purée and fry for 1 minute until it darkens, then add the paprika, caraway and garlic for 30 seconds before pouring in the stock.",
         "Simmer uncovered for 8–10 minutes until reduced and glossy.",
         "Season to taste, then return the beef and its juices for 1–2 minutes, stir through the marjoram and serve with crusty bread."
       ]
     },
     {
       id: "d374", title: "Austrian-Style Mushroom & Herb Dumpling (Semmelknödel) in Mushroom Sauce", tags: ["vegetarian"], cuisine: "Austria", protein: "plant-based",
-      prep: 9, cook: 18,
+      prep: 10, cook: 21,
       ingredients: [
         ing(100, "g", "stale bread or bread roll, cubed", "bakery"), ing(80, "ml", "warm milk", "dairy"),
         ing(1, "", "egg", "dairy"), ing(0.25, "", "onion, finely chopped", "produce"),
@@ -6357,15 +6357,15 @@ window.SOLO_RECIPES = (function () {
       ],
       steps: [
         "Soak the bread cubes in the warm milk for 5 minutes.",
-        "Fry the onion in a little butter until soft, then mix into the bread with the egg and parsley. Shape into one large dumpling.",
+        "Fry the onion in a little butter for 8 minutes until soft and translucent, then mix into the bread with the egg and parsley. Shape into one large dumpling.",
         "Lower the dumpling into a pan of gently simmering salted water, cover, and cook for 15 minutes until firm.",
-        "Meanwhile, fry the mushrooms in the remaining butter for 4–5 minutes, add the stock, simmer for 2–3 minutes, then stir in the soured cream.",
+        "Meanwhile, fry the mushrooms in the remaining butter for 4–5 minutes until golden, add the stock and simmer for 2–3 minutes, then take off the heat and stir in the soured cream.",
         "Slice the dumpling and serve with the mushroom sauce, scattered with chives."
       ]
     },
     {
       id: "d375", title: "Georgian-Style Kharcho Soup (Spiced Beef & Rice Soup)", tags: [], cuisine: "Georgia", protein: "beef",
-      prep: 8, cook: 25,
+      prep: 10, cook: 29,
       ingredients: [
         ing(120, "g", "beef mince", "meat"), ing(40, "g", "rice", "store"),
         ing(0.5, "", "onion, diced", "produce"), ing(1, "", "garlic clove, chopped", "produce"),
@@ -6376,15 +6376,15 @@ window.SOLO_RECIPES = (function () {
       ],
       steps: [
         "Brown the mince in a pan over medium-high heat for 4–5 minutes, breaking it up as it cooks.",
-        "Add the onion and garlic and soften for 3–4 minutes.",
-        "Stir in the tomatoes, stock, ground coriander, thyme and chilli flakes, and simmer for 10 minutes.",
+        "Add the onion and soften for 8 minutes until soft and translucent, adding the garlic for the last minute.",
+        "Stir in the ground coriander, thyme and chilli flakes for 30 seconds until fragrant, then add the tomatoes and stock and simmer for 10 minutes.",
         "Add the rice and simmer for a further 12–15 minutes until the rice is tender.",
         "Season to taste, then stir in the crushed walnuts and finish with fresh coriander."
       ]
     },
     {
       id: "d376", title: "Georgian-Style Lobio (Spiced Bean Stew) with Cornbread", tags: ["vegan", "vegetarian"], cuisine: "Georgia", protein: "plant-based",
-      prep: 8, cook: 15,
+      prep: 8, cook: 18,
       ingredients: [
         ing(200, "g", "tinned red kidney beans, drained", "store"), ing(0.5, "", "onion, diced", "produce"),
         ing(1, "", "garlic clove, chopped", "produce"), ing(20, "g", "walnuts, crushed", "store"),
@@ -6394,7 +6394,7 @@ window.SOLO_RECIPES = (function () {
         ing(1, "tbsp", "vegetable oil", "store")
       ],
       steps: [
-        "Soften the onion and garlic in a splash of oil for 4–5 minutes.",
+        "Soften the onion in a splash of oil for 8 minutes until soft and translucent, adding the garlic for the last minute.",
         "Add the beans and stock, and simmer for 8–10 minutes.",
         "Mash a few of the beans against the side of the pan to thicken the stew slightly.",
         "Stir in the crushed walnuts, fenugreek, ground coriander and vinegar.",
@@ -6403,7 +6403,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d377", title: "Colombian-Style Crispy Pork with Rice and Avocado (Chicharrón)", tags: [], cuisine: "Colombia", protein: "pork",
-      prep: 8, cook: 15,
+      prep: 10, cook: 15,
       ingredients: [
         ing(180, "g", "pork belly slices", "meat"), ing(1, "pinch", "salt", "spice"),
         ing(0.5, "tsp", "ground cumin", "spice"), ing(1, "", "garlic clove, crushed", "produce"),
@@ -6420,7 +6420,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d378", title: "Colombian-Style Coconut Fish with Rice (Coastal-Style)", tags: ["fish"], cuisine: "Colombia", protein: "fish",
-      prep: 8, cook: 18,
+      prep: 8, cook: 21,
       ingredients: [
         ing(160, "g", "white fish fillet", "meat"), ing(150, "ml", "coconut milk", "store"),
         ing(0.5, "", "onion, sliced", "produce"), ing(1, "", "garlic clove, chopped", "produce"),
@@ -6430,7 +6430,7 @@ window.SOLO_RECIPES = (function () {
         ing(1, "tbsp", "vegetable oil", "store")
       ],
       steps: [
-        "Soften the onion, pepper and garlic in a splash of oil for 4–5 minutes.",
+        "Soften the onion and pepper in a splash of oil for 8 minutes until soft and translucent, adding the garlic for the last minute.",
         "Stir in the cumin and paprika and cook for 1 minute.",
         "Pour in the coconut milk and simmer for 5 minutes.",
         "Add the fish, cover, and cook gently for 8–10 minutes until it flakes easily.",
@@ -6439,7 +6439,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d379", title: "Kenyan-Style Grilled Spiced Lamb (Nyama Choma-Inspired)", tags: ["quick"], cuisine: "Kenya", protein: "lamb",
-      prep: 8, cook: 10,
+      prep: 11, cook: 10,
       ingredients: [
         ing(180, "g", "lamb leg steak or chops", "meat"), ing(1, "", "garlic clove, crushed", "produce"),
         ing(1, "tsp", "fresh ginger, grated", "produce"), ing(1, "tsp", "ground coriander", "spice"),
@@ -6457,7 +6457,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d380", title: "Kenyan-Style Coastal Coconut Fish Curry (Swahili-Style)", tags: ["fish"], cuisine: "Kenya", protein: "fish",
-      prep: 8, cook: 16,
+      prep: 11, cook: 19,
       ingredients: [
         ing(160, "g", "white fish fillet", "meat"), ing(150, "ml", "coconut milk", "store"),
         ing(0.5, "", "onion, sliced", "produce"), ing(1, "", "garlic clove, chopped", "produce"),
@@ -6468,7 +6468,7 @@ window.SOLO_RECIPES = (function () {
         ing(1, "tbsp", "vegetable oil", "store")
       ],
       steps: [
-        "Soften the onion, garlic and ginger in a splash of oil for 4–5 minutes.",
+        "Soften the onion in a splash of oil for 8 minutes until soft and translucent, adding the garlic and ginger for the last minute.",
         "Add the tomato, turmeric, curry powder and chilli, and cook for 2–3 minutes.",
         "Pour in the coconut milk and simmer for 5 minutes.",
         "Add the fish, cover, and cook gently for 8 minutes until it flakes easily.",
@@ -6477,7 +6477,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d381", title: "Finnish-Style Creamy Mushroom & Barley Stew (Sienimuhennos-Inspired)", tags: ["quick", "vegetarian"], cuisine: "Finland", protein: "plant-based",
-      prep: 8, cook: 12,
+      prep: 8, cook: 14,
       ingredients: [
         ing(150, "g", "cooked pearl barley (pouch)", "store"), ing(150, "g", "chestnut mushrooms, sliced", "produce"),
         ing(0.5, "", "onion, diced", "produce"), ing(15, "g", "butter", "dairy"),
@@ -6485,7 +6485,7 @@ window.SOLO_RECIPES = (function () {
         ing(1, "pinch", "ground allspice", "spice"), ing(1, "tbsp", "dill, chopped", "produce")
       ],
       steps: [
-        "Melt the butter in a pan and fry the onion and mushrooms for 6–8 minutes until golden.",
+        "Melt the butter in a pan and fry the onion and mushrooms for 10 minutes until soft and golden.",
         "Add the barley and stock, and simmer for 4–5 minutes until warmed through and slightly thickened.",
         "Stir in the soured cream and allspice.",
         "Season to taste, then finish with dill and serve."
@@ -6560,7 +6560,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d386", title: "Norwegian-Style Creamy Fish Soup (Fiskesuppe)", tags: ["fish"], cuisine: "Norway", protein: "fish",
-      prep: 8, cook: 20,
+      prep: 10, cook: 23,
       ingredients: [
         ing(150, "g", "skinless cod or haddock fillet, cut into chunks", "meat"), ing(1, "", "small carrot, diced", "produce"),
         ing(0.5, "", "leek, sliced", "produce"), ing(1, "", "small potato, diced", "produce"),
@@ -6569,7 +6569,7 @@ window.SOLO_RECIPES = (function () {
         ing(1, "", "lemon wedge", "produce")
       ],
       steps: [
-        "Melt the butter in a saucepan, add the carrot, leek and potato, and cook gently for 5 minutes until starting to soften.",
+        "Melt the butter in a saucepan, add the carrot, leek and potato, and cook gently for 8 minutes until the leek is soft.",
         "Pour in the stock, bring to a simmer and cook for 10 minutes until the vegetables are tender.",
         "Stir in the cream and bring back to a gentle simmer, then add the fish and poach for 4–5 minutes until just cooked through.",
         "Stir through most of the dill and season to taste.",
@@ -6590,7 +6590,7 @@ window.SOLO_RECIPES = (function () {
       ],
       steps: [
         "Boil the mash potatoes in salted water for 15–18 minutes until tender, then drain and mash with the butter and milk. Season and keep warm.",
-        "Meanwhile, heat the oil in a frying pan and cook the onion for 3–4 minutes until soft.",
+        "Meanwhile, heat the oil in a frying pan and cook the onion for 8 minutes until soft and translucent.",
         "Add the garlic, cinnamon, cloves and thyme, and cook for 30 seconds until fragrant.",
         "Add the pork mince and diced potato, breaking up the mince, and cook for 5–6 minutes until browned.",
         "Pour in the stock, cover and simmer for 8–10 minutes until the potato is tender and the liquid has mostly reduced. Season to taste.",
@@ -6614,7 +6614,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d389", title: "Singapore-Style Hainanese Chicken Rice with Ginger-Chilli Sauce", tags: [], cuisine: "Singapore", protein: "chicken",
-      prep: 9, cook: 32,
+      prep: 10, cook: 32,
       ingredients: [
         ing(180, "g", "chicken thigh fillets", "meat"), ing(1, "", "garlic clove, finely chopped", "produce"),
         ing(20, "g", "fresh ginger, finely grated", "produce"), ing(1, "", "spring onion, sliced", "produce"),
@@ -6624,7 +6624,7 @@ window.SOLO_RECIPES = (function () {
         ing(50, "g", "cucumber, sliced", "produce")
       ],
       steps: [
-        "Put the chicken, half the ginger (bashed) and the garlic into a small pan, cover with the stock and bring to a gentle simmer. Poach for 15–18 minutes until cooked through, then remove the chicken and rest.",
+        "Put the chicken, half the ginger (bashed) and the garlic into a small pan, cover with the stock and bring to a gentle simmer. Poach for 15–18 minutes until cooked through (75°C in the thickest part), then remove the chicken and rest.",
         "Skim a little fat from the poaching liquid and use it to fry the rice for 1 minute, then add 150 ml of the hot poaching liquid, cover and cook gently for 12–15 minutes until tender. Keep the rest of the liquid hot to serve as a little broth.",
         "Meanwhile, finely grate the remaining ginger, mix with the chilli, sesame oil, soy sauce and a squeeze of lime to make the dipping sauce.",
         "Season to taste, then slice the chicken and serve on the rice with the cucumber, spring onion and dipping sauce on the side."
@@ -6632,7 +6632,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d390", title: "Peruvian-Style Aji de Gallina (Creamy Spiced Chicken)", tags: [], cuisine: "Peru", protein: "chicken",
-      prep: 9, cook: 30,
+      prep: 9, cook: 33,
       ingredients: [
         ing(150, "g", "chicken breast", "meat"), ing(0.5, "", "onion, diced", "produce"),
         ing(1, "", "garlic clove, crushed", "produce"), ing(1, "tbsp", "aji amarillo paste", "store"),
@@ -6643,10 +6643,10 @@ window.SOLO_RECIPES = (function () {
         ing(1, "tbsp", "vegetable oil", "store")
       ],
       steps: [
-        "Poach the chicken breast in gently simmering water for 12–15 minutes until cooked through, then shred with two forks.",
+        "Poach the chicken breast in gently simmering water for 12–15 minutes until cooked through (75°C in the thickest part), then shred with two forks.",
         "Meanwhile, cook the rice according to packet instructions, and boil the egg for 8 minutes, then cool and peel.",
         "Soak the torn bread in the milk for a few minutes to soften.",
-        "Heat a little oil in a pan and fry the onion and garlic for 4–5 minutes until soft, then stir in the aji amarillo paste and cook for 1 minute.",
+        "Heat a little oil in a pan and fry the onion for 8 minutes until soft and translucent, adding the garlic for the last minute, then stir in the aji amarillo paste and cook for 1 minute.",
         "Add the soaked bread and milk, the stock, crushed walnuts and cheese, and simmer for 5 minutes, stirring, until thickened into a smooth sauce.",
         "Stir in the shredded chicken and warm through for 3–4 minutes.",
         "Season to taste, then serve over the rice, topped with the olives and boiled egg."
@@ -6654,7 +6654,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d391", title: "Australian-Style Beef & Gravy Pie with Mash and Peas", tags: [], cuisine: "Australia", protein: "beef",
-      prep: 9, cook: 25,
+      prep: 9, cook: 30,
       ingredients: [
         ing(150, "g", "beef rump steak, diced", "meat"), ing(0.5, "", "onion, diced", "produce"),
         ing(200, "ml", "beef stock", "store"), ing(1, "tsp", "Worcestershire sauce", "store"),
@@ -6666,15 +6666,15 @@ window.SOLO_RECIPES = (function () {
       steps: [
         "Preheat the oven to 200°C (fan 180°C). Cut the puff pastry into a small lid shape and bake on a lined tray for 12–15 minutes until golden and puffed; set aside.",
         "Meanwhile, boil the potatoes for the mash for 15–18 minutes until tender.",
-        "Heat a little oil in a saucepan, sear the beef over high heat for 1–2 minutes, then tip onto a plate. Add the onion and cook for 3 minutes until softened.",
-        "Stir in the flour, tomato puree and Worcestershire sauce, then pour in the stock. Simmer for 8–10 minutes until thickened, then return the beef for 1–2 minutes.",
+        "Heat a little oil in a saucepan, sear the beef over high heat for 1–2 minutes, then tip onto a plate. Add the onion and cook for 8 minutes until soft and translucent.",
+        "Stir in the flour and tomato purée and cook for 1 minute until the purée darkens, then add the Worcestershire sauce and stock. Simmer for 8–10 minutes until thickened, then return the beef for 1–2 minutes.",
         "Cook the peas in boiling water for 2–3 minutes, then drain. Mash the potatoes with the butter and milk and season.",
         "Spoon the beef and gravy over the mash, top with the pastry lid, and serve with the peas."
       ]
     },
     {
       id: "d392", title: "Austrian-Style Zwiebelrostbraten (Onion-Smothered Beef Steak)", tags: ["quick"], cuisine: "Austria", protein: "beef",
-      prep: 8, cook: 20,
+      prep: 8, cook: 22,
       ingredients: [
         ing(150, "g", "beef sirloin or rump steak", "meat"), ing(1, "", "large onion, thinly sliced", "produce"),
         ing(1, "tbsp", "plain flour", "store"), ing(15, "g", "butter", "dairy"),
@@ -6683,15 +6683,15 @@ window.SOLO_RECIPES = (function () {
       ],
       steps: [
         "Boil the new potatoes in salted water for 15–18 minutes until tender.",
-        "Toss the sliced onion in the flour. Heat the oil in a frying pan and fry the onions for 6–8 minutes, stirring occasionally, until golden and crisp; remove and set aside.",
-        "Season the steak, add to the same pan and fry for 2–3 minutes each side, then remove and rest.",
+        "Toss the sliced onion in the flour. Heat the oil in a frying pan and fry the onions for 10 minutes, stirring occasionally, until golden and crisp; remove and set aside.",
+        "Season the steak, add to the same pan and fry for 2–3 minutes each side (55°C in the middle for medium-rare), then remove and rest for 3 minutes.",
         "Add the butter and paprika to the pan, pour in the stock and simmer for 2 minutes, scraping up any bits, to make a quick gravy.",
         "Slice the steak, spoon over the gravy, and pile the crispy onions on top. Serve with the potatoes."
       ]
     },
     {
       id: "d393", title: "South African-Style Bunny Chow with Spiced Lamb Curry", tags: ["spicy"], cuisine: "South Africa", protein: "lamb",
-      prep: 9, cook: 25,
+      prep: 10, cook: 29,
       ingredients: [
         ing(150, "g", "lamb mince", "meat"), ing(0.5, "", "onion, diced", "produce"),
         ing(1, "", "garlic clove, crushed", "produce"), ing(1, "tsp", "fresh ginger, grated", "produce"),
@@ -6702,7 +6702,7 @@ window.SOLO_RECIPES = (function () {
         ing(1, "tbsp", "vegetable oil", "store")
       ],
       steps: [
-        "Heat a little oil in a saucepan and fry the onion for 3–4 minutes until soft. Add the garlic, ginger, curry powder and turmeric, and cook for 1 minute.",
+        "Heat a little oil in a saucepan and fry the onion for 8 minutes until soft and translucent. Add the garlic, ginger, curry powder and turmeric, and cook for 1 minute.",
         "Add the lamb mince and brown for 4–5 minutes, breaking it up.",
         "Stir in the potato and stock, cover and simmer for 8 minutes, then add the tomatoes and simmer uncovered for 8–10 minutes until the potato is tender and the sauce has thickened.",
         "Slice the top off the bread roll and hollow out most of the middle to make a bowl.",
@@ -6711,7 +6711,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d394", title: "Georgian-Style Chakapuli (Lamb and Herb Stew)", tags: [], cuisine: "Georgia", protein: "lamb",
-      prep: 9, cook: 16,
+      prep: 11, cook: 16,
       ingredients: [
         ing(180, "g", "lamb leg steak, cut into 2cm cubes", "meat"), ing(3, "", "spring onions, chopped", "produce"),
         ing(2, "", "garlic cloves, sliced", "produce"), ing(1, "tbsp", "fresh tarragon, chopped", "produce"),
@@ -6724,7 +6724,7 @@ window.SOLO_RECIPES = (function () {
       steps: [
         "Heat a splash of oil in a saucepan over high heat and sear the lamb for 2–3 minutes until browned but still pink inside. Tip onto a plate.",
         "Add the spring onions and garlic and cook for 2 minutes.",
-        "Stir in the vinegar, plum jam, bay leaf, chilli and stock and simmer for 6–8 minutes to reduce a little.",
+        "Stir in the vinegar, plum jam, bay leaf, chilli and stock and simmer for 6–8 minutes until reduced by about a third.",
         "Return the lamb and its juices with the tarragon, coriander and dill, and simmer for 2 minutes. Season to taste.",
         "Serve in a bowl with the crusty bread."
       ]
@@ -6749,7 +6749,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d396", title: "Colombian-Style Ajiaco Chicken and Potato Soup with Corn", tags: [], cuisine: "Colombia", protein: "chicken",
-      prep: 9, cook: 25,
+      prep: 10, cook: 25,
       ingredients: [
         ing(150, "g", "chicken breast", "meat"), ing(100, "g", "waxy potato, diced", "produce"),
         ing(100, "g", "floury potato, diced", "produce"), ing(80, "g", "sweetcorn kernels", "frozen"),
@@ -6759,7 +6759,7 @@ window.SOLO_RECIPES = (function () {
         ing(0.25, "", "avocado, sliced", "produce")
       ],
       steps: [
-        "Put the chicken, stock, garlic and half the diced potato into a pan, bring to a simmer and cook for 12–15 minutes until the chicken is cooked through.",
+        "Put the chicken, stock, garlic and half the diced potato into a pan, bring to a simmer and cook for 12–15 minutes until the chicken is cooked through (75°C in the thickest part).",
         "Remove the chicken, shred it, and return to the pan along with the remaining potato and the corn.",
         "Simmer for a further 10–12 minutes, mashing some of the potato against the side of the pan to thicken the soup slightly.",
         "Stir in the oregano and spring onion, and season to taste.",
@@ -6787,7 +6787,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d398", title: "Kenyan-Style Chicken Pilau Rice with Whole Spices", tags: [], cuisine: "Kenya", protein: "chicken",
-      prep: 8, cook: 25,
+      prep: 10, cook: 34,
       ingredients: [
         ing(150, "g", "chicken thigh fillets, diced", "meat"), ing(75, "g", "basmati rice", "store"),
         ing(1, "", "onion, sliced", "produce"), ing(1, "", "garlic clove, crushed", "produce"),
@@ -6797,16 +6797,16 @@ window.SOLO_RECIPES = (function () {
         ing(1, "tbsp", "vegetable oil", "store"), ing(1, "tbsp", "fresh coriander, chopped", "produce")
       ],
       steps: [
-        "Heat the oil in a saucepan and fry the onion for 5–6 minutes until golden.",
+        "Heat the oil in a saucepan and fry the onion for 10 minutes until soft and golden.",
         "Add the garlic, ginger, cumin seeds, cloves, cinnamon and cardamom, and cook for 1 minute until fragrant.",
         "Add the chicken and cook for 4–5 minutes until browned.",
-        "Stir in the rice to coat in the spices, then pour in the stock. Bring to the boil, cover, reduce the heat and simmer for 15 minutes until the rice is tender and the liquid absorbed.",
+        "Stir in the rice to coat in the spices, then pour in the stock. Bring to the boil, cover, reduce the heat and simmer for 15 minutes until the rice is tender and the liquid absorbed. Take off the heat and leave covered for 5 minutes, then fluff up with a fork.",
         "Season to taste, then fluff with a fork and scatter with coriander to serve."
       ]
     },
     {
       id: "d399", title: "Belgian-Style Flemish Meatballs in Spiced Beer Gravy (Vlaamse Balletjes)", tags: [], cuisine: "Belgium", protein: "beef",
-      prep: 9, cook: 25,
+      prep: 9, cook: 30,
       ingredients: [
         ing(150, "g", "beef mince", "meat"), ing(20, "g", "breadcrumbs", "store"),
         ing(1, "", "egg", "dairy"), ing(0.5, "", "onion, finely diced", "produce"),
@@ -6820,14 +6820,14 @@ window.SOLO_RECIPES = (function () {
         "Mix the beef mince with the breadcrumbs, egg, half the diced onion, nutmeg, salt and pepper, and shape into 4–5 small meatballs.",
         "Boil the potatoes for the mash for 15–18 minutes until tender, then drain and mash with a little milk and butter; keep warm.",
         "Heat the butter in a frying pan and brown the meatballs for 5–6 minutes, turning, then remove.",
-        "Add the remaining onion to the pan and cook for 3 minutes until soft, stir in the flour, then pour in the beer, stock, sugar and bay leaf.",
+        "Add the remaining onion to the pan and cook for 8 minutes until soft and translucent, stir in the flour, then pour in the beer, stock, sugar and bay leaf.",
         "Return the meatballs to the pan, cover and simmer for 12–15 minutes until cooked through and the sauce has thickened slightly.",
         "Season to taste and serve the meatballs and gravy over the mash."
       ]
     },
     {
       id: "d400", title: "Finnish-Style Karjalanpaisti (Beef and Pork Stew)", tags: [], cuisine: "Finland", protein: "beef",
-      prep: 9, cook: 22,
+      prep: 9, cook: 27,
       ingredients: [
         ing(90, "g", "beef rump steak, cut into 2cm cubes", "meat"), ing(90, "g", "pork loin steak, cut into 2cm cubes", "meat"),
         ing(1, "", "onion, sliced", "produce"), ing(1, "", "carrot, sliced", "produce"),
@@ -6838,7 +6838,7 @@ window.SOLO_RECIPES = (function () {
       steps: [
         "Boil the potatoes in salted water for 15–18 minutes until tender.",
         "Meanwhile, heat the butter in a saucepan over high heat and sear the beef and pork for 2–3 minutes until browned. Tip onto a plate.",
-        "Add the onion and carrot and cook for 3 minutes.",
+        "Add the onion and carrot and cook for 8 minutes until soft and translucent.",
         "Add the peppercorns, bay leaf and stock and simmer uncovered for 10 minutes until the carrot is tender and the liquid has reduced a little.",
         "Return the meat and its juices and simmer for 2–3 minutes until the pork is cooked through. Season with salt, remove the bay leaf and serve with the potatoes."
       ]
@@ -6862,7 +6862,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d402", title: "Moroccan-Style Kefta Mkaouara (Spiced Meatball and Egg Tagine)", tags: ["spicy"], cuisine: "Morocco", protein: "beef",
-      prep: 9, cook: 20,
+      prep: 10, cook: 20,
       ingredients: [
         ing(150, "g", "beef mince", "meat"), ing(0.25, "", "onion, grated", "produce"),
         ing(1, "", "garlic clove, crushed", "produce"), ing(1, "tsp", "ground cumin", "spice"),
@@ -6872,7 +6872,7 @@ window.SOLO_RECIPES = (function () {
         ing(1, "tbsp", "olive oil", "store"), ing(1, "", "crusty bread roll", "bakery")
       ],
       steps: [
-        "Mix the beef mince with the grated onion, garlic, cumin, cinnamon and half the herbs. Season and shape into small meatballs.",
+        "Mix the beef mince with ¼ tsp salt, the grated onion, garlic, cumin, cinnamon and half the herbs. Season and shape into small meatballs.",
         "Heat the oil in a frying pan, add the tomatoes and paprika, and simmer for 5 minutes.",
         "Nestle the meatballs into the sauce, cover and simmer for 10–12 minutes, turning occasionally, until cooked through.",
         "Make a small well in the sauce, crack in the egg, cover and cook for 3–4 minutes until the white is set but the yolk still soft.",
@@ -6894,7 +6894,7 @@ window.SOLO_RECIPES = (function () {
       steps: [
         "Soak the rice noodles in boiled water according to packet instructions until just tender, then drain.",
         "Mix the tamarind paste, fish sauce and sugar in a small bowl to make the sauce.",
-        "Heat the oil in a wok over high heat and stir-fry the chicken for 3–4 minutes until cooked through.",
+        "Heat the oil in a wok over high heat and stir-fry the chicken for 3–4 minutes until cooked through with no pink inside.",
         "Push to one side, crack in the egg and scramble briefly, then add the garlic and noodles and toss together.",
         "Pour in the sauce, add the beansprouts and spring onion, and toss for 1–2 minutes until well coated and hot.",
         "Season to taste, then serve scattered with the crushed peanuts, chilli flakes, and the lime wedge."
@@ -6940,7 +6940,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d406", title: "Sri Lankan-Style Chicken Kottu Roti with Vegetables", tags: ["spicy", "quick"], cuisine: "Sri Lanka", protein: "chicken",
-      prep: 9, cook: 12,
+      prep: 13, cook: 12,
       ingredients: [
         ing(2, "", "shop-bought roti or paratha, sliced into strips", "bakery"), ing(130, "g", "chicken breast, diced", "meat"),
         ing(0.5, "", "onion, sliced", "produce"), ing(0.5, "", "red pepper, sliced", "produce"),
@@ -6950,7 +6950,7 @@ window.SOLO_RECIPES = (function () {
         ing(2, "tbsp", "vegetable oil", "store"), ing(1, "", "green chilli, sliced", "produce")
       ],
       steps: [
-        "Heat 1 tbsp of the oil in a wok or large pan and stir-fry the chicken for 4–5 minutes until browned and cooked through; remove and set aside.",
+        "Heat 1 tbsp of the oil in a wok or large pan and stir-fry the chicken for 4–5 minutes until browned and cooked through with no pink inside; remove and set aside.",
         "Add the remaining oil, then the onion, pepper, carrot, garlic, ginger and chilli, and stir-fry for 3–4 minutes until softened.",
         "Push the vegetables aside, crack in the egg and scramble briefly.",
         "Add the roti strips, curry powder, soy sauce and the cooked chicken to the pan, and toss everything together vigorously for 2–3 minutes until well combined and hot through.",
@@ -6978,7 +6978,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d408", title: "Nigerian-Style Pepper Soup with Chicken and Yam", tags: ["spicy"], cuisine: "Nigeria", protein: "chicken",
-      prep: 9, cook: 25,
+      prep: 13, cook: 25,
       ingredients: [
         ing(180, "g", "chicken thighs, skin removed", "meat"), ing(150, "g", "sweet potato (or yam), peeled and cubed", "produce"),
         ing(0.5, "", "onion, sliced", "produce"), ing(1, "", "garlic clove, crushed", "produce"),
@@ -6990,14 +6990,14 @@ window.SOLO_RECIPES = (function () {
       steps: [
         "Put the chicken, onion, garlic, ginger, chilli, nutmeg, cloves and cayenne into a saucepan with the stock.",
         "Bring to a simmer, cover and cook for 15 minutes.",
-        "Add the sweet potato and simmer for a further 10–12 minutes until the chicken is cooked through and the sweet potato is tender.",
+        "Add the sweet potato and simmer for a further 10–12 minutes until the chicken is cooked through (75°C in the thickest part) and the sweet potato is tender.",
         "Season to taste with salt.",
         "Ladle into a bowl and scatter with the spring onion and coriander to serve."
       ]
     },
     {
       id: "d409", title: "Filipino-Style Pancit Bihon (Stir-Fried Rice Noodles with Chicken and Vegetables)", tags: ["quick"], cuisine: "Philippines", protein: "chicken",
-      prep: 9, cook: 12,
+      prep: 11, cook: 12,
       ingredients: [
         ing(100, "g", "thin rice vermicelli noodles", "store"), ing(120, "g", "chicken breast, thinly sliced", "meat"),
         ing(0.5, "", "carrot, julienned", "produce"), ing(80, "g", "cabbage, shredded", "produce"),
@@ -7008,7 +7008,7 @@ window.SOLO_RECIPES = (function () {
       ],
       steps: [
         "Soak the noodles in warm water for 8–10 minutes until softened, then drain.",
-        "Heat the oil in a wok and stir-fry the chicken for 3–4 minutes until cooked through.",
+        "Heat the oil in a wok and stir-fry the chicken for 3–4 minutes until cooked through with no pink inside.",
         "Add the garlic, carrot, cabbage and green beans, and stir-fry for 2–3 minutes.",
         "Pour in the soy sauce and stock, add the drained noodles, and toss everything together for 2–3 minutes until the noodles have absorbed the liquid and are tender.",
         "Season to taste, then scatter with the spring onion and serve with the lime wedge."
@@ -7045,7 +7045,7 @@ window.SOLO_RECIPES = (function () {
         ing(1, "", "lime wedge", "produce"), ing(1, "tsp", "chilli sauce or sambal", "store")
       ],
       steps: [
-        "Boil the egg for 8 minutes, then cool and peel. Put the chicken, stock, turmeric, garlic, ginger and lemongrass into a saucepan, bring to a simmer and cook for 15 minutes until the chicken is cooked through.",
+        "Boil the egg for 8 minutes, then cool and peel. Put the chicken, stock, turmeric, garlic, ginger and lemongrass into a saucepan, bring to a simmer and cook for 15 minutes until the chicken is cooked through (75°C in the thickest part).",
         "Remove the chicken, shred it, and return it to the pan.",
         "Meanwhile, soak the noodles in boiled water for 4–5 minutes until tender, then drain and place in a bowl.",
         "Ladle the hot soup and shredded chicken over the noodles.",
@@ -7054,7 +7054,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d412", title: "Kiwi-Style Mince and Cheese Pie", tags: [], cuisine: "New Zealand", protein: "beef",
-      prep: 8, cook: 22,
+      prep: 8, cook: 27,
       ingredients: [
         ing(150, "g", "beef mince", "meat"), ing(0.5, "", "onion, finely chopped", "produce"),
         ing(1, "", "garlic clove, crushed", "produce"), ing(1, "tbsp", "tomato puree", "store"),
@@ -7066,8 +7066,8 @@ window.SOLO_RECIPES = (function () {
       ],
       steps: [
         "Preheat the oven to 200°C (fan 180°C).",
-        "Heat a little oil in a pan and fry the onion and garlic for 2–3 minutes until soft, then add the mince and brown well.",
-        "Stir in the tomato puree, Worcestershire sauce and stock, and simmer for 8–10 minutes until thickened. Mix the cornflour with a splash of water, stir in to thicken further, then season and stir through the cheddar.",
+        "Heat a little oil in a pan and fry the onion for 8 minutes until soft and translucent, adding the garlic for the last minute, then add the mince and brown well.",
+        "Stir in the tomato purée and fry for 1 minute until it darkens, then add the Worcestershire sauce and stock and simmer for 8–10 minutes until thickened. Mix the cornflour with a splash of water, stir in to thicken further, then season and stir through the cheddar.",
         "Spoon the mince into a small ovenproof dish, top with the pastry trimmed to fit, and press the edges to seal.",
         "Brush the pastry with beaten egg and cut a small slit in the top. Bake for 18–20 minutes until golden and puffed."
       ]
@@ -7144,7 +7144,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d417", title: "Argentinian-Style Locro Corn, Bean and Pork Stew", tags: [], cuisine: "Argentina", protein: "pork",
-      prep: 9, cook: 25,
+      prep: 11, cook: 31,
       ingredients: [
         ing(100, "g", "pork loin steak, diced small", "meat"), ing(40, "g", "chorizo, sliced", "meat"),
         ing(0.5, "", "onion, chopped", "produce"), ing(1, "", "garlic clove, crushed", "produce"),
@@ -7155,14 +7155,14 @@ window.SOLO_RECIPES = (function () {
       ],
       steps: [
         "Heat a splash of oil in a pan and brown the pork and chorizo for 2–3 minutes, then tip onto a plate.",
-        "Add the onion and garlic and soften for 2 minutes, then stir in the paprika and cumin and cook for 30 seconds.",
+        "Add the onion and soften for 8 minutes until soft and translucent, adding the garlic for the last minute, then stir in the paprika and cumin and cook for 30 seconds.",
         "Add the squash, sweetcorn, beans and stock. Simmer for 20–25 minutes until the squash is tender and the stew has thickened.",
         "Return the pork and chorizo for the last 4–5 minutes until the pork is cooked through. Season to taste and scatter with spring onion and chilli flakes to serve."
       ]
     },
     {
       id: "d418", title: "Russian-Style Beef and Cabbage Solyanka Soup", tags: [], cuisine: "Russia", protein: "beef",
-      prep: 9, cook: 20,
+      prep: 10, cook: 20,
       ingredients: [
         ing(120, "g", "beef sirloin, thinly sliced", "meat"), ing(40, "g", "salami, chopped", "meat"),
         ing(0.5, "", "onion, sliced", "produce"), ing(1, "", "gherkin, chopped", "store"),
@@ -7174,7 +7174,7 @@ window.SOLO_RECIPES = (function () {
       ],
       steps: [
         "Heat a little oil in a pan over high heat and sear the beef strips for 1 minute until browned, then tip onto a plate.",
-        "Lower the heat to medium and fry the onion in the same pan until soft.",
+        "Lower the heat to medium and fry the onion in the same pan for 8 minutes until soft and translucent.",
         "Add the salami and fry for 2 minutes.",
         "Stir in the tomato puree, cook for 1 minute, then add the stock, gherkin, capers and bay leaf. Simmer for 12 minutes, then return the beef and any juices for 1 minute until just cooked.",
         "Season to taste, then ladle into a bowl, top with a slice of lemon, a spoonful of soured cream and a scattering of dill."
@@ -7201,7 +7201,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d420", title: "Hawaiian-Style Huli Huli Chicken Thighs with Pineapple Rice", tags: ["quick"], cuisine: "Hawaii", protein: "chicken",
-      prep: 7, cook: 14,
+      prep: 8, cook: 14,
       ingredients: [
         ing(2, "", "boneless chicken thighs", "meat"), ing(1, "tbsp", "soy sauce", "store"),
         ing(1, "tbsp", "ketchup", "store"), ing(1, "tbsp", "brown sugar", "store"),
@@ -7212,7 +7212,7 @@ window.SOLO_RECIPES = (function () {
       ],
       steps: [
         "Mix the soy sauce, ketchup, brown sugar, ginger, garlic and pineapple juice for the marinade. Toss the chicken thighs in half of it.",
-        "Heat a griddle or frying pan and cook the chicken for 5–6 minutes each side, brushing with the remaining marinade, until sticky and cooked through.",
+        "Heat a griddle or frying pan and cook the chicken for 5–6 minutes each side, brushing with the remaining marinade, until sticky and cooked through (75°C in the thickest part).",
         "Rest for 2 minutes, then slice.",
         "Taste and adjust the seasoning.",
         "Warm the rice with the pineapple chunks. Serve the chicken over the pineapple rice, scattered with spring onion and sesame seeds."
@@ -7248,7 +7248,7 @@ window.SOLO_RECIPES = (function () {
         ing(null, "pinch", "paprika", "spice")
       ],
       steps: [
-        "Mix the lamb mince with the onion, cumin and pepper.",
+        "Mix the lamb mince with ¼ tsp salt, the onion, cumin and pepper.",
         "Place a teaspoon of filling in the centre of each wrapper, dampen the edges with water and pinch closed into small parcels.",
         "Steam the dumplings in a steamer basket over simmering water for 12–14 minutes until the lamb is cooked through.",
         "Season to taste, then drizzle with the melted butter and serve topped with soured cream, a scattering of dill and a pinch of paprika."
@@ -7256,7 +7256,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d423", title: "Chilean-Style Chorrillana Loaded Fries with Beef and Fried Egg", tags: [], cuisine: "Chile", protein: "beef",
-      prep: 8, cook: 18,
+      prep: 8, cook: 24,
       ingredients: [
         ing(200, "g", "frozen chips", "frozen"), ing(120, "g", "beef sirloin, thinly sliced", "meat"),
         ing(0.5, "", "onion, sliced", "produce"), ing(1, "", "egg", "dairy"),
@@ -7265,7 +7265,7 @@ window.SOLO_RECIPES = (function () {
       ],
       steps: [
         "Cook the chips in the oven according to the packet instructions until golden and crisp.",
-        "Meanwhile, heat a little oil in a frying pan and fry the onion until soft and starting to caramelise. Remove and set aside.",
+        "Meanwhile, heat a little oil in a frying pan and fry the onion for 12 minutes until soft and starting to caramelise. Remove and set aside.",
         "Season the beef with the paprika, add to the hot pan and fry for 2–3 minutes until browned.",
         "Fry the egg in a separate pan to your liking.",
         "Pile the chips onto a plate, top with the beef, onion and grated cheese, then finish with the fried egg."
@@ -7273,7 +7273,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d424", title: "Ghanaian-Style Kontomire Stew with Smoked Mackerel", tags: ["fish"], cuisine: "Ghana", protein: "fish",
-      prep: 8, cook: 12,
+      prep: 8, cook: 17,
       ingredients: [
         ing(150, "g", "spinach, chopped", "produce"), ing(100, "g", "smoked mackerel fillet, flaked", "meat"),
         ing(0.5, "", "onion, chopped", "produce"), ing(1, "", "tomato, chopped", "produce"),
@@ -7281,7 +7281,7 @@ window.SOLO_RECIPES = (function () {
         ing(0.25, "tsp", "chilli flakes", "spice"), ing(0.5, "", "stock cube", "store")
       ],
       steps: [
-        "Heat the oil in a pan and fry the onion, garlic and chilli flakes for 2–3 minutes until softened.",
+        "Heat the oil in a pan and fry the onion for 8 minutes until soft and translucent, adding the garlic and chilli flakes for the last minute.",
         "Add the chopped tomato and cook for 2 minutes until pulpy.",
         "Crumble in the stock cube with a splash of water, then stir in the spinach and cook for 3–4 minutes until wilted.",
         "Season to taste, then fold through the flaked smoked mackerel and warm through for 2 minutes. Serve hot, with rice if you like."
@@ -7289,7 +7289,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d425", title: "Senegalese-Style Ndambe Black-Eyed Bean Stew", tags: ["vegan"], cuisine: "Senegal", protein: "plant-based",
-      prep: 7, cook: 16,
+      prep: 8, cook: 21,
       ingredients: [
         ing(240, "g", "tinned black-eyed beans, drained", "store"), ing(0.5, "", "onion, chopped", "produce"),
         ing(1, "", "tomato, chopped", "produce"), ing(1, "tbsp", "tomato puree", "store"),
@@ -7299,7 +7299,7 @@ window.SOLO_RECIPES = (function () {
         ing(1, "tbsp", "vegetable oil", "store")
       ],
       steps: [
-        "Heat a splash of oil in a pan and fry the onion and garlic for 2–3 minutes until soft.",
+        "Heat a splash of oil in a pan and fry the onion for 8 minutes until soft and translucent, adding the garlic for the last minute.",
         "Stir in the tomato, tomato puree, ginger and chilli flakes, and cook for 2 minutes.",
         "Add the black-eyed beans and stock, and simmer for 12–15 minutes until thickened.",
         "Squeeze in the lime juice and season to taste. Scatter with coriander to serve."
@@ -7307,7 +7307,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d426", title: "Swiss-Style Älplermagronen (Alpine Macaroni Bake with Bacon and Cheese)", tags: [], cuisine: "Switzerland", protein: "pork",
-      prep: 8, cook: 12,
+      prep: 8, cook: 14,
       ingredients: [
         ing(100, "g", "macaroni", "store"), ing(100, "g", "potato, peeled and diced small", "produce"),
         ing(40, "g", "smoked bacon lardons", "meat"), ing(0.5, "", "onion, sliced", "produce"),
@@ -7316,7 +7316,7 @@ window.SOLO_RECIPES = (function () {
       ],
       steps: [
         "Cook the macaroni and diced potato together in a pan of boiling salted water for 8–10 minutes until both are tender, then drain.",
-        "Meanwhile, fry the bacon and onion in a dry pan until the bacon is crisp and the onion golden.",
+        "Meanwhile, fry the bacon and onion in a dry pan for 10 minutes until the bacon is crisp and the onion golden.",
         "Return the pasta and potato to the pan, stir through the cream and most of the cheese until melted and creamy, and season with nutmeg.",
         "Top with the bacon, onion and remaining cheese. Serve with a spoonful of apple sauce on the side."
       ]
@@ -7339,7 +7339,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d428", title: "Lebanese-Style Freekeh Pilaf with Spiced Chicken", tags: [], cuisine: "Lebanon", protein: "chicken",
-      prep: 8, cook: 20,
+      prep: 8, cook: 30,
       ingredients: [
         ing(150, "g", "chicken thigh fillets, diced", "meat"), ing(75, "g", "cracked freekeh", "store"),
         ing(0.5, "", "onion, chopped", "produce"), ing(1, "tbsp", "toasted flaked almonds", "store"),
@@ -7348,15 +7348,15 @@ window.SOLO_RECIPES = (function () {
         ing(1, "tbsp", "parsley, chopped", "produce"), ing(1, "", "lemon wedge", "produce")
       ],
       steps: [
-        "Rinse the freekeh. Heat the oil in a pan and fry the onion for 2–3 minutes until soft.",
+        "Rinse the freekeh. Heat the oil in a pan and fry the onion for 8 minutes until soft and translucent.",
         "Add the diced chicken and spices, and cook for 3–4 minutes until the chicken starts to colour.",
-        "Stir in the freekeh and stock, bring to a simmer, cover and cook for 15–18 minutes until the freekeh is tender and the liquid absorbed.",
+        "Stir in the freekeh and stock, bring to a simmer, cover and cook for 15–18 minutes until the freekeh is tender and the liquid absorbed. Take off the heat and leave covered for 5 minutes, then fluff up with a fork.",
         "Season to taste, then fluff through with a fork, scatter with the toasted almonds and parsley, and finish with a squeeze of lemon."
       ]
     },
     {
       id: "d429", title: "Korean-Style Spicy Squid Stir-Fry (Ojingeo Bokkeum)", tags: ["spicy", "fish"], cuisine: "Korea", protein: "fish",
-      prep: 9, cook: 8,
+      prep: 10, cook: 8,
       ingredients: [
         ing(150, "g", "squid rings, defrosted if frozen", "frozen"), ing(1, "tbsp", "gochujang", "store"),
         ing(1, "tsp", "gochugaru or chilli flakes", "spice"), ing(1, "tsp", "soy sauce", "store"),
@@ -7376,7 +7376,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d430", title: "Spanish-Style Pisto Manchego with Fried Egg", tags: ["vegetarian"], cuisine: "Spain", protein: "plant-based",
-      prep: 9, cook: 18,
+      prep: 11, cook: 21,
       ingredients: [
         ing(1, "", "courgette, diced", "produce"), ing(0.5, "", "red pepper, diced", "produce"),
         ing(0.5, "", "green pepper, diced", "produce"), ing(0.5, "", "onion, diced", "produce"),
@@ -7385,9 +7385,9 @@ window.SOLO_RECIPES = (function () {
         ing(1, "", "egg", "dairy"), ing(1, "slice", "crusty bread, to serve", "bakery")
       ],
       steps: [
-        "Heat the olive oil in a pan and fry the onion, peppers and garlic for 4–5 minutes until softened.",
+        "Heat the olive oil in a pan and fry the onion and peppers for 8 minutes until soft and translucent, adding the garlic for the last minute.",
         "Add the courgette and cook for a further 3–4 minutes.",
-        "Stir in the tinned tomatoes and smoked paprika, season, and simmer for 12–15 minutes until thick and jammy.",
+        "Stir in the smoked paprika for 30 seconds, then add the tinned tomatoes, season, and simmer for 12–15 minutes until thick and jammy.",
         "Meanwhile, fry the egg in a little oil until the white is set.",
         "Spoon the pisto into a bowl, top with the fried egg and serve with crusty bread."
       ]
@@ -7406,14 +7406,14 @@ window.SOLO_RECIPES = (function () {
       steps: [
         "Marinate the chicken in the buttermilk while you prepare everything else.",
         "Mix the flour with half the cayenne and paprika. Coat the chicken in the seasoned flour, pressing to adhere.",
-        "Shallow-fry the chicken in hot oil for 4–5 minutes each side until golden, crisp and cooked through.",
+        "Shallow-fry the chicken in hot oil for 4–5 minutes each side until golden, crisp and cooked through (75°C in the thickest part).",
         "Warm 2 tablespoons of the frying oil with the hot sauce, remaining cayenne and brown sugar to make the Nashville glaze, and brush generously over the hot chicken.",
         "Pile into the toasted bun with mayonnaise and gherkin slices."
       ]
     },
     {
       id: "d432", title: "Malaysian-Style Nasi Lemak with Sambal Chicken", tags: ["spicy"], cuisine: "Malaysia", protein: "chicken",
-      prep: 9, cook: 20,
+      prep: 9, cook: 30,
       ingredients: [
         ing(70, "g", "basmati rice", "store"), ing(100, "ml", "coconut milk", "store"),
         ing(1, "", "chicken breast, sliced", "meat"), ing(0.5, "", "onion, sliced", "produce"),
@@ -7424,9 +7424,10 @@ window.SOLO_RECIPES = (function () {
         ing(1, "tbsp", "vegetable oil", "store")
       ],
       steps: [
-        "Rinse the rice, then put it in a small pan with the coconut milk, 50 ml water and a pinch of salt. Cover and cook on a low heat for 12 minutes until tender and fragrant. Meanwhile, boil the egg for 8 minutes, then cool, peel and halve.",
-        "Meanwhile, fry the onion in a little oil until soft, then stir in the sambal, tamarind paste and sugar to make a quick sauce. Simmer for 2–3 minutes.",
-        "Add the sliced chicken and cook for 6–7 minutes until cooked through and coated in the sauce.",
+        "Rinse the rice, then put it in a small pan with the coconut milk, 50 ml water and a pinch of salt. Cover and cook on a low heat for 12 minutes until tender, then take off the heat and leave covered for 5 minutes.",
+        "Meanwhile, boil the egg for 8 minutes, then cool in cold water, peel and halve.",
+        "Fry the onion in a little oil for 8 minutes until soft, then stir in the sambal, tamarind paste and sugar to make a quick sauce. Simmer for 2–3 minutes.",
+        "Add the sliced chicken and cook for 6–7 minutes until cooked through with no pink inside and coated in the sauce.",
         "Serve the coconut rice with the sambal chicken, cucumber slices, halved boiled egg, peanuts and a lime wedge."
       ]
     },
@@ -7452,7 +7453,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d434", title: "Dublin Coddle-Style Sausage & Potato Stew", tags: [], cuisine: "Ireland", protein: "pork",
-      prep: 8, cook: 30,
+      prep: 10, cook: 30,
       ingredients: [
         ing(2, "", "pork sausages, thickly sliced", "meat"), ing(2, "", "smoked bacon rashers, chopped", "meat"),
         ing(200, "g", "potatoes, sliced", "produce"), ing(0.5, "", "onion, sliced", "produce"),
@@ -7469,7 +7470,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d435", title: "Pakistani-Style Chicken Biryani", tags: ["spicy"], cuisine: "Pakistan", protein: "chicken",
-      prep: 9, cook: 25,
+      prep: 9, cook: 34,
       ingredients: [
         ing(1, "", "chicken thigh, diced", "meat"), ing(75, "g", "basmati rice, rinsed", "store"),
         ing(0.5, "", "onion, sliced", "produce"), ing(1, "tbsp", "plain yoghurt", "dairy"),
@@ -7480,15 +7481,15 @@ window.SOLO_RECIPES = (function () {
       ],
       steps: [
         "Marinate the chicken in the yoghurt, ginger garlic paste, garam masala, chilli powder and turmeric for a few minutes.",
-        "Fry the onion in the ghee until golden and crisp; set half aside for garnish.",
+        "Fry the onion in the ghee for 12 minutes until golden and crisp; set half aside for garnish.",
         "Add the marinated chicken to the pan and cook for 5–6 minutes until browned.",
         "Meanwhile, part-cook the rice in boiling salted water for 6 minutes, then drain. Layer the rice over the chicken and drizzle with the saffron milk.",
-        "Add 4 tbsp water, cover tightly and cook on low heat for 12–15 minutes until the rice is fully tender and fragrant. Fluff through and scatter with the reserved fried onion, coriander and mint."
+        "Add 4 tbsp water, cover tightly and cook on low heat for 12–15 minutes until the rice is fully tender and fragrant. Take off the heat and leave covered for 5 minutes, then fluff through and scatter with the reserved fried onion, coriander and mint."
       ]
     },
     {
       id: "d436", title: "Polish-Style Pierogi Ruskie with Soured Cream and Bacon", tags: [], cuisine: "Poland", protein: "pork",
-      prep: 10, cook: 25,
+      prep: 10, cook: 28,
       ingredients: [
         ing(10, "", "fresh dumpling or wonton wrappers", "store"), ing(150, "g", "potato, peeled and chopped", "produce"),
         ing(50, "g", "curd cheese or cream cheese", "dairy"), ing(0.25, "", "onion, finely chopped", "produce"),
@@ -7500,7 +7501,7 @@ window.SOLO_RECIPES = (function () {
         "Mix the mashed potato with the curd cheese and a little of the chopped onion, and season well.",
         "Place a spoonful of the potato mixture in the centre of each wrapper, dampen the edges and fold into half-moons, pressing to seal.",
         "Cook the pierogi in a pan of simmering water for 3–4 minutes until they float, then drain.",
-        "Meanwhile, fry the bacon and remaining onion in the butter until crisp and golden.",
+        "Meanwhile, fry the bacon and remaining onion in the butter for 10 minutes until crisp and golden.",
         "Toss the drained pierogi through the bacon and butter, and serve with a dollop of soured cream and a scattering of chives."
       ]
     },
@@ -7516,7 +7517,7 @@ window.SOLO_RECIPES = (function () {
         ing(200, "ml", "stock, for poaching", "store")
       ],
       steps: [
-        "Mix the beef mince with the grated onion, cumin and pepper.",
+        "Mix the beef mince with ¼ tsp salt, the grated onion, cumin and pepper.",
         "Place a small teaspoon of filling in the centre of each wrapper, dampen the edges and fold into small parcels, pinching to seal.",
         "Bring the stock to a simmer in a wide pan and poach the dumplings for 5–6 minutes until the filling is cooked through.",
         "Meanwhile, stir the crushed garlic into the yoghurt and season. Melt the butter in a small pan with the chilli flakes until sizzling and red.",
@@ -7564,7 +7565,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d440", title: "Ciorbă de Perișoare (Sour Meatball Soup)", tags: [], cuisine: "Romania", protein: "pork",
-      prep: 10, cook: 18,
+      prep: 10, cook: 23,
       ingredients: [
         ing(120, "g", "pork mince", "meat"), ing(1, "tbsp", "long-grain rice", "store"),
         ing(0.5, "", "onion, finely chopped", "produce"), ing(1, "", "small carrot, diced", "produce"),
@@ -7575,7 +7576,7 @@ window.SOLO_RECIPES = (function () {
       ],
       steps: [
         "Mix the pork mince with the rice, half the onion and a pinch of salt and pepper, then roll into 8 small meatballs.",
-        "Heat the oil in a saucepan and soften the rest of the onion, the carrot and the pepper for 3 minutes. Stir in the tomato purée.",
+        "Heat the oil in a saucepan and soften the rest of the onion, the carrot and the pepper for 8 minutes until soft. Stir in the tomato purée and fry for 1 minute until it darkens.",
         "Pour in the stock and bring to a simmer. Drop in the meatballs and simmer gently for 15 minutes until they and the rice inside are cooked through.",
         "Stir in the lemon juice, then taste and adjust the seasoning so the broth is pleasantly sour.",
         "Ladle into a bowl and finish with the dill and a spoonful of soured cream."
@@ -7600,7 +7601,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d442", title: "Tocăniță de Ciuperci (Mushroom Stew) with Polenta", tags: ["vegetarian", "vegan"], cuisine: "Romania", protein: "plant-based",
-      prep: 8, cook: 15,
+      prep: 8, cook: 20,
       ingredients: [
         ing(200, "g", "chestnut mushrooms, quartered", "produce"), ing(0.5, "", "onion, sliced", "produce"),
         ing(1, "", "garlic clove, crushed", "produce"), ing(1, "tbsp", "tomato purée", "store"),
@@ -7610,7 +7611,7 @@ window.SOLO_RECIPES = (function () {
         ing(null, "small handful", "fresh parsley or dill, chopped", "produce"), ing(null, "pinch", "salt and pepper", "spice")
       ],
       steps: [
-        "Heat 1 tbsp of the oil in a frying pan over a medium-high heat and fry the onion for 3 minutes. Add the mushrooms and fry for 5 minutes until browned.",
+        "Heat 1 tbsp of the oil in a frying pan over a medium-high heat and fry the onion for 8 minutes until soft and translucent. Add the mushrooms and fry for 5 minutes until browned.",
         "Stir in the garlic, paprika, thyme and tomato purée for 1 minute, then pour in the stock. Simmer for 6–8 minutes until saucy.",
         "Meanwhile, bring the water to the boil with a pinch of salt, whisk in the polenta and cook, stirring, for 3–5 minutes until thick. Stir in the rest of the oil.",
         "Taste the stew and adjust the seasoning.",
@@ -7721,4 +7722,17 @@ window.SOLO_SWAPS = [
   { id: "bonito", tier: "some", match: ["bonito flakes, optional"],
     tip: "Leave them out, or scatter with shredded nori.",
     use: [] }
+];
+
+// Kitchen conventions every recipe assumes, shown as "Cook's notes" under the
+// method in the app and on the recipe pages.
+window.SOLO_COOK_NOTES = [
+  ["Sizes", "Vegetables, fruit and eggs are medium unless the recipe says otherwise. A tin is a standard 400g tin."],
+  ["Dairy", "Salted or unsalted butter both work; with salted, go easy on any extra salt. Use full-fat soured cream, crème fraîche and yoghurt in anything hot, as low-fat versions split."],
+  ["Stock", "A cube or pot made up as the packet says. Cubes are salty, so taste before adding more salt."],
+  ["Heat", "Medium means a gentle sizzle, not spitting. High means the oil shimmers before the food goes in. A simmer is a few lazy bubbles, not a rolling boil. Leave the lid off unless the recipe says to cover."],
+  ["Pans", "A small saucepan is about 16cm and a frying pan about 24cm. Sauces reduce faster in a wider pan, so go by how it looks rather than the clock."],
+  ["Doneness", "Chicken and turkey should reach 75°C in the thickest part, pork 65 to 70°C, and beef steak 55°C for medium-rare. Rest steaks and chops for a few minutes before slicing."],
+  ["Finishing", "Taste before serving. Most dishes want a pinch more salt, and a squeeze of lemon or a splash of vinegar lifts anything rich."],
+  ["Leftovers", "Cool quickly, cover and keep in the fridge for up to 2 days, then reheat until piping hot. Cooked rice keeps for 1 day and should only be reheated once."]
 ];

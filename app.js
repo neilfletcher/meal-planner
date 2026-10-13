@@ -2091,7 +2091,7 @@
         '<div class="rating-block"><span class="rating-label">Your rating</span>' + ratingStars(r.id, true) + '<span class="rating-hint">Tap a star again to clear it. 1 star is never suggested by Surprise me.</span></div>' +
         (note ? '<p class="seasoning-note">' + esc(note) + "</p>" : "") +
         '<div class="modal-cols"><div class="modal-ings"><h3>Ingredients</h3>' + ingredientsHtml + "</div>" +
-        '<div class="modal-method"><h3>Method</h3><ol class="steps">' + stepsHtml + "</ol></div></div>" +
+        '<div class="modal-method"><h3>Method</h3><ol class="steps">' + stepsHtml + "</ol>" + (r.custom ? "" : cookNotesHtml()) + "</div></div>" +
         (r.custom ? '<div class="modal-actions"><button type="button" class="btn btn-ghost btn-sm" id="modal-edit-btn">Edit your recipe</button></div>' : "");
 
       if (ctx && ctx.dayIdx !== undefined) {
@@ -2857,6 +2857,14 @@
     scheduleSave();
     renderTagChips(); renderRecipeGrid(); renderPlanner();
   }
+  // Kitchen conventions shared by every built-in recipe (SOLO_COOK_NOTES in recipes-data.js).
+  function cookNotesHtml() {
+    var notes = window.SOLO_COOK_NOTES || [];
+    if (!notes.length) return "";
+    return '<details class="cook-notes"><summary>Cook\'s notes</summary><ul>' +
+      notes.map(function (n) { return "<li><strong>" + esc(n[0]) + ".</strong> " + esc(n[1]) + "</li>"; }).join("") + "</ul></details>";
+  }
+
   function seasoningNote(r) {
     var found = [];
     r.ingredients.forEach(function (i) {

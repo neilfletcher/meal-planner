@@ -96,6 +96,12 @@ function amtText(i) {
   return n + (unit ? " " + unit : "");
 }
 function total(r) { return r.prep + r.cook; }
+var COOK_NOTES = sandbox.window.SOLO_COOK_NOTES || [];
+function cookNotesHtml() {
+  if (!COOK_NOTES.length) return "";
+  return '<details class="cook-notes"><summary>Cook\'s notes</summary><ul>' +
+    COOK_NOTES.map(function (n) { return "<li><strong>" + esc(n[0]) + ".</strong> " + esc(n[1]) + "</li>"; }).join("") + "</ul></details>";
+}
 function swapHtml(i) {
   var sw = SWAP_BY_ITEM[String(i.item).toLowerCase().trim()];
   if (!sw) return "";
@@ -682,7 +688,7 @@ RECIPES.forEach(function (r) {
     ingHtml +
     '<a class="btn btn-outline btn-block" href="' + rel + "plan/?add=" + r.id + '">' + ICON.basket + "Add to my shopping list</a>" +
     "</aside>" +
-    '<section class="method" aria-labelledby="method-h"><h2 id="method-h">Method</h2><ol class="method-steps">' + stepsHtml + "</ol>" +
+    '<section class="method" aria-labelledby="method-h"><h2 id="method-h">Method</h2><ol class="method-steps">' + stepsHtml + "</ol>" + cookNotesHtml() +
     (colls.length ? '<div class="in-colls"><span class="eyebrow">Find more like this</span><div class="chips">' +
       colls.map(function (c) { return '<a class="chip" href="' + rel + "collections/" + c.slug + '/">' + esc(c.h1) + "</a>"; }).join("") +
       '<a class="chip" href="' + cuisineHref + '">' + esc(demonym(r.cuisine)) + " dinners for one</a></div></div>" : "") +

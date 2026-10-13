@@ -425,3 +425,9 @@ h1, .display, .display-l, .display-m, .week-range { letter-spacing: -0.02em; }
 .pro-list p { color: var(--ink-2); font-size: 15.5px; line-height: 1.5; }
 @media (max-width: 900px) { .pro-band { grid-template-columns: 1fr; } }
 @media (max-width: 560px) { .pro-list { grid-template-columns: 1fr; } }
+
+/* Cook's notes: the kitchen conventions under each method */
+.cook-notes { margin-top: 18px; border-top: 1px solid var(--line); padding-top: 14px; }
+.cook-notes summary { cursor: pointer; font-weight: 600; list-style-position: inside; }
+.cook-notes ul { margin: 10px 0 0; padding-left: 18px; }
+.cook-notes li { margin: 6px 0; font-size: 15px; line-height: 1.5; }

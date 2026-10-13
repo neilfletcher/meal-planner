@@ -449,7 +449,6 @@ async function bookCheckout(request, env) {
     line_items: { 0: { price: price, quantity: 1 } },
     managed_payments: { enabled: "true" },
     metadata: { kind: "books", books: books, uid: user ? user.uid : "", firstSource: String(body.source || "").slice(0, 40) },
-    custom_text: { submit: { message: "Your PDF is ready to download straight after payment. Downloading it means the 14-day right to cancel no longer applies." } },
     success_url: origin + "/books/thanks/?s={CHECKOUT_SESSION_ID}",
     cancel_url: origin + "/books/"
   };

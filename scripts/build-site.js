@@ -960,6 +960,7 @@ function amazonButtons(b) {
       '<div class="book-buy"><button type="button" class="btn btn-primary btn-lg" data-buy="' + b.id + '">PDF &pound;' + BOOK_PDF_PRICE + "</button>" +
       amazonButtons(b) + "</div>" +
       '<p class="small muted book-note" data-buy-msg="' + b.id + '"></p>' +
+      '<p class="small muted">The PDF downloads straight after payment, so the 14-day right to cancel ends once you download it.</p>' +
       '<div class="book-pages scroll-x">' + [1, 2, 3, 4].map(function (k) {
         return '<figure><img src="' + rel + "img/books/" + b.id + "-p" + k + '.webp" alt="' + esc(samples[k - 1]) + " page from Solo Supper: " + esc(b.name) + '" width="880" height="1100" loading="lazy"><figcaption>' + samples[k - 1] + "</figcaption></figure>";
       }).join("") + "</div></div></article>";

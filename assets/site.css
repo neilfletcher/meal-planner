@@ -612,3 +612,26 @@ h1, .display, .display-l, .display-m, .week-range { letter-spacing: -0.02em; }
 .nl-tick input { margin-top: 3px; accent-color: var(--tomato); }
 @media (max-width: 480px) { .nl-row { flex-direction: column; } .nl-band .nl-form { padding: 22px 20px; } }
 @media print { .nl-form, .nl-band, .nl-tick { display: none !important; } }
+
+/* Long recipe grids: the first 24, then "Show more" (assets/site.js). */
+.rgrid > .is-more { display: none; }
+.more-row { display: flex; flex-direction: column; align-items: center; gap: 8px; margin-top: 40px; }
+.more-row .mono { color: var(--ink-3); }
+/* Recipes page: collections as a row of tiles above the full list. */
+.browse { margin-top: 8px; margin-bottom: 28px; display: flex; flex-direction: column; gap: 12px; }
+.browse-row { display: flex; gap: 14px; }
+.browse-tile { flex: 0 0 168px; display: flex; flex-direction: column; gap: 4px; text-decoration: none; color: var(--ink); }
+.browse-img { width: 168px; height: 112px !important; object-fit: cover; border-radius: 8px; background: var(--board); }
+.browse-name { font-family: var(--serif); font-size: 19px; line-height: 1.15; margin-top: 6px; }
+.browse-tile:hover .browse-name { color: var(--tomato); }
+.browse-more { justify-content: center; align-items: flex-start; padding: 0 18px; height: 112px; margin-top: 0; border: 1px dashed var(--line-strong); border-radius: 8px; }
+/* Phones: two recipes side by side, so the lists are half as long. */
+@media (max-width: 600px) {
+  .rgrid:not(.rgrid-big) { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px 12px; }
+  .rgrid:not(.rgrid-big) .rcard-title { font-size: 18px; }
+  .rgrid:not(.rgrid-big) .eyebrow { font-size: 10px; letter-spacing: .06em; }
+  .rgrid:not(.rgrid-big) .rcard { gap: 6px; }
+  .browse-tile { flex-basis: 140px; }
+  .browse-img { width: 140px; height: 96px !important; }
+  .browse-more { height: 96px; }
+}

@@ -252,6 +252,32 @@
     if (mine) { mine.classList.add("is-yours"); devs.insertBefore(mine, devs.firstChild); }
   }
 
+  /* ---------- long recipe grids: 24 at a time, then "Show more" ---------- */
+  function pager(g) {
+    var step = +g.getAttribute("data-page") || 24, limit = step;
+    var row = document.createElement("div");
+    row.className = "more-row";
+    row.innerHTML = '<button type="button" class="btn btn-outline btn-lg">Show more</button><span class="mono small"></span>';
+    g.parentNode.insertBefore(row, g.nextSibling);
+    var btn = row.querySelector("button"), note = row.querySelector("span");
+    function refresh(reset) {
+      if (reset) limit = step;
+      var visible = Array.prototype.filter.call(g.children, function (c) { return !c.hidden; });
+      visible.forEach(function (c, i) { c.classList.toggle("is-more", i >= limit); });
+      var left = Math.max(0, visible.length - limit);
+      row.hidden = !left;
+      btn.textContent = "Show " + Math.min(step, left) + " more";
+      note.textContent = "Showing " + Math.min(limit, visible.length) + " of " + visible.length;
+    }
+    btn.addEventListener("click", function () { limit += step; refresh(); });
+    refresh();
+    return refresh;
+  }
+  var pagers = {};
+  document.querySelectorAll(".rgrid[data-page]").forEach(function (g) {
+    if (g.children.length > (+g.getAttribute("data-page") || 24) + 6) pagers[g.id || ("g" + Object.keys(pagers).length)] = pager(g);
+  });
+
   /* ---------- recipe index: search, filter, sort ---------- */
   var grid = document.getElementById("rx-grid");
   if (grid) {
@@ -277,6 +303,7 @@
       });
       count.textContent = shown + (shown === 1 ? " recipe" : " recipes");
       empty.hidden = shown > 0;
+      if (pagers["rx-grid"]) pagers["rx-grid"](true);
     };
     var reorder = function () {
       var mode = sort.value;
@@ -286,6 +313,7 @@
         return a.getAttribute("data-i") - b.getAttribute("data-i");
       });
       sorted.forEach(function (c) { grid.appendChild(c); });
+      if (pagers["rx-grid"]) pagers["rx-grid"](true);
     };
     chips.forEach(function (chip) {
       chip.addEventListener("click", function () {

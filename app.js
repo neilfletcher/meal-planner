@@ -742,12 +742,22 @@
   }
 
   /* ============================= SERVINGS ============================= */
-  document.getElementById("servings-minus").addEventListener("click", function () {
-    if (state.servings > 1) { state.servings--; onStateChanged(); }
-  });
-  document.getElementById("servings-plus").addEventListener("click", function () {
-    if (state.servings < 8) { state.servings++; onStateChanged(); }
-  });
+  // How many people you usually cook for lives in Settings; one day's dinner
+  // can feed more from the day itself.
+  function setUsualServings(n) {
+    n = Math.max(1, Math.min(8, n));
+    if (n === state.servings) return;
+    state.servings = n;
+    onStateChanged();
+    if (settingsOpen()) renderSettings();
+  }
+
+  // The "Browse" menu (the website's pages): close it when tapping elsewhere.
+  var siteMenu = document.getElementById("site-menu");
+  if (siteMenu) {
+    document.addEventListener("click", function (ev) { if (siteMenu.open && !siteMenu.contains(ev.target)) siteMenu.open = false; });
+    document.addEventListener("keydown", function (ev) { if (ev.key === "Escape" && siteMenu.open) siteMenu.open = false; });
+  }
 
   function onStateChanged() {
     scheduleSave();
@@ -896,7 +906,7 @@
     var cookedN = Object.keys(W().cooked).filter(function (k) { return W().cooked[k] && W().cooked[k].id === W().plan[k]; }).length;
     document.getElementById("week-range").innerHTML = fmtRange();
     var eyebrow = document.getElementById("week-eyebrow");
-    if (eyebrow) eyebrow.textContent = (viewNext ? "Next week" : "This week") + " · " + planned + " of " + weekTarget() + " planned" + (cookedN ? " · " + cookedN + " cooked" : "");
+    if (eyebrow) eyebrow.textContent = (viewNext ? "Next week" : "This week") + " · " + planned + " of " + weekTarget() + " planned" + (cookedN ? " · " + cookedN + " cooked" : "") + (state.servings > 1 ? " \u00b7 for " + state.servings : "");
     renderCookDays();
     var wt = document.getElementById("week-this-btn"), wn = document.getElementById("week-next-btn");
     if (wt) { wt.setAttribute("aria-pressed", viewNext ? "false" : "true"); wn.setAttribute("aria-pressed", viewNext ? "true" : "false"); }
@@ -3401,6 +3411,11 @@
       "<h2>Settings</h2>" +
       safeSection(accountSettingsHtml, "account") + safeSection(booksSettingsHtml, "books") + safeSection(newsletterSettingsHtml, "newsletter") +
       safeSection(installSettingsHtml, "install") +
+      "<h3>How many you cook for</h3>" +
+      '<div class="usual-serves"><div class="stepper"><button type="button" id="usual-minus" aria-label="Fewer people"' + (state.servings <= 1 ? " disabled" : "") + ">" + ico("minus") + "</button>" +
+      '<output id="usual-value">' + state.servings + '</output><button type="button" id="usual-plus" aria-label="More people"' + (state.servings >= 8 ? " disabled" : "") + ">" + ico("plus") + "</button></div>" +
+      '<span class="usual-label">' + (state.servings === 1 ? "Just me" : state.servings + " people, every dinner") + "</span></div>" +
+      '<p class="settings-note">Every recipe is written for one. Change this only if you always cook for more, and every recipe and the shopping list scale to match. For the odd guest, change just that day instead: open the day\u2019s dinner in the planner.</p>' +
       "<h3>Never show me</h3>" +
       '<div class="chip-row">' + AVOID_OPTIONS.map(function (o) {
         return '<button type="button" class="chip" data-avoid="' + o[0] + '" aria-pressed="' + (avoid[o[0]] ? "true" : "false") + '">' + esc(o[1]) + "</button>";
@@ -3436,6 +3451,9 @@
     safeSection(wireAccountSettings, "account wiring");
     safeSection(wireBooksSettings, "books wiring");
     safeSection(wireNewsletterSettings, "newsletter wiring");
+    var um = document.getElementById("usual-minus"), up = document.getElementById("usual-plus");
+    if (um) um.addEventListener("click", function () { setUsualServings(state.servings - 1); });
+    if (up) up.addEventListener("click", function () { setUsualServings(state.servings + 1); });
     var inst = document.getElementById("install-app-btn");
     if (inst) inst.addEventListener("click", function () { closeSettings(); promptInstall(); });
     document.getElementById("newonly-on").addEventListener("change", function (e) { state.newOnly = e.target.checked; onStateChanged(); toast(state.newOnly ? "Suggestions now skip dishes you\u2019ve cooked." : "Suggestions can include dishes you\u2019ve cooked."); });
@@ -4474,7 +4492,6 @@
     if (!viewChosen) { viewChosen = true; viewNext = todayIdx >= 5 && hasProFeatures(); }
     if (viewNext && !hasProFeatures()) viewNext = false;
     document.body.classList.toggle("show-pro-tags", !isNativeApp() && !hasProFeatures());
-    document.getElementById("servings-value").textContent = state.servings;
     renderTagChips();
     renderPlanner();
     renderRecipeGrid();

@@ -22,7 +22,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..600;1,6..72,400..600&family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap">
-<link rel="stylesheet" href="../styles.css?v=53071235bf">
+<link rel="stylesheet" href="../styles.css?v=42c039bed7">
 
 <!-- Google Analytics loads only after the visitor agrees (see initConsent in app.js). -->
 </head>
@@ -34,6 +34,22 @@
       <svg class="logo-mark" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="1.4"/><circle cx="14.6" cy="13.6" r="3.1" class="logo-dot"/></svg>
       <span class="brand-name">Solo Supper</span>
     </a>
+
+    <details class="site-menu" id="site-menu">
+      <summary aria-label="Browse the Solo Supper website">
+        <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg><span class="sm-label">Browse</span>
+      </summary>
+      <div class="site-menu-panel">
+        <span class="sm-head">Browse the website</span>
+        <a href="../recipes/">All recipes</a>
+        <a href="../collections/">Collections</a>
+        <a href="../cuisines/">Cuisines</a>
+        <a href="../use-up/">Use it up</a>
+        <a href="../books/">The cookbooks</a>
+        <a href="../">Solo Supper home</a>
+        <span class="sm-note">Your week is saved. Come back any time with Plan your week.</span>
+      </div>
+    </details>
 
     <nav class="tabs" role="tablist" aria-label="Planner">
       <button class="tab-btn" role="tab" id="tab-planner-btn" aria-selected="true" data-panel="planner">
@@ -56,15 +72,6 @@
 
     <div class="header-controls">
       <button type="button" class="ss-search-btn" data-search-open aria-label="Search recipes"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.3-4.3"/></svg><span>Search</span><kbd>/</kbd></button>
-      <div class="servings-control">
-        <span class="label">Cooking for</span>
-        <div class="stepper">
-          <button type="button" id="servings-minus" aria-label="Fewer people"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/></svg></button>
-          <output id="servings-value">1</output>
-          <button type="button" id="servings-plus" aria-label="More people"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button>
-        </div>
-      </div>
-
       <div class="account-control" id="account-control">
         <div id="account-signed-out">
           <button type="button" class="btn btn-outline btn-sm" id="google-signin-btn" aria-label="Sign in">
@@ -247,7 +254,7 @@
 <script src="../firebase-config.js?v=f95fd495bc"></script>
 <script src="../assets/telemetry.js?v=40cfeaa34a"></script>
 <script src="../assets/search.js?v=5b9f4fc4f7"></script>
-<script src="../app.js?v=ec00263651"></script>
+<script src="../app.js?v=820c3c5ced"></script>
 
 </body>
 </html>

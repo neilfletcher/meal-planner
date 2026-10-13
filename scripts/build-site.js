@@ -740,6 +740,11 @@ function collCard(c, rel) {
     '<p class="lead">Single-portion recipes from ' + CUISINES.length + " countries, each with about ten minutes of prep.</p></div>" +
     '<label class="search">' + ICON.search + '<input type="search" id="rx-search" placeholder="Search a dish or an ingredient you have" aria-label="Search recipes"></label>' +
     "</section>" +
+    // A way in that isn't scrolling: the collections as a row of tiles.
+    '<section class="wrap browse"><span class="eyebrow">Start with a collection</span><div class="browse-row scroll-x">' + COLLECTIONS.map(function (c) {
+      var hero = BY_ID[c.hero] && BY_ID[c.hero].photo ? BY_ID[c.hero] : c.recipes.filter(function (r) { return r.photo; })[0] || c.recipes[0];
+      return '<a class="browse-tile" href="../collections/' + c.slug + '/">' + recipeImg(hero, rel, "browse-img") + '<span class="browse-name">' + esc(c.name) + '</span><span class="mono small muted">' + c.recipes.length + " recipes</span></a>";
+    }).join("") + '<a class="browse-tile browse-more" href="../cuisines/"><span class="browse-name">By country</span><span class="mono small muted">' + CUISINES.length + " cuisines</span></a></div></section>" +
     '<section class="wrap">' +
     '<div class="filter-bar"><div class="chips" role="group" aria-label="Filter recipes">' +
     chips.map(function (c, i) { return '<button type="button" class="chip" data-filter="' + c[0] + '" aria-pressed="' + (i === 0 ? "true" : "false") + '">' + c[1] + "</button>"; }).join("") +
@@ -747,7 +752,7 @@ function collCard(c, rel) {
     '<div class="filter-tools"><span class="mono small muted" id="rx-count" aria-live="polite">' + RECIPES.length + " recipes</span>" +
     '<label class="select-label">Sort <select id="rx-sort"><option value="book">Book order</option><option value="quick">Quickest first</option><option value="az">A to Z</option></select></label></div>' +
     "</div>" +
-    '<div class="rgrid" id="rx-grid">' + RECIPES.map(function (r, i) {
+    '<div class="rgrid" id="rx-grid" data-page="24">' + RECIPES.map(function (r, i) {
       var tags = r.tags.slice();
       if (total(r) <= 20) tags.push("t20");
       return card(r, rel, ' data-i="' + i + '" data-t="' + total(r) + '" data-tags="' + esc(tags.join(" ")) + '" data-s="' + esc(r.searchText) + '" data-n="' + esc(r.title.toLowerCase()) + '"');
@@ -925,7 +930,7 @@ function hubPage(o) {
     '<div class="btn-row"><a class="btn btn-primary btn-lg" href="' + rel + 'plan/">Plan a week of these ' + ICON.arrow + "</a></div></div>" +
     '<div class="hub-media">' + recipeImg(lead, rel, "hub-img", null, true) + "</div>" +
     "</section>" +
-    '<section class="wrap section-tight"><div class="rgrid">' + o.recipes.map(function (r) { return card(r, rel); }).join("") + "</div></section>" +
+    '<section class="wrap section-tight"><div class="rgrid" data-page="24">' + o.recipes.map(function (r) { return card(r, rel); }).join("") + "</div></section>" +
     '<section class="wrap section">' + sectionHead("Keep browsing", o.moreTitle) +
     '<div class="link-cloud">' + o.more + "</div></section>";
   var ld = {
@@ -1024,7 +1029,7 @@ CUISINES.forEach(function (cu) {
       '<p class="lead">' + esc(intro) + "</p>" +
       '<div class="btn-row"><a class="btn btn-primary btn-lg" href="' + rel + 'plan/">Plan a low-waste week ' + ICON.arrow + "</a></div></div>" +
       '<div class="hub-media">' + recipeImg(lead, rel, "hub-img", null, true) + "</div></section>" +
-      '<section class="wrap section-tight"><div class="rgrid">' + u.users.map(function (r) {
+      '<section class="wrap section-tight"><div class="rgrid" data-page="24">' + u.users.map(function (r) {
         return card(r, rel, "", "Uses " + esc(fmtQty(u.key, NEEDS[r.id][u.key])) + (p.unit === "tin" ? "" : " of the pack"));
       }).join("") + "</div></section>" +
       '<section class="wrap section">' + sectionHead("", "Other leftovers") +

@@ -648,7 +648,9 @@ function demoHtml(rel) {
     '<h2 class="display-m">Waste less, plan ahead</h2>' +
     '<p class="lead">The recipes, the planner and the shopping list are yours to use. Pro does the clever part: it plans around the packs you open and what is already in the fridge.</p>' +
     '<div class="btn-row"><a class="btn btn-primary btn-lg" href="plan/?pro=plans">Try Pro free for 14 days ' + ICON.arrow + "</a></div>" +
-    '<p class="small muted">No card needed for the trial. Then &pound;14.99 a year or &pound;2.49 a month, prices include VAT. Cancel any time.</p></div>' +
+    '<p class="small muted">No card needed for the trial. Then &pound;14.99 a year or &pound;2.49 a month, prices include VAT. Cancel any time.</p>' +
+    // Filled in by assets/site.js while lifetime Pro is on offer.
+    '<p class="lifetime-note" data-lifetime hidden></p></div>' +
     '<ul class="pro-list">' +
     '<li><h3>Low-waste weeks</h3><p>Dinners picked to share their packs, so the other half of the spinach gets eaten.</p></li>' +
     '<li><h3>Use what I have</h3><p>Tell it what is in the fridge and it plans dinners that finish it off.</p></li>' +
@@ -1094,7 +1096,8 @@ function amazonButtons(b) {
     '<section class="wrap section" id="pro-books"><div class="pro-band"><div class="pro-band-text"><span class="eyebrow">Solo Supper Pro</span>' +
     '<h2 class="display-m">The PDFs come with Pro</h2>' +
     '<p class="lead">Subscribe yearly and all four PDFs are yours. Subscribe monthly and you get Asia. They\'re added to your account as soon as your first payment goes through, and they stay yours even if you cancel. (The free trial doesn\'t include them.)</p>' +
-    '<div class="btn-row"><a class="btn btn-primary btn-lg" href="' + rel + 'plan/?pro=plans">See Pro plans ' + ICON.arrow + "</a></div></div>" +
+    '<div class="btn-row"><a class="btn btn-primary btn-lg" href="' + rel + 'plan/?pro=plans">See Pro plans ' + ICON.arrow + "</a></div>" +
+    '<p class="lifetime-note" data-lifetime hidden></p></div>' +
     '<ul class="pro-list"><li><h3>Yearly, &pound;14.99</h3><p>Pro planning plus all four PDFs.</p></li><li><h3>Monthly, &pound;2.49</h3><p>Pro planning plus the Asia PDF.</p></li>' +
     '<li><h3>Already subscribed?</h3><p>Your books are in Settings in the planner, under Your books.</p></li><li><h3>Every recipe free</h3><p>All the recipes are on this site and in the planner either way.</p></li></ul></div></section>' +
     '<section class="wrap section book-faq"><h2 class="display-m">Good to know</h2>' +

@@ -351,6 +351,11 @@
   .gc-table td { padding: 8px 10px; border-bottom: 1px solid var(--border); vertical-align: top; }
   .gc-table td:first-child { font-family: "IBM Plex Mono", monospace; white-space: nowrap; }
   .gc-used { color: var(--ink-faint); }
+  .lt-status { font-size: 15px; margin-bottom: 14px; line-height: 1.6; }
+  .lt-dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; background: var(--ink-faint, #999); margin-right: 8px; vertical-align: 1px; }
+  .lt-dot.on { background: #2E8B57; box-shadow: 0 0 0 3px rgba(46, 139, 87, .18); }
+  .lt-warn { color: #A33522; font-size: 13px; }
+  .lt-live { color: #2E8B57; font-weight: 600; font-size: 13px; }
 </style>
 </head>
 <body>
@@ -643,6 +648,42 @@
         </div>
         <div class="src-scroll"><table class="src-table err-table" id="errTable"></table></div>
         <p class="fine">Errors in the site's own scripts, sent from visitors' browsers (no personal details). The same error from many people is one row with a count. Clear a row once it's fixed; if it comes back, it reappears. Uptime is checked every 15 minutes by GitHub, which emails you if the site or checkout settings break.</p>
+      </div>
+    </section>
+
+
+    <section class="block" id="lifetimeBlock">
+      <div class="block-head">
+        <div>
+          <div class="eyebrow">Pro</div>
+          <h2>Lifetime Pro offer</h2>
+        </div>
+        <button class="ghost" id="ltReload" type="button">Update</button>
+      </div>
+      <div class="card">
+        <div class="lt-status" id="ltStatus">Loading&hellip;</div>
+        <div class="kpi-row">
+          <div class="kpi"><div class="label">Sold</div><div class="value num" id="lt-sold">&ndash;</div><div class="delta" id="lt-sold-sub">&nbsp;</div></div>
+          <div class="kpi"><div class="label">Lifetime money</div><div class="value num" id="lt-rev">&ndash;</div><div class="delta">before fees</div></div>
+          <div class="kpi"><div class="label">Price</div><div class="value num" id="lt-price">&ndash;</div><div class="delta" id="lt-price-sub">&nbsp;</div></div>
+        </div>
+        <h3 class="gc-h">Turn it on or off by hand</h3>
+        <div class="gc-row">
+          <label>On for <select id="ltHours"><option value="24">24 hours</option><option value="72">3 days</option><option value="168" selected>7 days</option><option value="336">14 days</option><option value="720">30 days</option></select></label>
+          <button class="primary" id="ltOn" type="button">Turn on</button>
+          <button class="ghost" id="ltOff" type="button">Turn off now</button>
+          <button class="ghost" id="ltResume" type="button" hidden>Let the schedule run again</button>
+        </div>
+        <h3 class="gc-h">Every year, automatically</h3>
+        <p class="gc-msg" style="margin-top:0">Tick the windows you want. The offer switches on at midnight (UK time) on the first day and off at midnight after the last, every year, until you untick it. Turning it on by hand runs alongside these; Turn off now also stops a window that is running.</p>
+        <div class="gc-table-wrap"><table class="gc-table"><thead><tr><th>On</th><th>Window</th><th>Next dates</th><th></th></tr></thead><tbody id="ltWindows"></tbody></table></div>
+        <div class="gc-row" style="margin-top:14px">
+          <label>Sales limit, 0 for none <input type="number" id="ltCap" min="0" value="0" style="width:120px"></label>
+          <button class="ghost" id="ltCapSave" type="button">Save limit</button>
+        </div>
+        <p class="gc-msg" id="ltMsg"></p>
+        <div class="gc-table-wrap"><table class="gc-table"><thead><tr><th>When</th><th>Email</th><th>Paid</th><th>Came from</th></tr></thead><tbody id="ltRows"></tbody></table></div>
+        <p class="fine">Lifetime Pro is one payment for Pro and all four cookbook PDFs, for as long as Solo Supper runs. Buyers who already subscribe have their subscription set to stop renewing. A full refund switches lifetime Pro off. It shows to visitors on the home page, the books page and in the planner's Pro panel only while it's on.</p>
       </div>
     </section>
 
@@ -1475,7 +1516,7 @@
       var c = j.counts;
       setText("lv-accounts", c.accounts);
       setText("lv-new", c.newToday + " in the last 24 hours, " + c.new7 + " in 7 days");
-      setText("lv-paying", c.paying);
+      setText("lv-paying", c.paying + (c.lifetime ? " + " + c.lifetime + " lifetime" : ""));
       setText("lv-split", c.monthly + " monthly, " + c.annual + " yearly" + (c.cancelling ? ", " + c.cancelling + " cancelling" : "") + (c.everPaid > c.paying ? "; " + c.everPaid + " ever subscribed" : ""));
       setText("lv-trial", c.onTrial);
       setText("lv-ended", c.trialEnded + " trials ended without paying");
@@ -1555,6 +1596,55 @@
         : "<tr><td>No PDF sales yet</td></tr>";
     }).catch(function (e) { document.getElementById("bkTable").innerHTML = "<tr><td>Couldn't load: " + escapeHtml(e.message) + "</td></tr>"; });
   }
+
+  // ---------- lifetime Pro offer ----------
+  function ltWhen(ms) { return new Date(ms).toLocaleString("en-GB", { weekday: "short", day: "numeric", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit", timeZone: "Europe/London" }); }
+  function ltDay(ms) { return new Date(ms).toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short", year: "numeric", timeZone: "Europe/London" }); }
+  function renderLifetime(j) {
+    var st = j.status, msg = document.getElementById("ltStatus");
+    var line = st.on ? '<span class="lt-dot on"></span><strong>On</strong>, until ' + ltWhen(st.until) + " (" + escapeHtml(st.why) + ")"
+      : '<span class="lt-dot"></span><strong>Off</strong>' + (st.why === "off by hand" ? ", turned off by hand until " + ltWhen(st.until) : st.why !== "off" ? " (" + escapeHtml(st.why) + ")" : "");
+    var next = j.windows.filter(function (w) { return w.enabled && !w.live; }).sort(function (a, b) { return a.start - b.start; })[0];
+    if (!st.on && next) line += ". Next: " + escapeHtml(next.name) + ", " + ltWhen(next.start);
+    if (!j.priceSet) line += '<br><span class="lt-warn">Not on sale to anyone yet: set STRIPE_PRICE_LIFETIME in Cloudflare to a one-off Stripe price.</span>';
+    else if (j.price && j.price.error) line += '<br><span class="lt-warn">Stripe price problem: ' + escapeHtml(j.price.error) + "</span>";
+    msg.innerHTML = line;
+    document.getElementById("ltResume").hidden = !(j.cfg.manualOffUntil > j.at);
+    setText("lt-sold", j.sold);
+    setText("lt-sold-sub", (j.refunds ? j.refunds + " refunded" : "none refunded") + (j.cfg.cap ? "; limit " + j.cfg.cap : ""));
+    setText("lt-rev", "\u00a3" + (j.revenue / 100).toFixed(2));
+    setText("lt-price", j.price && j.price.amount ? "\u00a3" + (j.price.amount / 100).toFixed(2) : "\u2013");
+    setText("lt-price-sub", j.priceSet ? "from Stripe, includes VAT" : "not set");
+    document.getElementById("ltCap").value = j.cfg.cap || 0;
+    document.getElementById("ltWindows").innerHTML = j.windows.map(function (w) {
+      return '<tr><td><input type="checkbox" data-lt-win="' + w.id + '"' + (w.enabled ? " checked" : "") + ' aria-label="' + escapeHtml(w.name) + '"></td><td><strong>' + escapeHtml(w.name) + '</strong><span class="gc-used" style="display:block">' + escapeHtml(w.note) + "</span></td><td>" +
+        ltDay(w.start) + " to " + ltDay(w.end - 1) + "</td><td>" + (w.live ? (w.enabled ? '<span class="lt-live">Running now</span>' : '<span class="gc-used">Happening now</span>') : "") + "</td></tr>";
+    }).join("");
+    document.getElementById("ltRows").innerHTML = j.recent.length ? j.recent.map(function (r) {
+      return "<tr><td>" + gcDate(r.at) + "</td><td>" + escapeHtml(r.email) + "</td><td>" + (r.refunded ? "<s>\u00a3" + (r.amount / 100).toFixed(2) + "</s> refunded" : "\u00a3" + (r.amount / 100).toFixed(2)) + "</td><td>" + escapeHtml(r.source || "not known") + "</td></tr>";
+    }).join("") : '<tr><td colspan="4" class="gc-used">No lifetime sales yet.</td></tr>';
+  }
+  function lifetimeCall(body, okMsg) {
+    var m = document.getElementById("ltMsg");
+    m.textContent = body.action === "lifetimeSet" ? "Saving\u2026" : "";
+    return adminApi(body).then(function (j) { renderLifetime(j); m.textContent = okMsg || ""; })
+      .catch(function (e) { m.textContent = "Couldn't save: " + e.message; loadLifetime(); });
+  }
+  function loadLifetime() { return lifetimeCall({ action: "lifetime" }); }
+  document.getElementById("ltReload").addEventListener("click", loadLifetime);
+  document.getElementById("ltOn").addEventListener("click", function () {
+    var h = document.getElementById("ltHours");
+    lifetimeCall({ action: "lifetimeSet", onHours: h.value }, "Turned on for " + h.options[h.selectedIndex].text + ".");
+  });
+  document.getElementById("ltOff").addEventListener("click", function () { lifetimeCall({ action: "lifetimeSet", off: true }, "Turned off."); });
+  document.getElementById("ltResume").addEventListener("click", function () { lifetimeCall({ action: "lifetimeSet", resume: true }, "The yearly schedule is running again."); });
+  document.getElementById("ltCapSave").addEventListener("click", function () { lifetimeCall({ action: "lifetimeSet", cap: document.getElementById("ltCap").value }, "Limit saved."); });
+  document.getElementById("ltWindows").addEventListener("change", function (ev) {
+    var cb = ev.target.closest("[data-lt-win]");
+    if (!cb) return;
+    var w = {}; w[cb.getAttribute("data-lt-win")] = cb.checked;
+    lifetimeCall({ action: "lifetimeSet", windows: w }, cb.checked ? "Ticked: it will switch on automatically each year." : "Unticked.");
+  });
   document.getElementById("bkReload").addEventListener("click", loadBooks);
   document.getElementById("bkRefunds").addEventListener("click", function () {
     var btn = this;
@@ -1719,6 +1809,7 @@
       startLive();
       loadBookGifts();
       loadBooks();
+      loadLifetime();
       loadSources();
       loadErrors();
     } else if (user) {

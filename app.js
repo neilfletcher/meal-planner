@@ -631,7 +631,8 @@
         startCloudSync(user);
         startEntitlement(user);
         if (signinBackdrop && !signinBackdrop.hidden) closeSignIn();
-        if (afterSignIn) { pendingAfterPro = afterSignIn; afterSignIn = null; }
+        if (afterSignIn && afterSignIn.always) { var go = afterSignIn; afterSignIn = null; setTimeout(go, 800); }
+        else if (afterSignIn) { pendingAfterPro = afterSignIn; afterSignIn = null; }
       } else {
         stopCloudSync();
         stopEntitlement();
@@ -3678,6 +3679,7 @@
     e = e || {};
     now = now || Date.now();
     var paid = { active: 1, trialing: 1, past_due: 1 };
+    if (e.lifetimePaid) return { pro: true, source: "lifetime", until: null };
     if (e.grantLifetime) return { pro: true, source: "grant", until: null };
     if (e.giftLifetime) return { pro: true, source: "gift", until: null };
     if (e.stripeStatus && paid[e.stripeStatus] && (!e.stripePeriodEnd || e.stripePeriodEnd + 3 * DAY_MS > now)) return { pro: true, source: "stripe", until: e.stripePeriodEnd || null };
@@ -3720,7 +3722,7 @@
     var was = proState(ent);
     ent = e;
     var now = proState(ent);
-    if (proWelcomePending && now.pro && now.source === "stripe") {
+    if (proWelcomePending && now.pro && (now.source === "stripe" || now.source === "lifetime")) {
       proWelcomePending = false;
       toast("Welcome to Pro. Thank you for supporting Solo Supper.");
     }
@@ -3759,6 +3761,7 @@
       if (ent.stripeCancelAtPeriodEnd) return "Pro until " + fmtLongDate(ent.stripePeriodEnd) + ". Your subscription is cancelled and won't renew.";
       return "Pro, " + plan + ". Renews on " + fmtLongDate(ent.stripePeriodEnd) + ".";
     }
+    if (s.source === "lifetime") return "Pro for life, with all four cookbook PDFs. Thank you for supporting Solo Supper.";
     if (s.source === "gift") return s.until ? "Pro until " + fmtLongDate(s.until) + ", from a gift code." : "Pro for life, from a gift code.";
     if (s.source === "grant") return s.until ? "Pro until " + fmtLongDate(s.until) + "." : "Pro for life.";
     if (s.source === "trial") { var d = daysLeft(s.until); return "Free Pro trial: " + d + (d === 1 ? " day" : " days") + " left (ends " + fmtLongDate(s.until) + ")."; }
@@ -3877,9 +3880,29 @@
   };
   var proPlanChoice = "annual";
   var lastProReason;
+  // Lifetime Pro, when it's on offer (GET /api/lifetime). Checked when the Pro
+  // panel opens, at most once every five minutes.
+  var lifetimeOffer = null, lifetimeCheckedAt = 0;
+  function checkLifetimeOffer() {
+    if (isNativeApp() || Date.now() - lifetimeCheckedAt < 300000) return;
+    lifetimeCheckedAt = Date.now();
+    fetch(API_BASE + "lifetime").then(function (r) { return r.json(); }).then(function (j) {
+      var was = !!(lifetimeOffer && lifetimeOffer.on), choiceWas = proPlanChoice;
+      lifetimeOffer = j && j.on ? j : null;
+      if (!lifetimeOffer && proPlanChoice === "lifetime") proPlanChoice = "annual";
+      if ((was !== !!lifetimeOffer || choiceWas !== proPlanChoice) && paywallBackdrop && !paywallBackdrop.hidden) renderProPaywall(lastProReason);
+    }).catch(function () { /* no offer shown */ });
+  }
+  function lifetimePriceText() { return lifetimeOffer ? "\u00a3" + (lifetimeOffer.amount / 100).toFixed(lifetimeOffer.amount % 100 ? 2 : 0) : ""; }
+  function lifetimeEndsText() {
+    if (!lifetimeOffer || !lifetimeOffer.until) return "";
+    var end = new Date(lifetimeOffer.until - 1);
+    return "Offer ends " + end.toLocaleDateString("en-GB", { weekday: "long", day: "numeric", month: "long" });
+  }
   function openProPaywall(reason) {
     if (!paywallBackdrop) return;
     lastProReason = reason;
+    checkLifetimeOffer();
     renderProPaywall(reason);
     paywallBackdrop.hidden = false;
   }
@@ -3912,17 +3935,23 @@
     if (!signedIn) {
       html += '<button type="button" class="btn btn-primary btn-block" id="pro-trial-btn">Start your free 14-day trial</button>' +
         '<p class="settings-note pro-small">Sign in with Google or your email. No card needed.</p>';
+      if (lifetimeOffer) html += '<div class="lifetime-switch"><p><strong>Limited time: Pro for life, ' + esc(lifetimePriceText()) + ' once,</strong> with all four cookbook PDFs. ' + esc(lifetimeEndsText()) + ".</p>" +
+        '<button type="button" class="btn btn-outline btn-block" id="pro-lifetime-signin">Sign in to buy lifetime</button></div>';
     } else if (paid) {
+      if (lifetimeOffer) html += '<div class="lifetime-switch"><p><strong>Limited time: Pro for life, ' + esc(lifetimePriceText()) + ' once.</strong> ' +
+        "Your subscription then stops renewing, and you keep Pro and all four cookbook PDFs for good. " + esc(lifetimeEndsText()) + ".</p>" +
+        '<button type="button" class="btn btn-primary btn-block" id="pro-lifetime-btn">Switch to lifetime</button><p class="form-error" id="pro-error" hidden></p></div>';
       html += '<button type="button" class="btn btn-outline btn-block" id="pro-manage-btn">Manage subscription</button>';
     } else if (s.pro && s.source !== "trial") {
       html += "";
     } else {
       html += '<div class="plan-choice" role="radiogroup" aria-label="Choose a plan">' +
         planOption("annual", "Yearly", PRO_PRICES.annual + " a year", "All four cookbook PDFs", "Best value") +
-        planOption("monthly", "Monthly", PRO_PRICES.monthly + " a month", "The Asia cookbook PDF", "") + "</div>" +
+        planOption("monthly", "Monthly", PRO_PRICES.monthly + " a month", "The Asia cookbook PDF", "") +
+        (lifetimeOffer ? planOption("lifetime", "Lifetime", lifetimePriceText() + " once", "Pro for good, all four cookbook PDFs. " + lifetimeEndsText(), "Limited time") : "") + "</div>" +
         '<button type="button" class="btn btn-primary btn-block" id="pro-buy-btn">Continue to secure payment</button>' +
         '<p class="form-error" id="pro-error" hidden></p>' +
-        '<p class="settings-note pro-small">Prices include VAT. Cancel any time, and you can have a full refund within 14 days of any payment. Payment is handled by Stripe and shows as Onelink. <a href="../terms/">Terms</a> · <a href="../refunds/">Refunds</a></p>';
+        '<p class="settings-note pro-small">Prices include VAT. ' + (proPlanChoice === "lifetime" ? "One payment, no subscription. Pro for as long as Solo Supper runs, and" : "Cancel any time, and") + ' you can have a full refund within 14 days of any payment. Payment is handled by Stripe and shows as Onelink. <a href="../terms/">Terms</a> · <a href="../refunds/">Refunds</a></p>';
     }
     if (signedIn && !paid) {
       html += '<details class="gift-row"' + (reason === "gift" ? " open" : "") + '><summary>Have a gift or promo code?</summary>' +
@@ -3936,10 +3965,27 @@
       closePaywall();
       openSignIn({ title: "Start your free trial", lead: "Sign in and Pro switches on straight away for 14 days. No card needed.", then: function () { if (reason === "lowwaste") lowWasteFillWeek(); } });
     });
+    // After signing in (Pro or not), come back to the lifetime plan.
+    var reopenOnLifetime = function () { proPlanChoice = "lifetime"; openProPaywall(reason); };
+    reopenOnLifetime.always = true;
+    var ltSignin = document.getElementById("pro-lifetime-signin");
+    if (ltSignin) ltSignin.addEventListener("click", function () {
+      closePaywall();
+      openSignIn({ title: "Sign in to buy lifetime Pro", lead: "Lifetime Pro is kept with your account, so sign in first.", then: reopenOnLifetime });
+    });
     var manageBtn = document.getElementById("pro-manage-btn");
     if (manageBtn) manageBtn.addEventListener("click", openBillingPortal);
     paywallModal.querySelectorAll("[data-plan]").forEach(function (b) {
       b.addEventListener("click", function () { proPlanChoice = b.getAttribute("data-plan"); renderProPaywall(reason); });
+    });
+    var ltBtn = document.getElementById("pro-lifetime-btn");
+    if (ltBtn) ltBtn.addEventListener("click", function () {
+      ltBtn.disabled = true; ltBtn.textContent = "Opening secure payment\u2026";
+      track("begin_checkout", { plan: "lifetime" });
+      api("checkout", { plan: "lifetime" }).then(function (j) { location.href = j.url; }).catch(function (e) {
+        ltBtn.disabled = false; ltBtn.textContent = "Switch to lifetime";
+        var pe = document.getElementById("pro-error"); pe.textContent = e.message; pe.hidden = false;
+      });
     });
     var buyBtn = document.getElementById("pro-buy-btn");
     if (buyBtn) buyBtn.addEventListener("click", function () {
@@ -4410,6 +4456,28 @@
     if (proBack) {
       try { history.replaceState(null, "", location.pathname); } catch (e) { /* ignore */ }
       if (proBack === "plans") { if (!isNativeApp()) openProPaywall(); return; }
+      if (proBack === "lifetime") {
+        // From the website's lifetime offer: open the Pro panel on the lifetime plan.
+        if (!isNativeApp()) {
+          lifetimeCheckedAt = 0;
+          proPlanChoice = "lifetime";
+          openProPaywall();
+        }
+        return;
+      }
+      if (proBack === "lifetime-done") {
+        track("pro_checkout_complete", { plan: "lifetime" });
+        var ls = q.get("ls");
+        toast("Payment received. Switching on Pro for life\u2026");
+        proWelcomePending = true;
+        var confirmLifetime = function (tries) {
+          if (!currentUser) { if (tries < 20) setTimeout(function () { confirmLifetime(tries + 1); }, 500); return; }
+          api("lifetime-confirm", { s: ls }).then(function (j) { setEntitlement(j.entitlement); })
+            .catch(function () { if (tries < 8) setTimeout(function () { confirmLifetime(tries + 1); }, 2500); });
+        };
+        if (ls) confirmLifetime(0);
+        return;
+      }
       if (proBack === "success") {
         track("pro_checkout_complete");
         if (proState(ent).source === "stripe") toast("Welcome to Pro. Thank you for supporting Solo Supper.");

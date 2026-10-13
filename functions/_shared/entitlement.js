@@ -10,6 +10,7 @@
  *   stripeAmount (pence), stripeStartedAt, stripeCanceledAt, stripeEndedAt   for the admin page
  *   giftUntil, giftLifetime           from a gift code
  *   grantUntil, grantLifetime         given by hand from the admin page
+ *   lifetimePaid, lifetimeAt, lifetimeSession, lifetimeAmount   bought lifetime Pro
  *
  * The planner (app.js) has a copy of proState(); keep the two in step.
  */
@@ -20,6 +21,7 @@ var PAID_STATUSES = { active: 1, trialing: 1, past_due: 1 };
 export function proState(e, now) {
   e = e || {};
   now = now || Date.now();
+  if (e.lifetimePaid) return { pro: true, source: "lifetime", until: null };
   if (e.grantLifetime) return { pro: true, source: "grant", until: null };
   if (e.giftLifetime) return { pro: true, source: "gift", until: null };
   if (e.stripeStatus && PAID_STATUSES[e.stripeStatus] && (!e.stripePeriodEnd || e.stripePeriodEnd + 3 * DAY > now)) {

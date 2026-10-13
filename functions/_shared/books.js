@@ -8,7 +8,7 @@
  *
  * Who gets which book:
  *   - anyone who bought it (checkout with metadata.kind = "books")
- *   - a paid monthly subscription: Asia; a paid yearly one: all four.
+ *   - a paid monthly subscription: Asia; a paid yearly one or lifetime Pro: all four.
  *     The free trial does not count. Once paid, the books stay theirs.
  *
  * Prices are Stripe price IDs in Cloudflare variables:
@@ -30,6 +30,7 @@ export function bookPrice(env, id) {
 
 // Books that come with a subscription: only once it has been paid for.
 export function subscriptionBooks(e) {
+  if (e && e.lifetimePaid) return BOOK_IDS.slice();
   if (!e || !e.stripeSub) return [];
   return e.stripeInterval === "year" ? BOOK_IDS.slice() : MONTHLY_BOOKS.slice();
 }

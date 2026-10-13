@@ -83,6 +83,21 @@
     });
   })();
 
+  /* ---------- lifetime Pro, while it's on offer (set on the admin page) ---------- */
+  var ltSlots = document.querySelectorAll("[data-lifetime]");
+  if (ltSlots.length && window.fetch) {
+    fetch("/api/lifetime").then(function (r) { return r.json(); }).then(function (o) {
+      if (!o || !o.on) return;
+      var price = "\u00a3" + (o.amount / 100).toFixed(o.amount % 100 ? 2 : 0);
+      var ends = o.until ? " Offer ends " + new Date(o.until - 1).toLocaleDateString("en-GB", { weekday: "long", day: "numeric", month: "long" }) + "." : "";
+      ltSlots.forEach(function (el) {
+        el.innerHTML = "<strong>Limited time: Pro for life, " + price + " once.</strong> No subscription, and all four cookbook PDFs are included." + ends +
+          ' <a href="' + BASE + 'plan/?pro=lifetime">Get lifetime Pro</a>';
+        el.hidden = false;
+      });
+    }).catch(function () { /* no offer shown */ });
+  }
+
   /* ---------- returning planners go straight to their week ---------- */
   if (lsGet("soloSupper.state.v1")) {
     document.querySelectorAll("[data-planner-cta]").forEach(function (a) {

@@ -647,6 +647,10 @@ h1, .display, .display-l, .display-m, .week-range { letter-spacing: -0.02em; }
 .show-pro-tags .needs-pro::after { content: "Pro"; margin-left: 2px; font-family: var(--mono); font-size: 10px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; background: var(--yolk); color: var(--ink); padding: 3px 7px; border-radius: 999px; line-height: 1; }
 .show-pro-tags .week-tab.needs-pro::after { position: static; height: auto; display: inline-block; margin-left: 6px; vertical-align: 1px; }
 .show-pro-tags .week-tab.needs-pro[aria-pressed="true"]::after { background: var(--yolk); }
+.plan-opt[data-plan="lifetime"] { grid-column: 1 / -1; border-style: dashed; }
+.plan-opt[data-plan="lifetime"].is-on { border-style: solid; }
+.lifetime-switch { margin-bottom: 14px; padding: 14px 16px; border: 1.5px dashed var(--line-strong); border-radius: 12px; }
+.lifetime-switch p { margin: 0 0 10px; font-size: 14px; line-height: 1.45; }
 @media (max-width: 420px) { .plan-choice { grid-template-columns: 1fr; } }
 
 /* ---------- what's in your fridge ---------- */

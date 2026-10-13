@@ -115,6 +115,9 @@ module.exports = [
       "<h3>Free trial</h3>",
       "<p>New accounts may get a free Pro trial. No card is needed, and when the trial ends your account returns to the free version unless you choose to subscribe. One trial per person.</p>",
 
+      "<h3>Lifetime Pro</h3>",
+      "<p>From time to time Pro is offered for a single payment instead of a subscription. Lifetime Pro lasts for as long as Solo Supper runs as a service, for the account it was bought with, and includes the four Solo Supper cookbook PDFs. If you already subscribe, buying lifetime Pro stops your subscription renewing; the period you have already paid for is not refunded automatically, but you can ask. If Solo Supper ever closes, lifetime Pro ends with it and you will be told at least 60 days before; your cookbook PDFs stay yours.</p>",
+
       "<h3>Gift codes</h3>",
       "<p>A gift code gives Pro for the period stated with the code. Each code can be used once, has no cash value and cannot be exchanged or resold.</p>",
 
@@ -148,6 +151,9 @@ module.exports = [
 
       "<h2>14-day refunds</h2>",
       "<p>Email <a href=\"mailto:{EMAIL}\">{EMAIL}</a> within 14 days of any payment, whether your first or a renewal, and you will get a full refund for that payment, no questions asked. Please email from the address you signed up with, or include it. Pro is switched off when the refund is made.</p>",
+
+      "<h2>Lifetime Pro</h2>",
+      "<p>Lifetime Pro has the same 14-day full refund. Lifetime Pro, and the cookbook PDFs that come with it, are switched off when the refund is made.</p>",
 
       "<h2>After 14 days</h2>",
       "<p>After 14 days, payments are not normally refunded, but you can cancel at any time so your subscription does not renew. Pro stays on until the end of the period you have paid for. If something has gone wrong, such as being charged twice or Pro not working, email me and it will be put right.</p>",

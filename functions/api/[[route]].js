@@ -17,6 +17,8 @@
  *   GET  /api/book-file       the PDF itself, from a signed link
  *   POST /api/my-books        signed-in user: which books they have
  *   POST /api/book-click      { book, store } counts a click through to Amazon
+ *   GET  /api/lifetime        is lifetime Pro on sale right now, and its price
+ *   POST /api/lifetime-confirm { s } signed-in user back from paying for lifetime Pro
  *
  * Signed-in calls send "Authorization: Bearer <Firebase ID token>".
  */
@@ -24,6 +26,7 @@ import { verifyIdToken, projectId, getDoc, mergeDoc, deleteDoc, commit, incremen
 import { BOOKS, BOOK_IDS, bookPrice, subscriptionBooks, downloadUrl, checkDownload } from "../_shared/books.js";
 import { stripe, priceFor, verifyWebhook, subscriptionFields } from "../_shared/stripe.js";
 import { proState, addMonths, TRIAL_DAYS } from "../_shared/entitlement.js";
+import { WINDOWS, upcomingWindows, lifetimeStatus } from "../_shared/lifetime.js";
 
 var DAY = 86400000;
 
@@ -76,7 +79,8 @@ function publicEntitlement(e) {
     stripeCancelAtPeriodEnd: !!e.stripeCancelAtPeriodEnd,
     hasStripeCustomer: !!e.stripeCustomer,
     giftUntil: e.giftUntil || 0, giftLifetime: !!e.giftLifetime,
-    grantUntil: e.grantUntil || 0, grantLifetime: !!e.grantLifetime
+    grantUntil: e.grantUntil || 0, grantLifetime: !!e.grantLifetime,
+    lifetimePaid: !!e.lifetimePaid
   };
 }
 
@@ -119,6 +123,7 @@ async function account(request, env) {
 async function checkout(request, env) {
   var user = await requireUser(request, env);
   var body = await readJson(request);
+  if (body.plan === "lifetime") return lifetimeCheckout(request, env, user);
   var plan = body.plan === "monthly" ? "monthly" : "annual";
   var doc = await getDoc(env, "entitlements/" + user.uid);
   var e = (doc && doc.data) || {};
@@ -317,7 +322,7 @@ async function admin(request, env) {
     var ents = lists[1].filter(function (r) { return !skip[r.id] && !isInternal(env, r.data.email); });
     var since = function (ms) { return auth.users.filter(function (u) { return u.createdAt > now - ms; }).length; };
     var c = { accounts: auth.total, newToday: since(DAY), new7: since(7 * DAY), new30: since(30 * DAY),
-      paying: 0, monthly: 0, annual: 0, cancelling: 0, everPaid: 0, onTrial: 0, freePro: 0, trialEnded: 0 };
+      paying: 0, monthly: 0, annual: 0, cancelling: 0, everPaid: 0, onTrial: 0, freePro: 0, trialEnded: 0, lifetime: 0 };
     // Money, in pence. Older subscriptions saved before amounts were kept
     // fall back to the list prices until Stripe next tells us about them.
     var m = { mrr: 0, pastDue: 0, renew30: 0, renew30Amount: 0, new30: 0, cancelled30: 0, ended30: 0,
@@ -325,8 +330,9 @@ async function admin(request, env) {
     var stale = [];
     ents.forEach(function (row) {
       var e = row.data, st = proState(e, now);
-      if (e.stripeSub) c.everPaid++;
-      if (st.source === "stripe") {
+      if (e.stripeSub || e.lifetimePaid) c.everPaid++;
+      if (st.source === "lifetime") c.lifetime++;
+      else if (st.source === "stripe") {
         c.paying++;
         if (e.stripeInterval === "year") c.annual++; else c.monthly++;
         if (e.stripeCancelAtPeriodEnd) c.cancelling++;
@@ -342,8 +348,9 @@ async function admin(request, env) {
       if (e.stripeCanceledAt > now - 30 * DAY) m.cancelled30++;
       if (e.stripeEndedAt > now - 30 * DAY) m.ended30++;
       // Trial to paid: of the trials that have finished, how many went on to pay.
-      if (e.trialEndsAt && e.trialEndsAt <= now) { m.trialsDone++; if (e.stripeSub) m.trialsPaid++; }
-      else if (e.trialEndsAt && e.stripeSub) m.paidInTrial++;
+      var everPaid = e.stripeSub || e.lifetimePaid;
+      if (e.trialEndsAt && e.trialEndsAt <= now) { m.trialsDone++; if (everPaid) m.trialsPaid++; }
+      else if (e.trialEndsAt && everPaid) m.paidInTrial++;
     });
     m.mrr = Math.round(m.mrr);
     // Fill in amounts for a few older subscriptions each time (cheap, and it stops once done).
@@ -422,7 +429,8 @@ async function admin(request, env) {
   // Asks Stripe about recent book purchases and marks any that were refunded
   // (for refunds the webhook missed). Up to 25 at a time.
   if (body.action === "checkRefunds") {
-    var pr = await listCollection(env, "purchases", null, 5000);
+    var pr = (await listCollection(env, "purchases", null, 5000)).concat(
+      (await listCollection(env, "lifetimePurchases", null, 5000)).map(function (r) { r.lifetime = true; return r; }));
     var todo = pr.filter(function (r) { return /^cs_/.test(r.id) && !r.data.refunded && !r.data.gift && (r.data.createdAt || 0) > now - 180 * DAY; })
       .sort(function (a, b) { return (b.data.createdAt || 0) - (a.data.createdAt || 0); }).slice(0, 25);
     var res = { checked: 0, refunded: 0, unknown: 0 };
@@ -434,12 +442,56 @@ async function admin(request, env) {
         res.checked++;
         if (ch.amount_refunded > 0) {
           res.refunded++;
+          if (r.lifetime) { await refundLifetime(env, r.id, ch); return; }
           await mergeDoc(env, "purchases/" + r.id, { refunded: !!ch.refunded, refundedAmount: ch.amount_refunded, refundedAt: now,
             paymentIntent: cs.payment_intent.id });
         }
       } catch (e) { res.unknown++; }
     }));
     return json(res);
+  }
+
+  // Lifetime Pro: the offer's settings, the year's windows and sales so far.
+  if (body.action === "lifetime" || body.action === "lifetimeSet") {
+    var lpath = "settings/lifetime";
+    var lc = await getDoc(env, lpath);
+    var cfg = (lc && lc.data) || {};
+    if (body.action === "lifetimeSet") {
+      var upd = {};
+      if (body.onHours !== undefined) {
+        var hrs = Math.max(1, Math.min(24 * 90, parseInt(body.onHours, 10) || 0));
+        upd.manualOnUntil = now + hrs * 3600000; upd.manualOffUntil = 0;
+      }
+      if (body.off) {
+        // Off now, including any yearly window that is running.
+        var running = lifetimeStatus(Object.assign({}, cfg, { manualOnUntil: 0, manualOffUntil: 0, cap: 0 }), now, 0);
+        upd.manualOnUntil = 0;
+        upd.manualOffUntil = running.on ? running.until : 0;
+      }
+      if (body.resume) upd.manualOffUntil = 0;
+      if (body.windows && typeof body.windows === "object") {
+        var wins = Object.assign({}, cfg.windows || {});
+        WINDOWS.forEach(function (w) { if (w.id in body.windows) wins[w.id] = !!body.windows[w.id]; });
+        upd.windows = wins;
+      }
+      if (body.cap !== undefined) upd.cap = Math.max(0, parseInt(body.cap, 10) || 0);
+      upd.updatedAt = now; upd.updatedBy = user.email;
+      await mergeDoc(env, lpath, upd);
+      cfg = Object.assign({}, cfg, upd);
+      ltCache = { at: 0, data: null };
+    }
+    var lrows = (await listCollection(env, "lifetimePurchases", null, 5000)).filter(function (r) { return !isInternal(env, r.data.email); });
+    var lsold = lrows.filter(function (r) { return !r.data.refunded; });
+    var price = await lifetimePrice(env).catch(function (e) { return { error: e.message }; });
+    return json({
+      at: now, cfg: { manualOnUntil: cfg.manualOnUntil || 0, manualOffUntil: cfg.manualOffUntil || 0, cap: cfg.cap || 0 },
+      status: lifetimeStatus(cfg, now, lsold.length), priceSet: !!env.STRIPE_PRICE_LIFETIME, price: price,
+      windows: upcomingWindows(cfg, now),
+      sold: lsold.length, refunds: lrows.length - lsold.length,
+      revenue: lsold.reduce(function (t, r) { return t + (r.data.amount || 0); }, 0),
+      recent: lrows.sort(function (a, b) { return (b.data.createdAt || 0) - (a.data.createdAt || 0); }).slice(0, 20)
+        .map(function (r) { return { at: r.data.createdAt || 0, email: r.data.email || "", amount: r.data.amount || 0, refunded: !!r.data.refunded, source: r.data.source || "" }; })
+    });
   }
 
   if (body.action === "liveVisitors") {
@@ -566,6 +618,11 @@ async function stripeWebhook(request, env) {
     return json({ received: true });
   }
 
+  if (event.type === "checkout.session.completed" && obj.mode === "payment" && obj.metadata && obj.metadata.kind === "lifetime") {
+    await grantLifetime(env, await stripe(env, "GET", "checkout/sessions/" + obj.id));
+    return json({ received: true });
+  }
+
   if (event.type === "checkout.session.completed" && obj.mode === "payment" && obj.metadata && obj.metadata.kind === "books") {
     try { await paidBookSession(env, obj.id); } catch (e) { /* not paid yet: recorded when they open the download page */ }
     return json({ received: true });
@@ -577,6 +634,10 @@ async function stripeWebhook(request, env) {
     var pi = typeof obj.payment_intent === "string" ? obj.payment_intent : obj.payment_intent.id;
     var found = await stripe(env, "GET", "checkout/sessions", { payment_intent: pi, limit: 1 });
     var cs = found.data && found.data[0];
+    if (cs && cs.metadata && cs.metadata.kind === "lifetime") {
+      await refundLifetime(env, cs.id, obj);
+      return json({ received: true });
+    }
     var sid = cs && cs.metadata && cs.metadata.kind === "books" ? cs.id : "";
     if (!sid) {
       // Fall back to the payment saved with the purchase.
@@ -600,6 +661,106 @@ async function stripeWebhook(request, env) {
   }
 
   return json({ received: true, ignored: event.type });
+}
+
+
+/* ---------------------------------------------------------- lifetime Pro */
+// See functions/_shared/lifetime.js for when the offer is on.
+var ltCache = { at: 0, data: null };
+async function lifetimeSold(env) {
+  var rows = await queryWhere(env, "lifetimePurchases", "refunded", false, 5000);
+  return rows.filter(function (r) { return !isInternal(env, r.data.email); }).length;
+}
+async function lifetimePrice(env) {
+  if (!env.STRIPE_PRICE_LIFETIME) return null;
+  var p = await stripe(env, "GET", "prices/" + env.STRIPE_PRICE_LIFETIME);
+  return { amount: p.unit_amount || 0, currency: p.currency || "gbp" };
+}
+// The offer as visitors see it. Cached for a minute per server instance.
+async function lifetimeOffer(env, fresh) {
+  var now = Date.now();
+  if (!fresh && ltCache.data && now - ltCache.at < 60000) return ltCache.data;
+  var parts = await Promise.all([getDoc(env, "settings/lifetime"), lifetimePrice(env).catch(function () { return null; })]);
+  var cfg = (parts[0] && parts[0].data) || {};
+  var sold = cfg.cap > 0 ? await lifetimeSold(env) : 0;
+  var st = lifetimeStatus(cfg, now, sold);
+  var price = parts[1];
+  var out = { on: !!(st.on && price), until: st.on ? st.until : 0, amount: price ? price.amount : 0, currency: price ? price.currency : "gbp" };
+  ltCache = { at: now, data: out };
+  return out;
+}
+async function lifetimePublic(request, env) {
+  var o = await lifetimeOffer(env);
+  return json(o.on ? o : { on: false });
+}
+
+async function lifetimeCheckout(request, env, user) {
+  var offer = await lifetimeOffer(env, true);
+  if (!offer.on) throw httpError(410, "The lifetime offer has ended. Yearly and monthly are still here.");
+  var doc = await getDoc(env, "entitlements/" + user.uid);
+  var e = (doc && doc.data) || {};
+  if (e.lifetimePaid) throw httpError(409, "You already have Pro for life.");
+  var origin = siteOrigin(request, env);
+  var params = {
+    mode: "payment",
+    line_items: { 0: { price: env.STRIPE_PRICE_LIFETIME, quantity: 1 } },
+    managed_payments: { enabled: "true" },
+    client_reference_id: user.uid,
+    metadata: { kind: "lifetime", uid: user.uid, firstSource: e.ftSource || "unknown" },
+    success_url: origin + "/plan/?pro=lifetime-done&ls={CHECKOUT_SESSION_ID}",
+    cancel_url: origin + "/plan/?pro=cancelled"
+  };
+  if (e.stripeCustomer) params.customer = e.stripeCustomer;
+  else if (user.email) params.customer_email = user.email;
+  var session = await stripe(env, "POST", "checkout/sessions", params);
+  return json({ url: session.url });
+}
+
+// Switches on lifetime Pro for a paid session (from the webhook, or when the
+// buyer comes back to the planner, whichever is first). Any subscription
+// they had is set to end at the close of the period already paid for.
+async function grantLifetime(env, session) {
+  if (!session || !session.metadata || session.metadata.kind !== "lifetime" || session.payment_status !== "paid") return null;
+  var uid = session.metadata.uid || session.client_reference_id;
+  if (!uid) return null;
+  var path = "entitlements/" + uid;
+  var doc = await getDoc(env, path);
+  var e = (doc && doc.data) || {};
+  var email = String((session.customer_details && session.customer_details.email) || session.customer_email || e.email || "").toLowerCase();
+  var paidAt = (session.created || 0) * 1000 || Date.now();
+  var update = { lifetimePaid: true, lifetimeAt: paidAt, lifetimeSession: session.id, lifetimeAmount: session.amount_total || 0 };
+  if (!e.lifetimePaid || e.lifetimeSession !== session.id) {
+    await mergeDoc(env, path, update);
+    await mergeDoc(env, "lifetimePurchases/" + session.id, { uid: uid, email: email, amount: session.amount_total || 0, currency: session.currency || "gbp",
+      createdAt: paidAt, refunded: false, source: String(session.metadata.firstSource || "").slice(0, 40),
+      paymentIntent: typeof session.payment_intent === "string" ? session.payment_intent : (session.payment_intent && session.payment_intent.id) || "" });
+    if (e.stripeSub && e.stripeStatus && e.stripeStatus !== "canceled" && !e.stripeCancelAtPeriodEnd) {
+      try {
+        var sub = await stripe(env, "POST", "subscriptions/" + e.stripeSub, { cancel_at_period_end: "true" });
+        await saveSubscription(env, uid, sub);
+      } catch (err) { console.error("lifetime: could not end subscription", e.stripeSub, err.message); }
+    }
+  }
+  return Object.assign({}, e, update);
+}
+
+// A full refund takes lifetime Pro back off (books bought separately stay).
+async function refundLifetime(env, sid, charge) {
+  var rec = await getDoc(env, "lifetimePurchases/" + sid);
+  await mergeDoc(env, "lifetimePurchases/" + sid, { refunded: !!charge.refunded, refundedAmount: charge.amount_refunded || 0, refundedAt: Date.now() });
+  if (charge.refunded && rec && rec.data.uid) await mergeDoc(env, "entitlements/" + rec.data.uid, { lifetimePaid: false, lifetimeRefunded: true });
+}
+
+async function lifetimeConfirm(request, env) {
+  var user = await requireUser(request, env);
+  var body = await readJson(request);
+  if (!/^cs_[A-Za-z0-9_]{10,200}$/.test(String(body.s || ""))) throw httpError(400, "That link isn't right.");
+  var session = await stripe(env, "GET", "checkout/sessions/" + body.s);
+  if (!session.metadata || session.metadata.kind !== "lifetime") throw httpError(404, "That isn't a lifetime purchase.");
+  if ((session.metadata.uid || session.client_reference_id) !== user.uid) throw httpError(403, "That purchase belongs to another account.");
+  if (session.payment_status !== "paid") throw httpError(402, "That payment hasn't gone through yet.");
+  var e = await grantLifetime(env, session);
+  return json({ entitlement: publicEntitlement(e) });
 }
 
 /* ------------------------------------------------------------- books */
@@ -773,6 +934,7 @@ function health(env) {
     stripeSecretKey: env.STRIPE_SECRET_KEY ? (/^(sk|rk)_live_/.test(String(env.STRIPE_SECRET_KEY)) ? "live" : "test") : false,
     stripeWebhookSecret: ok(env.STRIPE_WEBHOOK_SECRET),
     prices: { annual: priceFor(env, "annual"), monthly: priceFor(env, "monthly") },
+    lifetimePrice: !!env.STRIPE_PRICE_LIFETIME,
     books: { bucket: !!env.BOOKS, prices: ["all"].concat(BOOK_IDS).filter(function (b) { return bookPrice(env, b); }).length + " of 5 set" }
   });
 }
@@ -789,7 +951,8 @@ var ROUTES = {
   "POST book-checkout": bookCheckout,
   "POST book-link": bookLink,
   "POST my-books": myBooks,
-  "POST book-click": bookClick
+  "POST book-click": bookClick,
+  "POST lifetime-confirm": lifetimeConfirm
 };
 
 export async function onRequest(context) {
@@ -800,6 +963,7 @@ export async function onRequest(context) {
     if (request.method === "GET" && name === "health") return health(env);
     if (request.method === "GET" && name === "book-session") return await bookSession(request, env);
     if (request.method === "GET" && name === "book-file") return await bookFile(request, env);
+    if (request.method === "GET" && name === "lifetime") return await lifetimePublic(request, env);
     var fn = ROUTES[request.method + " " + name];
     if (!fn) return json({ error: "Not found" }, 404);
     return await fn(request, env);

@@ -462,7 +462,7 @@
         <div class="src-scroll"><table class="src-table" id="bkTable"><tr><td>Loading&hellip;</td></tr></table></div>
         <div class="sub-eyebrow" style="margin-top:18px">Recent PDF purchases</div>
         <div class="src-scroll"><table class="src-table" id="bkRecent"></table></div>
-        <p class="fine" id="bkNote">Sales, checkouts, downloads and Amazon clicks are counted on our server, so they include everyone (numbers only, nothing about who clicked). Amazon clicks show interest, not sales: KDP has the sales. "With a plan" is paid subscribers who get the book with Pro (yearly: all four, monthly: Asia). Refunds appear once Stripe sends "charge.refunded" to the webhook, and a refunded purchase can no longer download.</p>
+        <p class="fine" id="bkNote">Sales, checkouts, downloads and Amazon clicks are counted on our server, so they include everyone (numbers only, nothing about who clicked). Checkouts, downloads and Amazon clicks are counted from 13 October 2026. Amazon clicks show interest, not sales: KDP has the sales. "With a plan" is paid subscribers who get the book with Pro (yearly: all four, monthly: Asia). Refunds appear once Stripe sends "charge.refunded" to the webhook, and a refunded purchase can no longer download.</p>
       </div>
     </section>
 
@@ -1530,8 +1530,10 @@
       setText("bk-sales-sub", t.sales30 + " in 30 days" + (t.refunds ? ", " + t.refunds + " refunded" : "") + (t.gifts ? ", " + t.gifts + " given free" : ""));
       setText("bk-rev", money(t.revenue));
       setText("bk-rev-sub", money(t.revenue30) + " in 30 days, before fees");
-      setText("bk-conv", t.co30 ? Math.round(t.paid30 * 100 / t.co30) + "%" : "\u2013");
-      setText("bk-conv-sub", t.paid30 + " paid of " + t.co30 + " started" + (j.ga.views30 ? "; " + j.ga.users30 + " people saw the books page" : ""));
+      // Checkouts are only counted from 13 October 2026, so early sales can outnumber them.
+      var fair = t.co30 >= t.paid30;
+      setText("bk-conv", t.co30 && fair ? Math.round(t.paid30 * 100 / t.co30) + "%" : "\u2013");
+      setText("bk-conv-sub", (fair ? t.paid30 + " paid of " + t.co30 + " started" : "not enough checkouts counted yet") + (j.ga.views30 ? "; " + j.ga.users30 + " people saw the books page" : ""));
       setText("bk-dl", t.dl30);
       var via = Object.keys(t.via30).map(function (k) { return t.via30[k] + " " + ({ purchase: "bought", account: "bought, from account", subscription: "with a plan", gift: "given" }[k] || k); });
       setText("bk-dl-sub", (via.length ? via.join(", ") : "none yet") + "; " + t.dlAll + " all time");

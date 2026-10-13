@@ -2,14 +2,13 @@
   "weeks": [
     {
       "week": "2026-10-19",
+      "format": "pair",
       "recipes": [
-        "d281",
-        "d425",
-        "d266",
-        "d379",
-        "d371"
+        "d321",
+        "d227"
       ],
-      "broadcast": 26393233
+      "pack": "salmon fillet",
+      "broadcast": 26393660
     }
   ]
 }

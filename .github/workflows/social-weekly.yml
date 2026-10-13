@@ -39,6 +39,7 @@ jobs:
       MEDIA_BASE: ${{ vars.SOCIAL_MEDIA_BASE || 'https://social-media.solo-supper.pages.dev' }}
       GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
       SOCIAL_USE_VEO: ${{ vars.SOCIAL_USE_VEO }}
+      SOCIAL_AI_LABEL: ${{ vars.SOCIAL_AI_LABEL }}
       BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
       GH_TOKEN: ${{ github.token }}
     steps:

@@ -21,8 +21,8 @@ async function textModels(key) {
   return flash.concat(other).slice(0, 3).concat(["gemini-flash-latest"]);
 }
 var BANNED = /\b(straightforward|genuinely|honestly|leverage|seamless(ly)?|robust|delve|crucial|innovative|game[- ]changer|elevate|indulge|guilt[- ]free|healthy|skinny|weight[- ]loss|superfood|detox)\b/i;
-// Captions never mention AI. Instagram's own "AI info" label is set on
-// reels only (see buffer.js), as Meta requires for realistic AI video.
+// Captions never mention AI. Instagram's own "AI info" label is off unless
+// SOCIAL_AI_LABEL is true (see buffer.js).
 var AI_RE = /\s*(?:all )?(?:pictures?|images?|photos?)(?: (?:are|were))? (?:made|created|generated) (?:with|by|using) AI\.?/gi;
 
 function clean(s) {

@@ -4238,11 +4238,10 @@
       var on = sw.checked;
       sw.disabled = true;
       api("newsletter", { set: on }).then(function (j) {
-        if (!on || !j.formId || j.state === "active" || j.state === "inactive") return j;
-        toast("Signing you back up…");
+        if (!on || !j.formId) return j;
         var note = j.note;
         return kitFormSignup(j.formId, j.email || currentUser.email)
-          .then(function () { return nlRecheck(4); })
+          .then(function () { return nlRecheck(2); })
           .then(function (k) { k.note = note + "; now " + k.state; return k; });
       }).then(function (j) { nlResult(j, on); })
         .catch(function (e) { toast(e.message); }).then(function () { if (settingsOpen()) renderSettings(); });

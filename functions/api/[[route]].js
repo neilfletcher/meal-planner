@@ -396,6 +396,29 @@ async function admin(request, env) {
     return json({ at: now, totals: t, books: BOOK_IDS.map(function (id) { return per[id]; }), recent: recent.slice(0, 50), ga: ga });
   }
 
+  // Asks Stripe about recent book purchases and marks any that were refunded
+  // (for refunds the webhook missed). Up to 25 at a time.
+  if (body.action === "checkRefunds") {
+    var pr = await listCollection(env, "purchases", null, 5000);
+    var todo = pr.filter(function (r) { return /^cs_/.test(r.id) && !r.data.refunded && !r.data.gift && (r.data.createdAt || 0) > now - 180 * DAY; })
+      .sort(function (a, b) { return (b.data.createdAt || 0) - (a.data.createdAt || 0); }).slice(0, 25);
+    var res = { checked: 0, refunded: 0, unknown: 0 };
+    await Promise.all(todo.map(async function (r) {
+      try {
+        var cs = await stripe(env, "GET", "checkout/sessions/" + r.id, { expand: { 0: "payment_intent.latest_charge" } });
+        var ch = cs.payment_intent && cs.payment_intent.latest_charge;
+        if (!ch || typeof ch !== "object") { res.unknown++; return; }
+        res.checked++;
+        if (ch.amount_refunded > 0) {
+          res.refunded++;
+          await mergeDoc(env, "purchases/" + r.id, { refunded: !!ch.refunded, refundedAmount: ch.amount_refunded, refundedAt: now,
+            paymentIntent: cs.payment_intent.id });
+        }
+      } catch (e) { res.unknown++; }
+    }));
+    return json(res);
+  }
+
   if (body.action === "liveVisitors") {
     // Visitors in the last 30 minutes. Live data has no website field, so
     // Solo Supper pages are told apart by their titles, which all name it.

@@ -449,7 +449,7 @@
           <div class="eyebrow">Cookbook PDFs</div>
           <h2>Book sales and downloads</h2>
         </div>
-        <button class="ghost" id="bkReload" type="button">Update</button>
+        <div style="display:flex;gap:8px"><button class="ghost" id="bkRefunds" type="button">Check refunds</button><button class="ghost" id="bkReload" type="button">Update</button></div>
       </div>
       <div class="card">
         <div class="kpi-row">
@@ -462,7 +462,7 @@
         <div class="src-scroll"><table class="src-table" id="bkTable"><tr><td>Loading&hellip;</td></tr></table></div>
         <div class="sub-eyebrow" style="margin-top:18px">Recent PDF purchases</div>
         <div class="src-scroll"><table class="src-table" id="bkRecent"></table></div>
-        <p class="fine" id="bkNote">Sales, checkouts, downloads and Amazon clicks are counted on our server, so they include everyone (numbers only, nothing about who clicked). Checkouts, downloads and Amazon clicks are counted from 13 October 2026. Amazon clicks show interest, not sales: KDP has the sales. "With a plan" is paid subscribers who get the book with Pro (yearly: all four, monthly: Asia). Refunds appear once Stripe sends "charge.refunded" to the webhook, and a refunded purchase can no longer download.</p>
+        <p class="fine" id="bkNote">Sales, checkouts, downloads and Amazon clicks are counted on our server, so they include everyone (numbers only, nothing about who clicked). Checkouts, downloads and Amazon clicks are counted from 13 October 2026. Amazon clicks show interest, not sales: KDP has the sales. "With a plan" is paid subscribers who get the book with Pro (yearly: all four, monthly: Asia). Refunds appear when Stripe sends "charge.refunded" to the webhook, or when you press Check refunds; a refunded purchase can no longer download.</p>
       </div>
     </section>
 
@@ -1556,6 +1556,15 @@
     }).catch(function (e) { document.getElementById("bkTable").innerHTML = "<tr><td>Couldn't load: " + escapeHtml(e.message) + "</td></tr>"; });
   }
   document.getElementById("bkReload").addEventListener("click", loadBooks);
+  document.getElementById("bkRefunds").addEventListener("click", function () {
+    var btn = this;
+    btn.disabled = true; btn.textContent = "Checking\u2026";
+    adminApi({ action: "checkRefunds" }).then(function (j) {
+      btn.textContent = j.refunded ? j.refunded + " refund" + (j.refunded === 1 ? "" : "s") + " found" : "No new refunds" + (j.unknown ? " (" + j.unknown + " couldn't be checked)" : "");
+      loadBooks();
+    }).catch(function (e) { btn.textContent = "Couldn't check: " + e.message; })
+      .then(function () { setTimeout(function () { btn.disabled = false; btn.textContent = "Check refunds"; }, 4000); });
+  });
 
   // ---------- errors in people's browsers ----------
   function loadErrors() {

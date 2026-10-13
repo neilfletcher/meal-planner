@@ -733,7 +733,7 @@ async function newsletterSetting(request, env) {
     if (res.state === "active" && was !== "active" && !isInternal(env, user.email)) {
       try { await increment(env, "newsletterStats/" + new Date().toISOString().slice(0, 10), { total: 1, src_planner: 1 }); } catch (e) { /* not counted */ }
     }
-    return json({ state: res.state, was: was, note: res.note, email: user.email });
+    return json({ state: res.state, was: was, note: res.note, formId: res.formId || null, email: user.email });
   }
   if (body.set === false) return json({ state: await kitUnsubscribe(env, user.email), email: user.email });
   return json({ state: await subscriberState(env, user.email), email: user.email });

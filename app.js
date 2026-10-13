@@ -2209,7 +2209,6 @@
         (r.custom ? '<div class="modal-actions"><button type="button" class="btn btn-ghost btn-sm" id="modal-edit-btn">Edit your recipe</button></div>' : "");
 
       if (ctx && ctx.dayIdx !== undefined) {
-        var canLeftover = ctx.dayIdx < 6 && !isLeftover(ctx.dayIdx) && !(W().plan[ctx.dayIdx + 1] === r.id && isLeftover(ctx.dayIdx + 1));
         var dsN = dayServes(ctx.dayIdx), dsUsual = dsN === state.servings;
         actionsHtml = '<div class="day-serves" role="group" aria-label="People eating on ' + DOW_NAMES[ctx.dayIdx] + '">' +
           '<span class="day-serves-label">' + DOW_NAMES[ctx.dayIdx] + ": cooking for</span>" +
@@ -2220,7 +2219,6 @@
           "</div>" +
           '<div class="modal-actions">' +
           '<button class="btn btn-outline" id="modal-swap-btn">' + ico("swap") + 'Swap for something else</button>' +
-          (canLeftover ? '<button class="btn btn-outline" id="modal-leftover-btn">Cook double: leftovers ' + DOW_NAMES[ctx.dayIdx + 1] + '</button>' : "") +
           '<button class="btn btn-ghost" id="modal-remove-btn">Remove from this day</button></div>';
       } else if (ctx && ctx.batchUid !== undefined) {
         actionsHtml = '<div class="modal-actions">' +
@@ -2272,18 +2270,6 @@
       document.getElementById("modal-unlock-btn").addEventListener("click", function () { closeRecipeModal(); openPaywall(); });
     } else if (ctx && ctx.dayIdx !== undefined) {
       document.getElementById("modal-swap-btn").addEventListener("click", function () { closeRecipeModal(); openPicker({ type: "day", dayIdx: ctx.dayIdx }); });
-      var lb = document.getElementById("modal-leftover-btn");
-      if (lb) lb.addEventListener("click", function () {
-        var next = ctx.dayIdx + 1;
-        closeRecipeModal();
-        withUndo("Leftovers added to " + DOW_NAMES[next], function () {
-          clearCooked(next);
-          W().plan[next] = r.id;
-          W().leftovers = W().leftovers || {};
-          W().leftovers[next] = true;
-          onStateChanged();
-        });
-      });
       document.getElementById("modal-remove-btn").addEventListener("click", function () { closeRecipeModal(); withUndo("Dinner removed", function () { clearCooked(ctx.dayIdx); W().plan[ctx.dayIdx] = null; onStateChanged(); }); });
     } else if (ctx && ctx.batchUid !== undefined) {
       document.getElementById("modal-swap-btn").addEventListener("click", function () { closeRecipeModal(); openPicker({ type: "batchReplace", uid: ctx.batchUid }); });

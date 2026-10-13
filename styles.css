@@ -122,7 +122,7 @@ button, input, select, textarea { font-family: inherit; color: inherit; }
 .pro-pill.is-pro:hover { background: var(--olive); color: var(--olive-ink); }
 .pro-pill .pp-short { display: none; }
 /* Per-day guests ("Cooking for on Saturday") */
-.day-serves { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; padding: 12px 14px; margin: 0 0 12px; background: var(--board); border-radius: 12px; }
+.day-serves { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; padding: 12px 14px; margin: 18px 0 14px; background: var(--board); border-radius: 12px; }
 .day-serves-label { font-weight: 600; font-size: 14px; }
 .day-serves .stepper { height: 36px; }
 .day-serves .stepper button { width: 34px; height: 34px; }

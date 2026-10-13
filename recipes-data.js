@@ -1743,7 +1743,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d105", title: "Polish Dill Chicken with Soured Cream", tags: ["quick"], cuisine: "Poland", protein: "chicken",
-      prep: 8, cook: 12,
+      prep: 8, cook: 15,
       ingredients: [
         ing(150, "g", "chicken breast, sliced", "meat"), ing(2, "tbsp", "soured cream", "dairy"),
         ing(1, "tsp", "plain flour", "store"), ing(100, "ml", "chicken stock", "store"),
@@ -1751,7 +1751,7 @@ window.SOLO_RECIPES = (function () {
         ing(1, "tbsp", "vegetable oil", "store")
       ],
       steps: [
-        "Boil the new potatoes for 12 minutes until tender, then drain.",
+        "Halve any larger new potatoes and boil for 12–15 minutes until a knife slides in easily, then drain.",
         "Fry the chicken in a splash of oil over medium-high heat for 6–7 minutes until browned and cooked through.",
         "Stir in the flour, then pour in the stock and simmer for 2 minutes until slightly thickened.",
         "Season to taste, then stir in the soured cream and most of the dill, and serve over the potatoes, scattered with the rest of the dill."
@@ -2162,14 +2162,14 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d131", title: "Swedish-Style Dill Salmon with New Potatoes", tags: ["fish", "quick"], cuisine: "Sweden", protein: "fish",
-      prep: 7, cook: 12,
+      prep: 7, cook: 15,
       ingredients: [
         ing(150, "g", "salmon fillet", "meat"), ing(120, "g", "new potatoes, halved", "produce"),
         ing(null, "handful", "fresh dill, chopped", "produce"), ing(1, "tbsp", "butter", "dairy"),
         ing(0.5, "", "lemon", "produce")
       ],
       steps: [
-        "Boil the new potatoes for 12 minutes until tender, then drain.",
+        "Boil the halved new potatoes for 12–15 minutes until a knife slides in easily, then drain.",
         "Meanwhile, fry the salmon skin-side down in the butter over medium heat for 4 minutes, then flip and cook for 3–4 minutes more.",
         "Toss the potatoes with the dill and a squeeze of lemon.",
         "Season to taste, then serve the salmon with the potatoes."
@@ -2257,7 +2257,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d137", title: "Argentinian-Style Chimichurri Steak", tags: ["quick"], cuisine: "Argentina", protein: "beef",
-      prep: 8, cook: 12,
+      prep: 8, cook: 15,
       ingredients: [
         ing(160, "g", "beef sirloin steak", "meat"), ing(null, "handful", "fresh parsley, chopped", "produce"),
         ing(1, "", "garlic clove, crushed", "produce"), ing(1, "tbsp", "red wine vinegar", "store"),
@@ -2265,7 +2265,7 @@ window.SOLO_RECIPES = (function () {
         ing(1, "tbsp", "vegetable oil", "store")
       ],
       steps: [
-        "Boil the new potatoes for 12 minutes until tender, then drain.",
+        "Halve any larger new potatoes and boil for 12–15 minutes until a knife slides in easily, then drain.",
         "Mix the parsley, garlic, vinegar, chilli flakes and a splash of oil into a chimichurri sauce.",
         "Fry the steak over high heat for 2–3 minutes each side for medium, then rest for 3 minutes.",
         "Season to taste, then slice the steak and serve with the potatoes and chimichurri spooned over."
@@ -2289,7 +2289,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d139", title: "Australian-Style Barramundi with Salad", tags: ["fish", "quick"], cuisine: "Australia", protein: "fish",
-      prep: 8, cook: 12,
+      prep: 8, cook: 15,
       ingredients: [
         ing(150, "g", "white fish fillet", "meat"), ing(60, "g", "mixed salad leaves", "produce"),
         ing(0.5, "", "avocado, sliced", "produce"), ing(0.5, "", "lemon", "produce"),
@@ -2297,7 +2297,7 @@ window.SOLO_RECIPES = (function () {
         ing(1, "tbsp", "vegetable oil", "store")
       ],
       steps: [
-        "Boil the new potatoes for 12 minutes until tender, then drain.",
+        "Halve any larger new potatoes and boil for 12–15 minutes until a knife slides in easily, then drain.",
         "Fry the fish in a splash of oil over medium-high heat for 3–4 minutes each side until just cooked through and flaking easily.",
         "Toss the salad leaves and avocado with a squeeze of lemon.",
         "Season to taste, then serve the fish with the potatoes and salad."
@@ -2305,14 +2305,14 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d140", title: "Australian-Style Lamb Chops with Mint", tags: ["quick"], cuisine: "Australia", protein: "lamb",
-      prep: 7, cook: 12,
+      prep: 7, cook: 15,
       ingredients: [
         ing(2, "", "lamb chops", "meat"), ing(null, "handful", "fresh mint, chopped", "produce"),
         ing(1, "tbsp", "natural yoghurt", "dairy"), ing(120, "g", "new potatoes", "produce"),
         ing(60, "g", "green beans", "produce")
       ],
       steps: [
-        "Boil the potatoes and green beans together for 10–12 minutes until tender, then drain.",
+        "Boil the potatoes for 12–15 minutes, adding the green beans for the last 4 minutes, until a knife slides easily into the potatoes, then drain.",
         "Fry the lamb chops over medium-high heat for 3–4 minutes each side until browned and cooked to your liking.",
         "Stir the mint through the yoghurt.",
         "Season to taste, then serve the chops with the potatoes, beans and minted yoghurt."
@@ -2384,14 +2384,14 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d145", title: "Dutch-Style Kale & Sausage Mash", tags: ["quick"], cuisine: "Netherlands", protein: "pork",
-      prep: 8, cook: 14,
+      prep: 8, cook: 17,
       ingredients: [
         ing(2, "", "pork sausages, sliced", "meat"), ing(200, "g", "potato, chunked", "produce"),
         ing(60, "g", "kale, shredded", "produce"), ing(1, "tbsp", "butter", "dairy"),
         ing(1, "tbsp", "milk", "dairy")
       ],
       steps: [
-        "Boil the potato for 12 minutes until tender, adding the kale for the final 3 minutes.",
+        "Boil the potato for 15 minutes until tender, adding the kale for the final 3 minutes.",
         "Meanwhile, fry the sausage slices over medium-high heat for 6–7 minutes until browned.",
         "Drain and mash the potato and kale with the butter and milk.",
         "Season to taste, then serve the mash topped with the sausage."
@@ -2660,7 +2660,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d162", title: "Spanish-Style Baked Cod with Romesco", tags: ["fish", "quick"], cuisine: "Spain", protein: "fish",
-      prep: 8, cook: 12,
+      prep: 8, cook: 15,
       ingredients: [
         ing(150, "g", "cod fillet", "meat"), ing(0.5, "", "red pepper, sliced", "produce"),
         ing(1, "tbsp", "flaked almonds", "store"), ing(150, "g", "chopped tomatoes", "store"),
@@ -2668,7 +2668,7 @@ window.SOLO_RECIPES = (function () {
       ],
       steps: [
         "Preheat the oven to 200°C (fan 180°C).",
-        "Boil the new potatoes for 12 minutes until tender, then drain.",
+        "Halve any larger new potatoes and boil for 12–15 minutes until a knife slides in easily, then drain.",
         "Simmer the red pepper, tomatoes, almonds and garlic for 8 minutes, then blitz or mash into a rough romesco sauce.",
         "Meanwhile, bake the cod for 12 minutes until just cooked through.",
         "Season to taste, then serve the cod with the romesco sauce and potatoes."
@@ -2692,7 +2692,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d164", title: "British-Style Leek & Potato Soup", tags: ["vegetarian", "quick"], cuisine: "UK", protein: "plant-based",
-      prep: 7, cook: 14,
+      prep: 7, cook: 19,
       ingredients: [
         ing(1, "", "leek, sliced", "produce"), ing(200, "g", "potato, chunked", "produce"),
         ing(300, "ml", "vegetable stock", "store"), ing(1, "tbsp", "butter", "dairy"),
@@ -2700,7 +2700,7 @@ window.SOLO_RECIPES = (function () {
       ],
       steps: [
         "Melt the butter in a saucepan and fry the leek over medium heat for 4 minutes until soft.",
-        "Add the potato and stock, and simmer for 10 minutes until the potato is tender.",
+        "Add the potato and stock, and simmer for 15 minutes until the potato is tender.",
         "Blitz or mash until smooth, then stir through the cream.",
         "Season to taste, then serve with the crusty bread."
       ]
@@ -3709,14 +3709,14 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d228", title: "Finnish-Style Meatballs with Lingonberry", tags: ["quick"], cuisine: "Finland", protein: "pork",
-      prep: 8, cook: 12,
+      prep: 8, cook: 15,
       ingredients: [
         ing(150, "g", "pork mince", "meat"), ing(1, "tbsp", "breadcrumbs", "store"),
         ing(1, "", "egg yolk", "dairy"), ing(150, "g", "new potatoes", "produce"),
         ing(1, "tbsp", "cranberry sauce", "store")
       ],
       steps: [
-        "Boil the new potatoes for 12 minutes until tender, then drain.",
+        "Halve any larger new potatoes and boil for 12–15 minutes until a knife slides in easily, then drain.",
         "Mix the pork mince with the breadcrumbs and egg yolk, and shape into small meatballs.",
         "Fry over medium heat for 8–9 minutes, turning, until browned and cooked through.",
         "Season to taste, then serve with the potatoes and cranberry sauce."
@@ -3739,14 +3739,14 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d230", title: "Danish-Style Pork Meatballs (Frikadeller-Inspired)", tags: ["quick"], cuisine: "Denmark", protein: "pork",
-      prep: 8, cook: 12,
+      prep: 8, cook: 15,
       ingredients: [
         ing(150, "g", "pork mince", "meat"), ing(2, "tbsp", "plain flour", "store"),
         ing(1, "", "egg yolk", "dairy"), ing(150, "g", "potato, chunked", "produce"),
         ing(1, "tbsp", "butter", "dairy")
       ],
       steps: [
-        "Boil the potato for 12 minutes until tender, then drain and mash with the butter.",
+        "Boil the potato for 15 minutes until tender, then drain and mash with the butter.",
         "Mix the pork mince with the flour and egg yolk, and shape into oval patties.",
         "Fry over medium heat for 4–5 minutes each side until browned and cooked through.",
         "Season to taste, then serve with the mash."
@@ -3754,7 +3754,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d231", title: "Norwegian-Style Baked Salmon with Dill Sauce", tags: ["fish", "quick"], cuisine: "Norway", protein: "fish",
-      prep: 7, cook: 14,
+      prep: 7, cook: 15,
       ingredients: [
         ing(150, "g", "salmon fillet", "meat"), ing(2, "tbsp", "soured cream", "dairy"),
         ing(null, "handful", "fresh dill, chopped", "produce"), ing(120, "g", "new potatoes", "produce"),
@@ -3762,7 +3762,7 @@ window.SOLO_RECIPES = (function () {
       ],
       steps: [
         "Preheat the oven to 200°C (fan 180°C).",
-        "Boil the potatoes and green beans together for 12 minutes until tender, then drain.",
+        "Boil the potatoes for 12–15 minutes, adding the green beans for the last 4 minutes, until a knife slides easily into the potatoes, then drain.",
         "Bake the salmon for 12–14 minutes until just cooked through.",
         "Stir the dill through the soured cream.",
         "Season to taste, then serve the salmon with the potatoes, beans and dill sauce."
@@ -3770,14 +3770,14 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d232", title: "New Zealand-Style Lamb with Mint Sauce", tags: ["quick"], cuisine: "New Zealand", protein: "lamb",
-      prep: 7, cook: 10,
+      prep: 7, cook: 15,
       ingredients: [
         ing(160, "g", "lamb leg steak", "meat"), ing(null, "handful", "fresh mint, chopped", "produce"),
         ing(1, "tbsp", "red wine vinegar", "store"), ing(1, "tsp", "honey", "store"),
         ing(120, "g", "new potatoes", "produce")
       ],
       steps: [
-        "Boil the new potatoes for 12 minutes until tender, then drain.",
+        "Halve any larger new potatoes and boil for 12–15 minutes until a knife slides in easily, then drain.",
         "Mix the mint, vinegar and honey into a sauce.",
         "Fry the lamb over medium-high heat for 3–4 minutes each side, then rest for 2 minutes and slice.",
         "Season to taste, then serve the lamb with the potatoes and mint sauce."
@@ -3785,14 +3785,14 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d233", title: "Canadian-Style Maple Pork Chops", tags: ["quick"], cuisine: "Canada", protein: "pork",
-      prep: 7, cook: 10,
+      prep: 7, cook: 15,
       ingredients: [
         ing(1, "", "pork chop", "meat"), ing(1.5, "tbsp", "maple syrup", "store"),
         ing(1, "tsp", "Dijon mustard", "store"), ing(120, "g", "new potatoes", "produce"),
         ing(60, "g", "green beans", "produce")
       ],
       steps: [
-        "Boil the potatoes and green beans together for 12 minutes until tender, then drain.",
+        "Boil the potatoes for 12–15 minutes, adding the green beans for the last 4 minutes, until a knife slides easily into the potatoes, then drain.",
         "Fry the pork chop over medium-high heat for 4–5 minutes each side until nearly cooked through.",
         "Stir the maple syrup and mustard together, pour over the chop and cook for 1–2 minutes until glazed.",
         "Season to taste, then serve with the potatoes and beans."
@@ -7162,7 +7162,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d418", title: "Russian-Style Beef and Cabbage Solyanka Soup", tags: [], cuisine: "Russia", protein: "beef",
-      prep: 9, cook: 18,
+      prep: 9, cook: 20,
       ingredients: [
         ing(120, "g", "beef sirloin, thinly sliced", "meat"), ing(40, "g", "salami, chopped", "meat"),
         ing(0.5, "", "onion, sliced", "produce"), ing(1, "", "gherkin, chopped", "store"),
@@ -7173,9 +7173,10 @@ window.SOLO_RECIPES = (function () {
         ing(1, "tbsp", "vegetable oil", "store")
       ],
       steps: [
-        "Heat a little oil in a pan and fry the onion until soft.",
+        "Heat a little oil in a pan over high heat and sear the beef strips for 1 minute until browned, then tip onto a plate.",
+        "Lower the heat to medium and fry the onion in the same pan until soft.",
         "Add the salami and fry for 2 minutes.",
-        "Stir in the tomato puree, cook for 1 minute, then add the stock, gherkin, capers and bay leaf. Simmer for 12 minutes, then add the beef and simmer for 1–2 minutes until just cooked.",
+        "Stir in the tomato puree, cook for 1 minute, then add the stock, gherkin, capers and bay leaf. Simmer for 12 minutes, then return the beef and any juices for 1 minute until just cooked.",
         "Season to taste, then ladle into a bowl, top with a slice of lemon, a spoonful of soured cream and a scattering of dill."
       ]
     },

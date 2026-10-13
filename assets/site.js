@@ -27,6 +27,62 @@
     window.addEventListener("load", function () { navigator.serviceWorker.register("/sw.js").catch(function () {}); });
   }
 
+  /* ---------- home page: the "how it works" demo ----------
+     Plays through plan, shop and cook on a loop. Still for anyone who has
+     asked for reduced motion, paused when off screen or in a hidden tab, and
+     each step can be picked by hand. */
+  var demo = document.querySelector(".demo");
+  if (demo) (function () {
+    var SCENE_MS = 5500;
+    var steps = demo.querySelectorAll(".demo-step"), scenes = demo.querySelectorAll(".scene");
+    var timeEl = demo.querySelector(".sc-time");
+    var still = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var cur = 0, timer = null, tick = null, visible = false, startedAt = 0;
+    demo.style.setProperty("--demo-ms", SCENE_MS + "ms");
+    function show(n) {
+      cur = n;
+      steps.forEach(function (b, i) {
+        b.classList.toggle("is-on", i === n);
+        if (i === n) b.setAttribute("aria-current", "step"); else b.removeAttribute("aria-current");
+      });
+      scenes.forEach(function (s, i) { s.classList.toggle("is-on", i === n); });
+      // Restart the scene's entrance animations.
+      demo.classList.remove("is-playing");
+      void demo.offsetWidth;
+      if (!still && visible) demo.classList.add("is-playing");
+      if (timeEl) {
+        var mins = +timeEl.getAttribute("data-mins") || 10;
+        clearInterval(tick);
+        timeEl.textContent = mins + ":00";
+        if (n === 2 && !still && visible) {
+          startedAt = Date.now();
+          tick = setInterval(function () {
+            var left = Math.max(0, mins * 60 - Math.floor((Date.now() - startedAt) / 1000));
+            timeEl.textContent = Math.floor(left / 60) + ":" + ("0" + left % 60).slice(-2);
+          }, 250);
+        }
+      }
+    }
+    function play() {
+      clearTimeout(timer);
+      if (still || !visible || document.hidden) return;
+      timer = setTimeout(function () { show((cur + 1) % scenes.length); play(); }, SCENE_MS);
+    }
+    function stop() { clearTimeout(timer); clearInterval(tick); demo.classList.remove("is-playing"); }
+    steps.forEach(function (b, i) { b.addEventListener("click", function () { show(i); play(); }); });
+    if (still) return;
+    if ("IntersectionObserver" in window) {
+      new IntersectionObserver(function (es) {
+        var was = visible;
+        visible = es[es.length - 1].isIntersecting;
+        if (visible && !was) { show(cur); play(); } else if (!visible) stop();
+      }, { threshold: 0.35 }).observe(demo);
+    } else { visible = true; show(0); play(); }
+    document.addEventListener("visibilitychange", function () {
+      if (document.hidden) stop(); else if (visible) { show(cur); play(); }
+    });
+  })();
+
   /* ---------- returning planners go straight to their week ---------- */
   if (lsGet("soloSupper.state.v1")) {
     document.querySelectorAll("[data-planner-cta]").forEach(function (a) {

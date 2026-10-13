@@ -490,11 +490,128 @@ function sectionHead(eyebrow, h2, linkHref, linkText) {
     (linkHref ? '<a class="text-link" href="' + linkHref + '">' + linkText + "</a>" : "") + "</div>";
 }
 
+/* ------------------------------------------------- home page: the hero */
+// Three dinners that change every day. A small inline script picks them by
+// the visitor's date from HERO_POOL (each dinner once per 40-day cycle), so they change
+// without a rebuild; the build-day picks are the fallback without JavaScript.
+var HERO_POOL = (function () {
+  var byCuisine = {}, order = [];
+  RECIPES.forEach(function (r) {
+    if (!r.photo) return;
+    if (!byCuisine[r.cuisine]) { byCuisine[r.cuisine] = []; order.push(r.cuisine); }
+    byCuisine[r.cuisine].push(r);
+  });
+  var pool = [], round = 0;
+  while (pool.length < 120) {
+    var added = 0;
+    order.forEach(function (c) { var r = byCuisine[c][round]; if (r && pool.length < 120) { pool.push(r); added++; } });
+    if (!added) break;
+    round++;
+  }
+  return pool;
+})();
+// Seeded shuffle per cycle, then three at a time: the same picks for everyone on a given day.
+var HERO_PICK_SRC = "function(n,day){var L=Math.floor(n/3),c=Math.floor(day/L),k=day%L,s=(c*2654435761)>>>0,a=[],i,j,t;" +
+  "for(i=0;i<n;i++)a.push(i);for(i=n-1;i>0;i--){s=(s+0x6D2B79F5)>>>0;t=Math.imul(s^(s>>>15),1|s);t=(t+Math.imul(t^(t>>>7),61|t))^t;" +
+  "j=Math.floor(((t^(t>>>14))>>>0)/4294967296*(i+1));t=a[i];a[i]=a[j];a[j]=t;}return a.slice(k*3,k*3+3);}";
+var heroPick = new Function("return " + HERO_PICK_SRC)();
+function ukDayNumber() {
+  var p = new Intl.DateTimeFormat("en-CA", { timeZone: "Europe/London" }).format(new Date()).split("-");
+  return Math.floor(Date.UTC(+p[0], +p[1] - 1, +p[2]) / 864e5);
+}
+
+// The moving "how it works" demo: a real low-waste week, its shopping list and cooking mode.
+var DEMO = (function () {
+  var cands = RECIPES.filter(function (r) { return r.photo; });
+  var best = null;
+  HERO_POOL.slice(0, 60).forEach(function (start) {
+    var ids = [start.id], cuisines = {};
+    cuisines[start.cuisine] = 1;
+    while (ids.length < 5) {
+      var base = sumNeeds(ids), pickR = null, pickS = Infinity;
+      cands.forEach(function (c) {
+        if (ids.indexOf(c.id) !== -1 || cuisines[c.cuisine] || c.protein === BY_ID[ids[ids.length - 1]].protein) return;
+        var t = sumNeeds(ids.concat(c.id));
+        var shares = Object.keys(NEEDS[c.id]).filter(function (k) { return k.charAt(0) !== "?" && base[k]; }).length;
+        var s = PK.wasteOf(t) - shares * 0.05;
+        if (s < pickS || (s === pickS && c.id < pickR.id)) { pickS = s; pickR = c; }
+      });
+      if (!pickR) break;
+      ids.push(pickR.id); cuisines[pickR.cuisine] = 1;
+    }
+    if (ids.length < 5) return;
+    var w = PK.wasteOf(sumNeeds(ids));
+    if (!best || w < best.w) best = { ids: ids, w: w };
+  });
+  var week = best.ids.map(function (id) { return BY_ID[id]; });
+  var days = ["Mon", "Tue", "Wed", "Thu", "Fri"];
+  var tot = sumNeeds(best.ids);
+  var lines = Object.keys(tot).filter(function (k) { return k.charAt(0) !== "?" && PK.PACKS[k]; }).map(function (k) {
+    var on = [];
+    week.forEach(function (r, i) { if (NEEDS[r.id][k]) on.push(days[i]); });
+    return { k: k, on: on, perish: PK.PACKS[k].perish };
+  }).sort(function (a, b) { return b.on.length - a.on.length || b.perish - a.perish || (a.k < b.k ? -1 : 1); });
+  var shared = lines.filter(function (l) { return l.on.length > 1; }).length;
+  var shop = lines.slice(0, 6).map(function (l) {
+    var name = packName(l.k);
+    return { name: name.charAt(0).toUpperCase() + name.slice(1), qty: fmtQty(l.k, tot[l.k]), on: l.on.join(", ") };
+  });
+  // Cooking mode on Monday's dinner, at the first step with a time in it.
+  var cook = week[0], stepIx = 0, mins = 10;
+  cook.steps.some(function (s, i) { var m = /(\d+)(?:[–-]\d+)? minutes/.exec(s); if (m && +m[1] >= 3) { stepIx = i; mins = +m[1]; return true; } return false; });
+  var stepText = cook.steps[stepIx];
+  if (stepText.length > 150) {
+    var dot = stepText.indexOf(". ");
+    var par = stepText.indexOf(" (");
+    stepText = dot > 40 && dot < 150 ? stepText.slice(0, dot + 1) : par > 60 && par < 150 ? stepText.slice(0, par) + "." : stepText.slice(0, stepText.lastIndexOf(" ", 145)) + "…";
+  }
+  var staples = {};
+  week.forEach(function (r) { r.ingredients.forEach(function (i) { if (i.cat === "store") staples[i.item.split(",")[0].toLowerCase()] = 1; }); });
+  return { week: week, days: days, shop: shop, shared: shared, staples: Object.keys(staples).length, left: leftoversOf(tot).length,
+    cook: cook, stepIx: stepIx, steps: cook.steps.length, stepText: stepText, mins: mins };
+})();
+
+function demoHtml(rel) {
+  var D = DEMO;
+  var step = function (n, title, text, on) {
+    return '<li><button type="button" class="demo-step' + (on ? " is-on" : "") + '" data-scene="' + n + '"' + (on ? ' aria-current="step"' : "") + ">" +
+      '<span class="demo-n">' + (n + 1) + '</span><span class="demo-st"><strong>' + title + "</strong><span>" + text + "</span></span>" +
+      '<span class="demo-bar"></span></button></li>';
+  };
+  var plan = '<div class="scene is-on" data-scene="0"><div class="sc-head"><span class="sc-eye">This week</span><span class="sc-h">5 dinners for one</span></div><ul class="sc-days">' +
+    D.week.map(function (r, i) {
+      return '<li style="--i:' + i + '"><span class="sc-day">' + D.days[i] + '</span><img src="' + rel + "img/recipes/" + r.id + '.webp" alt="" width="720" height="540" loading="lazy" decoding="async">' +
+        '<span class="sc-dish">' + esc(r.title) + "</span></li>";
+    }).join("") + "</ul>" +
+    '<p class="sc-badge">' + ICON.leaf + D.shared + " packs shared" + (D.left ? "" : ", nothing to bin") + "</p></div>";
+  var shop = '<div class="scene" data-scene="1"><div class="sc-head"><span class="sc-eye">Shopping list</span><span class="sc-h">One shop, added up</span></div><ul class="sc-shop">' +
+    D.shop.map(function (l, i) {
+      return '<li style="--i:' + i + '"><span class="sc-tick"></span><span class="sc-item">' + esc(l.name) + '<small>' + esc(l.on) + '</small></span><span class="sc-qty">' + esc(l.qty) + "</span></li>";
+    }).join("") + "</ul>" +
+    '<p class="sc-note">+ ' + D.staples + " cupboard staples hidden</p></div>";
+  var cook = '<div class="scene" data-scene="2"><div class="sc-head"><span class="sc-eye">Cooking mode</span><span class="sc-h">' + esc(D.cook.title) + "</span></div>" +
+    '<p class="sc-stepno">Step ' + (D.stepIx + 1) + " of " + D.steps + '</p><p class="sc-step">' + esc(D.stepText) + "</p>" +
+    '<div class="sc-timer" style="--mins:' + D.mins + '"><svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="17"/><circle class="sc-ring" cx="20" cy="20" r="17" pathLength="100"/></svg>' +
+    '<span class="sc-time" data-mins="' + D.mins + '">' + D.mins + ":00</span></div></div>";
+  return '<div class="demo" role="group" aria-label="How Solo Supper works">' +
+    '<ol class="demo-steps">' +
+    step(0, "Plan the week", "Pick dinners, or let Pro choose ones that share their packs.", true) +
+    step(1, "Shop once", "One list, added up, so two half lemons become one.", false) +
+    step(2, "Cook for one", "Every recipe is a single portion, with timers.", false) +
+    '</ol><div class="phone" aria-hidden="true"><div class="phone-screen">' + plan + shop + cook + "</div></div></div>";
+}
+
 /* ------------------------------------------------------------ home page */
 (function buildHome() {
   var rel = "";
   var pick = function (ids) { return ids.map(function (id) { return BY_ID[id]; }).filter(Boolean); };
-  var mosaic = pick(["d9", "d3", "d2", "d14", "d19"]);
+  var mosaic = heroPick(HERO_POOL.length, ukDayNumber()).map(function (i) { return HERO_POOL[i]; });
+  var heroData = JSON.stringify(HERO_POOL.map(function (r) { return [r.id, r.slug, esc(r.title), esc(r.cuisine), total(r)]; })).replace(/</g, "\\u003c");
+  var heroScript = "<script>(function(){var P=" + heroData + ",f=" + HERO_PICK_SRC + ",x=[0,1,2],h=\"\";" +
+    "try{var d=new Date();x=f(P.length,Math.floor(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate())/864e5));}catch(e){}" +
+    "x.forEach(function(i,n){var r=P[i];h+='<a class=\"tile'+(n?'':' tile-big')+'\" href=\"recipes/'+r[1]+'/\"><img class=\"tile-img\" src=\"img/recipes/'+r[0]+'.webp\" alt=\"'+r[2]+'\" width=\"720\" height=\"540\" fetchpriority=\"high\">" +
+    "<span class=\"tile-cap\"><span class=\"tile-title\">'+r[2]+'</span><span class=\"tile-meta\">'+r[3]+' &middot; '+r[4]+' min</span></span></a>';});" +
+    "document.currentScript.insertAdjacentHTML(\"afterend\",h);})();</script>";
   var tonight = pick(["d1", "d17", "d5", "d12", "d22", "d30", "d8", "d4"]);
   var week = pick(["d6", "d25", "d11", "d2", "d15", "d27", "d19"]);
   var days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
@@ -518,7 +635,8 @@ function sectionHead(eyebrow, h2, linkHref, linkText) {
     '<a class="btn btn-outline btn-lg" href="recipes/">Browse recipes</a></div>' +
     '<p class="small muted">Every recipe, the planner and the shopping list are free. <a href="#pro">Pro</a> adds low-waste planning: try it free for 14 days.</p>' +
     "</div>" +
-    '<div class="hero2-mosaic">' + mosaic.map(function (r, i) { return tile(r, i === 0 ? "tile-big" : "", i < 3); }).join("") + "</div>" +
+    '<div class="hero2-mosaic">' + heroScript + "<noscript>" + mosaic.map(function (r, i) { return tile(r, i === 0 ? "tile-big" : "", true); }).join("") + "</noscript>" +
+    demoHtml(rel) + "</div>" +
     "</section>" +
 
     '<section class="wrap section">' +

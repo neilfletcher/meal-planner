@@ -3380,7 +3380,16 @@
   var settingsBackdrop = document.getElementById("settings-modal-backdrop");
   var settingsModal = document.getElementById("settings-modal");
   function settingsOpen() { return settingsBackdrop && !settingsBackdrop.hidden; }
-  function openSettings() { renderSettings(); settingsBackdrop.hidden = false; }
+  function openSettings() {
+    settingsBackdrop.hidden = false;
+    try { renderSettings(); } catch (e) {
+      console.error("Settings failed to render", e);
+      settingsModal.innerHTML = '<div class="modal-close-row"><button class="icon-btn" id="settings-close-btn" aria-label="Close">' + ico("close") + "</button></div><h2>Settings</h2><p class=\"settings-note\">Something went wrong loading settings. Please reload the page and try again.</p>";
+      document.getElementById("settings-close-btn").addEventListener("click", closeSettings);
+    }
+  }
+  // One section failing (a slow account lookup, an odd browser) mustn't stop the rest showing.
+  function safeSection(fn, name) { try { return fn() || ""; } catch (e) { console.error("Settings section failed: " + name, e); return ""; } }
   function closeSettings() { settingsBackdrop.hidden = true; settingsModal.innerHTML = ""; deleteArmed = false; }
   function renderSettings() {
     var avoid = state.avoid || {};
@@ -3391,8 +3400,8 @@
     settingsModal.innerHTML =
       '<div class="modal-close-row"><button class="icon-btn" id="settings-close-btn" aria-label="Close">' + ico("close") + '</button></div>' +
       "<h2>Settings</h2>" +
-      accountSettingsHtml() + booksSettingsHtml() + newsletterSettingsHtml() +
-      installSettingsHtml() +
+      safeSection(accountSettingsHtml, "account") + safeSection(booksSettingsHtml, "books") + safeSection(newsletterSettingsHtml, "newsletter") +
+      safeSection(installSettingsHtml, "install") +
       "<h3>Never show me</h3>" +
       '<div class="chip-row">' + AVOID_OPTIONS.map(function (o) {
         return '<button type="button" class="chip" data-avoid="' + o[0] + '" aria-pressed="' + (avoid[o[0]] ? "true" : "false") + '">' + esc(o[1]) + "</button>";
@@ -3425,9 +3434,9 @@
     });
     document.getElementById("settings-basics-btn").addEventListener("click", addUsualBasics);
     document.getElementById("analytics-on").addEventListener("change", function (e) { setAnalyticsConsent(e.target.checked); });
-    wireAccountSettings();
-    wireBooksSettings();
-    wireNewsletterSettings();
+    safeSection(wireAccountSettings, "account wiring");
+    safeSection(wireBooksSettings, "books wiring");
+    safeSection(wireNewsletterSettings, "newsletter wiring");
     var inst = document.getElementById("install-app-btn");
     if (inst) inst.addEventListener("click", function () { closeSettings(); promptInstall(); });
     document.getElementById("newonly-on").addEventListener("change", function (e) { state.newOnly = e.target.checked; onStateChanged(); toast(state.newOnly ? "Suggestions now skip dishes you\u2019ve cooked." : "Suggestions can include dishes you\u2019ve cooked."); });
@@ -3712,12 +3721,13 @@
         return ref.set(payload);
       }).then(function () {
         Object.keys(changed).forEach(function (f) { if (f !== "updatedAt") lastSyncedJson[f] = JSON.stringify(payload[f]); });
-        savePending = false;
-        if (!saveTimer) markUnsynced(false);
-        setSyncStatus("Synced");
+        // Another change may have been made while this one was saving: keep
+        // ignoring cloud copies until that one has gone too, or it gets undone.
+        savePending = !!saveTimer;
+        if (!saveTimer) { markUnsynced(false); setSyncStatus("Synced"); }
       }).catch(function () {
-        savePending = false;
-        setSyncStatus("Sync failed");
+        savePending = !!saveTimer;
+        if (!saveTimer) setSyncStatus("Sync failed");
       });
     }, 400);
   }
@@ -3728,7 +3738,7 @@
     var first = true;
     setSyncStatus("Syncing…");
     firestoreUnsub = ref.onSnapshot({ includeMetadataChanges: true }, function (snap) {
-      if (snap.metadata.hasPendingWrites || savePending) return; // our own write in flight; wait for the confirmed copy
+      if (snap.metadata.hasPendingWrites || savePending || saveTimer) return; // our own write in flight; wait for the confirmed copy
       if (!snap.exists) {
         var payload = syncPayload();
         payload.updatedAt = firebase.firestore.FieldValue.serverTimestamp();

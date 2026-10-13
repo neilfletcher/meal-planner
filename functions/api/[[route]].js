@@ -531,9 +531,15 @@ async function stripeWebhook(request, env) {
     var pi = typeof obj.payment_intent === "string" ? obj.payment_intent : obj.payment_intent.id;
     var found = await stripe(env, "GET", "checkout/sessions", { payment_intent: pi, limit: 1 });
     var cs = found.data && found.data[0];
-    if (!cs || !cs.metadata || cs.metadata.kind !== "books") return json({ received: true, ignored: "not a book purchase" });
-    try { await paidBookSession(env, cs.id); } catch (e) { /* recorded below either way */ }
-    await mergeDoc(env, "purchases/" + cs.id, { refunded: !!obj.refunded, refundedAmount: obj.amount_refunded || 0, refundedAt: Date.now() });
+    var sid = cs && cs.metadata && cs.metadata.kind === "books" ? cs.id : "";
+    if (!sid) {
+      // Fall back to the payment saved with the purchase.
+      var mine = await queryWhere(env, "purchases", "paymentIntent", pi, 1);
+      if (mine[0]) sid = mine[0].id;
+    }
+    if (!sid) return json({ received: true, ignored: "not a book purchase" });
+    if (cs) { try { await paidBookSession(env, sid); } catch (e) { /* recorded below either way */ } }
+    await mergeDoc(env, "purchases/" + sid, { refunded: !!obj.refunded, refundedAmount: obj.amount_refunded || 0, refundedAt: Date.now() });
     return json({ received: true });
   }
 

@@ -514,7 +514,7 @@ var HERO_POOL = (function () {
 var HERO_PICK_SRC = "function(n,day){var L=Math.floor(n/3),c=Math.floor(day/L),k=day%L,s=(c*2654435761)>>>0,a=[],i,j,t;" +
   "for(i=0;i<n;i++)a.push(i);for(i=n-1;i>0;i--){s=(s+0x6D2B79F5)>>>0;t=Math.imul(s^(s>>>15),1|s);t=(t+Math.imul(t^(t>>>7),61|t))^t;" +
   "j=Math.floor(((t^(t>>>14))>>>0)/4294967296*(i+1));t=a[i];a[i]=a[j];a[j]=t;}return a.slice(k*3,k*3+3);}";
-var heroPick = new Function("return " + HERO_PICK_SRC)();
+var dailyHeroPick = new Function("return " + HERO_PICK_SRC)();
 function ukDayNumber() {
   var p = new Intl.DateTimeFormat("en-CA", { timeZone: "Europe/London" }).format(new Date()).split("-");
   return Math.floor(Date.UTC(+p[0], +p[1] - 1, +p[2]) / 864e5);
@@ -605,7 +605,7 @@ function demoHtml(rel) {
 (function buildHome() {
   var rel = "";
   var pick = function (ids) { return ids.map(function (id) { return BY_ID[id]; }).filter(Boolean); };
-  var mosaic = heroPick(HERO_POOL.length, ukDayNumber()).map(function (i) { return HERO_POOL[i]; });
+  var mosaic = dailyHeroPick(HERO_POOL.length, ukDayNumber()).map(function (i) { return HERO_POOL[i]; });
   var heroData = JSON.stringify(HERO_POOL.map(function (r) { return [r.id, r.slug, esc(r.title), esc(r.cuisine), total(r)]; })).replace(/</g, "\\u003c");
   var heroScript = "<script>(function(){var P=" + heroData + ",f=" + HERO_PICK_SRC + ",x=[0,1,2],h=\"\";" +
     "try{var d=new Date();x=f(P.length,Math.floor(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate())/864e5));}catch(e){}" +

@@ -69,7 +69,8 @@ export async function subscriberState(env, email) {
 }
 export async function unsubscribe(env, email) {
   var s = await findSubscriber(env, email);
-  if (s && s.state === "active") await kit(env, "POST", "subscribers/" + s.id + "/unsubscribe", {});
+  // Not trusting the (possibly stale) state here either.
+  if (s) { try { await kit(env, "POST", "subscribers/" + s.id + "/unsubscribe", {}); } catch (e) { /* already off */ } }
   return "cancelled";
 }
 // Joining again after unsubscribing: Kit keeps unsubscribes and its API
@@ -80,11 +81,11 @@ export async function unsubscribe(env, email) {
 export async function resubscribe(env, email, source) {
   email = String(email).trim().toLowerCase();
   await subscribe(env, email, source);
+  // Kit's search can lag minutes behind (it may still say "active" just after
+  // an unsubscribe), so the browser always submits the form, whatever it says.
   var state = await subscriberState(env, email);
-  var out = { state: state, note: "" };
-  if (state !== "active" && state !== "inactive") {
-    if (env.KIT_FORM_ID) { out.formId = String(env.KIT_FORM_ID); out.note = "browser will submit form " + env.KIT_FORM_ID; }
-    else out.note = "KIT_FORM_ID isn't set";
-  }
+  var out = { state: state, note: "search said " + state };
+  if (env.KIT_FORM_ID) out.formId = String(env.KIT_FORM_ID);
+  else out.note += "; KIT_FORM_ID isn't set";
   return out;
 }

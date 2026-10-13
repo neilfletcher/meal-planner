@@ -937,12 +937,17 @@ LEGAL.forEach(function (l) {
 // prices set in Cloudflare (see functions/_shared/books.js).
 var BOOK_PDF_PRICE = "4.99", BOOK_BUNDLE_PRICE = "12.99";
 var BOOK_LIST = [
-  { id: "asia", name: "Asia", count: 112, from: "China, Japan, Korea, Thailand, Vietnam, India and beyond", amazon: "" },
-  { id: "mediterranean-middle-east", name: "Mediterranean & Middle East", count: 126, from: "Italy, Greece, Spain, Lebanon, Morocco, Iran and beyond", amazon: "" },
-  { id: "americas-africa", name: "Americas & Africa", count: 105, from: "Mexico, the Caribbean, the USA, Peru, Nigeria, South Africa and beyond", amazon: "" },
-  { id: "britain-europe", name: "Britain & Europe", count: 99, from: "Britain, Ireland, Scandinavia, Germany, Poland, Hungary and beyond", amazon: "" }
+  { id: "asia", name: "Asia", count: 112, from: "China, Japan, Korea, Thailand, Vietnam, India and beyond", paperback: "https://www.amazon.co.uk/dp/B0HMWXN8L8", kindle: "https://www.amazon.co.uk/dp/B0HMSS9DSS" },
+  { id: "mediterranean-middle-east", name: "Mediterranean & Middle East", count: 126, from: "Italy, Greece, Spain, Lebanon, Morocco, Iran and beyond", paperback: "", kindle: "" },
+  { id: "americas-africa", name: "Americas & Africa", count: 105, from: "Mexico, the Caribbean, the USA, Peru, Nigeria, South Africa and beyond", paperback: "", kindle: "" },
+  { id: "britain-europe", name: "Britain & Europe", count: 99, from: "Britain, Ireland, Scandinavia, Germany, Poland, Hungary and beyond", paperback: "", kindle: "" }
 ];
-function amazonLink(b) { return b.amazon || "https://www.amazon.co.uk/s?k=" + encodeURIComponent("Solo Supper " + b.name + " Neil Fletcher"); }
+// Until a book's Amazon links are in, its button searches Amazon for it.
+function amazonButtons(b) {
+  var a = function (href, text) { return '<a class="btn btn-outline btn-lg" href="' + esc(href) + '" target="_blank" rel="noopener">' + text + "</a>"; };
+  if (b.paperback || b.kindle) return (b.paperback ? a(b.paperback, "Paperback on Amazon") : "") + (b.kindle ? a(b.kindle, "Kindle") : "");
+  return a("https://www.amazon.co.uk/s?k=" + encodeURIComponent("Solo Supper " + b.name + " Neil Fletcher"), "Paperback or Kindle on Amazon");
+}
 (function () {
   var rel = "../";
   var samples = ["Contents", "A week of dinners", "Every dish photographed", "Measured for one"];
@@ -953,7 +958,7 @@ function amazonLink(b) { return b.amazon || "https://www.amazon.co.uk/s?k=" + en
       '<h2 class="display-m">' + esc(b.name) + "</h2>" +
       '<p class="lead">' + b.count + " dinners for one from " + esc(b.from) + ", planned into weeks that share their ingredients.</p>" +
       '<div class="book-buy"><button type="button" class="btn btn-primary btn-lg" data-buy="' + b.id + '">PDF &pound;' + BOOK_PDF_PRICE + "</button>" +
-      '<a class="btn btn-outline btn-lg" href="' + esc(amazonLink(b)) + '" target="_blank" rel="noopener">Paperback or Kindle on Amazon</a></div>' +
+      amazonButtons(b) + "</div>" +
       '<p class="small muted book-note" data-buy-msg="' + b.id + '"></p>' +
       '<div class="book-pages scroll-x">' + [1, 2, 3, 4].map(function (k) {
         return '<figure><img src="' + rel + "img/books/" + b.id + "-p" + k + '.webp" alt="' + esc(samples[k - 1]) + " page from Solo Supper: " + esc(b.name) + '" width="880" height="1100" loading="lazy"><figcaption>' + samples[k - 1] + "</figcaption></figure>";

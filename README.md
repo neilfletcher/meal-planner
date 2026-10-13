@@ -197,6 +197,6 @@ Setup, once:
 1. **Files.** Cloudflare > R2 > Create bucket `solo-supper-books` (private). Upload the four screen PDFs, named exactly `solo-supper-asia.pdf`, `solo-supper-mediterranean-middle-east.pdf`, `solo-supper-americas-africa.pdf`, `solo-supper-britain-europe.pdf`.
 2. **Binding.** Workers & Pages > solo-supper > Settings > Bindings > Add > R2 bucket: variable name `BOOKS`, bucket `solo-supper-books`. Redeploy.
 3. **Prices.** In Stripe, create five one-off products (tax category: e-books / digital books), and put each price ID in Cloudflare variables: `STRIPE_PRICE_BOOK_ASIA`, `STRIPE_PRICE_BOOK_MED`, `STRIPE_PRICE_BOOK_AMERICAS`, `STRIPE_PRICE_BOOK_BRITAIN`, `STRIPE_PRICE_BOOK_ALL`. The prices shown on the page are `BOOK_PDF_PRICE` and `BOOK_BUNDLE_PRICE` in `scripts/build-site.js`; keep them the same.
-4. **Amazon links.** Add each book's Amazon link to `BOOK_LIST` in `scripts/build-site.js` (until then the button searches Amazon for the title).
+4. **Amazon links.** Add each book's paperback and kindle links to `BOOK_LIST` in `scripts/build-site.js` (until then the button searches Amazon for the title).
 
 `/api/health` shows `books.bucket` and how many prices are set. Purchases are recorded in Firestore under `purchases/{checkout session}`; a buyer who later signs in with the same email sees the books in their account.

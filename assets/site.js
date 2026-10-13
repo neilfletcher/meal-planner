@@ -152,9 +152,15 @@
   });
 
   /* ---------- the weekly email sign-up (footer, recipe pages) ---------- */
+  if (lsGet("soloSupper.newsletter") === "yes") document.querySelectorAll(".nl-tick").forEach(function (t) { t.hidden = true; t.querySelector("input").checked = false; });
   document.querySelectorAll("form[data-newsletter]").forEach(function (f) {
     var input = f.querySelector('input[type="email"]'), btn = f.querySelector("button"), msg = f.querySelector(".nl-msg");
-    if (lsGet("soloSupper.newsletter") === "yes") f.classList.add("is-joined");
+    if (lsGet("soloSupper.newsletter") === "yes") {
+      // Already on the list (this browser, or checked in the planner): say so instead of asking.
+      f.classList.add("is-joined");
+      f.querySelector(".nl-label").textContent = "You\u2019re on the weekly email list. Thanks for reading.";
+      f.querySelector(".nl-msg").innerHTML = 'To stop, use the unsubscribe link in any email, or the switch in the planner\u2019s <a href="' + BASE + 'plan/">settings</a>.';
+    }
     f.addEventListener("submit", function (ev) {
       ev.preventDefault();
       var email = input.value.trim();
@@ -165,6 +171,7 @@
         .then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { if (!r.ok) throw new Error(j.error || "Something went wrong. Please try again."); }); })
         .then(function () {
           lsSet("soloSupper.newsletter", "yes");
+          document.querySelectorAll(".nl-tick").forEach(function (t) { t.hidden = true; });
           f.classList.add("is-done");
           msg.textContent = "You're on the list. The first one arrives on Saturday.";
           if (window.gtag) window.gtag("event", "sign_up", { method: "newsletter", source: f.getAttribute("data-newsletter") });

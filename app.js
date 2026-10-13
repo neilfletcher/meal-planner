@@ -630,6 +630,7 @@
         trackSignUp(user);
         startCloudSync(user);
         startEntitlement(user);
+        setTimeout(syncNewsletterFlag, 4000);
         if (signinBackdrop && !signinBackdrop.hidden) closeSignIn();
         if (afterSignIn && afterSignIn.always) { var go = afterSignIn; afterSignIn = null; setTimeout(go, 800); }
         else if (afterSignIn) { pendingAfterPro = afterSignIn; afterSignIn = null; }
@@ -3877,6 +3878,12 @@
       if (!isNativeApp() && paywallBackdrop && !paywallBackdrop.hidden) renderProPaywall(lastProReason);
     }
   }
+  function syncNewsletterFlag() {
+    var last = +lsGet("soloSupper.newsletterChecked") || 0;
+    if (isNativeApp() || Date.now() - last < 864e5) return;
+    lsSet("soloSupper.newsletterChecked", String(Date.now()));
+    api("newsletter", {}).then(function (j) { nlRemember(j.state); }).catch(function () { /* try again tomorrow */ });
+  }
   function startEntitlement(user) {
     stopEntitlement();
     if (!isNativeApp()) {
@@ -4191,23 +4198,39 @@
     }).join("") + "</ul>" + (mine.length < 4 ? '<p class="settings-note">The others are on ' + shop + ", or all four come with a yearly subscription.</p>" : "");
   }
   /* ---------- the weekly email, from settings ---------- */
+  // The weekly email switch. Kit is the truth (people also unsubscribe from
+  // the emails), so it's checked when settings open; the answer is kept in
+  // this browser so the website stops offering the sign-up to subscribers.
+  var nlState = null, nlFor = null, nlBusy = false;
+  function nlRemember(state) { lsSet("soloSupper.newsletter", state === "active" ? "yes" : "no"); }
+  function loadNewsletterState() {
+    if (!currentUser || nlBusy) return;
+    nlBusy = true;
+    api("newsletter", {}).then(function (j) { nlState = j.state; nlFor = currentUser && currentUser.uid; nlRemember(j.state); })
+      .catch(function () { nlState = "error"; nlFor = currentUser && currentUser.uid; })
+      .then(function () { nlBusy = false; if (settingsOpen()) renderSettings(); });
+  }
   function newsletterSettingsHtml() {
     if (isNativeApp() || !window.firebaseAuth || !currentUser || !currentUser.email) return "";
-    if (lsGet("soloSupper.newsletter") === "yes") return "<h3>The weekly email</h3><p class=\"settings-note\">You're on the list: two dinners for one that share a pack, every Saturday. To stop, use the unsubscribe link in any email.</p>";
-    return "<h3>The weekly email</h3><p class=\"settings-note\">Every Saturday: two dinners for one, paired so the second finishes what the first opens, with a link that adds both to your week, and one tip for the planner. Free, and you can unsubscribe from any email.</p>" +
-      '<button type="button" class="btn btn-outline btn-sm" id="nl-join-btn">Send it to ' + esc(currentUser.email) + "</button>";
+    var head = "<h3>The weekly email</h3>";
+    var about = '<p class="settings-note">Every Saturday: two dinners for one, paired so the second finishes what the first opens, and one tip for the planner. Sent to ' + esc(currentUser.email) + ".</p>";
+    if (nlFor !== currentUser.uid || nlState === null) { loadNewsletterState(); return head + '<p class="settings-note">Checking\u2026</p>'; }
+    if (nlState === "error") return head + about + '<p class="settings-note">Couldn\u2019t check just now. Try again later.</p>';
+    if (nlState === "bounced" || nlState === "complained") return head + about + '<p class="settings-note">Emails to this address couldn\u2019t be delivered, so it\u2019s been taken off the list. Email us if you\u2019d like it back on.</p>';
+    return head + '<label class="switch-row"><input type="checkbox" id="nl-switch"' + (nlState === "active" ? " checked" : "") + "> Send me the weekly email</label>" + about;
   }
   function wireNewsletterSettings() {
-    var b = document.getElementById("nl-join-btn");
-    if (!b) return;
-    b.addEventListener("click", function () {
-      b.disabled = true; b.textContent = "Signing you up\u2026";
-      api("subscribe", { source: "planner" }).then(function () {
-        lsSet("soloSupper.newsletter", "yes");
-        track("sign_up", { method: "newsletter", source: "planner" });
-        toast("You're on the list. The first one arrives on Saturday.");
-        if (settingsOpen()) renderSettings();
-      }).catch(function (e) { b.disabled = false; b.textContent = "Send it to " + currentUser.email; toast(e.message); });
+    var sw = document.getElementById("nl-switch");
+    if (!sw) return;
+    sw.addEventListener("change", function () {
+      var on = sw.checked;
+      sw.disabled = true;
+      api("newsletter", { set: on }).then(function (j) {
+        nlState = j.state; nlRemember(j.state);
+        if (on && j.state === "active") { track("sign_up", { method: "newsletter", source: "planner" }); toast("You're on the list. The first one arrives on Saturday."); }
+        else if (on) toast("You unsubscribed earlier, so this couldn't switch it back on by itself. Email us and we'll add you back.");
+        else toast("Unsubscribed. No more weekly emails.");
+      }).catch(function (e) { toast(e.message); }).then(function () { if (settingsOpen()) renderSettings(); });
     });
   }
 

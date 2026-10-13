@@ -608,6 +608,8 @@ h1, .display, .display-l, .display-m, .week-range { letter-spacing: -0.02em; }
 .nl-band .nl-label { font-size: 18px; }
 /* Already signed up in this browser: no need to ask again on recipe pages. */
 .nl-band .nl-form.is-joined:not(.is-done) { display: none; }
+.nl-form.is-joined .nl-row { display: none; }
+.nl-tick[hidden] { display: none; }
 .nl-tick { display: flex; gap: 8px; align-items: flex-start; font-size: 14px; color: var(--ink-2); margin: 10px 0 0; cursor: pointer; }
 .nl-tick input { margin-top: 3px; accent-color: var(--tomato); }
 @media (max-width: 480px) { .nl-row { flex-direction: column; } .nl-band .nl-form { padding: 22px 20px; } }

@@ -56,3 +56,31 @@ export async function subscribe(env, email, source, firstName) {
   }
   return { email: email, state: created.subscriber && created.subscriber.state };
 }
+
+// Where someone stands on the list: "active", "cancelled" (unsubscribed),
+// another Kit state, or "none" if Kit has never had the address.
+export async function findSubscriber(env, email) {
+  var j = await kit(env, "GET", "subscribers?status=all&email_address=" + encodeURIComponent(String(email).trim().toLowerCase()));
+  return (j.subscribers || [])[0] || null;
+}
+export async function subscriberState(env, email) {
+  var s = await findSubscriber(env, email);
+  return s ? s.state : "none";
+}
+export async function unsubscribe(env, email) {
+  var s = await findSubscriber(env, email);
+  if (s && s.state === "active") await kit(env, "POST", "subscribers/" + s.id + "/unsubscribe", {});
+  return "cancelled";
+}
+// Joining again after unsubscribing: Kit keeps unsubscribes, so the person
+// asked for this themselves (the settings switch). Adding them to a Kit form
+// re-subscribes them; set KIT_FORM_ID to any form in Kit for this to work.
+export async function resubscribe(env, email, source) {
+  await subscribe(env, email, source);
+  var state = await subscriberState(env, email);
+  if (state !== "active" && env.KIT_FORM_ID) {
+    try { await kit(env, "POST", "forms/" + env.KIT_FORM_ID + "/subscribers", { email_address: String(email).trim().toLowerCase() }); } catch (e) { /* checked below */ }
+    state = await subscriberState(env, email);
+  }
+  return state;
+}

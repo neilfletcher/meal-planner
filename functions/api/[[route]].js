@@ -20,6 +20,7 @@
  *   GET  /api/lifetime        is lifetime Pro on sale right now, and its price
  *   POST /api/lifetime-confirm { s } signed-in user back from paying for lifetime Pro
  *   POST /api/subscribe       { email, source } joins the weekly email (signed in: their own email)
+ *   POST /api/newsletter      signed-in user: { set: true | false } or nothing, -> { state } in Kit
  *
  * Signed-in calls send "Authorization: Bearer <Firebase ID token>".
  */
@@ -28,7 +29,7 @@ import { BOOKS, BOOK_IDS, bookPrice, subscriptionBooks, downloadUrl, checkDownlo
 import { stripe, priceFor, verifyWebhook, subscriptionFields } from "../_shared/stripe.js";
 import { proState, addMonths, TRIAL_DAYS } from "../_shared/entitlement.js";
 import { WINDOWS, upcomingWindows, lifetimeStatus } from "../_shared/lifetime.js";
-import { subscribe as kitSubscribe, SOURCES as KIT_SOURCES, kit } from "../_shared/kit.js";
+import { subscribe as kitSubscribe, SOURCES as KIT_SOURCES, kit, subscriberState, unsubscribe as kitUnsubscribe, resubscribe as kitResubscribe } from "../_shared/kit.js";
 
 var DAY = 86400000;
 
@@ -718,6 +719,26 @@ async function newsletterSubscribe(request, env) {
   return json({ ok: true });
 }
 
+// The settings switch: where the signed-in user stands on the list, and
+// turning it on or off (kept in Kit, so it matches the emails' own
+// unsubscribe links).
+async function newsletterSetting(request, env) {
+  var user = await requireUser(request, env);
+  if (!user.email || !user.emailVerified) throw httpError(400, "Your account doesn't have a confirmed email address.");
+  var body = await readJson(request);
+  if (body.set === true) {
+    if (nlLimited("e:" + user.email.toLowerCase())) throw httpError(429, "Too many tries. Please wait a few minutes.");
+    var was = await subscriberState(env, user.email);
+    var state = await kitResubscribe(env, user.email, "planner");
+    if (state === "active" && was !== "active" && !isInternal(env, user.email)) {
+      try { await increment(env, "newsletterStats/" + new Date().toISOString().slice(0, 10), { total: 1, src_planner: 1 }); } catch (e) { /* not counted */ }
+    }
+    return json({ state: state, email: user.email });
+  }
+  if (body.set === false) return json({ state: await kitUnsubscribe(env, user.email), email: user.email });
+  return json({ state: await subscriberState(env, user.email), email: user.email });
+}
+
 /* ---------------------------------------------------------- lifetime Pro */
 // See functions/_shared/lifetime.js for when the offer is on.
 var ltCache = { at: 0, data: null };
@@ -1014,7 +1035,8 @@ var ROUTES = {
   "POST my-books": myBooks,
   "POST book-click": bookClick,
   "POST lifetime-confirm": lifetimeConfirm,
-  "POST subscribe": newsletterSubscribe
+  "POST subscribe": newsletterSubscribe,
+  "POST newsletter": newsletterSetting
 };
 
 export async function onRequest(context) {

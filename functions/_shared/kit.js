@@ -73,15 +73,33 @@ export async function unsubscribe(env, email) {
   return "cancelled";
 }
 // Joining again after unsubscribing: Kit keeps unsubscribes, so the person
-// asked for this themselves (the settings switch). Adding them to a Kit form
-// re-subscribes them; set KIT_FORM_ID to any form in Kit for this to work.
+// asked for this themselves (the settings switch). Kit's v4 API won't undo an
+// unsubscribe, but its older v3 form endpoint will: set KIT_API_KEY_V3 (Kit >
+// Settings > Developer > v3 API key) and KIT_FORM_ID (any form in Kit).
+// If the form uses double opt-in, Kit emails a confirm link first.
+async function v3FormSubscribe(env, email) {
+  var r = await fetch("https://api.kit.com/v3/forms/" + env.KIT_FORM_ID + "/subscribe", {
+    method: "POST",
+    headers: { "content-type": "application/json", accept: "application/json" },
+    body: JSON.stringify({ api_key: env.KIT_API_KEY_V3, email: email })
+  });
+  if (!r.ok) {
+    var j = await r.json().catch(function () { return {}; });
+    throw new Error(j.message || j.error || ("Kit v3 error " + r.status));
+  }
+}
 export async function resubscribe(env, email, source) {
+  email = String(email).trim().toLowerCase();
   await subscribe(env, email, source);
   var state = await subscriberState(env, email), note = "";
   if (state !== "active") {
     if (!env.KIT_FORM_ID) note = "KIT_FORM_ID isn't set";
-    else {
-      try { await kit(env, "POST", "forms/" + env.KIT_FORM_ID + "/subscribers", { email_address: String(email).trim().toLowerCase() }); note = "added to form " + env.KIT_FORM_ID; }
+    else if (env.KIT_API_KEY_V3) {
+      try { await v3FormSubscribe(env, email); note = "v3 form " + env.KIT_FORM_ID; }
+      catch (e) { note = "v3 form " + env.KIT_FORM_ID + ": " + e.message; }
+      state = await subscriberState(env, email);
+    } else {
+      try { await kit(env, "POST", "forms/" + env.KIT_FORM_ID + "/subscribers", { email_address: email }); note = "added to form " + env.KIT_FORM_ID + "; KIT_API_KEY_V3 isn't set"; }
       catch (e) { note = "form " + env.KIT_FORM_ID + ": " + e.message; }
       state = await subscriberState(env, email);
     }

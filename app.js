@@ -760,6 +760,7 @@
 
   function renderPlanner() {
     renderPlannerBanner();
+    renderInstallNote();
     var isBatch = state.mode === "batch";
     document.getElementById("mode-days-btn").setAttribute("aria-pressed", isBatch ? "false" : "true");
     document.getElementById("mode-batch-btn").setAttribute("aria-pressed", isBatch ? "true" : "false");
@@ -2809,9 +2810,6 @@
         '<button type="button" class="btn btn-outline banner-btn-light" id="banner-fill-btn">Fill at random</button></div></div>';
       document.getElementById("banner-lowwaste-btn").addEventListener("click", lowWasteFillWeek);
       document.getElementById("banner-fill-btn").addEventListener("click", fillWeek);
-    } else if (installBannerHtml()) {
-      el.innerHTML = installBannerHtml();
-      wireInstallBanner();
     } else {
       el.innerHTML = "";
     }
@@ -4182,33 +4180,33 @@
     } catch (e) { /* ignore */ }
   }
   function track(name, params) { try { if (window.gtag && analyticsConsent() === "yes") window.gtag("event", name, params); } catch (e) { /* ignore */ } }
-  // A banner under the week, once someone has a week worth keeping (3 or
-  // more dinners). Chrome and Edge get an Install button; iPhone gets the
-  // Share steps, as Safari has no install prompt. Dismissing it hides it for
-  // 30 days, and after the third dismissal it stays away.
-  function installBannerSeen() { try { return JSON.parse(lsGet("soloSupper.installBanner") || "null") || { n: 0, t: 0 }; } catch (e) { return { n: 0, t: 0 }; } }
-  function installBannerHtml() {
-    if (isNativeApp() || runningAsApp()) return "";
-    var seen = installBannerSeen();
-    if (seen.n >= 3 || Date.now() - seen.t < 30 * 86400000) return "";
-    if (W().plan.filter(Boolean).length < 3 && (state.history || []).length < 3) return "";
-    var ios = isIOS();
-    if (!installPrompt && !ios) return "";
-    return '<div class="banner-card banner-install"><div><strong>Keep your week on your home screen.</strong>' +
-      "<p>" + (installPrompt ? "Install Solo Supper and it opens like an app, with your shopping list there in the shop even with no signal."
-        : "Tap the Share button, then <b>Add to Home Screen</b>. It opens like an app, with your shopping list there in the shop even with no signal.") + "</p></div>" +
-      '<div class="banner-actions">' +
-      (installPrompt ? '<button type="button" class="btn btn-primary btn-sm" id="install-banner-btn">Install</button>'
-        : '<a class="btn btn-sm" href="' + (ON_WEBSITE ? ASSET_BASE : "https://solosupper.co.uk/") + 'app/">Show me how</a>') +
-      '<button type="button" class="icon-btn" id="install-banner-close" aria-label="Dismiss">' + ico("close") + "</button></div></div>";
+  // A small, one-line note under the week suggesting the home screen. Kept
+  // out of the way on purpose: phones and tablets only, not on someone's
+  // first day, only once they have 3 or more dinners planned, and one tap
+  // on the cross hides it for good. Chrome and Edge get an Install button;
+  // iPhone links to the how-to page, as Safari has no install prompt.
+  if (!lsGet("soloSupper.firstSeen")) lsSet("soloSupper.firstSeen", String(Date.now()));
+  function installNoteWanted() {
+    if (isNativeApp() || runningAsApp() || lsGet("soloSupper.installNoteClosed")) return false;
+    if (!(window.matchMedia && window.matchMedia("(pointer: coarse)").matches)) return false;
+    if (Date.now() - Number(lsGet("soloSupper.firstSeen") || Date.now()) < 86400000) return false;
+    var planned = state.mode === "batch" ? state.batch.length : W().plan.filter(Boolean).length;
+    if (planned < 3) return false;
+    return !!installPrompt || isIOS();
   }
-  function wireInstallBanner() {
-    var b = document.getElementById("install-banner-btn"), c = document.getElementById("install-banner-close");
-    if (b) b.addEventListener("click", function () { track("pwa_banner_install", {}); promptInstall(); });
-    if (c) c.addEventListener("click", function () {
-      var seen = installBannerSeen();
-      lsSet("soloSupper.installBanner", JSON.stringify({ n: seen.n + 1, t: Date.now() }));
-      renderPlannerBanner();
+  function renderInstallNote() {
+    var el = document.getElementById("install-note");
+    if (!el) return;
+    if (!installNoteWanted()) { el.innerHTML = ""; return; }
+    el.innerHTML = '<div class="install-note"><span>Add Solo Supper to your home screen. It opens like an app and works with no signal.</span>' +
+      (installPrompt ? '<button type="button" class="btn btn-sm" id="install-note-btn">Install</button>'
+        : '<a class="btn btn-sm" href="' + (ON_WEBSITE ? ASSET_BASE : "https://solosupper.co.uk/") + 'app/">How</a>') +
+      '<button type="button" class="icon-btn" id="install-note-close" aria-label="Don\'t show this again">' + ico("close") + "</button></div>";
+    var b = document.getElementById("install-note-btn");
+    if (b) b.addEventListener("click", function () { track("pwa_note_install", {}); promptInstall(); });
+    document.getElementById("install-note-close").addEventListener("click", function () {
+      lsSet("soloSupper.installNoteClosed", "1");
+      el.innerHTML = "";
     });
   }
   function promptInstall() {
@@ -4216,7 +4214,7 @@
     var p = installPrompt;
     installPrompt = null;
     p.prompt();
-    p.userChoice.then(function (c) { track("pwa_install_prompt", { outcome: c && c.outcome }); renderPlannerBanner(); }).catch(function () {});
+    p.userChoice.then(function (c) { track("pwa_install_prompt", { outcome: c && c.outcome }); renderInstallNote(); }).catch(function () {});
   }
   if (!isNativeApp()) {
     if ("serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost")) {
@@ -4226,9 +4224,9 @@
       e.preventDefault();
       installPrompt = e;
       if (settingsOpen()) renderSettings();
-      renderPlannerBanner();
+      renderInstallNote();
     });
-    window.addEventListener("appinstalled", function () { installPrompt = null; renderPlannerBanner(); track("pwa_installed", {}); });
+    window.addEventListener("appinstalled", function () { installPrompt = null; renderInstallNote(); track("pwa_installed", {}); });
   }
 
   // Links in from the public recipe pages: plan/?add=d12 opens that recipe

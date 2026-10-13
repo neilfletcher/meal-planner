@@ -4246,13 +4246,14 @@
     }
     var s = proState(ent);
     var paid = s.pro && s.source === "stripe";
+    var forever = s.pro && !s.until && s.source !== "stripe" && s.source !== "trial"; // lifetime, or Pro for life from a code or by hand
     return "<h3>Your account</h3>" +
       '<p class="acct-email">' + esc(currentUser.email || currentUser.displayName || "Signed in") + "</p>" +
       '<p class="acct-status' + (s.pro ? " is-pro" : "") + '">' + esc(proStatusText()) + "</p>" +
       '<div class="acct-actions">' +
-      (!paid ? '<button type="button" class="btn btn-primary btn-sm" id="acct-upgrade-btn">' + (s.pro ? "See Pro plans" : "Upgrade to Pro") + "</button>" : "") +
-      (hasStripeCustomer() ? '<button type="button" class="btn btn-outline btn-sm" id="acct-manage-btn">Manage subscription</button>' : "") +
-      (!paid ? '<button type="button" class="btn btn-ghost btn-sm" id="acct-gift-btn">Redeem a gift code</button>' : "") +
+      (!paid && !forever ? '<button type="button" class="btn btn-primary btn-sm" id="acct-upgrade-btn">' + (s.pro ? "See Pro plans" : "Upgrade to Pro") + "</button>" : "") +
+      (hasStripeCustomer() ? '<button type="button" class="btn btn-outline btn-sm" id="acct-manage-btn">' + (paid ? "Manage subscription" : "Billing and receipts") + "</button>" : "") +
+      (!paid && !forever ? '<button type="button" class="btn btn-ghost btn-sm" id="acct-gift-btn">Redeem a gift code</button>' : "") +
       '<button type="button" class="btn btn-ghost btn-sm" id="acct-signout-btn">Sign out</button>' +
       "</div>" +
       '<button type="button" class="btn btn-ghost btn-sm acct-delete' + (deleteArmed ? " is-armed" : "") + '" id="acct-delete-btn">' +

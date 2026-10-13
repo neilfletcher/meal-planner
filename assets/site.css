@@ -483,3 +483,27 @@ h1, .display, .display-l, .display-m, .week-range { letter-spacing: -0.02em; }
 @media (max-width: 430px) { .cta-long { display: none; } .cta-short { display: inline; } }
 @media (max-width: 360px) { .brand { font-size: 20px; gap: 6px; } .site-header-row { gap: 6px; } .logo-mark { width: 24px; height: 24px; } }
 @media (max-width: 340px) { .site-header .brand span { display: none; } }
+
+/* ---------- the books ---------- */
+.books { display: flex; flex-direction: column; gap: 72px; }
+.book { display: grid; grid-template-columns: minmax(180px, 300px) minmax(0, 1fr); gap: clamp(24px, 4vw, 64px); align-items: start; padding-top: 48px; border-top: 1px solid var(--line); }
+.book-cover img { width: 100%; height: auto; border-radius: 4px; box-shadow: 0 18px 40px -18px rgba(20, 26, 23, 0.45); }
+.book-text { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+.book-buy { display: flex; flex-wrap: wrap; gap: 12px; }
+.book-note:empty { display: none; }
+.book-pages { display: flex; gap: 14px; overflow-x: auto; padding: 6px 2px 10px; scroll-snap-type: x mandatory; }
+.book-pages figure { margin: 0; flex: 0 0 auto; width: clamp(150px, 18vw, 220px); scroll-snap-align: start; }
+.book-pages img { width: 100%; height: auto; border: 1px solid var(--line); border-radius: 3px; background: #fff; }
+.book-pages figcaption { font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); margin-top: 6px; }
+.book-faq { max-width: 760px; gap: 16px; }
+.book-faq p { font-size: 17px; line-height: 1.6; }
+.book-dl { list-style: none; margin: 8px 0; padding: 0; display: flex; flex-direction: column; gap: 12px; }
+.book-dl li { display: flex; align-items: center; gap: 16px; padding: 10px; border: 1px solid var(--line); border-radius: 8px; background: var(--plate); }
+.book-dl li span { flex: 1; font-family: var(--serif); font-size: 20px; }
+.book-dl img { border-radius: 2px; }
+@media (max-width: 640px) {
+  .book { grid-template-columns: 1fr; }
+  .book-cover { max-width: 220px; }
+  .book-buy .btn { flex: 1 1 100%; }
+  .book-dl li { flex-wrap: wrap; } .book-dl li .btn { flex: 1 1 100%; }
+}

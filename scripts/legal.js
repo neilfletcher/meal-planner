@@ -152,6 +152,9 @@ module.exports = [
       "<h2>After 14 days</h2>",
       "<p>After 14 days, payments are not normally refunded, but you can cancel at any time so your subscription does not renew. Pro stays on until the end of the period you have paid for. If something has gone wrong, such as being charged twice or Pro not working, email me and it will be put right.</p>",
 
+      "<h2>Cookbook PDFs</h2>",
+      "<p>The Solo Supper cookbook PDFs are digital downloads, ready straight after payment. By downloading one you agree that it is supplied straight away, and the 14-day right to cancel no longer applies to it. If a file won't open or something is wrong with it, email <a href=\"mailto:{EMAIL}\">{EMAIL}</a> and I will fix it or refund you. PDFs that come with a Pro subscription stay yours if you cancel; a refund of a subscription payment doesn't take them back.</p>",
+
       "<h2>How refunds are paid</h2>",
       "<p>Website purchases are refunded through Stripe (Onelink) to the card or account you paid with, usually within 5 to 10 working days. You can also ask Onelink's support team for a refund. Purchases made in the Android app are refunded through Google Play: you can request one from Google Play directly, or email me and I will help.</p>",
 

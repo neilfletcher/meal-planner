@@ -225,6 +225,18 @@ export async function listCollection(env, collectionId, orderField, limit) {
   });
 }
 
+// Documents in a collection where one field equals a value.
+export async function queryWhere(env, collectionId, field, value, limit) {
+  var q = { structuredQuery: { from: [{ collectionId: collectionId }], limit: limit || 50,
+    where: { fieldFilter: { field: { fieldPath: field }, op: "EQUAL", value: encodeValue(value) } } } };
+  var r = await gfetch(env, docsBase(env) + ":runQuery", { method: "POST", body: JSON.stringify(q) });
+  if (!r.ok) throw httpError(502, "Firestore query failed: " + (await r.text()).slice(0, 200));
+  var rows = await r.json();
+  return rows.filter(function (x) { return x.document; }).map(function (x) {
+    return { id: x.document.name.split("/").pop(), data: decodeFields(x.document.fields || {}) };
+  });
+}
+
 /* ---------------------------------------------------------------- Auth users */
 function idt(env, method) { return "https://identitytoolkit.googleapis.com/v1/projects/" + projectId(env) + "/accounts:" + method; }
 

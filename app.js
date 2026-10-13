@@ -3268,7 +3268,7 @@
     settingsModal.innerHTML =
       '<div class="modal-close-row"><button class="icon-btn" id="settings-close-btn" aria-label="Close">' + ico("close") + '</button></div>' +
       "<h2>Settings</h2>" +
-      accountSettingsHtml() +
+      accountSettingsHtml() + booksSettingsHtml() +
       installSettingsHtml() +
       "<h3>Never show me</h3>" +
       '<div class="chip-row">' + AVOID_OPTIONS.map(function (o) {
@@ -3303,6 +3303,7 @@
     document.getElementById("settings-basics-btn").addEventListener("click", addUsualBasics);
     document.getElementById("analytics-on").addEventListener("change", function (e) { setAnalyticsConsent(e.target.checked); });
     wireAccountSettings();
+    wireBooksSettings();
     var inst = document.getElementById("install-app-btn");
     if (inst) inst.addEventListener("click", function () { closeSettings(); promptInstall(); });
     document.getElementById("newonly-on").addEventListener("change", function (e) { state.newOnly = e.target.checked; onStateChanged(); toast(state.newOnly ? "Suggestions now skip dishes you\u2019ve cooked." : "Suggestions can include dishes you\u2019ve cooked."); });
@@ -3707,6 +3708,7 @@
   }
 
   function setEntitlement(e) {
+    myBooksData = null;
     var was = proState(ent);
     ent = e;
     var now = proState(ent);
@@ -3880,7 +3882,7 @@
     var lead;
     if (!signedIn) lead = "Try every Pro feature free for 14 days. No card needed, and the recipes and planner stay free whatever you decide.";
     else if (s.source === "trial-ended") lead = "Your free trial has ended. Pick a plan to keep planning with less waste.";
-    else if (s.source === "trial") lead = "You're on the free trial, with " + daysLeft(s.until) + " days left. Subscribe any time to keep Pro afterwards.";
+    else if (s.source === "trial") lead = "You're on the free trial, with " + daysLeft(s.until) + " days left. Subscribe now to keep Pro, and your cookbook PDFs arrive straight away.";
     else if (s.pro) lead = proStatusText();
     else lead = "Plan around pack sizes, waste less and plan ahead.";
     var features = [
@@ -3889,6 +3891,7 @@
       ["Plan next week", "Sort out next week on a Sunday, or any time before"],
       ["Your own recipes", "Add the dishes you already make, alongside the " + BUILTIN_COUNT + " in the book"],
       ["Waste saved", "See the packs you finish instead of binning, and roughly what that saves"],
+      ["The cookbooks as PDFs", "Yearly includes all four Solo Supper books; monthly includes Asia. Yours to keep, even if you cancel"],
       ["Everything else stays free", "Every recipe, the planner and the shopping list"]
     ];
     var html = '<div class="modal-close-row"><button class="icon-btn" id="paywall-close-btn" aria-label="Close">' + ico("close") + "</button></div>" +
@@ -3907,8 +3910,8 @@
       html += "";
     } else {
       html += '<div class="plan-choice" role="radiogroup" aria-label="Choose a plan">' +
-        planOption("annual", "Yearly", PRO_PRICES.annual + " a year", PRO_PRICES.annualMonthly + " a month", "Best value") +
-        planOption("monthly", "Monthly", PRO_PRICES.monthly + " a month", "Cancel any time", "") + "</div>" +
+        planOption("annual", "Yearly", PRO_PRICES.annual + " a year", "All four cookbook PDFs", "Best value") +
+        planOption("monthly", "Monthly", PRO_PRICES.monthly + " a month", "The Asia cookbook PDF", "") + "</div>" +
         '<button type="button" class="btn btn-primary btn-block" id="pro-buy-btn">Continue to secure payment</button>' +
         '<p class="form-error" id="pro-error" hidden></p>' +
         '<p class="settings-note pro-small">Prices include VAT. Cancel any time, and you can have a full refund within 14 days of any payment. Payment is handled by Stripe and shows as Onelink. <a href="../terms/">Terms</a> · <a href="../refunds/">Refunds</a></p>';
@@ -3965,6 +3968,41 @@
     api("portal").then(function (j) { location.href = j.url; }).catch(function (e) {
       if (btn) { btn.disabled = false; btn.textContent = "Manage subscription"; }
       toast(e.message);
+    });
+  }
+
+  /* ---------- your books (the cookbook PDFs) in settings ---------- */
+  // Bought on the books page, or included with a paid subscription (yearly:
+  // all four, monthly: Asia). See functions/_shared/books.js.
+  var myBooksData = null, myBooksFor = null, myBooksLoading = false;
+  function loadMyBooks() {
+    if (!currentUser || myBooksLoading) return;
+    myBooksLoading = true;
+    api("my-books").then(function (j) { myBooksData = j; myBooksFor = currentUser && currentUser.uid; })
+      .catch(function () { myBooksData = { error: true }; })
+      .then(function () { myBooksLoading = false; if (settingsOpen()) renderSettings(); });
+  }
+  function booksSettingsHtml() {
+    if (isNativeApp() || !window.firebaseAuth || !currentUser) return "";
+    if (!myBooksData || myBooksFor !== currentUser.uid) { loadMyBooks(); return "<h3>Your books</h3><p class=\"settings-note\">Checking your books\u2026</p>"; }
+    if (myBooksData.error) return "<h3>Your books</h3><p class=\"settings-note\">Couldn't load your books just now.</p>";
+    var owned = myBooksData.owned || {};
+    var mine = (myBooksData.books || []).filter(function (b) { return owned[b.id]; });
+    var shop = '<a href="' + (ON_WEBSITE ? ASSET_BASE : "https://solosupper.co.uk/") + 'books/">the books page</a>';
+    if (!mine.length) return "<h3>Your books</h3><p class=\"settings-note\">Subscribe yearly and all four Solo Supper cookbooks are yours as PDFs (monthly includes Asia). Or buy them on " + shop + ".</p>";
+    return "<h3>Your books</h3><ul class=\"my-books\">" + mine.map(function (b) {
+      return "<li><span>" + esc(b.title.replace(/^Solo Supper: /, "")) + '</span><button type="button" class="btn btn-outline btn-sm" data-book-dl="' + b.id + '">Download PDF</button></li>';
+    }).join("") + "</ul>" + (mine.length < 4 ? '<p class="settings-note">The others are on ' + shop + ", or all four come with a yearly subscription.</p>" : "");
+  }
+  function wireBooksSettings() {
+    document.querySelectorAll("[data-book-dl]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        b.disabled = true; b.textContent = "Preparing\u2026";
+        api("book-link", { book: b.getAttribute("data-book-dl") }).then(function (j) {
+          location.href = j.url;
+          setTimeout(function () { b.disabled = false; b.textContent = "Download again"; }, 2500);
+        }).catch(function (e) { b.disabled = false; b.textContent = "Download PDF"; toast(e.message); });
+      });
     });
   }
 

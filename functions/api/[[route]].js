@@ -11,10 +11,16 @@
  *   POST /api/admin           admin only: gift codes, granting Pro, live counts
  *   POST /api/stripe-webhook  Stripe tells us about subscriptions
  *   POST /api/log             a browser reports one of our scripts breaking
+ *   POST /api/book-checkout   { book: id | "all" } -> Stripe Checkout URL for the PDF
+ *   GET  /api/book-session    ?s=<checkout session> -> the books that purchase includes
+ *   POST /api/book-link       { book, s? } -> a 15-minute download link
+ *   GET  /api/book-file       the PDF itself, from a signed link
+ *   POST /api/my-books        signed-in user: which books they have
  *
  * Signed-in calls send "Authorization: Bearer <Firebase ID token>".
  */
-import { verifyIdToken, projectId, getDoc, mergeDoc, deleteDoc, commit, listCollection, listAuthUsers, gaRealtime, findUserByEmail, deleteAuthUser, httpError } from "../_shared/google.js";
+import { verifyIdToken, projectId, getDoc, mergeDoc, deleteDoc, commit, listCollection, queryWhere, listAuthUsers, gaRealtime, findUserByEmail, deleteAuthUser, httpError } from "../_shared/google.js";
+import { BOOKS, BOOK_IDS, bookPrice, subscriptionBooks, downloadUrl, checkDownload } from "../_shared/books.js";
 import { stripe, priceFor, verifyWebhook, subscriptionFields } from "../_shared/stripe.js";
 import { proState, addMonths, TRIAL_DAYS } from "../_shared/entitlement.js";
 
@@ -406,6 +412,11 @@ async function stripeWebhook(request, env) {
     return json({ received: true });
   }
 
+  if (event.type === "checkout.session.completed" && obj.mode === "payment" && obj.metadata && obj.metadata.kind === "books") {
+    try { await paidBookSession(env, obj.id); } catch (e) { /* not paid yet: recorded when they open the download page */ }
+    return json({ received: true });
+  }
+
   if (/^customer\.subscription\.(created|updated|deleted|paused|resumed)$/.test(event.type)) {
     // Events can arrive out of order, so always store the subscription as it is now.
     var current = obj;
@@ -417,6 +428,99 @@ async function stripeWebhook(request, env) {
   }
 
   return json({ received: true, ignored: event.type });
+}
+
+/* ------------------------------------------------------------- books */
+async function optionalUser(request, env) {
+  try { return await requireUser(request, env); } catch (e) { return null; }
+}
+
+async function bookCheckout(request, env) {
+  var body = await readJson(request);
+  var book = body.book === "all" ? "all" : String(body.book || "");
+  if (book !== "all" && !BOOKS[book]) throw httpError(400, "Unknown book.");
+  var price = bookPrice(env, book);
+  if (!price) throw httpError(503, "The PDFs aren't on sale just yet. Please try again soon.");
+  var user = await optionalUser(request, env);
+  var origin = siteOrigin(request, env);
+  var books = book === "all" ? BOOK_IDS.join(",") : book;
+  var params = {
+    mode: "payment",
+    line_items: { 0: { price: price, quantity: 1 } },
+    managed_payments: { enabled: "true" },
+    metadata: { kind: "books", books: books, uid: user ? user.uid : "", firstSource: String(body.source || "").slice(0, 40) },
+    custom_text: { submit: { message: "Your PDF is ready to download straight after payment. Downloading it means the 14-day right to cancel no longer applies." } },
+    success_url: origin + "/books/thanks/?s={CHECKOUT_SESSION_ID}",
+    cancel_url: origin + "/books/"
+  };
+  if (user) { params.client_reference_id = user.uid; if (user.email) params.customer_email = user.email; }
+  var session = await stripe(env, "POST", "checkout/sessions", params);
+  return json({ url: session.url });
+}
+
+// Looks up a book purchase and keeps a record of it (once paid).
+async function paidBookSession(env, sid) {
+  if (!/^cs_[A-Za-z0-9_]{10,200}$/.test(String(sid || ""))) throw httpError(400, "That link isn't right.");
+  var cached = await getDoc(env, "purchases/" + sid);
+  if (cached && cached.data.books) return cached.data;
+  var s = await stripe(env, "GET", "checkout/sessions/" + sid);
+  if (!s.metadata || s.metadata.kind !== "books") throw httpError(404, "That isn't a book purchase.");
+  if (s.payment_status !== "paid") throw httpError(402, "That payment hasn't gone through yet. If you've just paid, refresh in a moment.");
+  var rec = {
+    books: String(s.metadata.books || "").split(",").filter(function (b) { return BOOKS[b]; }),
+    email: String((s.customer_details && s.customer_details.email) || s.customer_email || "").toLowerCase(),
+    uid: s.metadata.uid || s.client_reference_id || "",
+    amount: s.amount_total || 0, currency: s.currency || "", createdAt: (s.created || 0) * 1000
+  };
+  await mergeDoc(env, "purchases/" + sid, rec);
+  return rec;
+}
+
+async function bookSession(request, env) {
+  var rec = await paidBookSession(env, new URL(request.url).searchParams.get("s"));
+  return json({ books: rec.books.map(function (b) { return { id: b, title: BOOKS[b].title }; }), email: rec.email });
+}
+
+async function ownedBooks(env, user) {
+  var owned = {};
+  var doc = await getDoc(env, "entitlements/" + user.uid);
+  subscriptionBooks(doc && doc.data).forEach(function (b) { owned[b] = "subscription"; });
+  var rows = await queryWhere(env, "purchases", "uid", user.uid, 50);
+  if (user.email && user.emailVerified) rows = rows.concat(await queryWhere(env, "purchases", "email", String(user.email).toLowerCase(), 50));
+  rows.forEach(function (r) { (r.data.books || []).forEach(function (b) { if (BOOKS[b]) owned[b] = "bought"; }); });
+  return owned;
+}
+
+async function myBooks(request, env) {
+  var user = await requireUser(request, env);
+  var owned = await ownedBooks(env, user);
+  return json({ owned: owned, books: BOOK_IDS.map(function (b) { return { id: b, title: BOOKS[b].title }; }) });
+}
+
+async function bookLink(request, env) {
+  var body = await readJson(request);
+  var book = String(body.book || "");
+  if (!BOOKS[book]) throw httpError(400, "Unknown book.");
+  var ok = false;
+  if (body.s) ok = (await paidBookSession(env, body.s)).books.indexOf(book) !== -1;
+  else ok = !!(await ownedBooks(env, await requireUser(request, env)))[book];
+  if (!ok) throw httpError(403, "This book isn't on your account.");
+  if (!env.BOOKS) throw httpError(503, "Downloads are being set up. Please try again later, or email us.");
+  return json({ url: await downloadUrl(env, siteOrigin(request, env), book) });
+}
+
+async function bookFile(request, env) {
+  var q = new URL(request.url).searchParams;
+  var id = q.get("b");
+  if (!(await checkDownload(env, id, q.get("e"), q.get("t")))) return new Response("This download link has expired. Go back and press Download again.", { status: 403, headers: { "content-type": "text/plain; charset=utf-8" } });
+  if (!env.BOOKS) return new Response("Downloads are being set up.", { status: 503 });
+  var obj = await env.BOOKS.get(BOOKS[id].file);
+  if (!obj) return new Response("That file is missing. Please email us and we'll send it.", { status: 404 });
+  return new Response(obj.body, { headers: {
+    "content-type": "application/pdf",
+    "content-disposition": 'attachment; filename="' + BOOKS[id].title.replace(/[:&]/g, "").replace(/\s+/g, " ") + '.pdf"',
+    "content-length": String(obj.size), "cache-control": "private, no-store"
+  } });
 }
 
 /* ------------------------------------------------------------- errors */
@@ -458,7 +562,8 @@ function health(env) {
     projectId: sa && sa !== "invalid" ? sa.project_id : null,
     stripeSecretKey: env.STRIPE_SECRET_KEY ? (/^(sk|rk)_live_/.test(String(env.STRIPE_SECRET_KEY)) ? "live" : "test") : false,
     stripeWebhookSecret: ok(env.STRIPE_WEBHOOK_SECRET),
-    prices: { annual: priceFor(env, "annual"), monthly: priceFor(env, "monthly") }
+    prices: { annual: priceFor(env, "annual"), monthly: priceFor(env, "monthly") },
+    books: { bucket: !!env.BOOKS, prices: ["all"].concat(BOOK_IDS).filter(function (b) { return bookPrice(env, b); }).length + " of 5 set" }
   });
 }
 
@@ -470,7 +575,10 @@ var ROUTES = {
   "POST delete-account": deleteAccount,
   "POST admin": admin,
   "POST stripe-webhook": stripeWebhook,
-  "POST log": logError
+  "POST log": logError,
+  "POST book-checkout": bookCheckout,
+  "POST book-link": bookLink,
+  "POST my-books": myBooks
 };
 
 export async function onRequest(context) {
@@ -479,6 +587,8 @@ export async function onRequest(context) {
   var name = Array.isArray(route) ? route.join("/") : String(route || "");
   try {
     if (request.method === "GET" && name === "health") return health(env);
+    if (request.method === "GET" && name === "book-session") return await bookSession(request, env);
+    if (request.method === "GET" && name === "book-file") return await bookFile(request, env);
     var fn = ROUTES[request.method + " " + name];
     if (!fn) return json({ error: "Not found" }, 404);
     return await fn(request, env);

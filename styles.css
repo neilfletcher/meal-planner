@@ -759,3 +759,6 @@ h1, .display, .display-l, .display-m, .week-range { letter-spacing: -0.02em; }
   .app-bar { gap: 8px 10px; }
 }
 @media (max-width: 340px) { .header-controls { gap: 4px; } .app-bar { gap: 4px; } }
+.my-books { list-style: none; margin: 6px 0 8px; padding: 0; }
+.my-books li { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 8px 0; border-bottom: 1px solid var(--line); }
+.my-books li span { font-family: var(--serif); font-size: 17px; }

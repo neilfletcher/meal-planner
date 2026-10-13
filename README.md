@@ -188,3 +188,15 @@ After changing them, redeploy (Deployments > ... > Retry deployment) and check `
 - **Errors in people's browsers.** `assets/telemetry.js` sends errors from the site's own scripts to `/api/log`, stored in Firestore under `clientErrors` (one document per distinct error, with a count). They show on the admin page under "Is anything broken", where you can clear them once fixed.
 - **Where customers come from.** For people who allow usage statistics, `assets/telemetry.js` remembers how they first arrived (utm_source, or the referring site) and the page they landed on, and `/api/account` saves it with their account as `ftSource`, `ftCampaign`, `ftLanding`. The admin page shows sign-ups and payments by source. Tag your own links with `?utm_source=...&utm_campaign=...` to tell them apart.
 - **Backups.** `.github/workflows/backup.yml` runs `scripts/backup-firestore.js` every night: every Firestore document and the list of sign-in accounts, encrypted with the `BACKUP_PASSPHRASE` GitHub secret and kept as a workflow artifact for 30 days (Actions > Nightly backup > a run > Artifacts). To open one: `BACKUP_PASSPHRASE=... node scripts/backup-decrypt.js solo-supper-YYYY-MM-DD.ssbk > backup.json`. Keep the passphrase in your password manager; without it the backups can't be read.
+
+## The cookbook PDFs
+
+Sold on `/books/` and included with Pro (yearly: all four, monthly: Asia, once the first payment has gone through). Code: `functions/_shared/books.js`, the `book-*` routes in `functions/api/[[route]].js`, `assets/books.js`, and "Your books" in the planner's settings.
+
+Setup, once:
+1. **Files.** Cloudflare > R2 > Create bucket `solo-supper-books` (private). Upload the four screen PDFs, named exactly `solo-supper-asia.pdf`, `solo-supper-mediterranean-middle-east.pdf`, `solo-supper-americas-africa.pdf`, `solo-supper-britain-europe.pdf`.
+2. **Binding.** Workers & Pages > solo-supper > Settings > Bindings > Add > R2 bucket: variable name `BOOKS`, bucket `solo-supper-books`. Redeploy.
+3. **Prices.** In Stripe, create five one-off products (tax category: e-books / digital books), and put each price ID in Cloudflare variables: `STRIPE_PRICE_BOOK_ASIA`, `STRIPE_PRICE_BOOK_MED`, `STRIPE_PRICE_BOOK_AMERICAS`, `STRIPE_PRICE_BOOK_BRITAIN`, `STRIPE_PRICE_BOOK_ALL`. The prices shown on the page are `BOOK_PDF_PRICE` and `BOOK_BUNDLE_PRICE` in `scripts/build-site.js`; keep them the same.
+4. **Amazon links.** Add each book's Amazon link to `BOOK_LIST` in `scripts/build-site.js` (until then the button searches Amazon for the title).
+
+`/api/health` shows `books.bucket` and how many prices are set. Purchases are recorded in Firestore under `purchases/{checkout session}`; a buyer who later signs in with the same email sees the books in their account.

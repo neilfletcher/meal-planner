@@ -420,6 +420,7 @@ function header(rel, active) {
     link("collections", "collections/", "Collections") +
     link("cuisines", "cuisines/", "Cuisines") +
     link("useup", "use-up/", "Use it up") +
+    link("books", "books/", "Books") +
     link("planner", "plan/", "The planner") +
     link("pro", "#pro", "Pro") +
     "</nav>" +
@@ -439,7 +440,7 @@ function footer(rel) {
     '<div class="footer-brand"><a class="brand brand-light" href="' + rel + '">' + LOGO + "<span>Solo Supper</span></a>" +
     '<p class="footer-line">Good dinners, sized for <em>one</em>.</p></div>' +
     col("Recipes", [["Quick dinners for one", rel + "collections/quick-dinners-for-one/"], ["Vegetarian for one", rel + "collections/vegetarian-dinners-for-one/"], ["Fish for one", rel + "collections/fish-dinners-for-one/"], ["All recipes", rel + "recipes/"]]) +
-    col("Planner", [["Plan your week", rel + "plan/"], ["Get the app", rel + "app/"], ["Use it up", rel + "use-up/"], ["Cuisines", rel + "cuisines/"], ["Collections", rel + "collections/"]]) +
+    col("Planner", [["Plan your week", rel + "plan/"], ["The cookbooks", rel + "books/"], ["Get the app", rel + "app/"], ["Use it up", rel + "use-up/"], ["Cuisines", rel + "cuisines/"], ["Collections", rel + "collections/"]]) +
     col("About", [["Contact", "mailto:" + CONTACT_EMAIL], ["Privacy", rel + "privacy/"], ["Terms", rel + "terms/"], ["Refunds", rel + "refunds/"], ["Cookies", rel + "cookies/"], ["Cookie settings", "#cookie-settings"]]) +
     "</div>" +
     '<div class="footer-base"><span>&copy; ' + YEAR + " Solo Supper</span><span>Every recipe written for one. Scaled for two when someone stays over.</span></div>" +
@@ -930,6 +931,70 @@ LEGAL.forEach(function (l) {
   sitemap.push({ loc: l.slug + "/", pri: "0.3" });
 });
 
+/* ------------------------------------------------------------ the books */
+// The four cookbooks: on Amazon in paperback and Kindle, and as PDFs sold
+// here (Stripe) or included with Pro. Prices shown here must match the Stripe
+// prices set in Cloudflare (see functions/_shared/books.js).
+var BOOK_PDF_PRICE = "4.99", BOOK_BUNDLE_PRICE = "12.99";
+var BOOK_LIST = [
+  { id: "asia", name: "Asia", count: 112, from: "China, Japan, Korea, Thailand, Vietnam, India and beyond", amazon: "" },
+  { id: "mediterranean-middle-east", name: "Mediterranean & Middle East", count: 126, from: "Italy, Greece, Spain, Lebanon, Morocco, Iran and beyond", amazon: "" },
+  { id: "americas-africa", name: "Americas & Africa", count: 105, from: "Mexico, the Caribbean, the USA, Peru, Nigeria, South Africa and beyond", amazon: "" },
+  { id: "britain-europe", name: "Britain & Europe", count: 99, from: "Britain, Ireland, Scandinavia, Germany, Poland, Hungary and beyond", amazon: "" }
+];
+function amazonLink(b) { return b.amazon || "https://www.amazon.co.uk/s?k=" + encodeURIComponent("Solo Supper " + b.name + " Neil Fletcher"); }
+(function () {
+  var rel = "../";
+  var samples = ["Contents", "A week of dinners", "Every dish photographed", "Measured for one"];
+  var bookCard = function (b, i) {
+    return '<article class="book" id="' + b.id + '">' +
+      '<div class="book-cover"><img src="' + rel + "img/books/" + b.id + '-cover.webp" alt="Solo Supper: ' + esc(b.name) + ' book cover" width="600" height="960" loading="' + (i ? "lazy" : "eager") + '"></div>' +
+      '<div class="book-text"><span class="eyebrow">Book ' + (i + 1) + " &middot; " + b.count + " recipes</span>" +
+      '<h2 class="display-m">' + esc(b.name) + "</h2>" +
+      '<p class="lead">' + b.count + " dinners for one from " + esc(b.from) + ", planned into weeks that share their ingredients.</p>" +
+      '<div class="book-buy"><button type="button" class="btn btn-primary btn-lg" data-buy="' + b.id + '">PDF &pound;' + BOOK_PDF_PRICE + "</button>" +
+      '<a class="btn btn-outline btn-lg" href="' + esc(amazonLink(b)) + '" target="_blank" rel="noopener">Paperback or Kindle on Amazon</a></div>' +
+      '<p class="small muted book-note" data-buy-msg="' + b.id + '"></p>' +
+      '<div class="book-pages scroll-x">' + [1, 2, 3, 4].map(function (k) {
+        return '<figure><img src="' + rel + "img/books/" + b.id + "-p" + k + '.webp" alt="' + esc(samples[k - 1]) + " page from Solo Supper: " + esc(b.name) + '" width="880" height="1100" loading="lazy"><figcaption>' + samples[k - 1] + "</figcaption></figure>";
+      }).join("") + "</div></div></article>";
+  };
+  var body =
+    '<section class="wrap page-head"><div class="page-head-text"><span class="eyebrow">The Solo Supper cookbooks</span>' +
+    '<h1 class="display-m">Four books of <em>dinners for one</em>.</h1>' +
+    '<p class="lead">Every recipe measured for one, and planned into weeks that share their ingredients, so the coconut milk you open on Monday gets finished on Thursday. Each week has its shopping list, what will be left over and what to do with it, and a photo of every dish.</p>' +
+    '<div class="btn-row"><button type="button" class="btn btn-ink btn-lg" data-buy="all">All four PDFs &pound;' + BOOK_BUNDLE_PRICE + '</button><a class="btn btn-outline btn-lg" href="#pro-books">Free with Pro</a></div>' +
+    '<p class="small muted" data-buy-msg="all"></p></div></section>' +
+    '<section class="wrap books">' + BOOK_LIST.map(bookCard).join("") + "</section>" +
+    '<section class="wrap section" id="pro-books"><div class="pro-band"><div class="pro-band-text"><span class="eyebrow">Solo Supper Pro</span>' +
+    '<h2 class="display-m">The PDFs come with Pro</h2>' +
+    '<p class="lead">Subscribe yearly and all four PDFs are yours. Subscribe monthly and you get Asia. They\'re added to your account as soon as your first payment goes through, and they stay yours even if you cancel. (The free trial doesn\'t include them.)</p>' +
+    '<div class="btn-row"><a class="btn btn-primary btn-lg" href="' + rel + 'plan/?pro=plans">See Pro plans ' + ICON.arrow + "</a></div></div>" +
+    '<ul class="pro-list"><li><h3>Yearly, &pound;14.99</h3><p>Pro planning plus all four PDFs.</p></li><li><h3>Monthly, &pound;2.49</h3><p>Pro planning plus the Asia PDF.</p></li>' +
+    '<li><h3>Already subscribed?</h3><p>Your books are in Settings in the planner, under Your books.</p></li><li><h3>Every recipe free</h3><p>All the recipes are on this site and in the planner either way.</p></li></ul></div></section>' +
+    '<section class="wrap section book-faq"><h2 class="display-m">Good to know</h2>' +
+    "<p><strong>What do I get?</strong> A PDF of the whole book, with every photo, to read on a tablet, phone or computer, or to print the pages you want.</p>" +
+    "<p><strong>How does the download work?</strong> Straight after paying you land on a page with your download. If you sign in to Solo Supper with the same email, the book is kept in your account too.</p>" +
+    "<p><strong>Refunds.</strong> Because the PDF downloads straight away, the usual 14-day right to cancel ends once you download it. If something's wrong with the file, email <a href=\"mailto:" + CONTACT_EMAIL + "\">" + CONTACT_EMAIL + "</a> and I'll sort it out.</p></section>";
+  out("books/index.html", page({
+    rel: rel, path: "books/", active: "books", bodyClass: "page-books",
+    title: "The Solo Supper cookbooks: dinners for one | Solo Supper",
+    description: "Four cookbooks of dinners for one, planned in weeks so nothing goes to waste: Asia, Mediterranean & Middle East, Americas & Africa, Britain & Europe. PDF, paperback and Kindle.",
+    image: "img/books/asia-cover.webp"
+  }, body + '<script src="' + rel + 'assets/books.js" defer></script>'));
+  sitemap.push({ loc: "books/", pri: "0.7" });
+
+  out("books/thanks/index.html", page({
+    rel: "../../", path: "books/thanks/", active: "books", bodyClass: "page-books",
+    title: "Your books | Solo Supper",
+    description: "Download your Solo Supper cookbooks."
+  }, '<section class="wrap page-head"><div class="page-head-text"><span class="eyebrow">Thank you</span>' +
+    '<h1 class="display-m">Your <em>books</em>.</h1>' +
+    '<div id="book-downloads" class="book-downloads"><p class="lead">Checking your payment&hellip;</p></div>' +
+    '<p class="small muted">Bookmark this page to download again later. Sign in to the <a href="../../plan/">planner</a> with the email you paid with and your books are kept in your account too, under Settings.</p>' +
+    "</div></section>" + '<script src="../../assets/books.js" defer></script>'));
+})();
+
 /* ------------------------------------------------------------ get the app */
 // How to put the planner on a home screen. It is a web app, so there is no
 // store: site.js shows an Install button where the browser offers one and
@@ -1007,7 +1072,7 @@ out("sitemap.xml", '<?xml version="1.0" encoding="UTF-8"?>\n' +
     return "  <url><loc>" + esc(SITE_URL + "/" + s.loc) + "</loc><lastmod>" + today + "</lastmod><priority>" + s.pri + "</priority>" +
       (s.img ? "<image:image><image:loc>" + esc(SITE_URL + "/" + s.img) + "</image:loc></image:image>" : "") + "</url>";
   }).join("\n") + "\n</urlset>\n");
-out("robots.txt", "User-agent: *\nAllow: /\nDisallow: /admin.html\nDisallow: /api/\nDisallow: /functions/\nDisallow: /scripts/\nDisallow: /tests/\n\nSitemap: " + SITE_URL + "/sitemap.xml\n");
+out("robots.txt", "User-agent: *\nAllow: /\nDisallow: /admin.html\nDisallow: /api/\nDisallow: /functions/\nDisallow: /scripts/\nDisallow: /tests/\nDisallow: /books/thanks/\n\nSitemap: " + SITE_URL + "/sitemap.xml\n");
 
 console.log("Solo Supper: built " + written.length + " files for " + SITE_URL +
   " (" + RECIPES.length + " recipes, " + COLLECTIONS.length + " collections, " + CUISINES.length + " cuisines).");

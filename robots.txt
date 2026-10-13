@@ -5,5 +5,6 @@ Disallow: /api/
 Disallow: /functions/
 Disallow: /scripts/
 Disallow: /tests/
+Disallow: /books/thanks/
 
 Sitemap: https://solosupper.co.uk/sitemap.xml

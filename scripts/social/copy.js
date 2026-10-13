@@ -21,8 +21,8 @@ async function textModels(key) {
   return flash.concat(other).slice(0, 3).concat(["gemini-flash-latest"]);
 }
 var BANNED = /\b(straightforward|genuinely|honestly|leverage|seamless(ly)?|robust|delve|crucial|innovative|game[- ]changer|elevate|indulge|guilt[- ]free|healthy|skinny|weight[- ]loss|superfood|detox)\b/i;
-// AI disclosure lives in the profile bios and in Instagram's own "AI info"
-// label (set on every post via Buffer), so captions don't repeat it.
+// Captions never mention AI. Instagram's own "AI info" label is set on
+// reels only (see buffer.js), as Meta requires for realistic AI video.
 var AI_RE = /\s*(?:all )?(?:pictures?|images?|photos?)(?: (?:are|were))? (?:made|created|generated) (?:with|by|using) AI\.?/gi;
 
 function clean(s) {

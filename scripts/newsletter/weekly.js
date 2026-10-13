@@ -3,11 +3,13 @@
  * The weekly email, kept short: two dinners that share a pack (one opens it,
  * the other finishes it), one thing the site can do, and one offer
  * (Pro and the cookbooks take turns; lifetime Pro shows while it's on).
- * Made as a DRAFT broadcast in Kit for Neil to check and send (or schedule)
- * on Saturday morning. Nothing is ever sent from here.
+ * Scheduled in Kit to go out at 8am UK time on the Saturday before the week
+ * (or 15 minutes from now if that has passed). Until then it can be checked,
+ * changed or unscheduled in Kit under Broadcasts.
  *
  *   node scripts/newsletter/weekly.js                 preview only (newsletter/<week>.html)
- *   node scripts/newsletter/weekly.js --draft         also create the Kit draft (needs KIT_API_KEY)
+ *   node scripts/newsletter/weekly.js --draft         create it in Kit as a draft, not sent (needs KIT_API_KEY)
+ *   node scripts/newsletter/weekly.js --send          create it in Kit, scheduled for Saturday 8am
  *   node scripts/newsletter/weekly.js --week 2026-10-19
  *
  * newsletter/history.json remembers past weeks so a dinner isn't repeated
@@ -160,12 +162,12 @@ function buildEmail(data, week, pair, lifetime, tip) {
 }
 
 /* ------------------------------------------------------------ Kit */
-async function kitDraft(email, week) {
+async function kitBroadcast(email, week, sendAt) {
   var r = await fetch("https://api.kit.com/v4/broadcasts", {
     method: "POST",
     headers: { "X-Kit-Api-Key": process.env.KIT_API_KEY, "content-type": "application/json", accept: "application/json" },
     body: JSON.stringify({ subject: email.subject, preview_text: email.preview, content: email.html, description: "Weekly email, week of " + week,
-      public: false, published_at: null, send_at: null })
+      public: false, published_at: null, send_at: sendAt || null })
   });
   var j = await r.json().catch(function () { return {}; });
   if (!r.ok) throw new Error("Kit said " + r.status + ": " + JSON.stringify(j.errors || j));
@@ -192,11 +194,16 @@ async function main() {
   log("Subject: " + email.subject);
   log("Tip: " + tip[0]);
   log("Preview: " + path.relative(U.ROOT, previewPath));
-  if (arg("draft")) {
-    if (!process.env.KIT_API_KEY) throw new Error("KIT_API_KEY isn't set, so no draft was made");
-    if (done && done.broadcast) { log("A draft for this week already exists (broadcast " + done.broadcast + "), so no new one was made."); return; }
-    var b = await kitDraft(email, week);
-    log("Draft made in Kit: broadcast " + b.id + " (" + b.status + ")");
+  if (arg("draft") || arg("send")) {
+    if (!process.env.KIT_API_KEY) throw new Error("KIT_API_KEY isn't set, so nothing was made in Kit");
+    if (done && done.broadcast) { log("This week's email is already in Kit (broadcast " + done.broadcast + "), so no new one was made."); return; }
+    var sendAt = null;
+    if (arg("send")) {
+      sendAt = U.londonTime(U.addDays(week, -2), 8, 0);
+      if (Date.parse(sendAt) < Date.now() + 10 * 60000) sendAt = new Date(Date.now() + 15 * 60000).toISOString();
+    }
+    var b = await kitBroadcast(email, week, sendAt);
+    log((sendAt ? "Scheduled in Kit for " + sendAt : "Draft made in Kit") + ": broadcast " + b.id + " (" + b.status + ")");
     history.weeks = (history.weeks || []).filter(function (w) { return w.week !== week && w.week >= U.addDays(week, -7 * 52); });
     history.weeks.push({ week: week, format: FORMAT, recipes: email.ids, pack: pair.pack, broadcast: b.id });
     U.writeJson(histPath, history);

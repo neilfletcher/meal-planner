@@ -104,7 +104,7 @@
      and on iPhones and iPads (whose home-screen apps have been unreliable),
      a tiny silent video plays on a loop, which also keeps the screen on. */
   var awake = { want: false, lock: null, video: null };
-  var isIOS = /iP(hone|ad|od)/.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+  var onIOS = /iP(hone|ad|od)/.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
   function awakeVideo() {
     try {
       if (!awake.video) {
@@ -122,7 +122,7 @@
   }
   function grabAwake() {
     if (!awake.want || document.visibilityState !== "visible") return;
-    if (isIOS || !navigator.wakeLock) awakeVideo();
+    if (onIOS || !navigator.wakeLock) awakeVideo();
     if (!navigator.wakeLock || (awake.lock && !awake.lock.released)) return;
     navigator.wakeLock.request("screen").then(function (l) {
       if (!awake.want) { l.release(); return; }

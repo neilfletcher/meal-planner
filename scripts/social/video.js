@@ -1,6 +1,6 @@
 "use strict";
 // Makes the weekly vertical video: Veo animates the recipe's own photo, then
-// ffmpeg adds the title, the link card and the AI label. If Veo is not
+// ffmpeg adds the title and the link card. If Veo is not
 // available, a gentle zoom on the photo is used instead, so a week never stalls.
 var fs = require("fs");
 var path = require("path");
@@ -30,12 +30,14 @@ async function veo(r, jpgFile, outFile, log) {
   if (!key) throw new Error("no GEMINI_API_KEY");
   var model = await pickVeoModel(key);
   var prompt = "Animate this photo of " + r.title + " for an 8-second vertical food video. Keep the plate, the food and its arrangement exactly as they are: " +
-    "no new ingredients, no extra food, no change in portion size. Add gentle steam rising from the hot food, a very slow push-in towards the plate, and soft warm " +
-    "natural light. No hands, no people, no cutlery moving, no text. Quiet kitchen sound only.";
+    "no new ingredients, no extra food, no change in portion size. The only movement is a very slow, steady camera push-in towards the plate, as if on a slider, " +
+    "with soft warm natural light. Absolutely no steam, smoke, vapour or haze. The food stays completely still. No hands, no people, no cutlery moving, no text. Quiet kitchen sound only.";
+  // Generated steam looked fake, so it's ruled out here as well as in the prompt.
+  var negative = "steam, smoke, vapour, mist, haze, fog, moving food, bubbling, melting, hands, people, text, logos";
   var b64 = fs.readFileSync(jpgFile).toString("base64");
   // The Gemini API's Veo endpoint wants the photo as bytesBase64Encoded; inlineData is kept as a fallback.
   var images = [{ bytesBase64Encoded: b64, mimeType: "image/jpeg" }, { inlineData: { mimeType: "image/jpeg", data: b64 } }];
-  var params = [{ aspectRatio: "9:16", resolution: "1080p", durationSeconds: 8 }, { aspectRatio: "9:16" }];
+  var params = [{ aspectRatio: "9:16", resolution: "1080p", durationSeconds: 8, negativePrompt: negative }, { aspectRatio: "9:16", negativePrompt: negative }, { aspectRatio: "9:16" }];
   var op = null, errs = [];
   outer: for (var a = 0; a < images.length; a++) {
     for (var p = 0; p < params.length; p++) {

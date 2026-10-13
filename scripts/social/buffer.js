@@ -96,7 +96,9 @@ function postInput(s, ch, post, mediaUrls) {
         var v2 = (s.instagramTypes || []).find(function (x) { return want.test(x); });
         if (v2) im[f.name] = v2;
       } else if (/^shouldShareToFeed$/.test(f.name)) im[f.name] = true;
-      else if (/^isAiGenerated$/.test(f.name)) im[f.name] = true;
+      // Meta requires its "AI info" label on realistic AI-made video, so reels
+      // keep it; still photos don't need it.
+      else if (/^isAiGenerated$/.test(f.name)) im[f.name] = isVideo;
       else if (/^thumbnailOffset$/i.test(f.name) && isVideo) im[f.name] = 3000;
     });
     meta[field(s.meta, /^instagram$/i).name] = im;

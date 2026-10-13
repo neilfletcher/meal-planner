@@ -3074,12 +3074,51 @@
     }
     return out;
   }
+
+  /* ---------- keeping the screen on while cooking ----------
+     Screen Wake Lock where the browser has it, taken again whenever the
+     browser drops it (switching apps, the lock screen). Where it's missing,
+     and on iPhones and iPads (whose home-screen apps have been unreliable),
+     a tiny silent video plays on a loop, which also keeps the screen on. */
+  var awake = { want: false, lock: null, video: null };
+  var isIOS = /iP(hone|ad|od)/.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+  function awakeVideo() {
+    try {
+      if (!awake.video) {
+        var v = document.createElement("video");
+        v.setAttribute("playsinline", ""); v.setAttribute("muted", ""); v.setAttribute("aria-hidden", "true");
+        v.muted = true; v.loop = true;
+        v.style.cssText = "position:fixed;left:0;bottom:0;width:1px;height:1px;opacity:0;pointer-events:none";
+        ["webm", "mp4"].forEach(function (t) { var s = document.createElement("source"); s.src = "/assets/awake." + t; s.type = "video/" + t; v.appendChild(s); });
+        document.body.appendChild(v);
+        awake.video = v;
+      }
+      var p = awake.video.play();
+      if (p && p.catch) p.catch(function () { /* needs a tap first; tried again on the next one */ });
+    } catch (e) { /* not supported */ }
+  }
+  function grabAwake() {
+    if (!awake.want || document.visibilityState !== "visible") return;
+    if (isIOS || !navigator.wakeLock) awakeVideo();
+    if (!navigator.wakeLock || (awake.lock && !awake.lock.released)) return;
+    navigator.wakeLock.request("screen").then(function (l) {
+      if (!awake.want) { l.release(); return; }
+      awake.lock = l;
+      l.addEventListener("release", function () { awake.lock = null; setTimeout(grabAwake, 400); });
+    }).catch(awakeVideo);
+  }
+  function setAwake(on) {
+    awake.want = !!on;
+    if (on) { grabAwake(); return; }
+    try { if (awake.lock) awake.lock.release(); } catch (e) { /* already gone */ }
+    awake.lock = null;
+    if (awake.video) awake.video.pause();
+  }
+  document.addEventListener("visibilitychange", grabAwake);
+  document.addEventListener("pointerdown", grabAwake, true);
   function keepAwake(on) {
     if (NativeExtras) { NativeExtras.keepAwake({ on: on }).catch(function () {}); return; }
-    try {
-      if (on && navigator.wakeLock) navigator.wakeLock.request("screen").then(function (l) { if (cook) cook.wake = l; }).catch(function () {});
-      if (!on && cook && cook.wake) { cook.wake.release(); cook.wake = null; }
-    } catch (e) { /* not supported */ }
+    setAwake(on);
   }
   function beep() {
     try {

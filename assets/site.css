@@ -577,3 +577,10 @@ h1, .display, .display-l, .display-m, .week-range { letter-spacing: -0.02em; }
   .book-buy .btn { flex: 1 1 100%; }
   .book-dl li { flex-wrap: wrap; } .book-dl li .btn { flex: 1 1 100%; }
 }
+
+/* Recipe pages: keep the screen on while cooking from the method. */
+.method-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.awake-btn { display: inline-flex; align-items: center; gap: 8px; height: 38px; padding: 0 14px; border: 1px solid var(--line-strong); border-radius: 999px; background: var(--plate); color: var(--ink); font: inherit; font-size: 14px; cursor: pointer; }
+.awake-btn .i { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; }
+.awake-btn[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: var(--paper); }
+@media print { .awake-btn { display: none !important; } }

@@ -12,8 +12,8 @@
  */
 // Rewritten by scripts/build-site.js on every build, so the worker updates
 // whenever the planner's code changes and only ever precaches matching files.
-var ASSETS = ["/styles.css?v=0fb386f5f7","/app.js?v=0331dbdf04","/recipes-data.js?v=cf462667fc","/firebase-config.js?v=f95fd495bc","/assets/telemetry.js?v=40cfeaa34a","/assets/search.js?v=5b9f4fc4f7"]; // ASSETS_LINE
-var VERSION = "d3db25be"; // VERSION_LINE
+var ASSETS = ["/styles.css?v=0fb386f5f7","/app.js?v=6c318c5784","/recipes-data.js?v=cf462667fc","/firebase-config.js?v=f95fd495bc","/assets/telemetry.js?v=40cfeaa34a","/assets/search.js?v=5b9f4fc4f7"]; // ASSETS_LINE
+var VERSION = "a106b34f"; // VERSION_LINE
 var CORE = "ss-core-" + VERSION;
 var PAGES = "ss-pages-" + VERSION;
 var IMAGES = "ss-img-" + VERSION;

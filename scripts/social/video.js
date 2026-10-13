@@ -1,7 +1,8 @@
 "use strict";
-// Makes the weekly vertical video: Veo animates the recipe's own photo, then
-// ffmpeg adds the title and the link card. If Veo is not
-// available, a gentle zoom on the photo is used instead, so a week never stalls.
+// Makes the weekly vertical video: a slow push-in on the recipe's own photo
+// (free, made with ffmpeg), then the title and the link card. Veo (paid,
+// Gemini API) can animate the photo instead: set the repository variable
+// SOCIAL_USE_VEO to true. If Veo fails, the slow push is used, so a week never stalls.
 var fs = require("fs");
 var path = require("path");
 var cp = require("child_process");
@@ -69,7 +70,7 @@ async function veo(r, jpgFile, outFile, log) {
   return model;
 }
 
-// Fallback: the photo on a blurred version of itself, with a slow zoom.
+// The photo on a blurred version of itself, with a slow push-in.
 function stillMotion(jpgFile, outFile) {
   ff(["-loop", "1", "-t", "8", "-i", jpgFile, "-f", "lavfi", "-t", "8", "-i", "anullsrc=r=44100:cl=stereo", "-filter_complex",
     "[0:v]scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,boxblur=24:2[bg];" +
@@ -82,12 +83,17 @@ async function makeVideo(r, overlays, dir, log, name) {
   var jpg = path.join(dir, name + "-source.jpg");
   ff(["-i", path.join(U.ROOT, "img", "recipes", r.id + ".webp"), "-q:v", "2", jpg]);
   var raw = path.join(dir, name + "-raw.mp4"), source;
-  try {
-    source = "Veo " + await veo(r, jpg, raw, log);
-  } catch (e) {
-    log("Veo not used (" + e.message + "); using a slow zoom on the photo instead.");
+  if (process.env.SOCIAL_USE_VEO === "true") {
+    try {
+      source = "Veo " + await veo(r, jpg, raw, log);
+    } catch (e) {
+      log("Veo not used (" + e.message + "); using a slow push on the photo instead.");
+      stillMotion(jpg, raw);
+      source = "photo push-in, because Veo was not available (" + e.message.slice(0, 300) + ")";
+    }
+  } else {
     stillMotion(jpg, raw);
-    source = "photo zoom, because Veo was not available (" + e.message.slice(0, 300) + ")";
+    source = "photo push-in";
   }
   var probe = cp.spawnSync("ffprobe", ["-v", "error", "-select_streams", "a", "-show_entries", "stream=index", "-of", "csv=p=0", raw], { encoding: "utf8" });
   var hasAudio = /\d/.test(probe.stdout || "");

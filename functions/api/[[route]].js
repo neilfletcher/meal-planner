@@ -729,11 +729,11 @@ async function newsletterSetting(request, env) {
   if (body.set === true) {
     if (nlLimited("e:" + user.email.toLowerCase())) throw httpError(429, "Too many tries. Please wait a few minutes.");
     var was = await subscriberState(env, user.email);
-    var state = await kitResubscribe(env, user.email, "planner");
-    if (state === "active" && was !== "active" && !isInternal(env, user.email)) {
+    var res = await kitResubscribe(env, user.email, "planner");
+    if (res.state === "active" && was !== "active" && !isInternal(env, user.email)) {
       try { await increment(env, "newsletterStats/" + new Date().toISOString().slice(0, 10), { total: 1, src_planner: 1 }); } catch (e) { /* not counted */ }
     }
-    return json({ state: state, email: user.email });
+    return json({ state: res.state, was: was, note: res.note, email: user.email });
   }
   if (body.set === false) return json({ state: await kitUnsubscribe(env, user.email), email: user.email });
   return json({ state: await subscriberState(env, user.email), email: user.email });

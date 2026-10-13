@@ -77,10 +77,14 @@ export async function unsubscribe(env, email) {
 // re-subscribes them; set KIT_FORM_ID to any form in Kit for this to work.
 export async function resubscribe(env, email, source) {
   await subscribe(env, email, source);
-  var state = await subscriberState(env, email);
-  if (state !== "active" && env.KIT_FORM_ID) {
-    try { await kit(env, "POST", "forms/" + env.KIT_FORM_ID + "/subscribers", { email_address: String(email).trim().toLowerCase() }); } catch (e) { /* checked below */ }
-    state = await subscriberState(env, email);
+  var state = await subscriberState(env, email), note = "";
+  if (state !== "active") {
+    if (!env.KIT_FORM_ID) note = "KIT_FORM_ID isn't set";
+    else {
+      try { await kit(env, "POST", "forms/" + env.KIT_FORM_ID + "/subscribers", { email_address: String(email).trim().toLowerCase() }); note = "added to form " + env.KIT_FORM_ID; }
+      catch (e) { note = "form " + env.KIT_FORM_ID + ": " + e.message; }
+      state = await subscriberState(env, email);
+    }
   }
-  return state;
+  return { state: state, note: note };
 }

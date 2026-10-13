@@ -4203,7 +4203,8 @@
     if (nlFor !== currentUser.uid || nlState === null) { loadNewsletterState(); return head + '<p class="settings-note">Checking\u2026</p>'; }
     if (nlState === "error") return head + about + '<p class="settings-note">Couldn\u2019t check just now. Try again later.</p>';
     if (nlState === "bounced" || nlState === "complained") return head + about + '<p class="settings-note">Emails to this address couldn\u2019t be delivered, so it\u2019s been taken off the list. Email us if you\u2019d like it back on.</p>';
-    return head + '<label class="switch-row"><input type="checkbox" id="nl-switch"' + (nlState === "active" ? " checked" : "") + "> Send me the weekly email</label>" + about;
+    return head + '<label class="switch-row"><input type="checkbox" id="nl-switch"' + (nlState === "active" ? " checked" : "") + "> Send me the weekly email</label>" + about +
+      (nlState === "inactive" ? '<p class="settings-note">Waiting for you to confirm: tap the link in the email Kit sent you.</p>' : "");
   }
   function wireNewsletterSettings() {
     var sw = document.getElementById("nl-switch");
@@ -4214,7 +4215,9 @@
       api("newsletter", { set: on }).then(function (j) {
         nlState = j.state; nlRemember(j.state);
         if (on && j.state === "active") { track("sign_up", { method: "newsletter", source: "planner" }); toast("You're on the list. The first one arrives on Saturday."); }
+        else if (on && j.state === "inactive") toast("Kit has emailed you a link to confirm. Tap it and you're back on the list.");
         else if (on) toast("You unsubscribed earlier, so this couldn't switch it back on by itself. Email us and we'll add you back.");
+        if (j.note) try { console.info("Weekly email: " + j.state + " (" + j.note + ")"); } catch (e) { /* no console */ }
         else toast("Unsubscribed. No more weekly emails.");
       }).catch(function (e) { toast(e.message); }).then(function () { if (settingsOpen()) renderSettings(); });
     });

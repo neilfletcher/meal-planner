@@ -1870,6 +1870,77 @@
     var bar = document.getElementById("shop-bar");
     if (bar) bar.firstElementChild.style.width = Math.round(frac * 100) + "%";
   }
+  /* Which planned dinners use each shopping list item, and the by-dinner
+   * view. Tap "N dinners" on a row to see them and swap any of them for a
+   * dinner without that ingredient. */
+  var shopOpenKey = null, shopByDinner = false;
+  function plannedDinners() {
+    if (state.mode === "batch") return state.batch.map(function (b, k) { return { id: b.id, serves: state.servings, uid: b.uid, label: "Dinner " + (k + 1) }; });
+    var out = [];
+    W().plan.forEach(function (id, d) { if (id && !isLeftover(d)) out.push({ id: id, serves: dayServes(d), dayIdx: d, label: DOW_NAMES[d] }); });
+    return out;
+  }
+  function shopUsage() {
+    var used = {};
+    plannedDinners().forEach(function (pd) {
+      var r = RECIPES_BY_ID[pd.id];
+      if (!r) return;
+      ingredientsOf(r).forEach(function (i) {
+        var key = shopCanon(i, pd.serves).key;
+        var list = used[key] = used[key] || [];
+        var row = list.filter(function (x) { return x.pd === pd; })[0];
+        var line = scaledAmtOnly(i, pd.serves) + " " + i.item;
+        if (row) row.lines.push(line); else list.push({ pd: pd, r: r, lines: [line] });
+      });
+    });
+    return used;
+  }
+  function recipeUsesKey(r, key) {
+    return ingredientsOf(r).some(function (i) { return shopCanon(i, 1).key === key; });
+  }
+  function shopUsedPanel(key, label, list) {
+    return '<div class="shop-used-panel">' + list.map(function (u) {
+      var swapCtx = u.pd.uid !== undefined ? 'data-swap-uid="' + u.pd.uid + '"' : 'data-swap-day="' + u.pd.dayIdx + '"';
+      return '<div class="shop-used-row"><div class="shop-used-text"><span class="eyebrow">' + esc(u.pd.label) + "</span>" +
+        '<button type="button" class="link-btn shop-used-title" data-open-recipe="' + u.r.id + '" ' + swapCtx + ">" + esc(u.r.title) + "</button>" +
+        '<span class="shop-used-amt">' + esc(u.lines.join(", ")) + "</span></div>" +
+        '<button type="button" class="btn btn-outline btn-sm" ' + swapCtx + ' data-swap-without="' + esc(key) + '" data-swap-label="' + esc(label) + '">Swap</button></div>';
+    }).join("") + '<p class="shop-used-note">Swap shows dinners without ' + esc(label) + ".</p></div>";
+  }
+  function renderShopByDinner(content) {
+    var html = '<p class="settings-note shop-bydinner-note">Each dinner on its own. Tick things off on the full list, and they show as done here too.</p>';
+    plannedDinners().forEach(function (pd) {
+      var r = RECIPES_BY_ID[pd.id];
+      if (!r) return;
+      html += '<section class="shop-section shop-dinner"><h3>' + esc(pd.label) + (pd.serves > 1 ? " \u00b7 for " + pd.serves : "") + "</h3>" +
+        '<button type="button" class="link-btn shop-dinner-title" data-open-recipe="' + r.id + '"' + (pd.uid !== undefined ? ' data-swap-uid="' + pd.uid + '"' : ' data-swap-day="' + pd.dayIdx + '"') + ">" + esc(r.title) + "</button>";
+      ingredientsOf(r).forEach(function (i) {
+        var key = shopCanon(i, pd.serves).key;
+        var done = !!W().checked[key], staple = !!(state.staples || {})[key];
+        html += '<div class="shop-item shop-dinner-item' + (done ? " checked" : "") + '"><span class="name">' + esc(i.item) +
+          (staple ? ' <span class="have-tag">in your cupboard</span>' : "") + '</span><span class="amt">' + esc(scaledAmtOnly(i, pd.serves)) + "</span></div>";
+      });
+      html += "</section>";
+    });
+    content.innerHTML = html;
+    wireShopRecipeLinks(content);
+  }
+  function wireShopRecipeLinks(content) {
+    content.querySelectorAll("[data-open-recipe]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        var ctx = b.hasAttribute("data-swap-uid") ? { batchUid: b.getAttribute("data-swap-uid") } : { dayIdx: parseInt(b.getAttribute("data-swap-day"), 10) };
+        openRecipeModal(b.getAttribute("data-open-recipe"), ctx);
+      });
+    });
+    content.querySelectorAll("[data-swap-without]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        var ex = { key: b.getAttribute("data-swap-without"), label: b.getAttribute("data-swap-label") };
+        if (b.hasAttribute("data-swap-uid")) openPicker({ type: "batchReplace", uid: b.getAttribute("data-swap-uid"), without: ex });
+        else openPicker({ type: "day", dayIdx: parseInt(b.getAttribute("data-swap-day"), 10), without: ex });
+      });
+    });
+  }
+
   function renderShopping() {
     var content = document.getElementById("shop-content");
     var recipeIds = currentRecipeIds();
@@ -1882,6 +1953,17 @@
       setShopBar(0);
       return;
     }
+    var byBtn = document.getElementById("shop-bydinner-btn");
+    if (byBtn) byBtn.setAttribute("aria-pressed", shopByDinner && !shopCupboardMode ? "true" : "false");
+    if (shopByDinner && !shopCupboardMode) {
+      renderShopByDinner(content);
+      var tot = 0, ck = 0, gg = shopBuild(currentPortions()), st = state.staples || {};
+      Object.keys(gg).forEach(function (c) { Object.keys(gg[c]).forEach(function (k) { if (st[k]) return; tot++; if (W().checked[k]) ck++; }); });
+      document.getElementById("shop-progress").textContent = "By dinner \u00b7 " + ck + " of " + tot + " ticked off";
+      setShopBar(tot ? ck / tot : 0);
+      return;
+    }
+    var usage = shopUsage();
     var groups = shopBuild(currentPortions()); // cat -> map(key -> {label, amt}), see SHOPPING LIST CONSOLIDATION
     var staples = state.staples || {}, stapleRows = [];
 
@@ -1909,10 +1991,14 @@
         var isChecked = !!W().checked[itemKey];
         if (isChecked) checkedCount++;
         var fridgeName = key.split("|")[1], haveAmt = fridgeHave()[fridgeName];
-        html += '<label class="shop-item' + (isChecked ? " checked" : "") + '" data-key="' + itemKey.replace(/"/g, "&quot;") + '">' +
+        var uses = usage[key] || [], open = shopOpenKey === key;
+        html += '<div class="shop-row' + (open ? " is-open" : "") + '"><label class="shop-item' + (isChecked ? " checked" : "") + '" data-key="' + itemKey.replace(/"/g, "&quot;") + '">' +
           '<input type="checkbox" ' + (isChecked ? "checked" : "") + '>' +
           '<span class="amt">' + g.amt + '</span>' +
           '<span class="name">' + g.label + (haveAmt > 0 && PACKS[fridgeName] ? ' <span class="have-tag">you have ' + esc(fridgeShort(fridgeName, haveAmt)) + "</span>" : "") + '</span></label>' +
+          (uses.length ? '<button type="button" class="shop-used-btn" data-used="' + itemKey.replace(/"/g, "&quot;") + '" aria-expanded="' + open + '" aria-label="Which dinners use ' + esc(g.label) + '">' +
+            uses.length + '<span class="shop-used-word">' + (uses.length === 1 ? " dinner" : " dinners") + "</span></button>" : "") + "</div>" +
+          (open && uses.length ? shopUsedPanel(key, g.label, uses) : "") +
           (g.swaps && g.swaps.length && !isChecked ? g.swaps.map(function (id) {
             var sw = SWAP_BY_ID[id];
             return '<div class="shop-swap"><span>' + (sw.tier === "hard" ? "Hard to find. " : "Not in every shop. ") + esc(sw.tip) + '</span> <button type="button" class="link-btn" data-swap-on="' + id + '">Use the swap</button></div>';
@@ -1943,6 +2029,16 @@
         (state.mode === "days" && !viewNext && wasteReport(currentPortions()).items.length ? '<button type="button" class="btn btn-outline btn-sm needs-pro" id="shop-carry-btn">Carry leftovers to my fridge</button>' : "") + "</section>";
     }
     content.innerHTML = html;
+    content.querySelectorAll("[data-used]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        var k = b.getAttribute("data-used");
+        shopOpenKey = shopOpenKey === k ? null : k;
+        renderShopping();
+        var again = content.querySelector('[data-used="' + k.replace(/["\\]/g, "\\$&") + '"]');
+        if (again) try { again.focus({ preventScroll: true }); } catch (e) { again.focus(); }
+      });
+    });
+    wireShopRecipeLinks(content);
     var shopCarry = document.getElementById("shop-carry-btn");
     if (shopCarry) shopCarry.addEventListener("click", carryLeftovers);
     document.getElementById("shop-progress").textContent = shopCupboardMode ? "Tap what you always have in" : (state.mode === "days" ? (viewNext ? "For next week · " : "For this week · ") : "") + checkedCount + " of " + total + " ticked off";
@@ -2246,6 +2342,7 @@
       titleText = "Add a dinner";
       subText = "Pick anything – it’ll join your list, no day attached.";
     }
+    if (ctx.without) subText = "Dinners without " + ctx.without.label + ". " + subText;
     var pickerTerm = "", pickerFav = false, pickerTags = {}, pickerTime = 0;
     var PICKER_TAGS = ["vegetarian", "fish", "spicy"];
     function pickerRowsHtml() {
@@ -2253,6 +2350,7 @@
       var tags = Object.keys(pickerTags).filter(function (t) { return pickerTags[t]; });
       var list = RECIPES.filter(function (r) {
         if (!allowedByPrefs(r)) return false;
+        if (ctx.without && recipeUsesKey(r, ctx.without.key)) return false;
         if (pickerFav && !isFavourite(r)) return false;
         if (!withinTime(r, pickerTime)) return false;
         if (tags.length && !tags.every(function (t) { return r.tags.indexOf(t) !== -1; })) return false;
@@ -2336,7 +2434,8 @@
       // When not unlocked, only ever surprise with something already free.
       var around = ctx && (ctx.type === "batchAdd" || ctx.batchUid !== undefined) ? state.batch.map(function (b) { return b.id; }) : W().plan;
       var pickId = pickDinners(1, around)[0];
-      if (!pickId) return;
+      for (var tries = 0; ctx.without && pickId && tries < 30 && recipeUsesKey(RECIPES_BY_ID[pickId], ctx.without.key); tries++) pickId = pickDinners(1, around)[0];
+      if (!pickId || (ctx.without && recipeUsesKey(RECIPES_BY_ID[pickId], ctx.without.key))) return;
       applyPick(ctx, pickId, "surprise");
       onStateChanged();
       closePicker();
@@ -3544,7 +3643,9 @@
     shareText("Shopping list", shoppingText());
   });
   var shopCupBtn = document.getElementById("shop-cupboard-btn");
-  if (shopCupBtn) shopCupBtn.addEventListener("click", function () { shopCupboardMode = !shopCupboardMode; renderShopping(); });
+  if (shopCupBtn) shopCupBtn.addEventListener("click", function () { shopCupboardMode = !shopCupboardMode; if (shopCupboardMode) shopByDinner = false; renderShopping(); });
+  var shopByBtn = document.getElementById("shop-bydinner-btn");
+  if (shopByBtn) shopByBtn.addEventListener("click", function () { shopByDinner = !shopByDinner; if (shopByDinner) shopCupboardMode = false; shopOpenKey = null; renderShopping(); });
 
   /* ============================= PRO ON THE WEBSITE ============================= */
   /*

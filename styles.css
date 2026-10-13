@@ -719,3 +719,43 @@ h1, .display, .display-l, .display-m, .week-range { letter-spacing: -0.02em; }
 .install-note .icon-btn { width: 32px; height: 32px; }
 @media (max-width: 380px) { .header-controls { gap: 8px; } }
 @media (max-width: 360px) { .header-controls { gap: 4px; } }
+
+/* shopping list: which dinners use an item, and the by-dinner view */
+.shop-row { display: flex; align-items: center; border-bottom: 1px solid var(--line); }
+.shop-row .shop-item { flex: 1; min-width: 0; border-bottom: 0; }
+.shop-used-btn { flex: none; margin-left: 6px; border: 1px solid var(--line); background: var(--plate); color: var(--ink-2); border-radius: 999px; padding: 4px 10px; font: 500 12px/1.2 var(--mono); cursor: pointer; white-space: nowrap; }
+.shop-used-btn:hover, .shop-used-btn[aria-expanded="true"] { border-color: var(--ink); color: var(--ink); }
+@media (max-width: 480px) { .shop-used-word { display: none; } .shop-used-btn { padding: 4px 9px; } }
+.shop-used-panel { background: var(--board); border-radius: 8px; padding: 6px 12px; margin: 4px 0 10px; }
+.shop-used-row { display: flex; align-items: center; gap: 12px; padding: 8px 0; border-bottom: 1px solid var(--line); }
+.shop-used-row:last-of-type { border-bottom: 0; }
+.shop-used-text { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.shop-used-title { text-align: left; font-size: 15px; font-family: var(--serif); }
+.shop-used-amt { font-size: 12.5px; color: var(--ink-3); }
+.shop-used-note { font-size: 12px; color: var(--ink-3); margin: 4px 0 6px; }
+.shop-dinner-title { display: block; text-align: left; font-family: var(--serif); font-size: 20px; margin: 10px 0 4px; }
+.shop-dinner-item { cursor: default; }
+.shop-dinner-item .name { order: 1; }
+.shop-bydinner-note { margin-bottom: 14px; }
+.app-header .ss-search-btn { width: 40px; padding: 0; justify-content: center; }
+.app-header .ss-search-btn span, .app-header .ss-search-btn kbd { display: none; }
+/* Tablets and small laptops: keep the header on one line. */
+@media (min-width: 761px) and (max-width: 1340px) {
+  .app-bar { gap: 8px 16px; }
+  .tab-btn { padding: 0 10px; }
+  .signin-text { display: none; }
+  .servings-control .label { display: none; }
+  .pro-pill { padding-left: 12px; padding-right: 12px; }
+  .pro-pill .pp-long { display: none; } .pro-pill .pp-short { display: inline; }
+  .header-controls { gap: 8px; }
+}
+@media (min-width: 761px) and (max-width: 1060px) {
+  .app-bar .brand-name { display: none; }
+  .tab-long { display: none; }
+}
+@media (min-width: 761px) and (max-width: 920px) {
+  .tab-btn .count { display: none; }
+  .tab-btn { padding: 0 8px; }
+  .app-bar { gap: 8px 10px; }
+}
+@media (max-width: 340px) { .header-controls { gap: 4px; } .app-bar { gap: 4px; } }

@@ -1581,7 +1581,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d95", title: "Speedy Cottage Pie Mash Cup", tags: [], cuisine: "UK", protein: "beef",
-      prep: 8, cook: 20,
+      prep: 8, cook: 24,
       ingredients: [
         ing(180, "g", "beef mince", "meat"), ing(0.5, "", "onion, diced", "produce"),
         ing(1, "", "carrot, diced", "produce"), ing(1, "tbsp", "tomato puree", "store"),
@@ -1592,7 +1592,7 @@ window.SOLO_RECIPES = (function () {
         "Cook the potato in boiling salted water for 15 minutes until tender, then drain and mash with the butter and a splash of milk if you have it.",
         "Meanwhile, brown the beef mince with the onion and carrot in a hot pan for 6–8 minutes, breaking it up, until no pink remains and the onion has softened.",
         "Stir in the tomato purée and fry for 1 minute until it darkens, then add the stock and simmer for 10 minutes until thickened.",
-        "Spoon the mince into a bowl or dish and top with the mash."
+        "Heat the grill to high. Spoon the mince into a small ovenproof dish or a large mug, top with the mash and rough up the surface with a fork. Grill for 3–4 minutes until golden and crisp on top."
       ]
     },
     {
@@ -4147,7 +4147,7 @@ window.SOLO_RECIPES = (function () {
         "Meanwhile, heat the oil in a frying pan and brown the lamb mince for 4–5 minutes, breaking it up as it cooks, until no pink remains.",
         "Add the onion and carrot and cook for 8 minutes until soft and translucent.",
         "Stir in the tomato purée and fry for 1 minute until it darkens, then add the stock, Worcestershire sauce and thyme and simmer for 6–8 minutes until thickened.",
-        "Spoon the lamb mixture into a mug or small dish, top with the mash, and serve (or flash under a hot grill for 3–4 minutes to brown the top)."
+        "Heat the grill to high. Spoon the lamb mixture into a small ovenproof dish or a large mug, top with the mash and rough up the surface with a fork. Grill for 3–4 minutes until golden and crisp on top."
       ]
     },
     {

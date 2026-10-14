@@ -36,8 +36,9 @@ var DAY = 86400000;
 // Your own accounts (testing, using it yourself) are left out of every
 // number on the admin page and out of the counts. EXCLUDE_EMAILS in
 // Cloudflare can list more, separated by commas.
+var OWN_EMAILS = ["neil.fletcher@gmail.com", "test@trooperlooper.co.uk"];
 function internalEmails(env) {
-  return String(env.EXCLUDE_EMAILS || env.ADMIN_EMAILS || "neil.fletcher@gmail.com").toLowerCase().split(/[,\s]+/).filter(Boolean);
+  return OWN_EMAILS.concat(String(env.EXCLUDE_EMAILS || "").toLowerCase().split(/[,\s]+/).filter(Boolean));
 }
 function isInternal(env, email) { return !!email && internalEmails(env).indexOf(String(email).toLowerCase()) !== -1; }
 async function internalUids(env) {

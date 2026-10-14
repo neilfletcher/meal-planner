@@ -506,7 +506,7 @@ async function fetchOtherSites(analyticsClient, propertyId) {
 }
 
 // Neil's own accounts are left out of every number (EXCLUDE_EMAILS can add more).
-const INTERNAL_EMAILS = String(process.env.EXCLUDE_EMAILS || 'neil.fletcher@gmail.com').toLowerCase().split(/[,\s]+/).filter(Boolean);
+const INTERNAL_EMAILS = ['neil.fletcher@gmail.com', 'test@trooperlooper.co.uk'].concat(String(process.env.EXCLUDE_EMAILS || '').toLowerCase().split(/[,\s]+/).filter(Boolean));
 const internalUids = new Set();
 
 async function fetchFirebaseSignups() {

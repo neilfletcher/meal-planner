@@ -206,6 +206,7 @@
     next: null           // next week's plan: { week, plan, cooked, leftovers, checked }
   };
   var HISTORY_LIMIT = 400; // keep this bounded so it never grows the saved state unreasonably
+  var DEFAULT_STATE = JSON.stringify(state); // a fresh planner, for when someone signs out
 
   // Fish and seafood you can see on the plate. Background seasonings (fish
   // sauce, oyster sauce, dashi, bonito flakes) don't count.
@@ -562,6 +563,30 @@
   function stopCloudSync() {
     if (firestoreUnsub) { firestoreUnsub(); firestoreUnsub = null; }
   }
+  // The planner saved in this browser belongs to whoever was signed in when
+  // it was saved. Signing out empties it (it's safe in their account), and
+  // signing in as someone else never picks up the last person's week,
+  // ratings or stats. A planner made while signed out still joins the
+  // account of whoever signs in first, as before.
+  var OWNER_KEY = "soloSupper.stateOwner";
+  function freshPlanner() {
+    var d = JSON.parse(DEFAULT_STATE);
+    Object.keys(d).forEach(function (k) { state[k] = d[k]; });
+    checkWeekRollover();
+    markUnsynced(false);
+    lastSyncedJson = {};
+    saveLocal();
+  }
+  function claimLocalPlanner(user) {
+    var owner = lsGet(OWNER_KEY);
+    if (owner && owner !== user.uid) freshPlanner();
+    lsSet(OWNER_KEY, user.uid);
+  }
+  function releaseLocalPlanner() {
+    if (!lsGet(OWNER_KEY)) return;
+    freshPlanner();
+    try { localStorage.removeItem(OWNER_KEY); localStorage.removeItem("soloSupper.newsletter"); localStorage.removeItem("soloSupper.newsletterChecked"); } catch (e) { /* no storage */ }
+  }
 
 
   function initialAvatar(name) {
@@ -632,6 +657,7 @@
           stopAnalytics();
         }
         trackSignUp(user);
+        claimLocalPlanner(user);
         startCloudSync(user);
         startEntitlement(user);
         setTimeout(syncNewsletterFlag, 4000);
@@ -641,6 +667,7 @@
       } else {
         stopCloudSync();
         stopEntitlement();
+        releaseLocalPlanner();
       }
       renderAll();
     });
@@ -2113,6 +2140,17 @@
     add("no fish or seafood", !!(state.avoid && state.avoid.seafood), function () { toggleAvoid("seafood"); });
   }
 
+  // Open the recipes tab showing one country (or main ingredient), e.g. from
+  // the chips in Your kitchen.
+  function browseRecipes(term) {
+    searchTerm = term;
+    var box = document.getElementById("recipe-search");
+    if (box) box.value = term;
+    var tab = document.querySelector('[data-panel="recipes"]');
+    if (tab) tab.click(); else renderRecipeGrid();
+    renderRecipeGrid();
+    window.scrollTo(0, 0);
+  }
   function renderRecipeGrid() {
     var grid = document.getElementById("recipe-grid");
     var activeList = Object.keys(activeTags).filter(function (t) { return activeTags[t]; });
@@ -2126,6 +2164,7 @@
       if (activeList.length && !activeList.every(function (t) { return r.tags.indexOf(t) !== -1; })) return false;
       if (!term) return true;
       if (r.title.toLowerCase().indexOf(term) !== -1) return true;
+      if ((r.cuisine || "").toLowerCase() === term || (r.protein || "") === term) return true;
       return r.ingredients.some(function (i) { return i.item.toLowerCase().indexOf(term) !== -1; });
     });
     grid.innerHTML = "";
@@ -2512,7 +2551,7 @@
   // entries: [{ key, count, label? }] already sorted; label falls back to key.
   function tallyChips(entries, more) {
     if (!entries.length) return "";
-    var chip = function (e) { return '<span class="tally"><span class="tally-l">' + esc(e.label || e.key) + '</span><span class="tally-n">' + e.count + "</span></span>"; };
+    var chip = function (e) { return '<button type="button" class="tally" data-browse="' + esc(e.browse || e.key) + '" title="See these recipes"><span class="tally-l">' + esc(e.label || e.key) + '</span><span class="tally-n">' + e.count + "</span></button>"; };
     var shown = more ? entries.slice(0, more) : entries;
     var rest = more ? entries.slice(more) : [];
     return '<div class="tally-row">' + shown.map(chip).join("") + "</div>" +
@@ -2639,6 +2678,9 @@
       var pool = suggestPool(freeRecipePool(RECIPES)).filter(function (r) { return !r.custom && !cooked[r.id]; });
       if (!pool.length) pool = RECIPES.filter(function (r) { return !r.custom && !cooked[r.id]; });
       if (pool.length) openRecipeModal(pool[Math.floor(Math.random() * pool.length)].id, { fromLibrary: true });
+    });
+    el.querySelectorAll("[data-browse]").forEach(function (b) {
+      b.addEventListener("click", function () { browseRecipes(b.getAttribute("data-browse")); });
     });
     el.querySelectorAll("[data-open-recipe]").forEach(function (b) {
       b.addEventListener("click", function () { openRecipeModal(b.getAttribute("data-open-recipe"), { fromLibrary: true }); });
@@ -3277,7 +3319,7 @@
 
   /* ============================= ANALYTICS CONSENT ============================= */
   var GA_ID = "G-JF54HQGVLT";
-  var INTERNAL_EMAILS = ["neil.fletcher@gmail.com"];
+  var INTERNAL_EMAILS = ["neil.fletcher@gmail.com", "test@trooperlooper.co.uk"];
   var CONSENT_KEY = "soloSupper.analyticsConsent";
   function analyticsConsent() { return lsGet(CONSENT_KEY); } // "yes" | "no" | null
   function loadAnalytics() {

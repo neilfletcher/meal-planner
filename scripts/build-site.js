@@ -792,6 +792,23 @@ function dek(r) {
   return bits.join(" ");
 }
 
+
+// Search results show about 60 characters of a title. "for one" is what sets
+// these pages apart from the big recipe sites, so keep it within the part
+// Google shows: drop the brand on long titles, and on very long ones put
+// "for one" before the "(...)" or "with ..." part of the name.
+function recipeTitle(name) {
+  var t = name + " for one | Solo Supper";
+  if (t.length <= 60) return t;
+  if ((name + " for one").length <= 60) return name + " for one";
+  var b = name.indexOf(" (");
+  if (b > 0) return name.slice(0, b) + " for one" + name.slice(b);
+  var w = name.indexOf(" with ");
+  if (w > 0) return name.slice(0, w) + " for one, " + name.slice(w + 1);
+  return name + " for one";
+}
+function aOrAn(word) { return (/^[AEIO]/.test(word) || /^U[^k]/.test(word) ? "An " : "A ") + word; }
+
 RECIPES.forEach(function (r) {
   var rel = "../../";
   var groups = {};
@@ -900,9 +917,9 @@ RECIPES.forEach(function (r) {
   };
   out("recipes/" + r.slug + "/index.html", page({
     rel: rel, path: "recipes/" + r.slug + "/", active: "recipes", ogType: "article", bodyClass: "page-recipe",
-    title: r.title + " for one | Solo Supper",
+    title: recipeTitle(r.title),
     ogTitle: r.title + ", for one",
-    description: r.title + ", written for one person: " + total(r) + " minutes, " + r.ingredients.length + " ingredients. A " + demonym(r.cuisine) + " dinner for one from Solo Supper.",
+    description: r.title + ", written for one person: " + total(r) + " minutes, " + r.ingredients.length + " ingredients. " + aOrAn(demonym(r.cuisine)) + " dinner for one from Solo Supper.",
     image: r.photo ? "img/recipes/" + r.id + ".webp" : null,
     jsonld: [ld, crumbs]
   }, body));

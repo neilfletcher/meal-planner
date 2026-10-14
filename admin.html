@@ -358,10 +358,11 @@
   .lt-live { color: #2E8B57; font-weight: 600; font-size: 13px; }
 
   /* Wide screens: more width, sections grouped, two columns per group */
-  .jump { display: flex; flex-wrap: wrap; gap: 6px; position: sticky; top: 0; z-index: 20; padding: 10px 0; margin: 4px 0 20px; background: var(--bg); border-bottom: 1px solid var(--border); }
+  .jump { display: flex; flex-wrap: wrap; gap: 6px; flex-basis: 100%; padding-top: 4px; }
+  .jump[hidden] { display: none; }
   .jump a { padding: 6px 12px; border-radius: 999px; text-decoration: none; color: var(--ink); background: var(--surface); font-size: 14px; border: 1px solid var(--border); }
   .jump a:hover { border-color: currentColor; }
-  .group { margin-bottom: 28px; scroll-margin-top: 64px; }
+  .group { margin-bottom: 28px; scroll-margin-top: 150px; }
   .group-head { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; padding-bottom: 10px; margin-bottom: 18px; border-bottom: 2px solid currentColor; }
   .group-title { font-size: 26px; font-weight: 600; margin: 0; }
   .group-sub { color: var(--ink-muted); font-size: 14px; }
@@ -398,6 +399,7 @@
         <button class="ghost" id="refreshBtn" type="button">Refresh</button>
         <button class="ghost" id="signOutBtn" type="button">Sign out</button>
       </div>
+      <nav class="jump" aria-label="Sections"><a href="#g-money">Money</a><a href="#g-visitors">Visitors</a><a href="#g-people">People</a><a href="#g-quality">Recipes, email and health</a><a href="#g-tools">Tools</a></nav>
     </header>
 
     <nav class="tabs" aria-label="Dashboard">
@@ -434,8 +436,6 @@
         <div class="sub" id="ov-now-sub">last 30 minutes</div>
       </div>
     </div>
-
-    <nav class="jump" aria-label="Sections"><a href="#g-money">Money</a><a href="#g-visitors">Visitors</a><a href="#g-people">People</a><a href="#g-quality">Recipes, email and health</a><a href="#g-tools">Tools</a></nav>
 
     <div class="group" id="g-money">
       <div class="group-head"><h2 class="group-title">Money</h2><span class="group-sub">Sales, subscriptions and offers</span></div>
@@ -1380,6 +1380,7 @@
     document.getElementById("tabSolo").setAttribute("aria-current", sites ? "false" : "page");
     document.getElementById("tabSites").setAttribute("aria-current", sites ? "page" : "false");
     document.querySelector("header.top .titles h1").textContent = sites ? "Other sites" : "Solo Supper";
+    var jumpNav = document.querySelector("nav.jump"); if (jumpNav) jumpNav.hidden = sites;
     document.querySelector("header.top .titles p").textContent = sites ? "Everything in Google Analytics that isn't Solo Supper" : "Business dashboard";
   }
   window.addEventListener("hashchange", showTab);

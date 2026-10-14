@@ -38,7 +38,7 @@ window.SOLO_RECIPES = (function () {
         "Rub the salmon all over with the harissa paste and place on a lined baking tray.",
         "Roast for 10–12 minutes (or grill for 6–8 minutes) until just cooked through and flaking easily.",
         "While the salmon cooks, bring the stock to the boil in a small pan (or make it up with just-boiled water from the kettle), then put the couscous in a bowl and pour the stock over. Cover and leave for 5 minutes until absorbed.",
-        "Fluff the couscous with a fork, stir through the lemon zest, a squeeze of lemon juice, olive oil and chopped parsley.",
+        "Finely grate the zest from the lemon. Fluff the couscous with a fork, then stir through the zest, a squeeze of lemon juice, olive oil and chopped parsley.",
         "Season to taste, then serve the salmon on top of the couscous."
       ]
     },
@@ -1008,7 +1008,7 @@ window.SOLO_RECIPES = (function () {
       steps: [
         "Preheat the oven to 200°C (fan 180°C).",
         "Toss the potatoes with half the oil on a baking tray and roast for 10 minutes.",
-        "Toss the chicken with the remaining oil, the dried herbs, crushed garlic and lemon zest, then add to the tray with the potatoes.",
+        "Finely grate the zest from the lemon. Toss the chicken with the remaining oil, the dried herbs, crushed garlic and the zest, then add to the tray with the potatoes.",
         "Squeeze over the lemon juice and roast for a further 16–18 minutes until the chicken is cooked through (75°C in the thickest part) and the potatoes are tender.",
         "Taste and adjust the seasoning before serving."
       ]
@@ -1288,7 +1288,7 @@ window.SOLO_RECIPES = (function () {
         ing(0.5, "", "lemon", "produce"), ing(null, "small handful", "fresh parsley, chopped", "produce")
       ],
       steps: [
-        "Cook the rice according to the packet instructions, then stir through the lemon zest, a squeeze of juice and the chopped parsley.",
+        "Cook the rice according to the packet instructions, then finely grate in the zest of the lemon and stir it through with a squeeze of the juice and the chopped parsley.",
         "Toss the chicken with the za'atar and olive oil.",
         "Heat a frying pan over medium-high heat and cook the chicken for 6–7 minutes, turning occasionally, until cooked through with no pink inside.",
         "Season to taste, then serve the chicken over the lemon rice."
@@ -1463,7 +1463,7 @@ window.SOLO_RECIPES = (function () {
       ],
       steps: [
         "Cook the orzo in salted boiling water according to the packet instructions, scoop out a splash of the cooking water, then drain.",
-        "Toss the warm orzo with the olive oil, lemon zest and a squeeze of juice, loosening with the reserved water if needed.",
+        "Finely grate the zest from the lemon. Toss the warm orzo with the olive oil, the zest and a squeeze of the juice, loosening with the reserved water if needed.",
         "Stir through the cherry tomatoes and most of the feta.",
         "Scatter with the remaining feta and dill or parsley to serve."
       ]
@@ -7422,7 +7422,7 @@ window.SOLO_RECIPES = (function () {
         "Mix the flour with half the cayenne and paprika. Coat the chicken in the seasoned flour, pressing to adhere.",
         "Shallow-fry the chicken in hot oil for 4–5 minutes each side until golden, crisp and cooked through (75°C in the thickest part).",
         "Warm 2 tablespoons of the frying oil with the hot sauce, remaining cayenne and brown sugar to make the Nashville glaze, and brush generously over the hot chicken.",
-        "Pile into the toasted bun with mayonnaise and gherkin slices."
+        "Split the bun and toast it cut-side down in a dry pan for 1 minute, then pile the chicken in with mayonnaise and gherkin slices."
       ]
     },
     {

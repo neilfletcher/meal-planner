@@ -602,7 +602,10 @@ async function fetchEngagement(titles, totalSignups) {
   const cookedCounts = {};
   const plannedCounts = {};
   const favouriteCounts = {};
+  // "Tried" means ticked as cooked. Planning a dish (including every Surprise
+  // me and auto-fill, many of them swapped straight out again) is counted apart.
   const touchedRecipeIds = new Set();
+  const plannedRecipeIds = new Set();
 
   let skipped = 0;
   snapshot.forEach((doc) => {
@@ -627,7 +630,7 @@ async function fetchEngagement(titles, totalSignups) {
     const history = Array.isArray(data.history) ? data.history : [];
     Object.entries(tallyIds(history, 'id')).forEach(([id, n]) => {
       plannedCounts[id] = (plannedCounts[id] || 0) + n;
-      touchedRecipeIds.add(id);
+      plannedRecipeIds.add(id);
     });
 
     const ratings = data.ratings && typeof data.ratings === 'object' ? data.ratings : {};
@@ -681,6 +684,7 @@ async function fetchEngagement(titles, totalSignups) {
     library: {
       totalRecipes,
       everTouched: touchedRecipeIds.size,
+      everPlanned: plannedRecipeIds.size,
       neverTouchedPct: totalRecipes ? Math.round(((totalRecipes - touchedRecipeIds.size) / totalRecipes) * 100) : 0,
     },
     dormant: {

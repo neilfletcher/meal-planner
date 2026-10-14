@@ -680,7 +680,7 @@
           <div class="kpi"><div class="label">Tracked accounts</div><div class="value num" id="en-tracked">&ndash;</div><div class="delta">have synced a plan</div></div>
           <div class="kpi"><div class="label">Active meal plans</div><div class="value num" id="en-active">&ndash;</div><div class="delta" id="en-active-pct">&nbsp;</div></div>
           <div class="kpi"><div class="label">Using shopping list</div><div class="value num" id="en-shopping">&ndash;</div><div class="delta" id="en-shopping-pct">&nbsp;</div></div>
-          <div class="kpi"><div class="label">Recipes ever tried</div><div class="value num" id="en-library">&ndash;</div><div class="delta" id="en-library-pct">&nbsp;</div></div>
+          <div class="kpi"><div class="label">Dishes ever cooked</div><div class="value num" id="en-library">&ndash;</div><div class="delta" id="en-library-pct">&nbsp;</div></div>
         </div>
         <div class="engagement-lists">
           <div>
@@ -1491,7 +1491,7 @@
     var lib = eng.library || { totalRecipes: 0, everTouched: 0, neverTouchedPct: 0 };
     els["en-library"].textContent = fmtNum(lib.everTouched);
     els["en-library-pct"].textContent = lib.totalRecipes
-      ? "of " + fmtNum(lib.totalRecipes) + " (" + lib.neverTouchedPct + "% never tried)"
+      ? "of " + fmtNum(lib.totalRecipes) + " ticked as cooked by someone" + (lib.everPlanned != null ? "; " + fmtNum(lib.everPlanned) + " have been planned" : "")
       : " ";
 
     var dormant = eng.dormant || { count: 0, pct: 0, thresholdDays: 30 };

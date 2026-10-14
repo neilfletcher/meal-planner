@@ -37,7 +37,7 @@ window.SOLO_RECIPES = (function () {
         "Preheat the oven to 200°C (fan 180°C), or heat a grill to high.",
         "Rub the salmon all over with the harissa paste and place on a lined baking tray.",
         "Roast for 10–12 minutes (or grill for 6–8 minutes) until just cooked through and flaking easily.",
-        "While the salmon cooks, put the couscous in a bowl and pour over the hot stock. Cover and leave for 5 minutes until absorbed.",
+        "While the salmon cooks, bring the stock to the boil in a small pan (or make it up with just-boiled water from the kettle), then put the couscous in a bowl and pour the stock over. Cover and leave for 5 minutes until absorbed.",
         "Fluff the couscous with a fork, stir through the lemon zest, a squeeze of lemon juice, olive oil and chopped parsley.",
         "Season to taste, then serve the salmon on top of the couscous."
       ]
@@ -210,7 +210,7 @@ window.SOLO_RECIPES = (function () {
         ing(null, "small handful", "fresh mint, torn", "produce"), ing(1, "tsp", "olive oil", "store")
       ],
       steps: [
-        "Put the couscous in a bowl, pour over the hot stock, cover and leave for 5 minutes until absorbed.",
+        "Bring the stock to the boil in a small pan (or make it up with just-boiled water from the kettle). Put the couscous in a bowl, pour the stock over, cover and leave for 5 minutes until absorbed.",
         "Finely chop the onion, garlic and dried apricots.",
         "Heat the olive oil in a frying pan over medium-high heat and fry the onion for 8 minutes until soft and translucent.",
         "Add the lamb mince, breaking it up with a spoon, and fry for 4–5 minutes until browned.",
@@ -389,7 +389,7 @@ window.SOLO_RECIPES = (function () {
         "Preheat the oven to 200°C (fan 180°C).",
         "Toss the squash and red onion wedges with the olive oil, cumin and chilli flakes on a baking tray.",
         "Roast for 25 minutes, then crumble the feta over the top and roast for a further 5 minutes.",
-        "While the vegetables finish roasting, pour 75 ml hot stock over the couscous, cover and leave for 5 minutes, then fluff with a fork.",
+        "While the vegetables finish roasting, bring the stock to the boil in a small pan (or make it up with just-boiled water from the kettle), then pour it over the couscous, cover and leave for 5 minutes, then fluff with a fork.",
         "Season to taste, then serve the roasted squash and feta over the couscous, scattered with chopped parsley."
       ]
     },
@@ -461,7 +461,7 @@ window.SOLO_RECIPES = (function () {
         "Preheat the grill to high, or use a griddle pan.",
         "Slice the courgette and halve the cherry tomatoes. Toss with half the olive oil and grill or griddle for 6–8 minutes until charred, adding the tomatoes for the last 2 minutes.",
         "Slice the halloumi and fry or griddle for 1–2 minutes each side until golden.",
-        "Meanwhile, put the couscous in a bowl, pour over the hot stock, cover and leave for 5 minutes.",
+        "Meanwhile, bring the stock to the boil in a small pan (or make it up with just-boiled water from the kettle), then put the couscous in a bowl, pour the stock over, cover and leave for 5 minutes.",
         "Fluff the couscous, stir through the remaining olive oil, lemon juice and chopped mint.",
         "Season to taste, then top with the roasted vegetables and grilled halloumi."
       ]
@@ -1913,7 +1913,7 @@ window.SOLO_RECIPES = (function () {
         ing(1, "tbsp", "vegetable oil", "store")
       ],
       steps: [
-        "Pour 90 ml hot stock over the couscous, cover and leave for 5 minutes, then fluff with a fork.",
+        "Bring the stock to the boil in a small pan (or make it up with just-boiled water from the kettle). Pour it over the couscous, cover and leave for 5 minutes, then fluff with a fork.",
         "Fry the lamb mince and courgette in a splash of oil over medium-high heat for 6–7 minutes, breaking up the mince.",
         "Stir in the harissa and cumin, and cook for 1 minute more.",
         "Season to taste, then serve the spiced lamb over the couscous, scattered with coriander."
@@ -2526,7 +2526,7 @@ window.SOLO_RECIPES = (function () {
         ing(1, "tbsp", "vegetable oil", "store")
       ],
       steps: [
-        "Pour 90 ml hot stock over the couscous, cover and leave for 5 minutes, then fluff with a fork.",
+        "Bring the stock to the boil in a small pan (or make it up with just-boiled water from the kettle). Pour it over the couscous, cover and leave for 5 minutes, then fluff with a fork.",
         "Fry the chicken with the cinnamon and cumin in a splash of oil over medium-high heat for 5 minutes.",
         "Add the apricots and chopped tomatoes, and simmer for 8–9 minutes until the chicken is cooked through with no pink inside.",
         "Season to taste, then serve over the couscous."
@@ -2542,7 +2542,7 @@ window.SOLO_RECIPES = (function () {
         ing(90, "ml", "vegetable stock", "store")
       ],
       steps: [
-        "Pour 90 ml hot stock over the couscous, cover and leave for 5 minutes, then fluff with a fork.",
+        "Bring the stock to the boil in a small pan (or make it up with just-boiled water from the kettle). Pour it over the couscous, cover and leave for 5 minutes, then fluff with a fork.",
         "Mix the mince with ¼ tsp salt, the cumin, paprika and chilli flakes, and shape into small oval koftas.",
         "Fry over medium-high heat for 7–8 minutes, turning, until browned and cooked through.",
         "Season to taste, then serve over the couscous, scattered with coriander."
@@ -4932,7 +4932,7 @@ window.SOLO_RECIPES = (function () {
         "Bake for 12–14 minutes until the salmon flakes easily and the tomatoes have softened.",
         "Meanwhile mix the tahini with the garlic, a squeeze of lemon juice and enough water to loosen to a drizzling consistency.",
         "Taste and adjust the seasoning.",
-        "Pour 90 ml hot stock over the couscous, cover and leave for 5 minutes, then fluff with a fork and serve alongside the salmon and tomatoes, drizzled with the tahini sauce."
+        "Bring the stock to the boil in a small pan (or make it up with just-boiled water from the kettle). Pour it over the couscous, cover and leave for 5 minutes, then fluff with a fork and serve alongside the salmon and tomatoes, drizzled with the tahini sauce."
       ]
     },
     {

@@ -637,3 +637,30 @@ h1, .display, .display-l, .display-m, .week-range { letter-spacing: -0.02em; }
   .browse-img { width: 140px; height: 96px !important; }
   .browse-more { height: 96px; }
 }
+
+/* Hover: pictures lift a little and the photo eases in, so it's clear they open */
+.rcard-media, .week-img, .tile { transition: transform .35s cubic-bezier(.2, .7, .2, 1), box-shadow .35s ease; }
+.rcard-img, .tile-img, .week-img { will-change: transform; }
+.rcard:hover .rcard-media, .tile:hover, .week-strip a:hover .week-img { transform: translateY(-4px); box-shadow: 0 16px 30px -18px rgba(12, 17, 14, .55); }
+.rcard:hover .rcard-img { transform: scale(1.05); }
+.tile:hover .tile-img { transform: scale(1.06); }
+.rcard-media:focus-visible, .tile:focus-visible, .week-strip a:focus-visible { outline: 2px solid var(--tomato); outline-offset: 3px; }
+@media (hover: none), (prefers-reduced-motion: reduce) {
+  .rcard:hover .rcard-media, .tile:hover, .week-strip a:hover .week-img { transform: none; box-shadow: none; }
+  .rcard:hover .rcard-img, .tile:hover .tile-img { transform: none; }
+}
+
+/* Cuisines: a photo tile per country */
+.cu-tiles { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 10px; }
+.tile-cu { aspect-ratio: 4 / 3; }
+@media (max-width: 560px) { .cu-tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; } .tile-cu .tile-cap { padding: 36px 12px 12px; } .tile-cu .tile-title { font-size: 18px; } }
+
+/* Recipes page: four big collection tiles to start from */
+.browse-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 20px; }
+.browse-links { display: flex; gap: 20px; }
+.browse-tiles { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+.tile-browse { aspect-ratio: 3 / 2; }
+@media (max-width: 760px) {
+  .browse-tiles { grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: 72%; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 4px; }
+  .tile-browse { scroll-snap-align: start; }
+}

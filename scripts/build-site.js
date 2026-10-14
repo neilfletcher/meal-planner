@@ -741,10 +741,15 @@ function collCard(c, rel) {
     '<label class="search">' + ICON.search + '<input type="search" id="rx-search" placeholder="Search a dish or an ingredient you have" aria-label="Search recipes"></label>' +
     "</section>" +
     // A way in that isn't scrolling: the collections as a row of tiles.
-    '<section class="wrap browse"><span class="eyebrow">Start with a collection</span><div class="browse-row scroll-x">' + COLLECTIONS.map(function (c) {
+    '<section class="wrap browse"><div class="browse-head"><span class="eyebrow">Start with a collection</span>' +
+    '<span class="browse-links"><a class="text-link" href="../collections/">All ' + COLLECTIONS.length + ' collections</a><a class="text-link" href="../cuisines/">By country</a></span></div>' +
+    '<div class="browse-tiles">' + ["quick-dinners-for-one", "vegetarian-dinners-for-one", "curries-for-one", "pasta-and-noodles-for-one"].map(function (slug) {
+      var c = COLLECTIONS.filter(function (x) { return x.slug === slug; })[0];
+      if (!c) return "";
       var hero = BY_ID[c.hero] && BY_ID[c.hero].photo ? BY_ID[c.hero] : c.recipes.filter(function (r) { return r.photo; })[0] || c.recipes[0];
-      return '<a class="browse-tile" href="../collections/' + c.slug + '/">' + recipeImg(hero, rel, "browse-img") + '<span class="browse-name">' + esc(c.name) + '</span><span class="mono small muted">' + c.recipes.length + " recipes</span></a>";
-    }).join("") + '<a class="browse-tile browse-more" href="../cuisines/"><span class="browse-name">By country</span><span class="mono small muted">' + CUISINES.length + " cuisines</span></a></div></section>" +
+      return '<a class="tile tile-browse" href="../collections/' + c.slug + '/">' + recipeImg(hero, rel, "tile-img") +
+        '<span class="tile-cap"><span class="tile-title">' + esc(c.name) + '</span><span class="tile-meta">' + c.recipes.length + " recipes</span></span></a>";
+    }).join("") + "</div></section>" +
     '<section class="wrap">' +
     '<div class="filter-bar"><div class="chips" role="group" aria-label="Filter recipes">' +
     chips.map(function (c, i) { return '<button type="button" class="chip" data-filter="' + c[0] + '" aria-pressed="' + (i === 0 ? "true" : "false") + '">' + c[1] + "</button>"; }).join("") +
@@ -1011,7 +1016,6 @@ CUISINES.forEach(function (cu) {
 
   var counts = {};
   RECIPES.forEach(function (r) { counts[r.cuisine] = (counts[r.cuisine] || 0) + 1; });
-  var max = Math.max.apply(null, CUISINES.map(function (c) { return counts[c]; }));
   var sorted = CUISINES.slice().sort(function (a, b) { return counts[b] - counts[a] || a.localeCompare(b); });
   out("cuisines/index.html", page({
     rel: rel, path: "cuisines/", active: "cuisines",
@@ -1021,11 +1025,11 @@ CUISINES.forEach(function (cu) {
     '<section class="wrap page-head"><div class="page-head-text"><span class="eyebrow">' + CUISINES.length + " countries</span>" +
     '<h1 class="display">A world of dinners for <em>one</em></h1>' +
     '<p class="lead">Every country in the book, with how many recipes it brings to the table.</p></div></section>' +
-    '<section class="wrap section-tight"><ol class="cuisine-list">' + sorted.map(function (c, i) {
-      return '<li><a href="' + CUISINE_SLUG[c] + '/"><span class="cu-name">' + esc(demonym(c)) + '</span>' +
-        '<span class="bar" aria-hidden="true"><span style="width:' + Math.round(counts[c] / max * 100) + '%"' + (i === 0 ? ' class="hi"' : "") + "></span></span>" +
-        '<span class="mono">' + counts[c] + "</span></a></li>";
-    }).join("") + "</ol></section>"));
+    '<section class="wrap section-tight"><ul class="cu-tiles">' + sorted.map(function (c) {
+      var hero = heroPick(RECIPES.filter(function (r) { return r.cuisine === c; }));
+      return '<li><a class="tile tile-cu" href="' + CUISINE_SLUG[c] + '/">' + recipeImg(hero, rel, "tile-img") +
+        '<span class="tile-cap"><span class="tile-title">' + esc(demonym(c)) + '</span><span class="tile-meta">' + counts[c] + (counts[c] === 1 ? " dinner" : " dinners") + "</span></span></a></li>";
+    }).join("") + "</ul></section>"));
   sitemap.push({ loc: "cuisines/", pri: "0.7" });
 })();
 

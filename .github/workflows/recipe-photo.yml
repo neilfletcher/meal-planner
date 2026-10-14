@@ -1,0 +1,55 @@
+name: Recipe photo
+
+# Makes three new photo options for one recipe (saved in photo-options/,
+# not live), or puts a chosen option live as img/recipes/<id>.webp.
+on:
+  workflow_dispatch:
+    inputs:
+      recipe:
+        description: "Recipe id, e.g. d425"
+        required: true
+      mode:
+        description: "options = make three to choose from; use = put one live"
+        type: choice
+        options: [options, use]
+        default: options
+      dish:
+        description: "options: what the dish looks like"
+        required: false
+      choice:
+        description: "use: which option, 1 to 3"
+        required: false
+        default: "1"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: recipe-photo
+  cancel-in-progress: false
+
+jobs:
+  photo:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Make options
+        if: inputs.mode == 'options'
+        run: node scripts/photos/make.js "${{ inputs.recipe }}" "${{ inputs.dish }}"
+      - name: Put the chosen one live
+        if: inputs.mode == 'use'
+        run: |
+          npm install --no-save --no-package-lock sharp@0.33.5
+          node scripts/photos/use.js "${{ inputs.recipe }}" "${{ inputs.choice }}"
+          rm -f photo-options/${{ inputs.recipe }}-*.png
+      - name: Save
+        run: |
+          git config user.name "Solo Supper autopilot"; git config user.email "hello@solosupper.co.uk"
+          git add -A photo-options img/recipes
+          git diff --cached --quiet || (git commit -q -m "Recipe photo: ${{ inputs.recipe }} (${{ inputs.mode }})" && git pull -q --rebase && git push -q)

@@ -642,13 +642,19 @@ function demoHtml(rel) {
     "document.currentScript.insertAdjacentHTML(\"afterend\",h);})();</script>";
   // Leans with the season the site was built in: warming dishes from
   // October to March, lighter ones from May to September.
-  var seasonNow = SEASON_NOW(new Date());
-  var tonight = pick(/^warm/.test(seasonNow) ? ["d25", "d39", "d34", "d48", "d23", "d73", "d96", "d88"]
-    : /^light/.test(seasonNow) ? ["d24", "d149", "d35", "d45", "d37", "d42", "d32", "d17"]
-    : ["d1", "d17", "d5", "d12", "d22", "d30", "d8", "d4"]);
+  // All three sets are in the page; a tiny script shows the one for today's
+  // date (warming from October to March, light from May to September), so it
+  // keeps up with the seasons without the site being rebuilt.
+  var TONIGHT = {
+    warm: pick(["d25", "d39", "d34", "d48"]),
+    light: pick(["d24", "d149", "d35", "d45"]),
+    any: pick(["d1", "d17", "d5", "d12"])
+  };
+  var SEASON_PICK = "(function(){var m=new Date().getMonth()+1;return m>=10||m<=3?\"warm\":m>=5&&m<=9?\"light\":\"any\";})()";
+  var seasonScript = "<script>(function(){var s=" + SEASON_PICK + ";document.querySelectorAll(\"[data-season-set]\").forEach(function(e){e.hidden=e.getAttribute(\"data-season-set\")!==s;});})();</script>";
   var week = pick(["d6", "d25", "d11", "d2", "d15", "d27", "d19"]);
   var days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-  var homeCollections = [/^warm/.test(seasonNow) ? "warming-dinners-for-one" : /^light/.test(seasonNow) ? "light-dinners-for-one" : "spicy-dinners-for-one", "quick-dinners-for-one", "vegetarian-dinners-for-one", "fish-dinners-for-one", "curries-for-one", "pasta-and-noodles-for-one"]
+  var homeCollections = ["quick-dinners-for-one", "vegetarian-dinners-for-one", "fish-dinners-for-one", "curries-for-one", "pasta-and-noodles-for-one"]
     .map(function (s) { return COLLECTIONS.filter(function (c) { return c.slug === s; })[0]; });
   var counts = {};
   RECIPES.forEach(function (r) { counts[r.cuisine] = (counts[r.cuisine] || 0) + 1; });
@@ -675,10 +681,16 @@ function demoHtml(rel) {
     // 2. Something to cook tonight: four dinners, and the ways in as words, not more photos.
     '<section class="wrap section home-tonight">' +
     sectionHead("", "Cook something tonight", "recipes/", "All " + RECIPES.length + " recipes") +
-    '<div class="rgrid rgrid-big">' + tonight.slice(0, 4).map(function (r) { return card(r, rel); }).join("") + "</div>" +
+    ["any", "warm", "light"].map(function (k) {
+      return '<div class="rgrid rgrid-big" data-season-set="' + k + '"' + (k === "any" ? "" : " hidden") + ">" + TONIGHT[k].map(function (r) { return card(r, rel); }).join("") + "</div>";
+    }).join("") +
     '<nav class="mood" aria-label="Browse by mood"><span class="eyebrow">Or in the mood for</span><ul>' +
+    ["warming-dinners-for-one", "light-dinners-for-one"].map(function (slug) {
+      var c = COLLECTIONS.filter(function (x) { return x.slug === slug; })[0];
+      return '<li data-season-set="' + (slug === "warming-dinners-for-one" ? "warm" : "light") + '" hidden><a href="collections/' + c.slug + '/">' + esc(c.name) + ' <span class="mono">' + c.recipes.length + "</span></a></li>";
+    }).join("") +
     homeCollections.map(function (c) { return '<li><a href="collections/' + c.slug + '/">' + esc(c.name) + ' <span class="mono">' + c.recipes.length + "</span></a></li>"; }).join("") +
-    '<li><a href="cuisines/">' + CUISINES.length + ' countries</a></li><li><a href="use-up/">Using up a leftover</a></li></ul></nav></section>' +
+    '<li><a href="cuisines/">' + CUISINES.length + ' countries</a></li><li><a href="use-up/">Using up a leftover</a></li></ul></nav>' + seasonScript + "</section>" +
 
     // 3. The planner, on a dark band: three steps and a real shopping list.
     '<section class="wrap section"><div class="night-band home-planner">' +

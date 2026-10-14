@@ -67,12 +67,13 @@ function networkFirst(req, name, max, fallback, ev) {
   return new Promise(function (resolve) {
     var done = false;
     var finish = function (r) { if (!done && r) { done = true; resolve(r); } };
+    var saved = function () { return caches.match(req, { ignoreSearch: req.mode === "navigate" }); };
     var fromCache = function () {
-      return caches.match(req, { ignoreSearch: req.mode === "navigate" }).then(function (hit) {
-        return hit || (fallback ? fallback() : null);
-      });
+      return saved().then(function (hit) { return hit || (fallback ? fallback() : null); });
     };
-    var timer = setTimeout(function () { fromCache().then(function (hit) { if (hit) finish(hit); }); }, 3000);
+    // Slow network: use a saved copy if there is one, otherwise keep waiting.
+    // The offline page is only for when the network actually fails.
+    var timer = setTimeout(function () { saved().then(function (hit) { if (hit) finish(hit); }); }, 3000);
     var net = fetch(req);
     if (ev) ev.waitUntil(net.then(function (res) { return save(name, req, res.clone(), max); }).catch(function () {}));
     net.then(function (res) {

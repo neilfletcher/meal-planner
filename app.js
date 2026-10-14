@@ -4013,7 +4013,12 @@
           renderSignIn("sent", { email: email });
         }).catch(function (e) {
           btn.disabled = false; btn.textContent = "Email me a sign-in link";
-          showErr(e && e.code === "auth/invalid-email" ? "Enter a valid email address." : "Couldn't send the link just now. Please try again, or use Google.");
+          var code = (e && e.code) || "";
+          try { console.warn("Sign-in link not sent: " + code + " " + ((e && e.message) || "")); } catch (x) { /* no console */ }
+          showErr(code === "auth/invalid-email" ? "Enter a valid email address."
+            : code === "auth/quota-exceeded" || code === "auth/too-many-requests" ? "We've sent too many sign-in emails today. Please use Google, or try again tomorrow."
+            : code === "auth/unauthorized-continue-uri" || code === "auth/unauthorized-domain" ? "Email sign-in isn't set up for this address of the site yet. Please use Google for now."
+            : "Couldn't send the link just now. Please try again, or use Google.");
         });
       });
       var g = document.getElementById("signin-google-btn");

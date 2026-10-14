@@ -2042,8 +2042,8 @@ window.SOLO_RECIPES = (function () {
       steps: [
         "Fry the chicken in a splash of oil over high heat for 5 minutes until cooked through with no pink inside, then push to one side.",
         "Add the cold rice, peas, soy sauce and chilli flakes, and stir-fry for 3–4 minutes until hot through.",
-        "Push everything to one side, crack in the egg and scramble until just set, then mix through.",
-        "Season to taste, then serve hot."
+        "Season to taste and pile onto a plate.",
+        "Fry the egg in a little oil until the white is set and the edges crisp, keeping the yolk runny, then serve on top of the rice."
       ]
     },
     {
@@ -2146,18 +2146,20 @@ window.SOLO_RECIPES = (function () {
 ,
     {
       id: "d130", title: "Swedish-Style Meatballs with Lingonberry", tags: ["quick"], cuisine: "Sweden", protein: "beef",
-      prep: 8, cook: 12,
+      prep: 10, cook: 15,
       ingredients: [
         ing(150, "g", "beef mince", "meat"), ing(1, "tbsp", "breadcrumbs", "store"),
         ing(1, "", "egg yolk", "dairy"), ing(100, "ml", "beef stock", "store"),
         ing(2, "tbsp", "soured cream", "dairy"), ing(1, "tbsp", "cranberry sauce", "store"),
+        ing(200, "g", "potatoes, peeled and chopped, for mash", "produce"), ing(1, "tbsp", "butter", "dairy"),
         ing(1, "tbsp", "vegetable oil", "store")
       ],
       steps: [
-        "Mix the mince with ¼ tsp salt, the breadcrumbs and egg yolk, and shape into small meatballs.",
+        "Boil the potatoes for 15 minutes until tender, then drain and mash with the butter.",
+        "Meanwhile, mix the mince with ¼ tsp salt, the breadcrumbs and egg yolk, and shape into small meatballs.",
         "Fry in a splash of oil over medium heat for 8–9 minutes, turning, until browned and cooked through.",
         "Pour in the stock and simmer for 2 minutes, then take off the heat and stir in the soured cream until the sauce comes together.",
-        "Season to taste, then serve with the cranberry sauce on the side."
+        "Season to taste, then serve the meatballs and sauce with the mash and the cranberry sauce on the side."
       ]
     },
     {
@@ -2420,6 +2422,7 @@ window.SOLO_RECIPES = (function () {
         ing(150, "g", "beef mince", "meat"), ing(0.5, "", "onion, diced", "produce"),
         ing(1, "tsp", "mild curry powder", "spice"), ing(20, "g", "raisins", "store"),
         ing(1, "", "egg", "dairy"), ing(2, "tbsp", "milk", "dairy"),
+        ing(70, "g", "rice", "store"), ing(0.25, "tsp", "ground turmeric", "spice"),
         ing(1, "tbsp", "vegetable oil", "store")
       ],
       steps: [
@@ -2428,7 +2431,8 @@ window.SOLO_RECIPES = (function () {
         "Stir in the curry powder and raisins, then spoon into a small ovenproof dish.",
         "Whisk the egg with the milk and pour over the top.",
         "Bake for 12–14 minutes until the egg topping is set and golden.",
-        "Taste and adjust the seasoning before serving."
+        "Meanwhile, cook the rice according to the packet instructions with the turmeric stirred into the water.",
+        "Taste and adjust the seasoning, then serve the bake with the yellow rice."
       ]
     },
     {
@@ -3026,13 +3030,13 @@ window.SOLO_RECIPES = (function () {
       ingredients: [
         ing(1, "", "pork chop", "meat"), ing(1, "tsp", "jerk seasoning", "spice"),
         ing(0.5, "", "lime", "produce"), ing(70, "g", "rice", "store"),
-        ing(60, "g", "frozen peas", "frozen")
+        ing(80, "g", "tinned kidney beans, drained", "store")
       ],
       steps: [
-        "Cook the rice with the peas according to the packet instructions.",
+        "Cook the rice according to the packet instructions, stirring in the kidney beans for the last 5 minutes to heat through.",
         "Rub the pork chop with the jerk seasoning and a squeeze of lime.",
         "Fry or griddle over medium-high heat for 5–6 minutes each side until cooked through (65–70°C in the middle), then rest for 3 minutes.",
-        "Serve with the rice and peas."
+        "Serve with the rice and beans and the rest of the lime."
       ]
     },
     {
@@ -3078,8 +3082,8 @@ window.SOLO_RECIPES = (function () {
       steps: [
         "Fry the sausage slices in a splash of oil over medium-high heat for 5–6 minutes until browned.",
         "Add the garlic and fry for 1 minute, then add the cold rice and soy sauce, stir-frying for 3–4 minutes.",
-        "Push to one side, crack in the egg and scramble until just set, then mix through.",
-        "Season to taste, then serve hot."
+        "Season to taste and pile onto a plate.",
+        "Fry the egg in a little oil until the white is set and the edges crisp, keeping the yolk runny, then serve on top of the rice."
       ]
     },
     {
@@ -3249,14 +3253,16 @@ window.SOLO_RECIPES = (function () {
         ing(160, "g", "chicken thigh, diced", "meat"), ing(150, "g", "chopped tomatoes", "store"),
         ing(0.5, "", "onion, diced", "produce"), ing(0.5, "tsp", "smoked paprika", "spice"),
         ing(0.25, "tsp", "ground ginger", "spice"), ing(0.25, "tsp", "chilli flakes", "spice"),
+        ing(1, "", "egg", "dairy"), ing(1, "", "flatbread (or injera if you can find it)", "bakery"),
         ing(1, "tbsp", "vegetable oil", "store")
       ],
       steps: [
+        "Boil the egg for 8 minutes, then cool, peel and score the white a few times with a knife.",
         "Fry the onion in a splash of oil over medium heat for 8 minutes until soft and translucent.",
         "Add the chicken and cook for 5 minutes until browned.",
         "Stir in the paprika, ginger and chilli flakes for 30 seconds until fragrant, then add the chopped tomatoes.",
-        "Simmer for 8 minutes until the chicken is cooked through with no pink inside and the sauce has thickened.",
-        "Taste and adjust the seasoning, then serve."
+        "Add the egg and simmer for 8 minutes until the chicken is cooked through with no pink inside and the sauce has thickened.",
+        "Taste and adjust the seasoning, then serve with the warm flatbread for scooping."
       ]
     },
     {
@@ -3304,8 +3310,8 @@ window.SOLO_RECIPES = (function () {
       steps: [
         "Fry the chicken in a splash of oil over high heat for 5 minutes until cooked through with no pink inside, then push to one side.",
         "Add the cold rice, soy sauce, sweet soy sauce and chilli flakes, and stir-fry for 3–4 minutes.",
-        "Push everything to one side, crack in the egg and scramble until just set, then mix through.",
-        "Season to taste, then serve hot."
+        "Season to taste and pile onto a plate.",
+        "Fry the egg in a little oil until the white is set and the edges crisp, keeping the yolk runny, then serve on top of the rice."
       ]
     },
     {
@@ -3392,18 +3398,19 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d208", title: "Ukrainian-Style Cabbage Rolls Bowl", tags: ["quick"], cuisine: "Ukraine", protein: "pork",
-      prep: 9, cook: 15,
+      prep: 12, cook: 18,
       ingredients: [
         ing(120, "g", "pork mince", "meat"), ing(50, "g", "rice", "store"),
-        ing(150, "g", "cabbage, shredded", "produce"), ing(150, "g", "chopped tomatoes", "store"),
-        ing(0.5, "", "onion, diced", "produce"),
+        ing(3, "", "large cabbage leaves", "produce"), ing(150, "g", "chopped tomatoes", "store"),
+        ing(0.5, "", "onion, diced", "produce"), ing(1, "tbsp", "soured cream", "dairy"),
         ing(1, "tbsp", "vegetable oil", "store")
       ],
       steps: [
-        "Part-cook the rice for 8 minutes, then drain.",
-        "Fry the onion and pork mince in a splash of oil over medium-high heat for 5 minutes.",
-        "Add the cabbage and rice, and cook for 4 minutes until the cabbage softens.",
-        "Season to taste, then stir in the chopped tomatoes and simmer for 5 minutes before serving."
+        "Part-cook the rice for 8 minutes, adding the cabbage leaves for the last 3 minutes to soften, then drain. Cut out the thick stem from each leaf.",
+        "Meanwhile, fry the onion in a splash of oil for 5 minutes until soft, then tip half into a bowl.",
+        "Mix the pork mince, rice and the onion in the bowl with ¼ tsp salt. Divide between the leaves, fold in the sides and roll up.",
+        "Add the chopped tomatoes and a splash of water to the onion left in the pan, sit the rolls in the sauce seam-side down, cover and simmer for 15 minutes until the pork is cooked through.",
+        "Season to taste, then serve the rolls in the sauce with the soured cream."
       ]
     },
     {
@@ -3472,7 +3479,7 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d213", title: "Chilean-Style Beef & Corn Bowl (Pastel-Inspired)", tags: ["quick"], cuisine: "Chile", protein: "beef",
-      prep: 8, cook: 14,
+      prep: 8, cook: 18,
       ingredients: [
         ing(150, "g", "beef mince", "meat"), ing(0.5, "", "onion, diced", "produce"),
         ing(100, "g", "sweetcorn", "frozen"), ing(0.5, "tsp", "smoked paprika", "spice"),
@@ -3482,8 +3489,9 @@ window.SOLO_RECIPES = (function () {
       steps: [
         "Fry the onion and beef mince in a splash of oil over medium-high heat for 7 minutes, stirring in the paprika for the last minute (it burns if fried longer).",
         "Meanwhile, boil the egg for 8 minutes, then cool, peel and quarter.",
-        "Warm the sweetcorn through in the pan with the beef for 2 minutes.",
-        "Season to taste, then serve the beef and corn topped with the boiled egg."
+        "Heat the grill to high. Blitz or roughly mash the sweetcorn with a pinch of salt.",
+        "Season the beef to taste, spoon into a small ovenproof dish, tuck in the egg quarters and spread the corn over the top.",
+        "Grill for 4–5 minutes until the corn is golden in places, then serve."
       ]
     },
     {
@@ -3598,18 +3606,20 @@ window.SOLO_RECIPES = (function () {
       ]
     },
     {
-      id: "d221", title: "Senegalese-Style Spiced Fish with Rice", tags: ["fish", "spicy", "quick"], cuisine: "Senegal", protein: "fish",
-      prep: 8, cook: 15,
+      id: "d221", title: "Senegalese-Style Spiced Fish with Rice", tags: ["fish", "spicy"], cuisine: "Senegal", protein: "fish",
+      prep: 8, cook: 20,
       ingredients: [
         ing(150, "g", "white fish fillet", "meat"), ing(70, "g", "rice", "store"),
-        ing(150, "g", "chopped tomatoes", "store"), ing(0.5, "", "red pepper, sliced", "produce"),
-        ing(0.25, "tsp", "chilli flakes", "spice")
+        ing(150, "g", "chopped tomatoes", "store"), ing(1, "", "carrot, cut into chunks", "produce"),
+        ing(1, "", "small potato, cut into 2cm cubes", "produce"), ing(0.25, "tsp", "chilli flakes", "spice"),
+        ing(1, "tbsp", "tomato puree", "store"), ing(0.5, "", "lime", "produce"),
+        ing(1, "tbsp", "vegetable oil", "store")
       ],
       steps: [
-        "Cook the rice according to the packet instructions.",
-        "Simmer the red pepper, chopped tomatoes and chilli flakes for 6 minutes.",
-        "Nestle in the fish, cover and simmer for 6–7 minutes until just cooked through.",
-        "Season to taste, then serve over the rice."
+        "Fry the tomato puree and chilli flakes in a splash of oil for 1 minute, then add the chopped tomatoes, carrot, potato and 250ml water. Simmer for 5 minutes.",
+        "Stir in the rice, cover and simmer gently for 12–15 minutes until the rice is tender and red from the sauce and the vegetables are soft.",
+        "Meanwhile, season the fish and fry in a little oil over medium-high heat for 3–4 minutes each side until golden and just cooked through.",
+        "Season to taste, then serve the fish on the rice and vegetables with a wedge of lime."
       ]
     },
     {
@@ -3737,18 +3747,22 @@ window.SOLO_RECIPES = (function () {
       ]
     },
     {
-      id: "d230", title: "Danish-Style Pork Meatballs (Frikadeller-Inspired)", tags: ["quick"], cuisine: "Denmark", protein: "pork",
-      prep: 8, cook: 15,
+      id: "d230", title: "Danish-Style Pork Meatballs (Frikadeller-Inspired)", tags: [], cuisine: "Denmark", protein: "pork",
+      prep: 10, cook: 20,
       ingredients: [
         ing(150, "g", "pork mince", "meat"), ing(2, "tbsp", "plain flour", "store"),
         ing(1, "", "egg yolk", "dairy"), ing(150, "g", "new potatoes", "produce"),
-        ing(1, "tbsp", "butter", "dairy")
+        ing(1, "tbsp", "butter", "dairy"), ing(80, "g", "red cabbage, shredded", "produce"),
+        ing(1, "tbsp", "red wine vinegar", "store"), ing(1, "tsp", "sugar", "store"),
+        ing(100, "ml", "beef stock", "store")
       ],
       steps: [
-        "Boil the new potatoes whole for 15 minutes until a knife slides in easily, then drain and toss with the butter.",
-        "Mix the pork mince with ¼ tsp salt, the flour and egg yolk, and shape into oval patties.",
-        "Fry over medium heat for 4–5 minutes each side until browned and cooked through.",
-        "Season to taste, then serve with the buttery potatoes."
+        "Simmer the red cabbage with the vinegar, sugar and 2 tbsp water in a covered pan for 15 minutes, stirring now and then, until soft and glossy.",
+        "Meanwhile, boil the new potatoes whole for 15 minutes until a knife slides in easily, then drain and toss with half the butter.",
+        "Mix the pork mince with ¼ tsp salt, 1 tbsp of the flour and the egg yolk, and shape into oval patties.",
+        "Fry in the rest of the butter over medium heat for 4–5 minutes each side until browned and cooked through, then lift onto a plate.",
+        "Stir the remaining flour into the pan juices for 30 seconds, then whisk in the stock and bubble for 2 minutes into a smooth gravy.",
+        "Season to taste, then serve the meatballs with the potatoes, gravy and red cabbage."
       ]
     },
     {
@@ -7295,13 +7309,13 @@ window.SOLO_RECIPES = (function () {
         ing(1, "", "tomato, chopped", "produce"), ing(1, "tbsp", "tomato puree", "store"),
         ing(1, "", "garlic clove, crushed", "produce"), ing(0.5, "tsp", "ground ginger", "spice"),
         ing(0.25, "tsp", "chilli flakes", "spice"), ing(100, "ml", "vegetable stock", "store"),
-        ing(1, "", "lime, juiced", "produce"), ing(1, "tbsp", "coriander, chopped", "produce"),
+        ing(150, "g", "sweet potato, cubed", "produce"), ing(1, "", "lime, juiced", "produce"), ing(1, "tbsp", "coriander, chopped", "produce"),
         ing(1, "tbsp", "vegetable oil", "store")
       ],
       steps: [
         "Heat a splash of oil in a pan and fry the onion for 8 minutes until soft and translucent, adding the garlic for the last minute.",
         "Stir in the tomato, tomato puree, ginger and chilli flakes, and cook for 2 minutes.",
-        "Add the black-eyed beans and stock, and simmer for 12–15 minutes until thickened.",
+        "Add the sweet potato, black-eyed beans and stock, cover and simmer for 12–15 minutes until the sweet potato is tender and the stew has thickened.",
         "Squeeze in the lime juice and season to taste. Scatter with coriander to serve."
       ]
     },

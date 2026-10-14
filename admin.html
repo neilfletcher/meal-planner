@@ -356,6 +356,22 @@
   .lt-dot.on { background: #2E8B57; box-shadow: 0 0 0 3px rgba(46, 139, 87, .18); }
   .lt-warn { color: #A33522; font-size: 13px; }
   .lt-live { color: #2E8B57; font-weight: 600; font-size: 13px; }
+
+  /* Wide screens: more width, sections grouped, two columns per group */
+  .jump { display: flex; flex-wrap: wrap; gap: 6px; position: sticky; top: 0; z-index: 20; padding: 10px 0; margin: 4px 0 20px; background: var(--bg); border-bottom: 1px solid var(--border); }
+  .jump a { padding: 6px 12px; border-radius: 999px; text-decoration: none; color: var(--ink); background: var(--surface); font-size: 14px; border: 1px solid var(--border); }
+  .jump a:hover { border-color: currentColor; }
+  .group { margin-bottom: 28px; scroll-margin-top: 64px; }
+  .group-head { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; padding-bottom: 10px; margin-bottom: 18px; border-bottom: 2px solid currentColor; }
+  .group-title { font-size: 26px; font-weight: 600; margin: 0; }
+  .group-sub { color: var(--ink-muted); font-size: 14px; }
+  .group-grid { display: grid; grid-template-columns: 1fr; gap: 0 28px; align-items: start; }
+  .group-grid > section.block { min-width: 0; }
+  @media (min-width: 1400px) {
+    .wrap { max-width: 1640px; }
+    .group-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .group-grid > .block-wide { grid-column: 1 / -1; }
+  }
 </style>
 </head>
 <body>
@@ -419,6 +435,11 @@
       </div>
     </div>
 
+    <nav class="jump" aria-label="Sections"><a href="#g-money">Money</a><a href="#g-visitors">Visitors</a><a href="#g-people">People</a><a href="#g-quality">Recipes, email and health</a><a href="#g-tools">Tools</a></nav>
+
+    <div class="group" id="g-money">
+      <div class="group-head"><h2 class="group-title">Money</h2><span class="group-sub">Sales, subscriptions and offers</span></div>
+      <div class="group-grid">
     <section class="block" id="liveBlock">
       <div class="block-head">
         <div>
@@ -446,9 +467,29 @@
         <div class="delta" id="lv-at" style="font-size:12px;color:var(--ink-faint);">&nbsp;</div>
       </div>
     </section>
+    <section class="block">
+      <div class="block-head">
+        <div>
+          <div class="eyebrow">Live, from accounts</div>
+          <h2>Which channels bring paying customers</h2>
+        </div>
+        <button class="ghost" id="srcReload" type="button">Update</button>
+      </div>
+      <div class="card">
+        <div class="kpi-row">
+          <div class="kpi"><div class="label">Accounts</div><div class="value num" id="fs-accounts">&ndash;</div><div class="delta" id="fs-known">&nbsp;</div></div>
+          <div class="kpi"><div class="label">Paying now</div><div class="value num" id="fs-paying">&ndash;</div><div class="delta">&nbsp;</div></div>
+          <div class="kpi"><div class="label">Ever paid</div><div class="value num" id="fs-ever">&ndash;</div><div class="delta" id="fs-conv">&nbsp;</div></div>
+        </div>
+        <div class="sub-eyebrow">Where each account first came from</div>
+        <div class="src-scroll"><table class="src-table" id="fsTable"><tr><td>Loading&hellip;</td></tr></table></div>
+        <div class="sub-eyebrow" style="margin-top:18px">Pages people first landed on, for those who signed up</div>
+        <div class="src-scroll"><table class="src-table" id="fsLanding"></table></div>
+        <p class="fine">Recorded for people who allowed usage statistics, from the first page they ever opened (a link with utm_source=... wins over the referring site). Accounts made before 13 October 2026, or by people who said no, show as "not known".</p>
+      </div>
+    </section>
 
-
-    <section class="block" id="booksBlock">
+    <section class="block block-wide" id="booksBlock">
       <div class="block-head">
         <div>
           <div class="eyebrow">Cookbook PDFs</div>
@@ -470,8 +511,49 @@
         <p class="fine" id="bkNote">Sales, checkouts, downloads and Amazon clicks are counted on our server, so they include everyone (numbers only, nothing about who clicked). Checkouts, downloads and Amazon clicks are counted from 13 October 2026. Amazon clicks show interest, not sales: KDP has the sales. "With a plan" is paid subscribers who get the book with Pro (yearly: all four, monthly: Asia). Refunds appear when Stripe sends "charge.refunded" to the webhook, or when you press Check refunds; a refunded purchase can no longer download.</p>
       </div>
     </section>
+    <section class="block block-wide" id="lifetimeBlock">
+      <div class="block-head">
+        <div>
+          <div class="eyebrow">Pro</div>
+          <h2>Lifetime Pro offer</h2>
+        </div>
+        <button class="ghost" id="ltReload" type="button">Update</button>
+      </div>
+      <div class="card">
+        <div class="lt-status" id="ltStatus">Loading&hellip;</div>
+        <div class="kpi-row">
+          <div class="kpi"><div class="label">Sold</div><div class="value num" id="lt-sold">&ndash;</div><div class="delta" id="lt-sold-sub">&nbsp;</div></div>
+          <div class="kpi"><div class="label">Lifetime money</div><div class="value num" id="lt-rev">&ndash;</div><div class="delta">before fees</div></div>
+          <div class="kpi"><div class="label">Price</div><div class="value num" id="lt-price">&ndash;</div><div class="delta" id="lt-price-sub">&nbsp;</div></div>
+        </div>
+        <h3 class="gc-h">Turn it on or off by hand</h3>
+        <div class="gc-row">
+          <label>On for <select id="ltHours"><option value="24">24 hours</option><option value="72">3 days</option><option value="168" selected>7 days</option><option value="336">14 days</option><option value="720">30 days</option></select></label>
+          <button class="primary" id="ltOn" type="button">Turn on</button>
+          <button class="ghost" id="ltOff" type="button">Turn off now</button>
+          <button class="ghost" id="ltResume" type="button" hidden>Let the schedule run again</button>
+        </div>
+        <h3 class="gc-h">Every year, automatically</h3>
+        <p class="gc-msg" style="margin-top:0">Tick the windows you want. The offer switches on at midnight (UK time) on the first day and off at midnight after the last, every year, until you untick it. Turning it on by hand runs alongside these; Turn off now also stops a window that is running.</p>
+        <div class="gc-table-wrap"><table class="gc-table"><thead><tr><th>On</th><th>Window</th><th>Next dates</th><th></th></tr></thead><tbody id="ltWindows"></tbody></table></div>
+        <div class="gc-row" style="margin-top:14px">
+          <label>Sales limit, 0 for none <input type="number" id="ltCap" min="0" value="0" style="width:120px"></label>
+          <button class="ghost" id="ltCapSave" type="button">Save limit</button>
+        </div>
+        <p class="gc-msg" id="ltMsg"></p>
+        <div class="gc-table-wrap"><table class="gc-table"><thead><tr><th>When</th><th>Email</th><th>Paid</th><th>Came from</th></tr></thead><tbody id="ltRows"></tbody></table></div>
+        <p class="fine">Lifetime Pro is one payment for Pro and all four cookbook PDFs, for as long as Solo Supper runs. Buyers who already subscribe have their subscription set to stop renewing. A full refund switches lifetime Pro off. It shows to visitors on the home page, the books page and in the planner's Pro panel only while it's on.</p>
+      </div>
+    </section>
 
-    <section class="block">
+
+      </div>
+    </div>
+
+    <div class="group" id="g-visitors">
+      <div class="group-head"><h2 class="group-title">Visitors</h2><span class="group-sub">Who comes, from where, and how far they get</span></div>
+      <div class="group-grid">
+    <section class="block block-wide">
       <div class="block-head">
         <div>
           <div class="eyebrow">Traffic &amp; engagement</div>
@@ -524,28 +606,6 @@
     <section class="block">
       <div class="block-head">
         <div>
-          <div class="eyebrow">Live, from accounts</div>
-          <h2>Which channels bring paying customers</h2>
-        </div>
-        <button class="ghost" id="srcReload" type="button">Update</button>
-      </div>
-      <div class="card">
-        <div class="kpi-row">
-          <div class="kpi"><div class="label">Accounts</div><div class="value num" id="fs-accounts">&ndash;</div><div class="delta" id="fs-known">&nbsp;</div></div>
-          <div class="kpi"><div class="label">Paying now</div><div class="value num" id="fs-paying">&ndash;</div><div class="delta">&nbsp;</div></div>
-          <div class="kpi"><div class="label">Ever paid</div><div class="value num" id="fs-ever">&ndash;</div><div class="delta" id="fs-conv">&nbsp;</div></div>
-        </div>
-        <div class="sub-eyebrow">Where each account first came from</div>
-        <div class="src-scroll"><table class="src-table" id="fsTable"><tr><td>Loading&hellip;</td></tr></table></div>
-        <div class="sub-eyebrow" style="margin-top:18px">Pages people first landed on, for those who signed up</div>
-        <div class="src-scroll"><table class="src-table" id="fsLanding"></table></div>
-        <p class="fine">Recorded for people who allowed usage statistics, from the first page they ever opened (a link with utm_source=... wins over the referring site). Accounts made before 13 October 2026, or by people who said no, show as "not known".</p>
-      </div>
-    </section>
-
-    <section class="block">
-      <div class="block-head">
-        <div>
           <div class="eyebrow">Activation funnel</div>
           <h2>Where people drop off</h2>
         </div>
@@ -554,7 +614,12 @@
         <div class="funnel" id="funnel"></div>
       </div>
     </section>
+      </div>
+    </div>
 
+    <div class="group" id="g-people">
+      <div class="group-head"><h2 class="group-title">People</h2><span class="group-sub">Accounts, cooking and coming back</span></div>
+      <div class="group-grid">
     <section class="block">
       <div class="block-head">
         <div>
@@ -571,33 +636,6 @@
         </div>
         <div class="chart-wrap" id="signupsChartWrap">
           <div class="empty-state">No sign-up data yet</div>
-        </div>
-      </div>
-    </section>
-
-    <section class="block">
-      <div class="block-head">
-        <div>
-          <div class="eyebrow">Recipes &amp; shopping lists</div>
-          <h2>What people actually cook</h2>
-        </div>
-      </div>
-      <div class="card">
-        <div class="kpi-row">
-          <div class="kpi"><div class="label">Tracked accounts</div><div class="value num" id="en-tracked">&ndash;</div><div class="delta">have synced a plan</div></div>
-          <div class="kpi"><div class="label">Active meal plans</div><div class="value num" id="en-active">&ndash;</div><div class="delta" id="en-active-pct">&nbsp;</div></div>
-          <div class="kpi"><div class="label">Using shopping list</div><div class="value num" id="en-shopping">&ndash;</div><div class="delta" id="en-shopping-pct">&nbsp;</div></div>
-          <div class="kpi"><div class="label">Recipes ever tried</div><div class="value num" id="en-library">&ndash;</div><div class="delta" id="en-library-pct">&nbsp;</div></div>
-        </div>
-        <div class="engagement-lists">
-          <div>
-            <div class="eyebrow" style="margin-bottom:8px;">Most cooked</div>
-            <ul class="top-pages" id="topCooked"></ul>
-          </div>
-          <div>
-            <div class="eyebrow" style="margin-bottom:8px;">Most favourited</div>
-            <ul class="top-pages" id="topFavourited"></ul>
-          </div>
         </div>
       </div>
     </section>
@@ -630,48 +668,40 @@
       </div>
     </section>
 
-    <section class="block">
+    <section class="block block-wide">
       <div class="block-head">
         <div>
-          <div class="eyebrow">Site health</div>
-          <h2>Is anything broken</h2>
+          <div class="eyebrow">Recipes &amp; shopping lists</div>
+          <h2>What people actually cook</h2>
         </div>
-      </div>
-      <div class="card">
-        <div class="health-card">
-          <div class="health-dot" id="healthDot"></div>
-          <div class="health-text">
-            <div class="value num" id="healthValue">&ndash;</div>
-            <div class="label" id="healthLabel">errors in people's browsers, last 7 days</div>
-          </div>
-          <button class="ghost" id="errReload" type="button" style="margin-left:auto">Update</button>
-        </div>
-        <div class="src-scroll"><table class="src-table err-table" id="errTable"></table></div>
-        <p class="fine">Errors in the site's own scripts, sent from visitors' browsers (no personal details). The same error from many people is one row with a count. Clear a row once it's fixed; if it comes back, it reappears. Uptime is checked every 15 minutes by GitHub, which emails you if the site or checkout settings break.</p>
-      </div>
-    </section>
-
-
-
-    <section class="block" id="nlBlock">
-      <div class="block-head">
-        <div>
-          <div class="eyebrow">The weekly email</div>
-          <h2>Who's signing up</h2>
-        </div>
-        <button class="ghost" id="nlReload" type="button">Update</button>
       </div>
       <div class="card">
         <div class="kpi-row">
-          <div class="kpi"><div class="label">On the list</div><div class="value num" id="nl-size">&ndash;</div><div class="delta" id="nl-size-sub">active subscribers in Kit</div></div>
-          <div class="kpi"><div class="label">Sign-ups, 30 days</div><div class="value num" id="nl-30">&ndash;</div><div class="delta" id="nl-all">&nbsp;</div></div>
-          <div class="kpi"><div class="label">Where from, 30 days</div><div class="value" id="nl-src" style="font-size:15px;line-height:1.5">&ndash;</div><div class="delta">&nbsp;</div></div>
+          <div class="kpi"><div class="label">Tracked accounts</div><div class="value num" id="en-tracked">&ndash;</div><div class="delta">have synced a plan</div></div>
+          <div class="kpi"><div class="label">Active meal plans</div><div class="value num" id="en-active">&ndash;</div><div class="delta" id="en-active-pct">&nbsp;</div></div>
+          <div class="kpi"><div class="label">Using shopping list</div><div class="value num" id="en-shopping">&ndash;</div><div class="delta" id="en-shopping-pct">&nbsp;</div></div>
+          <div class="kpi"><div class="label">Recipes ever tried</div><div class="value num" id="en-library">&ndash;</div><div class="delta" id="en-library-pct">&nbsp;</div></div>
         </div>
-        <p class="fine">Sign-ups from the website footer, recipe pages, the planner's settings and the tick box when buying a cookbook. Each Friday morning the next email is scheduled in Kit (Broadcasts) to go at 8am on Saturday; you can check, change or unschedule it there until then. Opens, clicks and unsubscribes are in Kit.</p>
+        <div class="engagement-lists">
+          <div>
+            <div class="eyebrow" style="margin-bottom:8px;">Most cooked</div>
+            <ul class="top-pages" id="topCooked"></ul>
+          </div>
+          <div>
+            <div class="eyebrow" style="margin-bottom:8px;">Most favourited</div>
+            <ul class="top-pages" id="topFavourited"></ul>
+          </div>
+        </div>
       </div>
     </section>
 
-    <section class="block" id="fbBlock">
+      </div>
+    </div>
+
+    <div class="group" id="g-quality">
+      <div class="group-head"><h2 class="group-title">Recipes, email and site health</h2><span class="group-sub">What people think, who's listening, and what's broken</span></div>
+      <div class="group-grid">
+    <section class="block block-wide" id="fbBlock">
       <div class="block-head">
         <div>
           <div class="eyebrow">Recipe feedback</div>
@@ -692,43 +722,51 @@
         <p class="fine">Recipes with the most problems first. Reports from your own accounts are left out. People rarely report that a recipe went fine, so read the comments rather than the score.</p>
       </div>
     </section>
-
-    <section class="block" id="lifetimeBlock">
+    <section class="block" id="nlBlock">
       <div class="block-head">
         <div>
-          <div class="eyebrow">Pro</div>
-          <h2>Lifetime Pro offer</h2>
+          <div class="eyebrow">The weekly email</div>
+          <h2>Who's signing up</h2>
         </div>
-        <button class="ghost" id="ltReload" type="button">Update</button>
+        <button class="ghost" id="nlReload" type="button">Update</button>
       </div>
       <div class="card">
-        <div class="lt-status" id="ltStatus">Loading&hellip;</div>
         <div class="kpi-row">
-          <div class="kpi"><div class="label">Sold</div><div class="value num" id="lt-sold">&ndash;</div><div class="delta" id="lt-sold-sub">&nbsp;</div></div>
-          <div class="kpi"><div class="label">Lifetime money</div><div class="value num" id="lt-rev">&ndash;</div><div class="delta">before fees</div></div>
-          <div class="kpi"><div class="label">Price</div><div class="value num" id="lt-price">&ndash;</div><div class="delta" id="lt-price-sub">&nbsp;</div></div>
+          <div class="kpi"><div class="label">On the list</div><div class="value num" id="nl-size">&ndash;</div><div class="delta" id="nl-size-sub">active subscribers in Kit</div></div>
+          <div class="kpi"><div class="label">Sign-ups, 30 days</div><div class="value num" id="nl-30">&ndash;</div><div class="delta" id="nl-all">&nbsp;</div></div>
+          <div class="kpi"><div class="label">Where from, 30 days</div><div class="value" id="nl-src" style="font-size:15px;line-height:1.5">&ndash;</div><div class="delta">&nbsp;</div></div>
         </div>
-        <h3 class="gc-h">Turn it on or off by hand</h3>
-        <div class="gc-row">
-          <label>On for <select id="ltHours"><option value="24">24 hours</option><option value="72">3 days</option><option value="168" selected>7 days</option><option value="336">14 days</option><option value="720">30 days</option></select></label>
-          <button class="primary" id="ltOn" type="button">Turn on</button>
-          <button class="ghost" id="ltOff" type="button">Turn off now</button>
-          <button class="ghost" id="ltResume" type="button" hidden>Let the schedule run again</button>
-        </div>
-        <h3 class="gc-h">Every year, automatically</h3>
-        <p class="gc-msg" style="margin-top:0">Tick the windows you want. The offer switches on at midnight (UK time) on the first day and off at midnight after the last, every year, until you untick it. Turning it on by hand runs alongside these; Turn off now also stops a window that is running.</p>
-        <div class="gc-table-wrap"><table class="gc-table"><thead><tr><th>On</th><th>Window</th><th>Next dates</th><th></th></tr></thead><tbody id="ltWindows"></tbody></table></div>
-        <div class="gc-row" style="margin-top:14px">
-          <label>Sales limit, 0 for none <input type="number" id="ltCap" min="0" value="0" style="width:120px"></label>
-          <button class="ghost" id="ltCapSave" type="button">Save limit</button>
-        </div>
-        <p class="gc-msg" id="ltMsg"></p>
-        <div class="gc-table-wrap"><table class="gc-table"><thead><tr><th>When</th><th>Email</th><th>Paid</th><th>Came from</th></tr></thead><tbody id="ltRows"></tbody></table></div>
-        <p class="fine">Lifetime Pro is one payment for Pro and all four cookbook PDFs, for as long as Solo Supper runs. Buyers who already subscribe have their subscription set to stop renewing. A full refund switches lifetime Pro off. It shows to visitors on the home page, the books page and in the planner's Pro panel only while it's on.</p>
+        <p class="fine">Sign-ups from the website footer, recipe pages, the planner's settings and the tick box when buying a cookbook. Each Friday morning the next email is scheduled in Kit (Broadcasts) to go at 8am on Saturday; you can check, change or unschedule it there until then. Opens, clicks and unsubscribes are in Kit.</p>
       </div>
     </section>
 
-    <section class="block" id="giftBlock">
+    <section class="block">
+      <div class="block-head">
+        <div>
+          <div class="eyebrow">Site health</div>
+          <h2>Is anything broken</h2>
+        </div>
+      </div>
+      <div class="card">
+        <div class="health-card">
+          <div class="health-dot" id="healthDot"></div>
+          <div class="health-text">
+            <div class="value num" id="healthValue">&ndash;</div>
+            <div class="label" id="healthLabel">errors in people's browsers, last 7 days</div>
+          </div>
+          <button class="ghost" id="errReload" type="button" style="margin-left:auto">Update</button>
+        </div>
+        <div class="src-scroll"><table class="src-table err-table" id="errTable"></table></div>
+        <p class="fine">Errors in the site's own scripts, sent from visitors' browsers (no personal details). The same error from many people is one row with a count. Clear a row once it's fixed; if it comes back, it reappears. Uptime is checked every 15 minutes by GitHub, which emails you if the site or checkout settings break.</p>
+      </div>
+    </section>
+      </div>
+    </div>
+
+    <div class="group" id="g-tools">
+      <div class="group-head"><h2 class="group-title">Tools</h2><span class="group-sub">Gift codes, free Pro and free books</span></div>
+      <div class="group-grid">
+    <section class="block block-wide" id="giftBlock">
       <div class="block-head">
         <div>
           <div class="eyebrow">Pro</div>
@@ -804,6 +842,9 @@
         </div>
       </div>
     </section>
+      </div>
+    </div>
+
     </div>
 
     <div id="viewSites" hidden>

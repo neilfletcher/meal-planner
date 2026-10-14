@@ -288,9 +288,23 @@
   // How keen we are on a dish: 5 stars 3x, 4 stars 2x, not tried yet 2x,
   // tried but unrated 1.25x, 3 stars 1x, 2 stars 0.4x (1 star never comes up).
   // Anything cooked in the last three weeks is less likely to come round again.
+  // The time of year nudges suggestions: more stews and soups in winter,
+  // more salads and grills in summer (recipes-data.js tags the dishes).
+  // A nudge only: nothing is ever left out because of the season.
+  var SEASON_W = {
+    "warm": { warm: 1.6, light: 0.5 }, "warm-ish": { warm: 1.3, light: 0.75 },
+    "light": { light: 1.6, warm: 0.55 }, "light-ish": { light: 1.3, warm: 0.8 }
+  };
+  function seasonWeight(r) {
+    var tag = window.SOLO_SEASON && window.SOLO_SEASON[r.id];
+    if (!tag || !window.SOLO_SEASON_NOW) return 1;
+    var now = SEASON_W[window.SOLO_SEASON_NOW(viewNext ? new Date(Date.now() + 7 * 86400000) : new Date())];
+    return (now && now[tag]) || 1;
+  }
   function prefWeight(r) {
     var stars = state.ratings && state.ratings[r.id];
     var w = stars === 5 ? 3 : stars === 4 ? 2 : stars === 3 ? 1 : stars === 2 ? 0.4 : (cookedCounts()[r.id] ? 1.25 : 2);
+    w *= seasonWeight(r);
     var last = lastCooked(r.id);
     if (last && Date.now() - last < 21 * 86400000) w *= 0.35;
     return w;

@@ -43,6 +43,8 @@ var sandbox = { window: {} };
 vm.createContext(sandbox);
 vm.runInContext(fs.readFileSync(path.join(ROOT, "recipes-data.js"), "utf8"), sandbox);
 var RECIPES = sandbox.window.SOLO_RECIPES;
+var SEASON = sandbox.window.SOLO_SEASON || {};
+var SEASON_NOW = sandbox.window.SOLO_SEASON_NOW || function () { return ""; };
 // Swaps for hard-to-find ingredients (also used by the planner): shown under the ingredient.
 var SWAP_BY_ITEM = {};
 (sandbox.window.SOLO_SWAPS || []).forEach(function (sw) { sw.match.forEach(function (m) { SWAP_BY_ITEM[m] = sw; }); });
@@ -180,6 +182,16 @@ var COLLECTIONS = [
     intro: "Curry is the dish most people think they cannot make for one. These are written for a single portion, from Indian dahls to Thai and Japanese curries.",
     test: function (r) { return CURRY_RE.test(r.title); }, hero: "d25" }
 ];
+// The two seasonal collections: always built, and the one in season is
+// shown first on the home page.
+COLLECTIONS.push(
+  { slug: "warming-dinners-for-one", name: "Warming dinners", h1: "Warming dinners for one", short: "Stews, soups, pies and curries",
+    intro: "For cold evenings: stews, soups, pies, bakes and curries, every one sized for a single portion so there's no week of leftovers.",
+    test: function (r) { return SEASON[r.id] === "warm"; }, hero: "d23" },
+  { slug: "light-dinners-for-one", name: "Light summer dinners", h1: "Light summer dinners for one", short: "Salads, skewers, tacos and grills",
+    intro: "For warm evenings: salads, skewers, tacos, poke and quick grills that don't heat up the kitchen, all written for one.",
+    test: function (r) { return SEASON[r.id] === "light"; }, hero: "d149" }
+);
 COLLECTIONS.forEach(function (c) { c.recipes = RECIPES.filter(c.test); });
 
 /* ---------------------------------------------------- pack data, from app.js */
@@ -310,7 +322,7 @@ if (process.env.SITE_DATA_OUT) {
     recipes: RECIPES.map(function (r) {
       return {
         id: r.id, title: r.title, slug: r.slug, prep: r.prep, cook: r.cook, cuisine: r.cuisine, demonym: demonym(r.cuisine),
-        protein: r.protein, tags: r.tags, photo: r.photo, steps: r.steps,
+        protein: r.protein, tags: r.tags, photo: r.photo, steps: r.steps, season: SEASON[r.id] || "",
         ingredients: r.ingredients.map(function (i) { return { amt: i.amt, unit: i.unit, item: i.item, cat: i.cat, text: amtText(i) }; })
       };
     }),
@@ -628,10 +640,15 @@ function demoHtml(rel) {
     "x.forEach(function(i,n){var r=P[i];h+='<a class=\"tile'+(n?'':' tile-big')+'\" href=\"recipes/'+r[1]+'/\"><img class=\"tile-img\" src=\"img/recipes/'+r[0]+'.webp\" alt=\"'+r[2]+'\" width=\"720\" height=\"540\" fetchpriority=\"high\">" +
     "<span class=\"tile-cap\"><span class=\"tile-title\">'+r[2]+'</span><span class=\"tile-meta\">'+r[3]+' &middot; '+r[4]+' min</span></span></a>';});" +
     "document.currentScript.insertAdjacentHTML(\"afterend\",h);})();</script>";
-  var tonight = pick(["d1", "d17", "d5", "d12", "d22", "d30", "d8", "d4"]);
+  // Leans with the season the site was built in: warming dishes from
+  // October to March, lighter ones from May to September.
+  var seasonNow = SEASON_NOW(new Date());
+  var tonight = pick(/^warm/.test(seasonNow) ? ["d25", "d39", "d34", "d48", "d23", "d73", "d96", "d88"]
+    : /^light/.test(seasonNow) ? ["d24", "d149", "d35", "d45", "d37", "d42", "d32", "d17"]
+    : ["d1", "d17", "d5", "d12", "d22", "d30", "d8", "d4"]);
   var week = pick(["d6", "d25", "d11", "d2", "d15", "d27", "d19"]);
   var days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-  var homeCollections = ["quick-dinners-for-one", "vegetarian-dinners-for-one", "fish-dinners-for-one", "curries-for-one", "pasta-and-noodles-for-one", "spicy-dinners-for-one"]
+  var homeCollections = [/^warm/.test(seasonNow) ? "warming-dinners-for-one" : /^light/.test(seasonNow) ? "light-dinners-for-one" : "spicy-dinners-for-one", "quick-dinners-for-one", "vegetarian-dinners-for-one", "fish-dinners-for-one", "curries-for-one", "pasta-and-noodles-for-one"]
     .map(function (s) { return COLLECTIONS.filter(function (c) { return c.slug === s; })[0]; });
   var counts = {};
   RECIPES.forEach(function (r) { counts[r.cuisine] = (counts[r.cuisine] || 0) + 1; });

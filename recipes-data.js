@@ -7750,3 +7750,19 @@ window.SOLO_COOK_NOTES = [
   ["Finishing", "Taste before serving. Most dishes want a pinch more salt, and a squeeze of lemon or a splash of vinegar lifts anything rich."],
   ["Leftovers", "Cool quickly, cover and keep in the fridge for up to 2 days, then reheat until piping hot. Cooked rice keeps for 1 day and should only be reheated once."]
 ];
+
+// Seasons: dishes that feel right when it's cold (warming) or warm (light).
+// Everything else suits any time of year. Suggestions lean towards the
+// season's dishes a little (see seasonWeight in app.js); nothing is excluded.
+window.SOLO_SEASON = (function () {
+  var s = {};
+  "d3 d5 d8 d10 d15 d19 d23 d25 d30 d34 d39 d41 d44 d48 d50 d73 d80 d81 d88 d95 d96 d101 d104 d107 d114 d117 d119 d120 d124 d128 d130 d141 d145 d146 d147 d153 d155 d157 d164 d169 d172 d174 d176 d182 d184 d189 d192 d194 d195 d197 d198 d199 d201 d207 d212 d215 d217 d219 d223 d224 d225 d227 d228 d230 d238 d240 d248 d251 d252 d253 d254 d257 d263 d267 d269 d272 d276 d284 d292 d296 d298 d302 d304 d307 d308 d310 d311 d312 d316 d325 d332 d334 d336 d341 d342 d344 d352 d353 d355 d361 d364 d365 d366 d369 d373 d374 d375 d376 d380 d381 d382 d383 d385 d386 d387 d391 d393 d394 d395 d396 d399 d400 d401 d402 d408 d411 d412 d416 d417 d418 d422 d423 d424 d425 d426 d433 d434 d435 d436 d437 d440 d442".split(" ").forEach(function (id) { s[id] = "warm"; });
+  "d24 d32 d35 d37 d42 d45 d110 d111 d118 d129 d134 d139 d149 d171 d173 d175 d177 d229 d256 d259 d260 d262 d264 d318 d323 d329 d340 d354 d356 d360 d368 d371 d379 d397 d405".split(" ").forEach(function (id) { s[id] = "light"; });
+  return s;
+})();
+// Which way the year leans today: "warm" in late autumn and winter, "light"
+// in late spring and summer, "" in between. UK months.
+window.SOLO_SEASON_NOW = function (d) {
+  var m = (d || new Date()).getMonth() + 1;
+  return m >= 11 || m <= 2 ? "warm" : m === 10 || m === 3 ? "warm-ish" : m >= 6 && m <= 8 ? "light" : m === 5 || m === 9 ? "light-ish" : "";
+};

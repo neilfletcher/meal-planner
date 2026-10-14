@@ -56,6 +56,14 @@ function weekIndex(week) { return Math.floor(new Date(week + "T00:00:00Z").getTi
 /* ------------------------------------------------------------ choosing */
 // Two dinners where the second finishes a fresh pack the first opens, so
 // together they leave far less than either would alone.
+// Lean towards the season's dishes: stews and soups in winter, salads and
+// grills in summer (tags from recipes-data.js, via the site data).
+function seasonBonus(r, week) {
+  var m = Number(String(week).slice(5, 7));
+  var now = m >= 11 || m <= 2 ? "warm" : m === 10 || m === 3 ? "warm" : m >= 5 && m <= 9 ? "light" : "";
+  if (!now || !r.season) return 0;
+  return r.season === now ? 0.25 : -0.35;
+}
 function choosePair(data, history, week) {
   var rand = U.rng("newsletter-" + week);
   var cutoff = U.addDays(week, -7 * REPEAT_WEEKS), recent = {}, recentPacks = {};
@@ -80,7 +88,7 @@ function choosePair(data, history, week) {
         if (!b) return;
         var left = Math.ceil((a + b) / p.size - 0.08) * p.size - a - b;
         if (left >= alone || left > p.size * 0.25) return;
-        pairs.push({ a: r, b: q, pack: l.name, score: (alone - left) / p.size * p.perish + rand() * 0.3 });
+        pairs.push({ a: r, b: q, pack: l.name, score: (alone - left) / p.size * p.perish + rand() * 0.3 + seasonBonus(r, week) + seasonBonus(q, week) });
       });
     });
   });

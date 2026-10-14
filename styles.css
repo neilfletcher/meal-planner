@@ -843,3 +843,6 @@ h1, .display, .display-l, .display-m, .week-range { letter-spacing: -0.02em; }
 .meta4 dd { white-space: nowrap; }
 @media (max-width: 520px) { .meta4 div + div { padding-left: 10px; } .meta4 dd { font-size: 21px; } .meta4 dt { font-size: 10px; letter-spacing: .1em; } }
 @media (max-width: 420px) { .meta4 { grid-template-columns: repeat(3, minmax(0, 1fr)) auto; } .meta4 dd { font-size: 19px; } .meta4 div + div { padding-left: 8px; } }
+
+/* Serves only needs room for a small number, so the times get the space */
+.meta4 { grid-template-columns: repeat(3, minmax(0, 1fr)) minmax(64px, auto); }

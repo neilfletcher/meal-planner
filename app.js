@@ -2122,7 +2122,35 @@
   var ALL_TAGS = ["vegetarian", "vegan", "fish", "spicy"];
   var activeTime = 0, favOnly = false, yoursOnly = false, uncookedOnly = false;
 
+  // Kinds of dinner, as on the website's collections. One at a time.
+  var PASTA_RX = /\b(pasta|spaghetti|tagliatelle|linguine|penne|fusilli|rigatoni|orzo|gnocchi|noodles?|udon|soba|ramen|macaroni|pappardelle|orecchiette|conchiglie|farfalle|vermicelli)\b/i;
+  var CURRY_RX = /\b(curry|curried|dahl|dal|dhal|korma|tikka|masala|massaman|rendang|vindaloo|jalfrezi|balti|biryani|madras|katsu|karahi)\b/i;
+  var SOUP_RX = /\b(soup|stew|tagine|goulash|chilli|casserole|laksa|ramen|wat)\b/i;
+  var CATS = [
+    ["chicken", "Chicken", function (r) { return r.protein === "chicken"; }],
+    ["beef", "Beef", function (r) { return r.protein === "beef"; }],
+    ["pork", "Pork", function (r) { return r.protein === "pork"; }],
+    ["lamb", "Lamb", function (r) { return r.protein === "lamb"; }],
+    ["pasta", "Pasta and noodles", function (r) { return PASTA_RX.test(r.title) || r.ingredients.some(function (i) { return PASTA_RX.test(i.item); }); }],
+    ["curry", "Curries", function (r) { return CURRY_RX.test(r.title); }],
+    ["soup", "Soups and stews", function (r) { return SOUP_RX.test(r.title); }],
+    ["traybake", "Traybakes", function (r) { return /traybake|tray bake|\bbake\b/i.test(r.title); }]
+  ];
+  var activeCat = "";
+  function renderCatChips() {
+    var wrap = document.getElementById("cat-chips");
+    if (!wrap) return;
+    wrap.innerHTML = "";
+    CATS.forEach(function (c) {
+      var chip = document.createElement("button");
+      chip.className = "chip chip-cat"; chip.type = "button"; chip.textContent = c[1];
+      chip.setAttribute("aria-pressed", activeCat === c[0] ? "true" : "false");
+      chip.addEventListener("click", function () { activeCat = activeCat === c[0] ? "" : c[0]; renderCatChips(); renderRecipeGrid(); });
+      wrap.appendChild(chip);
+    });
+  }
   function renderTagChips() {
+    renderCatChips();
     var wrap = document.getElementById("tag-chips");
     wrap.innerHTML = "";
     var add = function (text, on, fn) {
@@ -2157,6 +2185,7 @@
     var term = searchTerm.trim().toLowerCase();
     var filtered = RECIPES.filter(function (r) {
       if (!allowedByPrefs(r)) return false;
+      if (activeCat && !CATS.filter(function (c) { return c[0] === activeCat; })[0][2](r)) return false;
       if (favOnly && !isFavourite(r)) return false;
       if (yoursOnly && !r.custom) return false;
       if (uncookedOnly && cookedCounts()[r.id]) return false;

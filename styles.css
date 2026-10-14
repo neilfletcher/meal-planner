@@ -818,3 +818,7 @@ h1, .display, .display-l, .display-m, .week-range { letter-spacing: -0.02em; }
 .reward-ico .i { width: 22px; height: 22px; stroke: var(--tomato-deep); fill: none; stroke-width: 1.6; margin-top: 1px; }
 .reward-pick { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
 @media (max-width: 520px) { .cc-grid { grid-template-columns: 1fr 1fr; gap: 10px 16px; } }
+
+/* Recipes tab: kinds of dinner above the filters */
+.cat-row { margin-bottom: 10px; padding-bottom: 12px; border-bottom: 1px solid var(--line); }
+.chip-cat { font-family: var(--serif); font-size: 16px; }

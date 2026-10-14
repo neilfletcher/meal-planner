@@ -653,64 +653,60 @@ function demoHtml(rel) {
     demoHtml(rel) + "</div>" +
     "</section>" +
 
-    '<section class="wrap section">' +
+    // 2. Something to cook tonight: four dinners, and the ways in as words, not more photos.
+    '<section class="wrap section home-tonight">' +
     sectionHead("", "Cook something tonight", "recipes/", "All " + RECIPES.length + " recipes") +
-    '<div class="rgrid rgrid-big">' + tonight.map(function (r) { return card(r, rel); }).join("") + "</div></section>" +
+    '<div class="rgrid rgrid-big">' + tonight.slice(0, 4).map(function (r) { return card(r, rel); }).join("") + "</div>" +
+    '<nav class="mood" aria-label="Browse by mood"><span class="eyebrow">Or in the mood for</span><ul>' +
+    homeCollections.map(function (c) { return '<li><a href="collections/' + c.slug + '/">' + esc(c.name) + ' <span class="mono">' + c.recipes.length + "</span></a></li>"; }).join("") +
+    '<li><a href="cuisines/">' + CUISINES.length + ' countries</a></li><li><a href="use-up/">Using up a leftover</a></li></ul></nav></section>' +
 
-    '<section class="wrap section" id="pro"><div class="pro-band">' +
+    // 3. The planner, on a dark band: three steps and a real shopping list.
+    '<section class="wrap section"><div class="night-band home-planner">' +
+    '<div class="night-text">' +
+    '<span class="eyebrow eyebrow-yolk">The planner</span>' +
+    '<h2 class="display-m">One shop, nothing left in the fridge</h2>' +
+    '<ol class="night-steps">' +
+    '<li><span class="ns-n">1</span><div><h3>Pick a low-waste week</h3><p>One tap chooses dinners that share their packs: the other half of the coriander, the rest of the mince. Swap anything you would not cook.</p></div></li>' +
+    '<li><span class="ns-n">2</span><div><h3>Shop once</h3><p>One list, grouped by aisle, with quantities added up. Hide what is already in the cupboard.</p></div></li>' +
+    '<li><span class="ns-n">3</span><div><h3>Cook for one</h3><p>Every recipe is a single portion, with a step-by-step cooking mode and timers. Friend round? Set that day to two and the recipe and the list scale up.</p></div></li>' +
+    "</ol>" +
+    '<div class="btn-row"><a class="btn btn-primary btn-lg" href="plan/">Open the planner ' + ICON.arrow + "</a></div>" +
+    "</div>" +
+    '<div class="list-card" aria-label="An example shopping list"><div class="lc-head"><span class="eyebrow">A real week</span><h3>' + DEMO.week.length + " dinners, one shopping list</h3></div>" +
+    '<ol class="lc-week">' + DEMO.week.map(function (r, i) { return '<li><span class="mono">' + DEMO.days[i] + '</span><a href="recipes/' + r.slug + '/">' + esc(r.title) + "</a></li>"; }).join("") + "</ol>" +
+    '<ul class="lc-shop">' + DEMO.shop.map(function (l) { return '<li><span>' + esc(l.name) + "<small>used " + esc(l.on) + '</small></span><span class="mono">' + esc(l.qty) + "</span></li>"; }).join("") + "</ul>" +
+    '<p class="lc-foot">' + DEMO.shared + " packs shared across the week" + (DEMO.left ? "" : ", nothing to bin") + ".</p></div>" +
+    "</div></section>" +
+
+    // 4. Pro, on its own tinted band, with the lifetime offer (when on) as its own strip.
+    '<div class="band band-board" id="pro"><section class="wrap section"><div class="pro-band pro-band-flat">' +
     '<div class="pro-band-text"><span class="eyebrow">Solo Supper Pro</span>' +
     '<h2 class="display-m">Waste less, plan ahead</h2>' +
     '<p class="lead">The recipes, the planner and the shopping list are yours to use. Pro does the clever part: it plans around the packs you open and what is already in the fridge.</p>' +
     '<div class="btn-row"><a class="btn btn-primary btn-lg" href="plan/?pro=plans">Try Pro free for 14 days ' + ICON.arrow + "</a></div>" +
-    '<p class="small muted">No card needed for the trial. Then &pound;14.99 a year or &pound;2.49 a month, prices include VAT. Cancel any time.</p>' +
-    // Filled in by assets/site.js while lifetime Pro is on offer.
-    '<p class="lifetime-note" data-lifetime hidden></p></div>' +
+    '<p class="small muted">No card needed for the trial. Then &pound;14.99 a year or &pound;2.49 a month, prices include VAT. Cancel any time.</p></div>' +
     '<ul class="pro-list">' +
     '<li><h3>Low-waste weeks</h3><p>Dinners picked to share their packs, so the other half of the spinach gets eaten.</p></li>' +
     '<li><h3>Use what I have</h3><p>Tell it what is in the fridge and it plans dinners that finish it off.</p></li>' +
     '<li><h3>Plan next week</h3><p>Sort out next week on a Sunday, with this week&rsquo;s leftovers carried over.</p></li>' +
     '<li><h3>Waste saved</h3><p>See the packs you finish instead of binning, and roughly what that saves.</p></li>' +
-    "</ul></div></section>" +
+    "</ul></div>" +
+    // Filled in by assets/site.js while lifetime Pro is on offer.
+    '<div class="lifetime-note" data-lifetime hidden></div></section></div>' +
 
-    '<section class="wrap section">' +
-    sectionHead("", "What are you in the mood for?", "collections/", "All collections") +
-    '<div class="coll-tiles">' + homeCollections.map(function (c) {
-      var hero = BY_ID[c.hero] && BY_ID[c.hero].photo ? BY_ID[c.hero] : c.recipes.filter(function (r) { return r.photo; })[0] || c.recipes[0];
-      return '<a class="tile tile-coll" href="collections/' + c.slug + '/">' + recipeImg(hero, rel, "tile-img") +
-        '<span class="tile-cap"><span class="tile-title tile-title-l">' + esc(c.name) + '</span><span class="tile-meta">' + c.recipes.length + " recipes</span></span></a>";
-    }).join("") + "</div></section>" +
-
-    '<section class="wrap section">' +
-    sectionHead("", "A week of dinners, one shop", "plan/", "Open the planner") +
-    '<p class="section-lead">This is what a filled week looks like. Swap anything you do not fancy, and the shopping list adds it all up, so half a lemon on Monday and half on Friday becomes one lemon.</p>' +
-    '<div class="scroll-x"><ol class="week-strip">' + week.map(function (r, i) {
-      return '<li><span class="week-day">' + days[i] + '</span><a href="recipes/' + r.slug + '/">' + recipeImg(r, rel, "week-img") + '<span class="week-title">' + esc(r.title) + "</span></a>" +
-        '<span class="mono small muted">' + total(r) + " min &middot; " + esc(r.cuisine) + "</span></li>";
-    }).join("") + "</ol></div></section>" +
-
-    '<section class="wrap section"><div class="night-band">' +
-    '<div class="night-text">' +
-    '<h2 class="display-m">How the planner works</h2>' +
-    '<ol class="night-steps">' +
-    '<li><span class="ns-n">1</span><div><h3>Pick a low-waste week</h3><p>One tap chooses dinners that share their packs: the other half of the coriander, the rest of the mince. Swap anything you would not cook. Part of Pro, free for 14 days.</p></div></li>' +
-    '<li><span class="ns-n">2</span><div><h3>Shop once</h3><p>One list, grouped by aisle, with quantities added up. Hide what is already in the cupboard.</p></div></li>' +
-    '<li><span class="ns-n">3</span><div><h3>Cook for one</h3><p>Every recipe is a single portion, with a step-by-step cooking mode and timers.</p></div></li>' +
-    "</ol>" +
-    '<div class="btn-row"><a class="btn btn-primary btn-lg" href="plan/">Open the planner ' + ICON.arrow + "</a></div>" +
-    "</div>" + recipeImg(BY_ID.d8, rel, "night-img") + "</div></section>" +
-
-    '<section class="wrap section">' +
-    sectionHead("", "Got half a pack left?", "use-up/", "Every leftover") +
-    '<p class="section-lead">Cooking for one means half a tin here and half a bag there. Pick what is sitting in your fridge and finish it tonight.</p>' +
-    '<ul class="useup-cloud">' + USEUP.slice(0, 16).map(function (u) {
-      return '<li><a href="use-up/' + u.slug + '/"><span>' + esc(u.h1.replace(/^(What to cook with|Recipes to use up) /, "").replace(/^the rest of a pack of /, "a pack of ").replace(/^./, function (c) { return c.toUpperCase(); })) + '</span><span class="mono">' + u.users.length + "</span></a></li>";
-    }).join("") + "</ul></section>" +
-
-    '<section class="wrap section">' +
-    sectionHead("", CUISINES.length + " countries in the book", "cuisines/", "All cuisines") +
-    '<ul class="cuisine-cloud">' + cuisinesByCount.map(function (c) {
-      return '<li><a href="cuisines/' + CUISINE_SLUG[c] + '/">' + esc(demonym(c)) + ' <span class="mono">' + counts[c] + "</span></a></li>";
-    }).join("") + "</ul></section>";
+    // 5. Your kitchen and the books: what keeps you coming back.
+    '<section class="wrap section home-more">' +
+    '<div class="more-card kitchen-card"><span class="eyebrow">Your kitchen</span><h2 class="display-s">Cook your way through the book</h2>' +
+    "<p>Tick a dinner as cooked and it joins your collection: " + RECIPES.length + " dishes from " + CUISINES.length + " countries. Cook 25 different dinners and choose one of the cookbooks, free.</p>" +
+    '<ul class="kc-badges" aria-hidden="true">' + [1, 10, 25, 50, 100].map(function (m, i) { return '<li class="' + (i < 2 ? "is-got" : m === 25 ? "is-gift" : "") + '"><span>' + m + "</span></li>"; }).join("") + "</ul>" +
+    '<a class="text-link" href="plan/">Start your collection</a></div>' +
+    '<div class="more-card books-card"><div><span class="eyebrow">The cookbooks</span><h2 class="display-s">Four books of dinners for one</h2>' +
+    "<p>Every recipe planned into weeks that share their shopping, with a photo of every dish. PDF or paperback.</p>" +
+    '<a class="text-link" href="books/">See inside the books</a></div>' +
+    '<div class="bc-pages"><img src="img/books/asia-cover.webp" alt="Solo Supper: Asia cover" width="600" height="960" loading="lazy">' +
+    '<img src="img/books/asia-p2.webp" alt="A week of dinners, from Solo Supper: Asia" width="880" height="1100" loading="lazy"></div></div>' +
+    "</section>";
 
   out("index.html", page({
     rel: rel, path: "", active: "home", bodyClass: "page-home",
@@ -940,6 +936,27 @@ function heroPick(list) {
     photos.filter(function (r) { return list.indexOf(r) > 0; }).pop() || photos[0] || list[0];
 }
 
+var CUISINE_NOTES = require("./cuisine-notes.js");
+// Cupboard things that come up again and again in a cuisine's recipes:
+// worth buying once if you'll cook a few of them.
+var CUPBOARD_SKIP = /^(salt|black pepper|salt and pepper|pepper|water|ice|vegetable oil|olive oil|oil|sunflower oil|sugar|plain flour|cornflour|cooked rice|rice|basmati rice|jasmine rice|long-grain rice|pasta|spaghetti|egg noodles)$/;
+function cupboardFor(list) {
+  var n = {};
+  list.forEach(function (r) {
+    var seen = {};
+    r.ingredients.forEach(function (i) {
+      if (i.cat !== "store" && i.cat !== "spice") return;
+      var k = i.item.split(",")[0].replace(/\s*\(.*?\)\s*/g, " ").replace(/^(shop-bought|tinned|dried|fresh|ground) /, function (m) { return m === "ground " ? m : ""; }).trim().toLowerCase();
+      if (!k || CUPBOARD_SKIP.test(k) || seen[k]) return;
+      seen[k] = 1; n[k] = (n[k] || 0) + 1;
+    });
+  });
+  var keys = Object.keys(n).sort(function (a, b) { return n[b] - n[a] || a.localeCompare(b); });
+  var often = keys.filter(function (k) { return n[k] > 1; });
+  // Only worth a list when things really do come up more than once.
+  return (often.length >= 2 ? often : []).slice(0, 6).map(function (k) { return { name: k, n: n[k] }; });
+}
+
 function hubPage(o) {
   var rel = "../../";
   var lead = heroPick(o.recipes);
@@ -952,6 +969,11 @@ function hubPage(o) {
     '<div class="btn-row"><a class="btn btn-primary btn-lg" href="' + rel + 'plan/">Plan a week of these ' + ICON.arrow + "</a></div></div>" +
     '<div class="hub-media">' + recipeImg(lead, rel, "hub-img", null, true) + "</div>" +
     "</section>" +
+    (o.about ? '<div class="band band-board hub-about"><section class="wrap hub-about-in">' +
+      '<div><span class="eyebrow">About the food</span><p class="hub-about-text">' + esc(o.about) + "</p></div>" +
+      (o.cupboard && o.cupboard.length ? '<div><span class="eyebrow">Worth having in the cupboard</span><ul class="cupboard">' + o.cupboard.map(function (c) {
+        return "<li><span>" + esc(c.name.charAt(0).toUpperCase() + c.name.slice(1)) + '</span><span class="mono small muted">in ' + c.n + (c.n === 1 ? " recipe" : " recipes") + "</span></li>";
+      }).join("") + "</ul></div>" : "") + "</section></div>" : "") +
     '<section class="wrap section-tight"><div class="rgrid" data-page="24">' + o.recipes.map(function (r) { return card(r, rel); }).join("") + "</div></section>" +
     '<section class="wrap section">' + sectionHead("Keep browsing", o.moreTitle) +
     '<div class="link-cloud">' + o.more + "</div></section>";
@@ -995,6 +1017,8 @@ CUISINES.forEach(function (cu) {
     recipes: list, h1: d + " dinners for one",
     h1Html: esc(d) + " dinners for <em>one</em>",
     intro: intro,
+    about: (CUISINE_NOTES.NOTES[cu] || [])[1],
+    cupboard: cupboardFor(list),
     title: d + " recipes for one: " + list.length + " single-portion dinners | Solo Supper",
     description: d + " recipes for one person. " + intro,
     moreTitle: "Other cuisines",
@@ -1024,12 +1048,15 @@ CUISINES.forEach(function (cu) {
   },
     '<section class="wrap page-head"><div class="page-head-text"><span class="eyebrow">' + CUISINES.length + " countries</span>" +
     '<h1 class="display">A world of dinners for <em>one</em></h1>' +
-    '<p class="lead">Every country in the book, with how many recipes it brings to the table.</p></div></section>' +
-    '<section class="wrap section-tight"><ul class="cu-tiles">' + sorted.map(function (c) {
-      var hero = heroPick(RECIPES.filter(function (r) { return r.cuisine === c; }));
-      return '<li><a class="tile tile-cu" href="' + CUISINE_SLUG[c] + '/">' + recipeImg(hero, rel, "tile-img") +
-        '<span class="tile-cap"><span class="tile-title">' + esc(demonym(c)) + '</span><span class="tile-meta">' + counts[c] + (counts[c] === 1 ? " dinner" : " dinners") + "</span></span></a></li>";
-    }).join("") + "</ul></section>"));
+    '<p class="lead">Every country in the book, by region, with how many dinners it brings to the table. Each one has a few words on the food and what is worth keeping in the cupboard.</p></div></section>' +
+    '<section class="wrap section-tight"><div class="contents">' + CUISINE_NOTES.REGIONS.map(function (reg) {
+      var cs = sorted.filter(function (c) { return (CUISINE_NOTES.NOTES[c] || [])[0] === reg; }).sort(function (a, b) { return demonym(a).localeCompare(demonym(b)); });
+      if (!cs.length) return "";
+      var n = cs.reduce(function (t, c) { return t + counts[c]; }, 0);
+      return '<section class="contents-group"><h2><span>' + esc(reg) + '</span><span class="mono small muted">' + n + " dinners</span></h2><ol>" + cs.map(function (c) {
+        return '<li><a href="' + CUISINE_SLUG[c] + '/"><span class="ct-name">' + esc(demonym(c)) + '</span><span class="ct-dots" aria-hidden="true"></span><span class="mono">' + counts[c] + "</span></a></li>";
+      }).join("") + "</ol></section>";
+    }).join("") + "</div></section>"));
   sitemap.push({ loc: "cuisines/", pri: "0.7" });
 })();
 
@@ -1141,10 +1168,10 @@ function amazonButtons(b) {
     '<section class="wrap section" id="pro-books"><div class="pro-band"><div class="pro-band-text"><span class="eyebrow">Solo Supper Pro</span>' +
     '<h2 class="display-m">The PDFs come with Pro</h2>' +
     '<p class="lead">Subscribe yearly and all four PDFs are yours. Subscribe monthly and you get Asia. They\'re added to your account as soon as your first payment goes through, and they stay yours even if you cancel. (The free trial doesn\'t include them.)</p>' +
-    '<div class="btn-row"><a class="btn btn-primary btn-lg" href="' + rel + 'plan/?pro=plans">See Pro plans ' + ICON.arrow + "</a></div>" +
-    '<p class="lifetime-note" data-lifetime hidden></p></div>' +
+    '<div class="btn-row"><a class="btn btn-primary btn-lg" href="' + rel + 'plan/?pro=plans">See Pro plans ' + ICON.arrow + "</a></div></div>" +
     '<ul class="pro-list"><li><h3>Yearly, &pound;14.99</h3><p>Pro planning plus all four PDFs.</p></li><li><h3>Monthly, &pound;2.49</h3><p>Pro planning plus the Asia PDF.</p></li>' +
-    '<li><h3>Already subscribed?</h3><p>Your books are in Settings in the planner, under Your books.</p></li><li><h3>Every recipe free</h3><p>All the recipes are on this site and in the planner either way.</p></li></ul></div></section>' +
+    '<li><h3>Already subscribed?</h3><p>Your books are in Settings in the planner, under Your books.</p></li><li><h3>Every recipe free</h3><p>All the recipes are on this site and in the planner either way.</p></li></ul></div>' +
+    '<div class="lifetime-note" data-lifetime hidden></div></section>' +
     '<section class="wrap section book-faq"><h2 class="display-m">Good to know</h2>' +
     "<p><strong>What do I get?</strong> A PDF of the whole book, with every photo, to read on a tablet, phone or computer, or to print the pages you want.</p>" +
     "<p><strong>How does the download work?</strong> Straight after paying you land on a page with your download. If you sign in to Solo Supper with the same email, the book is kept in your account too.</p>" +

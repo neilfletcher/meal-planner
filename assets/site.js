@@ -91,8 +91,9 @@
       var price = "\u00a3" + (o.amount / 100).toFixed(o.amount % 100 ? 2 : 0);
       var ends = o.until ? " Offer ends " + new Date(o.until - 1).toLocaleDateString("en-GB", { weekday: "long", day: "numeric", month: "long" }) + "." : "";
       ltSlots.forEach(function (el) {
-        el.innerHTML = "<strong>Limited time: Pro for life, " + price + " once.</strong> No subscription, and all four cookbook PDFs are included." + ends +
-          ' <a href="' + BASE + 'plan/?pro=lifetime">Get lifetime Pro</a>';
+        el.innerHTML = '<div class="lo-text"><span class="eyebrow">Limited time</span><strong class="lo-h">Pro for life, ' + price + ' once</strong>' +
+          "<p>No subscription to remember, and all four cookbook PDFs are included." + ends + "</p></div>" +
+          '<a class="btn btn-primary btn-lg" href="' + BASE + 'plan/?pro=lifetime">Get lifetime Pro</a>';
         el.hidden = false;
       });
     }).catch(function () { /* no offer shown */ });

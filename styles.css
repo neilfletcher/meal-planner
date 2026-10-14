@@ -822,3 +822,18 @@ h1, .display, .display-l, .display-m, .week-range { letter-spacing: -0.02em; }
 /* Recipes tab: kinds of dinner above the filters */
 .cat-row { margin-bottom: 10px; padding-bottom: 12px; border-bottom: 1px solid var(--line); }
 .chip-cat { font-family: var(--serif); font-size: 16px; }
+
+/* "Did this recipe work?" at the end of cooking mode */
+.rfb { margin-top: 28px; padding: 20px 22px; border: 1px solid var(--line); border-radius: 14px; background: var(--plate); display: flex; flex-direction: column; gap: 12px; }
+.rfb[hidden] { display: none; }
+.rfb-q { margin: 0; font-family: var(--serif); font-size: 21px; line-height: 1.2; }
+.rfb-btns, .rfb-reasons { display: flex; flex-wrap: wrap; gap: 8px; }
+.rfb-btn, .rfb-chip { font: inherit; font-size: 15px; padding: 9px 16px; border-radius: 999px; border: 1px solid var(--line-strong); background: transparent; color: var(--ink); cursor: pointer; }
+.rfb-btn:hover, .rfb-chip:hover { border-color: var(--ink); }
+.rfb-send { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.rfb-chip[aria-pressed="true"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.rfb-text { display: flex; flex-direction: column; gap: 6px; font-size: 14px; color: var(--ink-2); }
+.rfb-text textarea { font: inherit; font-size: 15px; padding: 10px 12px; border-radius: 10px; border: 1px solid var(--line-strong); background: var(--paper); color: var(--ink); resize: vertical; }
+.rfb-thanks { margin: 0; color: var(--ink-2); }
+.rfb-cook { margin: 18px 0 6px; color: var(--ink); }
+.rfb-cook .rfb-q, .rfb-cook .rfb-thanks { color: var(--ink); }

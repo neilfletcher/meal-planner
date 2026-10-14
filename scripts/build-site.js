@@ -866,6 +866,7 @@ RECIPES.forEach(function (r) {
     '<section class="method" aria-labelledby="method-h"><div class="method-head"><h2 id="method-h">Method</h2>' +
     '<button type="button" class="awake-btn" data-awake aria-pressed="false" hidden><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg><span>Keep screen on</span></button></div>' +
     '<ol class="method-steps e-instructions">' + stepsHtml + "</ol>" + cookNotesHtml() +
+    '<div class="rfb" data-rfb="' + r.id + '" hidden></div>' +
     '<p class="print-only print-source">solosupper.co.uk/recipes/' + r.slug + "/</p>" +
     (colls.length ? '<div class="in-colls"><span class="eyebrow">Find more like this</span><div class="chips">' +
       colls.map(function (c) { return '<a class="chip" href="' + rel + "collections/" + c.slug + '/">' + esc(c.h1) + "</a>"; }).join("") +

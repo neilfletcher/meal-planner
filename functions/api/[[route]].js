@@ -499,6 +499,20 @@ async function admin(request, env) {
     });
   }
 
+  // Recipe feedback: recipes with the most problems first, and recent comments.
+  if (body.action === "feedback" || body.action === "feedbackSet") {
+    if (body.action === "feedbackSet") { await mergeDoc(env, "settings/feedback", { on: !!body.on, updatedAt: now }); fbCache = { at: 0, on: !!body.on }; }
+    var fset = await getDoc(env, "settings/feedback");
+    var fstats = await listCollection(env, "feedbackStats", null, 1000);
+    var fnotes = (await listCollection(env, "recipeFeedback", "at", 300)).filter(function (r) { return !r.data.test || body.withTests; });
+    var byRecipe = {};
+    fnotes.forEach(function (r) { (byRecipe[r.data.recipe] = byRecipe[r.data.recipe] || []).push({ at: r.data.at || 0, good: !!r.data.good, reasons: r.data.reasons || [], text: r.data.text || "", src: r.data.src || "" }); });
+    var rows = fstats.map(function (r) { var d = r.data; return { id: r.id, up: d.up || 0, down: d.down || 0, reasons: Object.keys(d).filter(function (k) { return /^r_/.test(k); }).reduce(function (o, k) { o[k.slice(2)] = d[k]; return o; }, {}), notes: (byRecipe[r.id] || []).slice(0, 10) }; })
+      .sort(function (a, b) { return b.down - a.down || b.up - a.up; });
+    var tot = rows.reduce(function (t, r) { t.up += r.up; t.down += r.down; return t; }, { up: 0, down: 0 });
+    return json({ on: !(fset && fset.data && fset.data.on === false), totals: tot, recipes: rows.length, rows: rows.slice(0, 60) });
+  }
+
   // The weekly email: sign-ups by day and source (counted here), and the
   // list size from Kit.
   if (body.action === "newsletter") {
@@ -1018,6 +1032,49 @@ async function bookClick(request, env) {
   return json({ ok: true });
 }
 
+/* ------------------------------------------------------ recipe feedback */
+// "Did this recipe work?" on recipe pages and at the end of cooking mode.
+// A count per recipe (feedbackStats/{id}) plus each report with its reasons
+// and comment (recipeFeedback). Switched on and off from the admin page
+// (settings/feedback); on unless switched off.
+var FB_REASONS = { quantities: 1, timing: 1, unclear: 1, bland: 1, photo: 1, other: 1 };
+var fbCache = { at: 0, on: true };
+async function feedbackOn(env) {
+  if (Date.now() - fbCache.at < 60000) return fbCache.on;
+  var d = await getDoc(env, "settings/feedback").catch(function () { return null; });
+  fbCache = { at: Date.now(), on: !(d && d.data && d.data.on === false) };
+  return fbCache.on;
+}
+async function feedbackPublic(request, env) {
+  return new Response(JSON.stringify({ on: await feedbackOn(env) }), { headers: { "content-type": "application/json", "cache-control": "public, max-age=60" } });
+}
+async function recipeFeedback(request, env) {
+  var origin = request.headers.get("origin") || "";
+  if (origin && origin !== new URL(request.url).origin && !/^https:\/\/([a-z0-9-]+\.)?solosupper\.co\.uk$/.test(origin) && !/\.pages\.dev$/.test(origin)) return json({ ok: false }, 403);
+  var ip = request.headers.get("cf-connecting-ip") || "?";
+  if (nlLimited("fb:" + ip)) throw httpError(429, "Thanks, that's plenty for now.");
+  if (!(await feedbackOn(env))) return json({ ok: false, off: true });
+  var b = await readJson(request);
+  var id = String(b.id || "");
+  if (!/^d\d{1,4}$/.test(id)) throw httpError(400, "Unknown recipe.");
+  var good = b.good === true;
+  var reasons = (Array.isArray(b.reasons) ? b.reasons : []).filter(function (r) { return FB_REASONS[r]; }).slice(0, 6);
+  var text = String(b.text || "").replace(/\s+/g, " ").trim().slice(0, 600);
+  var src = b.src === "cook" ? "cook" : "page";
+  var test = b.test === true;
+  if (!test) {
+    var c = {}; c[good ? "up" : "down"] = 1; c[src] = 1;
+    reasons.forEach(function (r) { c["r_" + r] = 1; });
+    if (text) c.comments = 1;
+    await increment(env, "feedbackStats/" + id, c);
+  }
+  if (!good || text) {
+    var key = Date.now().toString(36) + "-" + Math.random().toString(36).slice(2, 8);
+    await mergeDoc(env, "recipeFeedback/" + key, { recipe: id, good: good, reasons: reasons, text: text, src: src, test: test, at: Date.now() });
+  }
+  return json({ ok: true });
+}
+
 /* ------------------------------------------------------------- errors */
 // Browsers report errors in our own scripts here (assets/telemetry.js). The
 // same error from many people is one document with a count, so a bug that
@@ -1077,6 +1134,7 @@ var ROUTES = {
   "POST my-books": myBooks,
   "POST reward-claim": rewardClaim,
   "POST book-click": bookClick,
+  "POST recipe-feedback": recipeFeedback,
   "POST lifetime-confirm": lifetimeConfirm,
   "POST subscribe": newsletterSubscribe,
   "POST newsletter": newsletterSetting
@@ -1091,6 +1149,7 @@ export async function onRequest(context) {
     if (request.method === "GET" && name === "book-session") return await bookSession(request, env);
     if (request.method === "GET" && name === "book-file") return await bookFile(request, env);
     if (request.method === "GET" && name === "lifetime") return await lifetimePublic(request, env);
+    if (request.method === "GET" && name === "feedback") return await feedbackPublic(request, env);
     var fn = ROUTES[request.method + " " + name];
     if (!fn) return json({ error: "Not found" }, 404);
     return await fn(request, env);

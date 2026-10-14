@@ -99,6 +99,51 @@
     }).catch(function () { /* no offer shown */ });
   }
 
+  var FB_API = BASE + "api/";
+  /* ---------- "Did this recipe work?" (switched on from the admin page) ---------- */
+  var FB_REASONS = [["quantities", "Quantities off"], ["timing", "Timings wrong"], ["unclear", "A step was unclear"], ["bland", "Lacked flavour"], ["photo", "Didn't match the photo"], ["other", "Something else"]];
+  var fbOnP = null;
+  function feedbackEnabled() {
+    if (!fbOnP) fbOnP = fetch(FB_API + "feedback").then(function (r) { return r.json(); }).then(function (j) { return !!(j && j.on); }).catch(function () { return false; });
+    return fbOnP;
+  }
+  function mountFeedback(el, id, src) {
+    if (!el || !/^d\d+$/.test(id || "")) return;
+    var key = "soloSupper.fb." + id, done = null;
+    try { done = localStorage.getItem(key); } catch (e) { /* no storage */ }
+    feedbackEnabled().then(function (on) {
+      if (!on) return;
+      el.hidden = false;
+      if (done) { el.innerHTML = '<p class="rfb-thanks">Thanks for telling us how this one went.</p>'; return; }
+      el.innerHTML = '<p class="rfb-q">Cooked this? Did the recipe work?</p>' +
+        '<div class="rfb-btns"><button type="button" class="rfb-btn" data-good="1">It worked</button><button type="button" class="rfb-btn" data-good="0">Something was off</button></div>';
+      var send = function (body) {
+        body.id = id; body.src = src;
+        try { if (localStorage.getItem("soloSupper.internal") === "1") body.test = true; } catch (e) { /* fine */ }
+        return fetch(FB_API + "recipe-feedback", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(body) })
+          .then(function (r) { return r.json(); }).then(function () {
+            try { localStorage.setItem(key, body.good ? "up" : "down"); } catch (e) { /* fine */ }
+            el.innerHTML = '<p class="rfb-thanks">' + (body.good ? "Good to hear. Thanks for letting us know." : "Thanks. I read every one of these, and I'll look at this recipe.") + "</p>";
+          }).catch(function () { el.innerHTML = '<p class="rfb-thanks">That didn’t send. Please try again later.</p>'; });
+      };
+      el.querySelector('[data-good="1"]').addEventListener("click", function () { send({ good: true }); });
+      el.querySelector('[data-good="0"]').addEventListener("click", function () {
+        el.innerHTML = '<p class="rfb-q">What was off?</p><div class="rfb-reasons">' + FB_REASONS.map(function (r) {
+          return '<button type="button" class="rfb-chip" aria-pressed="false" data-r="' + r[0] + '">' + r[1] + "</button>";
+        }).join("") + '</div><label class="rfb-text"><span>Anything else? (optional)</span><textarea rows="3" maxlength="600" placeholder="e.g. the rice needed more water"></textarea></label>' +
+          '<div class="rfb-btns"><button type="button" class="rfb-btn rfb-send">Send</button></div>';
+        el.querySelectorAll(".rfb-chip").forEach(function (c) { c.addEventListener("click", function () { c.setAttribute("aria-pressed", c.getAttribute("aria-pressed") === "true" ? "false" : "true"); }); });
+        el.querySelector(".rfb-send").addEventListener("click", function (ev) {
+          ev.currentTarget.disabled = true;
+          var reasons = Array.prototype.map.call(el.querySelectorAll('.rfb-chip[aria-pressed="true"]'), function (c) { return c.getAttribute("data-r"); });
+          send({ good: false, reasons: reasons, text: el.querySelector("textarea").value });
+        });
+      });
+    });
+  }
+
+  mountFeedback(document.querySelector("[data-rfb]"), (document.querySelector("[data-rfb]") || {}).getAttribute ? document.querySelector("[data-rfb]").getAttribute("data-rfb") : "", "page");
+
   /* ---------- keeping the screen on while cooking ----------
      Screen Wake Lock where the browser has it, taken again whenever the
      browser drops it (switching apps, the lock screen). Where it's missing,

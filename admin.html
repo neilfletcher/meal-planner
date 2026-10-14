@@ -671,6 +671,28 @@
       </div>
     </section>
 
+    <section class="block" id="fbBlock">
+      <div class="block-head">
+        <div>
+          <div class="eyebrow">Recipe feedback</div>
+          <h2>Did the recipes work?</h2>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="ghost" id="fbToggle" type="button">&hellip;</button>
+          <button class="ghost" id="fbReload" type="button">Update</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="kpi-row">
+          <div class="kpi"><div class="label">It worked</div><div class="value num" id="fb-up">&ndash;</div><div class="delta">&nbsp;</div></div>
+          <div class="kpi"><div class="label">Something was off</div><div class="value num" id="fb-down">&ndash;</div><div class="delta" id="fb-recipes">&nbsp;</div></div>
+          <div class="kpi"><div class="label">Asking now</div><div class="value" id="fb-on">&ndash;</div><div class="delta">on recipe pages and at the end of cooking mode</div></div>
+        </div>
+        <div class="src-scroll"><table class="src-table" id="fbTable"><tr><td>Loading&hellip;</td></tr></table></div>
+        <p class="fine">Recipes with the most problems first. Reports from your own accounts are left out. People rarely report that a recipe went fine, so read the comments rather than the score.</p>
+      </div>
+    </section>
+
     <section class="block" id="lifetimeBlock">
       <div class="block-head">
         <div>
@@ -1666,6 +1688,30 @@
   });
 
   // ---------- the weekly email ----------
+  var FB_NAMES = { quantities: "quantities", timing: "timings", unclear: "unclear step", bland: "lacked flavour", photo: "photo", other: "other" };
+  var fbOn = true;
+  function recipeTitle(id) {
+    var r = (window.SOLO_RECIPES || []).filter(function (x) { return x.id === id; })[0];
+    return r ? r.title : id;
+  }
+  function loadFeedback() {
+    adminApi({ action: "feedback" }).then(function (j) {
+      fbOn = j.on;
+      setText("fb-up", j.totals.up); setText("fb-down", j.totals.down);
+      setText("fb-recipes", j.recipes + (j.recipes === 1 ? " recipe" : " recipes") + " with feedback");
+      setText("fb-on", j.on ? "Yes" : "No");
+      document.getElementById("fbToggle").textContent = j.on ? "Stop asking" : "Start asking";
+      document.getElementById("fbTable").innerHTML = j.rows.length ? "<tr><th>Recipe</th><th>Worked</th><th>Off</th><th>Why, and what people said</th></tr>" + j.rows.map(function (r) {
+        var why = Object.keys(r.reasons).map(function (k) { return r.reasons[k] + " " + (FB_NAMES[k] || k); }).join(", ");
+        var notes = r.notes.filter(function (n) { return n.text; }).map(function (n) { return '<span class="where" style="display:block;margin-top:4px">&ldquo;' + escapeHtml(n.text) + "&rdquo;</span>"; }).join("");
+        return "<tr><td>" + escapeHtml(recipeTitle(r.id)) + ' <span class="where">' + r.id + "</span></td><td>" + r.up + "</td><td>" + r.down + "</td><td>" + (why ? escapeHtml(why) : "&ndash;") + notes + "</td></tr>";
+      }).join("") : "<tr><td>No feedback yet.</td></tr>";
+    }).catch(function (e) { document.getElementById("fbTable").innerHTML = "<tr><td>Couldn't load: " + escapeHtml(e.message) + "</td></tr>"; });
+  }
+  document.getElementById("fbReload").addEventListener("click", loadFeedback);
+  document.getElementById("fbToggle").addEventListener("click", function () {
+    adminApi({ action: "feedbackSet", on: !fbOn }).then(loadFeedback);
+  });
   function loadNewsletter() {
     adminApi({ action: "newsletter" }).then(function (j) {
       setText("nl-size", j.listSize === null ? "\u2013" : j.listSize);
@@ -1844,6 +1890,7 @@
       loadBooks();
       loadLifetime();
       loadNewsletter();
+      loadFeedback();
       loadSources();
       loadErrors();
     } else if (user) {
@@ -1862,5 +1909,6 @@
   });
 })();
 </script>
+<script src="recipes-data.js"></script>
 </body>
 </html>

@@ -3180,6 +3180,49 @@
     cook.ticker = setInterval(tickCook, 500);
     renderCook();
   }
+  var FB_API = "/api/";
+  /* ---------- "Did this recipe work?" (switched on from the admin page) ---------- */
+  var FB_REASONS = [["quantities", "Quantities off"], ["timing", "Timings wrong"], ["unclear", "A step was unclear"], ["bland", "Lacked flavour"], ["photo", "Didn't match the photo"], ["other", "Something else"]];
+  var fbOnP = null;
+  function feedbackEnabled() {
+    if (!fbOnP) fbOnP = fetch(FB_API + "feedback").then(function (r) { return r.json(); }).then(function (j) { return !!(j && j.on); }).catch(function () { return false; });
+    return fbOnP;
+  }
+  function mountFeedback(el, id, src) {
+    if (!el || !/^d\d+$/.test(id || "")) return;
+    var key = "soloSupper.fb." + id, done = null;
+    try { done = localStorage.getItem(key); } catch (e) { /* no storage */ }
+    feedbackEnabled().then(function (on) {
+      if (!on) return;
+      el.hidden = false;
+      if (done) { el.innerHTML = '<p class="rfb-thanks">Thanks for telling us how this one went.</p>'; return; }
+      el.innerHTML = '<p class="rfb-q">Cooked this? Did the recipe work?</p>' +
+        '<div class="rfb-btns"><button type="button" class="rfb-btn" data-good="1">It worked</button><button type="button" class="rfb-btn" data-good="0">Something was off</button></div>';
+      var send = function (body) {
+        body.id = id; body.src = src;
+        try { if (localStorage.getItem("soloSupper.internal") === "1") body.test = true; } catch (e) { /* fine */ }
+        return fetch(FB_API + "recipe-feedback", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(body) })
+          .then(function (r) { return r.json(); }).then(function () {
+            try { localStorage.setItem(key, body.good ? "up" : "down"); } catch (e) { /* fine */ }
+            el.innerHTML = '<p class="rfb-thanks">' + (body.good ? "Good to hear. Thanks for letting us know." : "Thanks. I read every one of these, and I'll look at this recipe.") + "</p>";
+          }).catch(function () { el.innerHTML = '<p class="rfb-thanks">That didn’t send. Please try again later.</p>'; });
+      };
+      el.querySelector('[data-good="1"]').addEventListener("click", function () { send({ good: true }); });
+      el.querySelector('[data-good="0"]').addEventListener("click", function () {
+        el.innerHTML = '<p class="rfb-q">What was off?</p><div class="rfb-reasons">' + FB_REASONS.map(function (r) {
+          return '<button type="button" class="rfb-chip" aria-pressed="false" data-r="' + r[0] + '">' + r[1] + "</button>";
+        }).join("") + '</div><label class="rfb-text"><span>Anything else? (optional)</span><textarea rows="3" maxlength="600" placeholder="e.g. the rice needed more water"></textarea></label>' +
+          '<div class="rfb-btns"><button type="button" class="rfb-btn rfb-send">Send</button></div>';
+        el.querySelectorAll(".rfb-chip").forEach(function (c) { c.addEventListener("click", function () { c.setAttribute("aria-pressed", c.getAttribute("aria-pressed") === "true" ? "false" : "true"); }); });
+        el.querySelector(".rfb-send").addEventListener("click", function (ev) {
+          ev.currentTarget.disabled = true;
+          var reasons = Array.prototype.map.call(el.querySelectorAll('.rfb-chip[aria-pressed="true"]'), function (c) { return c.getAttribute("data-r"); });
+          send({ good: false, reasons: reasons, text: el.querySelector("textarea").value });
+        });
+      });
+    });
+  }
+
   function closeCookMode() {
     if (!cook) return;
     clearInterval(cook.ticker);
@@ -3310,12 +3353,14 @@
       (cook.keep.length ? '<button type="button" class="btn btn-ghost btn-sm cook-ing-btn' + (keeps.length ? " has-keep" : "") + '" id="cook-keep-btn">' + (cook.showKeep ? "Hide" : "Keep for later") + (keeps.length ? " (" + keeps.length + ")" : "") + "</button>" : "") + "</div>" +
       (cook.showIng ? '<ul class="cook-ings">' + ings + "</ul>" : "") +
       (cook.showKeep ? '<ul class="cook-ings cook-keep-list">' + cook.keep.slice().sort(function (a, b) { return b.uses.length - a.uses.length; }).map(keepLineHtml).join("") + "</ul>" : "") +
+      (last && !isNativeApp() ? '<div class="rfb rfb-cook" id="cook-rfb" hidden></div>' : "") +
       '<div class="cook-nav">' +
       '<button type="button" class="btn btn-outline" id="cook-prev-btn"' + (i === 0 ? " disabled" : "") + ">" + ico("back") + "Back</button>" +
       (last ? '<button type="button" class="btn btn-primary" id="cook-done-btn">' + ico("check") + "Finished</button>"
             : '<button type="button" class="btn btn-primary" id="cook-next-btn">Next' + ico("next") + "</button>") +
       "</div></div>";
     document.getElementById("cook-close-btn").addEventListener("click", closeCookMode);
+    if (last) mountFeedback(document.getElementById("cook-rfb"), r.id, "cook");
     document.getElementById("cook-ing-btn").addEventListener("click", function () { cook.showIng = !cook.showIng; renderCook(); });
     var keepBtn = document.getElementById("cook-keep-btn");
     if (keepBtn) keepBtn.addEventListener("click", function () { cook.showKeep = !cook.showKeep; renderCook(); });

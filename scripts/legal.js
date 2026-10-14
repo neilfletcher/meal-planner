@@ -127,6 +127,9 @@ module.exports = [
       "<h3>Gift codes</h3>",
       "<p>A gift code gives Pro for the period stated with the code. Each code can be used once, has no cash value and cannot be exchanged or resold.</p>",
 
+      "<h3>Cooking rewards</h3>",
+      "<p>Signed-in users who tick enough different dinners as cooked in the planner can choose a Solo Supper cookbook PDF free, one book for each milestone shown in Your kitchen. Rewards are for your own account, have no cash value and can't be exchanged. Dinners must be ticked over several days to count. Rewards may change or end for future milestones, but a book you have chosen stays yours.</p>",
+
       "<h3>Price changes</h3>",
       "<p>If the price of Pro changes, you will be told by email at least 30 days before it affects your next renewal, so you can cancel first if you wish.</p>",
 

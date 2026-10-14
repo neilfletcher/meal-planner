@@ -401,6 +401,7 @@ async function admin(request, env) {
         var k = keys[i], pb = per[id];
         var dl = d["dl_" + k] || 0, amz = (d["amz_" + k + "_paperback"] || 0) + (d["amz_" + k + "_kindle"] || 0) + (d["amz_" + k + "_search"] || 0);
         pb.dlAll += dl; pb.amzAll += amz; t.dlAll += dl; t.amzAll += amz;
+        pb.earned = (pb.earned || 0) + (d["rw_" + k] || 0);
         if (in30) { pb.dl30 += dl; pb.amz30 += amz; pb.co30 += d["co_" + k] || 0; t.dl30 += dl; t.amz30 += amz; t.co30 += d["co_" + k] || 0; }
         pb.amzSplit = pb.amzSplit || { paperback: 0, kindle: 0, search: 0 };
         if (in30) ["paperback", "kindle", "search"].forEach(function (st) { pb.amzSplit[st] += d["amz_" + k + "_" + st] || 0; });
@@ -911,6 +912,8 @@ async function bookSession(request, env) {
 
 async function ownedBooks(env, user) {
   var owned = {};
+  var rw = await getDoc(env, "rewards/" + user.uid);
+  Object.keys(REWARDS).forEach(function (k) { var b = rw && rw.data[k]; if (BOOKS[b]) owned[b] = "reward"; });
   var doc = await getDoc(env, "entitlements/" + user.uid);
   subscriptionBooks(doc && doc.data).forEach(function (b) { owned[b] = "subscription"; });
   var rows = await queryWhere(env, "purchases", "uid", user.uid, 50);
@@ -922,7 +925,45 @@ async function ownedBooks(env, user) {
 async function myBooks(request, env) {
   var user = await requireUser(request, env);
   var owned = await ownedBooks(env, user);
-  return json({ owned: owned, books: BOOK_IDS.map(function (b) { return { id: b, title: BOOKS[b].title }; }) });
+  var rw = await getDoc(env, "rewards/" + user.uid), rewards = {};
+  Object.keys(REWARDS).forEach(function (k) { if (rw && rw.data[k]) rewards[k] = rw.data[k]; });
+  return json({ owned: owned, rewards: rewards, books: BOOK_IDS.map(function (b) { return { id: b, title: BOOKS[b].title }; }) });
+}
+
+/* ------------------------------------------------- collection rewards */
+// Cook enough different dinners (ticked as cooked in the planner) and choose
+// a cookbook free. One book per milestone, kept in rewards/{uid}, which only
+// the server writes. The cooked dinners must be spread over a few different
+// days, so ticking a pile of dinners in one go doesn't count.
+var REWARDS = { r25: 25, r100: 100 };
+async function rewardClaim(request, env) {
+  var user = await requireUser(request, env);
+  var body = await readJson(request);
+  var key = String(body.reward || ""), book = String(body.book || "");
+  if (!REWARDS[key]) throw httpError(400, "Unknown reward.");
+  if (!BOOKS[book]) throw httpError(400, "Unknown book.");
+  var rw = await getDoc(env, "rewards/" + user.uid);
+  if (rw && rw.data[key]) throw httpError(409, "You've already chosen your book for this one.");
+  var owned = await ownedBooks(env, user);
+  if (owned[book]) throw httpError(400, "You already have that book. Choose another one.");
+  var st = await getDoc(env, "users/" + user.uid + "/planner/state");
+  var log = (st && Array.isArray(st.data.cookLog)) ? st.data.cookLog : [];
+  var first = {};
+  log.forEach(function (h) {
+    if (!h || !/^d\d+$/.test(String(h.id)) || !(Number(h.ts) > 0)) return;
+    if (!first[h.id] || h.ts < first[h.id]) first[h.id] = Number(h.ts);
+  });
+  var ids = Object.keys(first), need = REWARDS[key];
+  var days = {};
+  ids.forEach(function (id) { days[new Date(first[id]).toISOString().slice(0, 10)] = 1; });
+  var needDays = Math.ceil(need / 5);
+  if (ids.length < need) throw httpError(400, "Cook " + (need - ids.length) + " more different " + (need - ids.length === 1 ? "dinner" : "dinners") + " first.");
+  if (Object.keys(days).length < needDays) throw httpError(400, "Those dinners need to be spread over at least " + needDays + " different days. Keep cooking and it'll unlock.");
+  var rec = { email: user.email || "" };
+  rec[key] = book; rec[key + "At"] = Date.now();
+  await mergeDoc(env, "rewards/" + user.uid, rec);
+  if (!isInternal(env, user.email)) { var rc = {}; rc["rw_" + bookKey(book)] = 1; await countBook(env, rc); }
+  return json({ ok: true, reward: key, book: book });
 }
 
 async function bookLink(request, env) {
@@ -1033,6 +1074,7 @@ var ROUTES = {
   "POST book-checkout": bookCheckout,
   "POST book-link": bookLink,
   "POST my-books": myBooks,
+  "POST reward-claim": rewardClaim,
   "POST book-click": bookClick,
   "POST lifetime-confirm": lifetimeConfirm,
   "POST subscribe": newsletterSubscribe,

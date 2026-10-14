@@ -22,6 +22,7 @@
 
   // Line icons, 24px grid, drawn with currentColor (Evening Table set).
   var ICO_PATHS = {
+    book: '<path d="M5 4.5h12.5v13H6.5A1.5 1.5 0 0 0 5 19zM5 19a1.5 1.5 0 0 0 1.5 1.5h11v-3"/>',
     close: '<path d="M6 6l12 12M18 6L6 18"/>',
     swap: '<path d="M4 8h13l-3-3M20 16H7l3 3"/>',
     check: '<path d="M5 12.5l4.5 4.5L19 7.5"/>',
@@ -187,6 +188,7 @@
     noSeafood: false, // "No fish or seafood" preference: hides those dishes everywhere
     history: [], // log of every dinner a day slot has been filled with: { id, ts, via }
     cooked: {},  // which of THIS week's day slots have been confirmed cooked: { dayIdx: { id, ts } }
+    statsResetAt: 0, // "Start my stats again": cooks and plans before this are ignored
     cookLog: [], // durable log of confirmed cooks only, separate from planning: { id, ts }
     planWeek: null,      // "YYYY-MM-DD" of the Monday the plan belongs to
     leftovers: {},       // { dayIdx: true } - that day is leftovers of the day before
@@ -430,6 +432,8 @@
     if (Array.isArray(data.history)) state.history = data.history;
     if (data.cooked && typeof data.cooked === "object") state.cooked = data.cooked;
     if (Array.isArray(data.cookLog)) state.cookLog = data.cookLog;
+    if (typeof data.statsResetAt === "number") state.statsResetAt = data.statsResetAt;
+    dropBeforeReset();
     if (typeof data.planWeek === "string") state.planWeek = data.planWeek;
     state.leftovers = (data.leftovers && typeof data.leftovers === "object") ? data.leftovers : {};
     state.guests = (data.guests && typeof data.guests === "object" && !Array.isArray(data.guests)) ? data.guests : {};
@@ -2504,24 +2508,30 @@
     return '<div class="stat-tile"><span class="stat-value">' + value + '</span><span class="stat-label">' + label + "</span></div>";
   }
 
-  // entries: [{ key, count, label? }] already sorted; label falls back to key
-  function rankList(entries) {
+  // Counts as a row of small chips ("Italy 4"), easier to take in than bars.
+  // entries: [{ key, count, label? }] already sorted; label falls back to key.
+  function tallyChips(entries, more) {
     if (!entries.length) return "";
-    var max = entries[0].count;
-    return '<div class="rank-list">' + entries.map(function (e) {
-      var pct = max ? Math.round((e.count / max) * 100) : 0;
-      var label = e.label || e.key;
-      return '<div class="rank-row">' +
-        '<span class="rank-label">' + label + '</span>' +
-        '<span class="rank-bar-track"><span class="rank-bar-fill" style="width:' + pct + '%"></span></span>' +
-        '<span class="rank-value">' + e.count + '</span>' +
-        "</div>";
-    }).join("") + "</div>";
+    var chip = function (e) { return '<span class="tally"><span class="tally-l">' + esc(e.label || e.key) + '</span><span class="tally-n">' + e.count + "</span></span>"; };
+    var shown = more ? entries.slice(0, more) : entries;
+    var rest = more ? entries.slice(more) : [];
+    return '<div class="tally-row">' + shown.map(chip).join("") + "</div>" +
+      (rest.length ? '<details class="tally-more"><summary>Show ' + rest.length + " more</summary>" + '<div class="tally-row">' + rest.map(chip).join("") + "</div></details>" : "");
+  }
+  // The dishes cooked most: the top five with their pictures, the rest folded away.
+  function topDishes(entries) {
+    var row = function (e) {
+      var r = RECIPES_BY_ID[e.key];
+      return '<li><button type="button" class="top-dish" data-open-recipe="' + esc(r.id) + '">' + recipeThumb(r) +
+        '<span class="top-dish-t">' + esc(r.title) + '</span><span class="top-dish-n">' + (e.count === 1 ? "Cooked once" : "Cooked " + e.count + " times") + "</span></button></li>";
+    };
+    var top = entries.slice(0, 5), rest = entries.slice(5);
+    return '<ol class="top-dishes">' + top.map(row).join("") + "</ol>" +
+      (rest.length ? '<details class="tally-more"><summary>Show ' + rest.length + " more</summary>" + '<ol class="top-dishes is-more">' + rest.map(row).join("") + "</ol></details>" : "");
   }
 
   function renderStats() {
     var el = document.getElementById("stats-content");
-    var history = state.history;
     var cookLog = state.cookLog;
     var html = "";
 
@@ -2551,51 +2561,10 @@
         "</div>";
 
       html += weeklyCookChart(validCooked);
-      html += "<h3>Countries you’ve cooked most</h3>" + rankList(topEntries(cookedCountryCounts, 8));
+      html += "<h3>Countries you’ve cooked most</h3>" + tallyChips(topEntries(cookedCountryCounts), 8);
 
       var cookedDishCounts = countBy(validCooked, function (h) { return h.id; });
-      var cookedDishEntries = topEntries(cookedDishCounts, 8).map(function (e) {
-        return { key: e.key, count: e.count, label: RECIPES_BY_ID[e.key].title };
-      });
-      html += "<h3>Your most-cooked dishes</h3>" + rankList(cookedDishEntries);
-    }
-
-    /* How you've planned: everything ever assigned to a day, whether or not
-       it was confirmed as cooked - this is about planning habits, not proof
-       of what ended up on a plate. */
-    html += '<h3 class="stats-subhead">How you’ve planned</h3>';
-    if (!history.length) {
-      html += '<p class="stats-empty">You haven’t planned a dinner yet. Fill in a week, or hit Surprise me, and your own stats will start building up here.</p>';
-    } else {
-      var validHistory = history.filter(function (h) { return !!RECIPES_BY_ID[h.id]; });
-
-      html += '<div class="stat-tile-row">' +
-        statTile(validHistory.length, validHistory.length === 1 ? "dinner planned" : "dinners planned") +
-        "</div>";
-
-      var dishCounts = countBy(validHistory, function (h) { return h.id; });
-      var dishEntries = topEntries(dishCounts, 8).map(function (e) {
-        return { key: e.key, count: e.count, label: RECIPES_BY_ID[e.key].title };
-      });
-      html += "<h3>Your most-planned dishes</h3>" + rankList(dishEntries);
-
-      var surpriseHistory = validHistory.filter(function (h) { return h.via === "surprise"; });
-      if (surpriseHistory.length) {
-        var surpriseCounts = countBy(surpriseHistory, function (h) { return h.id; });
-        var surpriseEntries = topEntries(surpriseCounts, 5).map(function (e) {
-          return { key: e.key, count: e.count, label: RECIPES_BY_ID[e.key].title };
-        });
-        html += "<h3>Surprise me’s favourites</h3>" + rankList(surpriseEntries);
-      } else {
-        html += '<h3>Surprise me’s favourites</h3><p class="stats-empty">Use the Surprise me button when you fill a day and this fills in.</p>';
-      }
-
-      var viaCounts = countBy(validHistory, function (h) { return h.via; });
-      var viaLabel = { pick: "Chosen by hand", fill: "Filled automatically", surprise: "Surprise me", lowwaste: "Low-waste fill", copy: "Copied from last week" };
-      var viaEntries = topEntries(viaCounts, 3).map(function (e) {
-        return { key: e.key, count: e.count, label: viaLabel[e.key] || capitalise(e.key) };
-      });
-      html += "<h3>How you plan your week</h3>" + rankList(viaEntries);
+      html += "<h3>Your most-cooked dishes</h3>" + topDishes(topEntries(cookedDishCounts, 30));
     }
 
     var ratedIds = Object.keys(state.ratings);
@@ -2639,12 +2608,12 @@
     }
     html += '<p class="stats-note">Quickest of the lot: <strong>' + fastest.title + "</strong> (" + (fastest.prep + fastest.cook) + " min start to finish). The whole book, cooked once each, comes to about " + fmtDuration(totalTimeAll) + " of kitchen time.</p>";
 
-    html += "<h3>Countries in the book</h3>" + rankList(topEntries(bookCountryCounts, 100));
+    html += "<h3>Countries in the book</h3>" + tallyChips(topEntries(bookCountryCounts), 12);
 
     var proteinEntries = topEntries(bookProteinCounts, 8).map(function (e) {
       return { key: e.key, count: e.count, label: proteinLabel[e.key] || capitalise(e.key) };
     });
-    html += "<h3>What's in the book</h3>" + rankList(proteinEntries);
+    html += "<h3>What's in the book</h3>" + tallyChips(proteinEntries);
 
     var dietCounts = {
       vegetarian: RECIPES.filter(function (r) { return r.tags.indexOf("vegetarian") !== -1; }).length,
@@ -2671,6 +2640,10 @@
       if (!pool.length) pool = RECIPES.filter(function (r) { return !r.custom && !cooked[r.id]; });
       if (pool.length) openRecipeModal(pool[Math.floor(Math.random() * pool.length)].id, { fromLibrary: true });
     });
+    el.querySelectorAll("[data-open-recipe]").forEach(function (b) {
+      b.addEventListener("click", function () { openRecipeModal(b.getAttribute("data-open-recipe"), { fromLibrary: true }); });
+    });
+    safeSection(wireRewards, "rewards wiring");
     var unlockLink = document.getElementById("stats-unlock-link");
     if (unlockLink) unlockLink.addEventListener("click", function (e) { e.preventDefault(); openPaywall(); });
   }
@@ -3386,7 +3359,8 @@
   }
   // One section failing (a slow account lookup, an odd browser) mustn't stop the rest showing.
   function safeSection(fn, name) { try { return fn() || ""; } catch (e) { console.error("Settings section failed: " + name, e); return ""; } }
-  function closeSettings() { settingsBackdrop.hidden = true; settingsModal.innerHTML = ""; deleteArmed = false; }
+  var resetArmed = false;
+  function closeSettings() { settingsBackdrop.hidden = true; settingsModal.innerHTML = ""; deleteArmed = false; resetArmed = false; }
   function renderSettings() {
     var avoid = state.avoid || {};
     var staples = Object.keys(state.staples || {}).sort();
@@ -3423,6 +3397,9 @@
       "<h3>Suggestions</h3>" +
       '<label class="switch-row"><input type="checkbox" id="newonly-on"' + (state.newOnly ? " checked" : "") + "> Only suggest dishes I haven\u2019t cooked yet</label>" +
       '<p class="settings-note">Applies to Surprise me and the fill buttons. Dishes you\u2019ve ticked as cooked are skipped until there are too few left to fill a week.</p>' +
+      "<h3>Your stats</h3>" +
+      '<button type="button" class="btn btn-ghost btn-sm acct-delete' + (resetArmed ? " is-armed" : "") + '" id="stats-reset-btn">' + (resetArmed ? "Tap again to clear them" : "Start my stats again") + "</button>" +
+      '<p class="settings-note">' + (resetArmed ? "This clears every dinner you’ve ticked as cooked and your planning history, on all your devices. Your ratings, recipes and any books you’ve earned stay." : "Clears what you’ve cooked and planned so far, so your kitchen stats start from today.") + "</p>" +
       "<h3>Privacy</h3>" +
       '<label class="switch-row"><input type="checkbox" id="analytics-on"' + (analyticsConsent() === "yes" ? " checked" : "") + "> Share usage statistics</label>" +
       '<p class="settings-note">Helps show which features get used. No personal details, never sold.</p>';
@@ -3434,6 +3411,16 @@
       b.addEventListener("click", function () { toggleStaple(b.dataset.unstaple); renderSettings(); });
     });
     document.getElementById("settings-basics-btn").addEventListener("click", addUsualBasics);
+    document.getElementById("stats-reset-btn").addEventListener("click", function () {
+      if (!resetArmed) { resetArmed = true; renderSettings(); return; }
+      resetArmed = false;
+      state.statsResetAt = Date.now();
+      dropBeforeReset();
+      onStateChanged();
+      track("stats_reset");
+      toast("Stats cleared. They start again from today.");
+      renderSettings();
+    });
     document.getElementById("analytics-on").addEventListener("change", function (e) { setAnalyticsConsent(e.target.checked); });
     safeSection(wireAccountSettings, "account wiring");
     safeSection(wireBooksSettings, "books wiring");
@@ -3647,7 +3634,7 @@
   });
 
   /* ============================= CLOUD SYNC ============================= */
-  var SYNC_FIELDS = ["servings", "mode", "plan", "batch", "checked", "ratings", "noSeafood", "history", "cooked", "cookLog",
+  var SYNC_FIELDS = ["servings", "mode", "plan", "batch", "checked", "ratings", "noSeafood", "history", "cooked", "cookLog", "statsResetAt",
     "planWeek", "leftovers", "guests", "staples", "avoid", "customRecipes", "lastWeek", "newWeekNotice", "next", "cookDays", "fridge", "fridgeFrom", "newOnly", "swaps"];
   var UNSYNCED_KEY = "soloSupper.unsynced";
   var lastSyncedJson = {};
@@ -3663,6 +3650,15 @@
   function rememberSynced(data) {
     SYNC_FIELDS.forEach(function (f) { lastSyncedJson[f] = JSON.stringify(data[f] === undefined ? null : data[f]); });
   }
+  // After "Start my stats again", older cooks and plans stay gone, even if
+  // another device still has them.
+  function dropBeforeReset() {
+    var at = state.statsResetAt || 0;
+    if (!at) return;
+    var keep = function (h) { return h && h.ts >= at; };
+    state.cookLog = (state.cookLog || []).filter(keep);
+    state.history = (state.history || []).filter(keep);
+  }
   function unionBy(a, b, keyFn) {
     var seen = {}, out = [];
     (a || []).concat(b || []).forEach(function (x) { if (!x) return; var k = keyFn(x); if (!seen[k]) { seen[k] = true; out.push(x); } });
@@ -3677,6 +3673,11 @@
     var byTs = function (x) { return x.id + "@" + x.ts; };
     M.history = unionBy(C.history, L.history, byTs).sort(function (a, b) { return a.ts - b.ts; }).slice(-HISTORY_LIMIT);
     M.cookLog = unionBy(C.cookLog, L.cookLog, byTs).sort(function (a, b) { return a.ts - b.ts; }).slice(-HISTORY_LIMIT);
+    M.statsResetAt = Math.max(L.statsResetAt || 0, C.statsResetAt || 0);
+    if (M.statsResetAt) {
+      M.history = M.history.filter(function (h) { return h.ts >= M.statsResetAt; });
+      M.cookLog = M.cookLog.filter(function (h) { return h.ts >= M.statsResetAt; });
+    }
     M.customRecipes = unionBy(L.customRecipes, C.customRecipes, function (x) { return x.id; });
     M.batch = unionBy(C.batch, L.batch, function (x) { return x.uid; });
     if (L.planWeek && L.planWeek === C.planWeek) {
@@ -4169,7 +4170,7 @@
     myBooksLoading = true;
     api("my-books").then(function (j) { myBooksData = j; myBooksFor = currentUser && currentUser.uid; })
       .catch(function () { myBooksData = { error: true }; })
-      .then(function () { myBooksLoading = false; if (settingsOpen()) renderSettings(); });
+      .then(function () { myBooksLoading = false; if (settingsOpen()) renderSettings(); if (!panels.stats.hidden) renderStats(); });
   }
   function booksSettingsHtml() {
     if (isNativeApp() || !window.firebaseAuth || !currentUser) return "";
@@ -4357,17 +4358,77 @@
       '<div class="collect-badges">' + marks.map(function (m) {
         var got = done >= m;
         return '<span class="collect-badge' + (got ? " is-got" : "") + '" title="' + (got ? "Reached" : (m - done) + " to go") + '"><span class="cb-n">' + (m === total ? "All" : m) + '</span><span class="cb-l">' + (m === 1 ? "first dish" : "dishes") + "</span></span>";
-      }).join("") + "</div>";
+      }).join("") + "</div>" + safeSection(function () { return rewardsHtml(done); }, "rewards");
     var rows = cuisines.sort(function (a, b) {
       var A = byCuisine[a], B = byCuisine[b];
       return (B.done / B.n) - (A.done / A.n) || B.done - A.done || a.localeCompare(b);
     });
-    html += '<details class="collect-cuisines"' + (done ? " open" : "") + "><summary>Country by country</summary>" +
-      '<div class="cc-grid">' + rows.map(function (c) {
+    var started = rows.filter(function (c) { return byCuisine[c].done > 0; });
+    var untried = rows.filter(function (c) { return !byCuisine[c].done; }).sort();
+    html += '<details class="collect-cuisines"><summary>Country by country</summary>' +
+      (started.length ? '<div class="cc-grid">' + started.map(function (c) {
         var x = byCuisine[c];
         return '<div class="cc-item' + (x.done === x.n ? " is-done" : "") + '"><span class="cc-name">' + esc(c) + '</span><span class="cc-count">' + x.done + "/" + x.n + '</span><span class="cc-bar"><span style="width:' + Math.round(x.done / x.n * 100) + '%"></span></span></div>';
-      }).join("") + "</div></details>";
+      }).join("") + "</div>" : "") +
+      (untried.length ? '<p class="stats-note"><strong>Not tried yet:</strong> ' + esc(untried.join(", ")) + ".</p>" : "") +
+      "</details>";
     return html;
+  }
+
+  /* ---------- collection rewards: a free cookbook for cooking your way through the book ---------- */
+  // The server checks the cooked dinners before giving the book (see
+  // rewardClaim in functions/api), and each milestone gives one book.
+  var REWARD_AT = [["r25", 25], ["r100", 100]];
+  function rewardsHtml(done) {
+    if (isNativeApp() || !window.firebaseAuth) return "";
+    var line = function (t) { return '<div class="reward"><span class="reward-ico" aria-hidden="true">' + ico("book") + "</span><div>" + t + "</div></div>"; };
+    if (!currentUser) {
+      return line(done >= 25 ? "<strong>You’ve earned a free cookbook.</strong> Sign in to choose it." : "Cook <strong>25 different dinners</strong> and choose one of the Solo Supper cookbooks, free. " + (25 - done) + " to go.");
+    }
+    if (!myBooksData || myBooksFor !== currentUser.uid) { loadMyBooks(); return ""; }
+    if (myBooksData.error) return "";
+    var owned = myBooksData.owned || {}, got = myBooksData.rewards || {};
+    var books = myBooksData.books || [];
+    var open = books.filter(function (b) { return !owned[b.id]; });
+    var html = "";
+    REWARD_AT.forEach(function (rw) {
+      var key = rw[0], at = rw[1];
+      if (got[key]) {
+        var bk = books.filter(function (b) { return b.id === got[key]; })[0];
+        html += line("Free cookbook for " + at + " dishes: <strong>" + esc(bk ? bk.title.replace(/^Solo Supper: /, "") : got[key]) + '</strong>. <button type="button" class="link-btn" data-book-dl="' + esc(got[key]) + '">Download</button>');
+      } else if (done >= at && open.length) {
+        html += line("<strong>" + at + " dishes cooked. Choose a cookbook, free:</strong>" +
+          '<span class="reward-pick">' + open.map(function (b) {
+            return '<button type="button" class="btn btn-outline btn-sm" data-reward="' + key + '" data-reward-book="' + b.id + '">' + esc(b.title.replace(/^Solo Supper: /, "")) + "</button>";
+          }).join("") + "</span>");
+      } else if (done < at && open.length && !html.match(/data-reward=|to go/)) {
+        html += line("Cook <strong>" + at + " different dinners</strong> and choose " + (Object.keys(got).length ? "another" : "one") + " of the Solo Supper cookbooks, free. " + (at - done) + " to go.");
+      }
+    });
+    return html;
+  }
+  function wireRewards() {
+    document.querySelectorAll("[data-reward]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        var book = b.getAttribute("data-reward-book");
+        document.querySelectorAll("[data-reward]").forEach(function (x) { x.disabled = true; });
+        api("reward-claim", { reward: b.getAttribute("data-reward"), book: book }).then(function () {
+          track("reward_claimed", { book: book });
+          toast("It’s yours. Download it here or from Settings any time.");
+          myBooksData = null; loadMyBooks();
+        }).catch(function (e) {
+          toast(e.message);
+          document.querySelectorAll("[data-reward]").forEach(function (x) { x.disabled = false; });
+        });
+      });
+    });
+    document.querySelectorAll("#stats-content [data-book-dl]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        b.disabled = true;
+        api("book-link", { book: b.getAttribute("data-book-dl") }).then(function (j) { location.href = j.url; })
+          .catch(function (e) { toast(e.message); }).then(function () { b.disabled = false; });
+      });
+    });
   }
 
   /* ============================= WASTE SAVED ============================= */

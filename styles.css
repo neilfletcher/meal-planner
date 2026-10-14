@@ -793,3 +793,26 @@ h1, .display, .display-l, .display-m, .week-range { letter-spacing: -0.02em; }
 .my-books { list-style: none; margin: 6px 0 8px; padding: 0; }
 .my-books li { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 8px 0; border-bottom: 1px solid var(--line); }
 .my-books li span { font-family: var(--serif); font-size: 17px; }
+
+/* Stats: counts as chips and the most-cooked dishes as photo rows, not bars */
+.tally-row { display: flex; flex-wrap: wrap; gap: 8px; }
+.tally { display: inline-flex; align-items: baseline; gap: 8px; padding: 6px 12px; border: 1px solid var(--line); border-radius: 999px; background: var(--paper); font-size: 14px; }
+.tally-n { font-family: var(--mono); font-variant-numeric: tabular-nums; font-size: 12.5px; color: var(--ink-3); }
+.tally-row .tally:first-child { border-color: var(--ink); }
+.tally-more { margin-top: 10px; }
+.tally-more > summary { cursor: pointer; font-size: 14px; font-weight: 600; color: var(--ink-2); margin-bottom: 10px; }
+.top-dishes { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.top-dish { display: grid; grid-template-columns: 56px 1fr auto; align-items: center; gap: 14px; width: 100%; padding: 6px; border: 0; border-radius: 6px; background: transparent; font: inherit; color: inherit; text-align: left; cursor: pointer; }
+.top-dish:hover { background: var(--board); }
+.top-dish:focus-visible { outline: 2px solid var(--tomato); outline-offset: 1px; }
+.top-dish .thumb { width: 56px; height: 56px; font-size: 10px; }
+.top-dish-t { font-family: var(--serif); font-size: 17px; line-height: 1.25; }
+.top-dish-n { font-size: 13px; color: var(--ink-3); white-space: nowrap; }
+@media (max-width: 520px) { .top-dish { grid-template-columns: 48px 1fr; } .top-dish .thumb { width: 48px; height: 48px; } .top-dish-n { grid-column: 2; margin-top: -10px; } }
+
+/* Collection rewards */
+.reward { display: flex; gap: 12px; align-items: flex-start; margin: 14px 0 4px; padding: 12px 14px; border-radius: 8px; background: var(--board); font-size: 14.5px; line-height: 1.5; color: var(--ink-2); }
+.reward strong { color: var(--ink); font-weight: 600; }
+.reward-ico .i { width: 22px; height: 22px; stroke: var(--tomato-deep); fill: none; stroke-width: 1.6; margin-top: 1px; }
+.reward-pick { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+@media (max-width: 520px) { .cc-grid { grid-template-columns: 1fr 1fr; gap: 10px 16px; } }

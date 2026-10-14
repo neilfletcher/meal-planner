@@ -3741,14 +3741,14 @@ window.SOLO_RECIPES = (function () {
       prep: 8, cook: 15,
       ingredients: [
         ing(150, "g", "pork mince", "meat"), ing(2, "tbsp", "plain flour", "store"),
-        ing(1, "", "egg yolk", "dairy"), ing(150, "g", "potato, chunked", "produce"),
+        ing(1, "", "egg yolk", "dairy"), ing(150, "g", "new potatoes", "produce"),
         ing(1, "tbsp", "butter", "dairy")
       ],
       steps: [
-        "Boil the potato for 15 minutes until tender, then drain and mash with the butter.",
+        "Boil the new potatoes whole for 15 minutes until a knife slides in easily, then drain and toss with the butter.",
         "Mix the pork mince with ¼ tsp salt, the flour and egg yolk, and shape into oval patties.",
         "Fry over medium heat for 4–5 minutes each side until browned and cooked through.",
-        "Season to taste, then serve with the mash."
+        "Season to taste, then serve with the buttery potatoes."
       ]
     },
     {

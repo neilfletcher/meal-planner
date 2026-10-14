@@ -4351,13 +4351,19 @@
     on("acct-delete-btn", function (ev) {
       if (!deleteArmed) { deleteArmed = true; renderSettings(); return; }
       var b = ev.currentTarget; b.disabled = true; b.textContent = "Deleting…";
+      // Stop syncing first, or the planner would save itself straight back
+      // into the account as it's being deleted.
+      stopCloudSync();
+      if (saveTimer) { clearTimeout(saveTimer); saveTimer = null; }
+      savePending = false; suppressSave = true;
       api("delete-account").then(function () {
         deleteArmed = false;
         closeSettings();
         return window.firebaseAuth.signOut();
       }).then(function () {
-        toast("Your account has been deleted. Your plan is still saved on this device only.");
-      }).catch(function (e) { deleteArmed = false; b.disabled = false; toast(e.message); renderSettings(); });
+        suppressSave = false;
+        toast("Your account and everything in it has been deleted.");
+      }).catch(function (e) { suppressSave = false; if (currentUser) startCloudSync(currentUser); deleteArmed = false; b.disabled = false; toast(e.message); renderSettings(); });
     });
   }
 

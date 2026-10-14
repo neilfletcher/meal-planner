@@ -226,6 +226,9 @@
     });
   });
 
+  // The copyright year keeps up without a rebuild.
+  document.querySelectorAll("[data-year]").forEach(function (e) { e.textContent = String(new Date().getFullYear()); });
+
   /* ---------- sign in: the links open the planner's sign-in; hidden once signed in ---------- */
   if (lsGet("soloSupper.stateOwner")) {
     document.querySelectorAll("[data-signin-link]").forEach(function (a) { a.hidden = true; });

@@ -471,7 +471,7 @@ function footer(rel) {
     col("Planner", [["Plan your week", rel + "plan/"], ["The cookbooks", rel + "books/"], ["Get the app", rel + "app/"], ["Use it up", rel + "use-up/"], ["Cuisines", rel + "cuisines/"], ["Collections", rel + "collections/"]]) +
     col("About", [["Contact", "mailto:" + CONTACT_EMAIL], ["Privacy", rel + "privacy/"], ["Terms", rel + "terms/"], ["Refunds", rel + "refunds/"], ["Cookies", rel + "cookies/"], ["Cookie settings", "#cookie-settings"]]) +
     "</div>" +
-    '<div class="footer-base"><span>&copy; ' + YEAR + " Solo Supper</span><span>Every recipe written for one. Scaled for two when someone stays over.</span></div>" +
+    '<div class="footer-base"><span>&copy; <span data-year>' + YEAR + "</span> Solo Supper</span><span>Every recipe written for one. Scaled for two when someone stays over.</span></div>" +
     "</div></footer>\n" +
     '<div class="consent" id="consent" role="region" aria-label="Usage statistics" hidden></div>\n' +
     '<script src="' + rel + V("assets/telemetry.js") + '"></script>\n' +

@@ -2246,7 +2246,7 @@
     var locked = !alreadyAssigned && isRecipeLocked(recipeId);
     // A planned day can feed more (or fewer) people than usual: guests.
     var dayCtx = ctx && ctx.dayIdx !== undefined && state.mode !== "batch";
-    var serves = dayCtx ? dayServes(ctx.dayIdx) : state.servings;
+    var serves = dayCtx ? dayServes(ctx.dayIdx) : ((ctx && ctx.serves) || state.servings);
     var servingsNote = serves > 1
       ? "Written for one; scaled here ×" + serves + "."
       : "Written for one.";
@@ -2297,9 +2297,9 @@
           '<button class="btn btn-outline" id="modal-swap-btn">' + ico("swap") + 'Swap for something else</button>' +
           '<button class="btn btn-ghost" id="modal-remove-btn">Remove from list</button></div>';
       } else if (state.mode === "batch") {
-        actionsHtml = '<div class="modal-actions"><button class="btn btn-primary" id="modal-add-batch-btn">' + ico("plus") + 'Add to your list</button></div>';
+        actionsHtml = modalServesHtml(serves) + '<div class="modal-actions"><button class="btn btn-primary" id="modal-add-batch-btn">' + ico("plus") + 'Add to your list</button></div>';
       } else {
-        actionsHtml = '<div class="day-pick-block"><span class="eyebrow">' + (viewNext ? "Add to a day next week" : "Add to a day this week") + '</span><div class="day-pick-row" id="modal-day-picks"></div></div>';
+        actionsHtml = modalServesHtml(serves) + '<div class="day-pick-block"><span class="eyebrow">' + (viewNext ? "Add to a day next week" : "Add to a day this week") + '</span><div class="day-pick-row" id="modal-day-picks"></div></div>';
       }
     }
 
@@ -2320,6 +2320,15 @@
       "</div>" +
       actionsHtml +
       bodyHtml;
+    // Browsing a recipe: scale it for any number of people, just here.
+    recipeModal.querySelectorAll("[data-ms]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        var n = Math.min(12, Math.max(1, serves + parseInt(b.getAttribute("data-ms"), 10)));
+        var keep = recipeModal.scrollTop;
+        openRecipeModal(recipeId, Object.assign({}, ctx || {}, { serves: n }));
+        recipeModal.scrollTop = keep;
+      });
+    });
     recipeModal.querySelectorAll("[data-ds], [data-ds-reset]").forEach(function (b) {
       b.addEventListener("click", function () {
         var d = ctx.dayIdx, n = b.hasAttribute("data-ds-reset") ? state.servings : Math.min(12, Math.max(1, dayServes(d) + parseInt(b.getAttribute("data-ds"), 10)));
@@ -2364,6 +2373,9 @@
         b.addEventListener("click", function (dayIdx) { return function () {
           clearCooked(dayIdx);
           W().plan[dayIdx] = r.id;
+          // Scaled up (or down) while browsing: that day cooks for that many.
+          W().guests = W().guests || {};
+          if (serves !== state.servings) W().guests[dayIdx] = serves; else delete W().guests[dayIdx];
           logHistory(r.id, "pick");
           onStateChanged();
           closeRecipeModal();
@@ -2371,6 +2383,13 @@
         pickWrap.appendChild(b);
       }
     }
+  }
+  function modalServesHtml(n) {
+    return '<div class="day-serves" role="group" aria-label="People to cook for">' +
+      '<span class="day-serves-label">Cooking for</span>' +
+      '<div class="stepper"><button type="button" data-ms="-1" aria-label="Fewer people"' + (n <= 1 ? " disabled" : "") + ">" + ico("minus") + "</button>" +
+      '<span class="stepper-value">' + n + '</span><button type="button" data-ms="1" aria-label="More people"' + (n >= 12 ? " disabled" : "") + ">" + ico("plus") + "</button></div>" +
+      '<span class="day-serves-hint">' + (n === 1 ? "Friend round? The ingredients and cooking mode scale to match." : "Ingredients and cooking mode scaled for " + n + "." + (state.mode === "batch" ? "" : " Add it to a day and that day cooks for " + n + ".")) + "</span></div>";
   }
   function closeRecipeModal() { recipeBackdrop.hidden = true; recipeModal.innerHTML = ""; }
   recipeBackdrop.addEventListener("click", function (e) { if (e.target === recipeBackdrop) closeRecipeModal(); });
@@ -3333,7 +3352,7 @@
       var nice = d.secs >= 60 ? Math.round(d.secs / 60) + " min" : d.secs + " sec";
       return '<button type="button" class="btn btn-sm cook-start-timer" data-secs="' + d.secs + '" data-label="' + esc("Step " + (i + 1) + " · " + nice) + '">' + ico("timer") + "Start " + nice + " timer</button>";
     }).join("");
-    var cookServes = cook.ctx && cook.ctx.dayIdx !== undefined && state.mode !== "batch" ? dayServes(cook.ctx.dayIdx) : state.servings;
+    var cookServes = cook.ctx && cook.ctx.dayIdx !== undefined && state.mode !== "batch" ? dayServes(cook.ctx.dayIdx) : ((cook.ctx && cook.ctx.serves) || state.servings);
     var ings = ingredientsOf(r).map(function (x) { return '<li><span class="amt">' + scaledAmtOnly(x, cookServes) + "</span> " + esc(x.item) + "</li>"; }).join("");
     if (!cook.keep) cook.keep = keepForLater(r, cookServes, cook.ctx);
     var keeps = cook.keep.filter(function (k) { return k.uses.length; });

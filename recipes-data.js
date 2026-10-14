@@ -175,7 +175,7 @@ window.SOLO_RECIPES = (function () {
       ],
       steps: [
         "Cook the rice according to the packet instructions.",
-        "Flatten the chicken breast slightly, then coat in flour, dip in beaten egg, and press into the panko breadcrumbs to coat all over.",
+        "Beat the egg in a shallow bowl. Flatten the chicken breast slightly, then coat in flour, dip in the egg, and press into the panko breadcrumbs to coat all over.",
         "Heat the vegetable oil in a frying pan over medium heat and fry the chicken for 4–5 minutes each side until deep golden and cooked through (75°C in the thickest part). Drain on kitchen paper and slice.",
         "Meanwhile, warm the katsu sauce through in a small pan.",
         "Season to taste, then serve the sliced katsu chicken over the rice, spooning the warmed curry sauce over the top."
@@ -445,7 +445,7 @@ window.SOLO_RECIPES = (function () {
         "Lower the heat to medium, add a splash of the coconut milk and the curry paste to the pan, and fry for 1 minute until fragrant.",
         "Add the potato and stir to coat, then pour in the remaining coconut milk. Simmer for 15 minutes, stirring now and then, until the potato is tender when pierced with a knife.",
         "Return the beef and any juices to the pan and simmer for 1 minute to warm through.",
-        "Stir in the fish sauce, taste and adjust seasoning, then serve over the rice scattered with crushed peanuts."
+        "Stir in the fish sauce, taste and adjust seasoning, then serve over the rice scattered with the peanuts, roughly crushed."
       ]
     },
     {
@@ -4635,7 +4635,7 @@ window.SOLO_RECIPES = (function () {
         "Heat the oil in a pan, lift the pork out of the juice and fry over high heat for 6–8 minutes, turning occasionally, until crisp at the edges and cooked through. Pour in the juice for the last minute to glaze, then roughly chop.",
         "Meanwhile mix the pineapple, red onion, coriander, a squeeze of lime juice and chilli flakes for the salsa.",
         "Warm the rice.",
-        "Season to taste, then serve the shredded pork over the rice, topped with the pineapple salsa and remaining lime wedges."
+        "Season to taste, then serve the chopped pork over the rice, topped with the pineapple salsa and remaining lime wedges."
       ]
     },
     {
@@ -6248,7 +6248,7 @@ window.SOLO_RECIPES = (function () {
         ing(1, "tbsp", "coriander, chopped", "produce"), ing(1, "", "crusty bread roll", "bakery")
       ],
       steps: [
-        "Fry the sliced merguez in a pan over medium heat for 4–5 minutes until browned. Remove and set aside.",
+        "Slice the merguez into thick rounds and fry in a pan over medium heat for 4–5 minutes until browned. Remove and set aside.",
         "In the same pan, soften the pepper and onion for 8 minutes until soft and translucent, adding the garlic for the last minute.",
         "Stir in the tomatoes, harissa and cumin, return the sausage to the pan, and simmer for 8–10 minutes.",
         "Make two wells in the sauce and crack in the eggs. Cover and cook for 4–5 minutes until the eggs are just set.",

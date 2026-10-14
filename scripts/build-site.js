@@ -423,9 +423,11 @@ function header(rel, active) {
     link("books", "books/", "Books") +
     link("planner", "plan/", "The planner") +
     link("pro", "#pro", "Pro") +
+    '<a class="nav-signin" href="' + rel + 'plan/?signin=1" data-signin-link>Sign in</a>' +
     "</nav>" +
     '<div class="site-header-actions">' +
     '<button type="button" class="ss-search-btn" data-search-open aria-label="Search recipes">' + ICON.search + "<span>Search</span><kbd>/</kbd></button>" +
+    '<a class="hdr-signin" href="' + rel + 'plan/?signin=1" data-signin-link>Sign in</a>' +
     '<a class="btn btn-ink" href="' + rel + 'plan/" data-planner-cta><span class="cta-long">Plan your week</span><span class="cta-short">Plan</span></a>' +
     "</div></div></header>\n";
 }

@@ -226,6 +226,11 @@
     });
   });
 
+  /* ---------- sign in: the links open the planner's sign-in; hidden once signed in ---------- */
+  if (lsGet("soloSupper.stateOwner")) {
+    document.querySelectorAll("[data-signin-link]").forEach(function (a) { a.hidden = true; });
+  }
+
   /* ---------- returning planners go straight to their week ---------- */
   if (lsGet("soloSupper.state.v1")) {
     document.querySelectorAll("[data-planner-cta]").forEach(function (a) {

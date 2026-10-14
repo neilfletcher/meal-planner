@@ -745,3 +745,27 @@ h1, .display, .display-l, .display-m, .week-range { letter-spacing: -0.02em; }
 .rfb-text { display: flex; flex-direction: column; gap: 6px; font-size: 14px; color: var(--ink-2); }
 .rfb-text textarea { font: inherit; font-size: 15px; padding: 10px 12px; border-radius: 10px; border: 1px solid var(--line-strong); background: var(--paper); color: var(--ink); resize: vertical; }
 .rfb-thanks { margin: 0; color: var(--ink-2); }
+
+/* Sign in, in the header (in the menu on small screens) */
+.hdr-signin { font-size: 15px; font-weight: 500; text-decoration: none; padding: 6px 4px; white-space: nowrap; }
+.hdr-signin:hover { color: var(--tomato); }
+.hdr-signin[hidden], .nav-signin[hidden] { display: none !important; }
+.nav-signin { display: none; }
+@media (max-width: 1000px) {
+  .hdr-signin { display: none; }
+  .site-nav .nav-signin { display: block; font-weight: 600; }
+}
+/* Room for Sign in: on mid-size screens the header uses the short button and an icon-only search */
+@media (min-width: 1001px) and (max-width: 1440px) {
+  .site-header-row { column-gap: 28px; }
+  .site-header-actions .cta-long { display: none; }
+  .site-header-actions .cta-short { display: inline; }
+  .site-header-actions .ss-search-btn { width: 40px !important; padding: 0 !important; justify-content: center; }
+  .site-header-actions .ss-search-btn span, .site-header-actions .ss-search-btn kbd { display: none !important; }
+}
+@media (min-width: 1001px) and (max-width: 1120px) {
+  .site-header-row { column-gap: 16px; }
+  .site-nav { gap: 14px; font-size: 14px; }
+  .hdr-signin { font-size: 14px; }
+  .brand { font-size: 24px; }
+}

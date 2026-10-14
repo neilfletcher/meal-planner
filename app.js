@@ -4843,6 +4843,13 @@
     var q;
     try { q = new URLSearchParams(location.search); } catch (e) { return; }
     var addId = q.get("add"), cookId = q.get("cook"), proBack = q.get("pro"), tab = q.get("tab"), weekIds = q.get("week");
+    // From "Sign in" in the website header: open the sign-in box, unless
+    // this browser turns out to be signed in already (that closes it again).
+    if (q.get("signin")) {
+      try { history.replaceState(null, "", location.pathname); } catch (e) { /* ignore */ }
+      if (!currentUser && !isNativeApp()) setTimeout(function () { if (!currentUser) openSignIn(); }, 400);
+      return;
+    }
     // From the weekly email: plan/?week=d12,d40,... adds those dinners to the
     // empty cooking days from today, running on into next week if needed.
     if (weekIds) {

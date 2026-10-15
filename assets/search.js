@@ -202,10 +202,12 @@
     });
     var n = found.length;
     foot.hidden = false;
-    foot.innerHTML = "<span>" + n + (n === 1 ? " recipe" : " recipes") + "</span>" +
-      (n > results.length ? '<button type="button" class="ss-all">See all ' + n + "</button>" : "");
+    // On the website "See all" opens the full results page; in the planner it lists them here.
+    var more = opts.onPick ? (n > results.length ? '<button type="button" class="ss-all">See all ' + n + "</button>" : "")
+      : '<a class="ss-all" href="' + esc(allHref(q)) + '">See all ' + n + (n === 1 ? " result" : " results") + " \u2192</a>";
+    foot.innerHTML = "<span>" + n + (n === 1 ? " recipe" : " recipes") + "</span>" + more;
     var allBtn = foot.querySelector(".ss-all");
-    if (allBtn) allBtn.addEventListener("click", all);
+    if (allBtn) allBtn.addEventListener("click", function (e) { if (opts.onPick) all(); else track(null); });
   }
   function track(it) {
     try { if (window.gtag) window.gtag("event", "search", { search_term: input.value.trim().slice(0, 60) }); } catch (e) { /* ignore */ }
@@ -215,8 +217,10 @@
     if (opts.onPick) { close(); opts.onPick(it); return; }
     location.href = href(it);
   }
-  // "See all" (or Enter) lists every match in the panel itself.
+  function allHref(q) { return opts.base + "recipes/?q=" + encodeURIComponent(q); }
+  // "See all" (or Enter) lists every match in the panel itself (planner only).
   function all() {
+    if (!opts.onPick) { track(null); location.href = allHref(input.value.trim()); return; }
     track(null);
     showAll = true;
     render();
@@ -261,5 +265,5 @@
     });
   }
 
-  window.SoloSearch = { init: init, open: open, close: close, setItems: function (list) { items = prep(list.slice()); } };
+  window.SoloSearch = { init: init, query: function (q) { if (!opts) return Promise.resolve(null); return load().then(function () { return items && items.length ? search(q) : null; }); }, open: open, close: close, setItems: function (list) { items = prep(list.slice()); } };
 })();

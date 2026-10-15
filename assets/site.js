@@ -349,8 +349,39 @@
     var empty = document.getElementById("rx-empty");
     var chips = document.querySelectorAll("[data-filter]");
     var filter = "all";
+    // Typed searches use the same matching as the search pop-up (synonyms, best
+    // matches first), so "See all 23 results" really shows those 23.
+    var ranked = null, rankedFor = null;
     var apply = function () {
-      var raw = (search.value || "").toLowerCase(), maxMin = null;
+      var typed = (search.value || "").trim();
+      try { var u = new URL(location.href); if (typed) u.searchParams.set("q", typed); else u.searchParams.delete("q"); history.replaceState(history.state, "", u); } catch (e) { /* ignore */ }
+      if (typed && window.SoloSearch && window.SoloSearch.query && rankedFor !== typed) {
+        window.SoloSearch.query(typed).then(function (found) {
+          if ((search.value || "").trim() !== typed) return;
+          rankedFor = typed;
+          ranked = null;
+          if (found) { ranked = {}; found.forEach(function (it, n) { ranked[+String(it.i).slice(1) - 1] = n; }); }
+          apply();
+        });
+        if (rankedFor === null) return;
+      }
+      if (!typed && rankedFor !== null) { ranked = null; rankedFor = null; reorder(); }
+      if (ranked && rankedFor === typed) {
+        var shownR = 0;
+        cards.forEach(function (c) {
+          var ok = (filter === "all" || (" " + c.getAttribute("data-tags") + " ").indexOf(" " + filter + " ") !== -1) && ranked[c.getAttribute("data-i")] !== undefined;
+          c.hidden = !ok;
+          if (ok) shownR++;
+        });
+        if (sort.value !== "quick" && sort.value !== "az") {
+          cards.slice().sort(function (a, b) { return (ranked[a.getAttribute("data-i")] || 0) - (ranked[b.getAttribute("data-i")] || 0); }).forEach(function (c) { grid.appendChild(c); });
+        }
+        count.textContent = shownR + (shownR === 1 ? " recipe" : " recipes") + " for \u201c" + typed + "\u201d";
+        empty.hidden = shownR > 0;
+        if (pagers["rx-grid"]) pagers["rx-grid"](true);
+        return;
+      }
+      var raw = typed.toLowerCase(), maxMin = null;
       var tm = raw.match(/\b(?:under|in|less than)\s*(\d{2})\s*(?:min|mins|minutes)?\b/);
       if (tm) { maxMin = +tm[1]; raw = raw.replace(tm[0], " "); }
       var terms = raw.split(/\s+/).filter(Boolean);
@@ -374,7 +405,8 @@
         return a.getAttribute("data-i") - b.getAttribute("data-i");
       });
       sorted.forEach(function (c) { grid.appendChild(c); });
-      if (pagers["rx-grid"]) pagers["rx-grid"](true);
+      if (ranked) apply();
+      else if (pagers["rx-grid"]) pagers["rx-grid"](true);
     };
     chips.forEach(function (chip) {
       chip.addEventListener("click", function () {

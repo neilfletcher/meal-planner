@@ -172,6 +172,17 @@ function normaliseCode(code) {
 // months, maxUses, uses and active; each account can use a code once, recorded
 // at promoCodes/{CODE}/uses/{uid} (no personal details kept there).
 var PROMO_RE = /^[A-Z0-9]{4,20}$/;
+// Pro for life (bought, from a code or given by hand) means a paid
+// subscription shouldn't renew: it stops at the end of the period already
+// paid for, so nobody is charged for Pro they have for free.
+async function stopRenewing(env, uid, e) {
+  if (!e || !e.stripeSub || !e.stripeStatus || e.stripeStatus === "canceled" || e.stripeCancelAtPeriodEnd) return;
+  try {
+    var sub = await stripe(env, "POST", "subscriptions/" + e.stripeSub, { cancel_at_period_end: "true" });
+    await saveSubscription(env, uid, sub);
+  } catch (err) { console.error("could not stop subscription renewing", e.stripeSub, err.message); }
+}
+
 async function redeemPromo(env, user, code) {
   for (var attempt = 0; attempt < 4; attempt++) {
     var pdoc = await getDoc(env, "promoCodes/" + code);
@@ -192,6 +203,7 @@ async function redeemPromo(env, user, code) {
         { path: usePath, data: { at: now }, exists: false },
         { path: entPath, data: update, merge: true }
       ]);
+      if (update.giftLifetime) await stopRenewing(env, user.uid, e);
       return json({ entitlement: publicEntitlement(Object.assign({}, e, update)), months: p.months || 0, promo: true });
     } catch (err) {
       if (err.status !== 409) throw err; // someone else redeemed at the same moment: read again and retry
@@ -228,6 +240,7 @@ async function redeem(request, env) {
     { path: "giftCodes/" + code, data: { redeemedBy: user.uid, redeemedEmail: user.email || "", redeemedAt: now }, merge: true, updateTime: codeDoc.updateTime },
     { path: entPath, data: update, merge: true }
   ]);
+  if (update.giftLifetime) await stopRenewing(env, user.uid, e);
   return json({ entitlement: publicEntitlement(Object.assign({}, e, update)), months: c.months || 0 });
 }
 
@@ -614,6 +627,7 @@ async function admin(request, env) {
       var upd = m ? { grantUntil: addMonths(Math.max(now, ce.grantUntil || 0), m), grantLifetime: false } : { grantLifetime: true };
       upd.email = found.email;
       await mergeDoc(env, path, upd);
+      if (upd.grantLifetime) await stopRenewing(env, found.uid, ce);
     } else if (body.action === "revoke") {
       await mergeDoc(env, path, { grantUntil: 0, grantLifetime: false, giftUntil: 0, giftLifetime: false });
     }
@@ -825,12 +839,7 @@ async function grantLifetime(env, session) {
     await mergeDoc(env, "lifetimePurchases/" + session.id, { uid: uid, email: email, amount: session.amount_total || 0, currency: session.currency || "gbp",
       createdAt: paidAt, refunded: false, source: String(session.metadata.firstSource || "").slice(0, 40),
       paymentIntent: typeof session.payment_intent === "string" ? session.payment_intent : (session.payment_intent && session.payment_intent.id) || "" });
-    if (e.stripeSub && e.stripeStatus && e.stripeStatus !== "canceled" && !e.stripeCancelAtPeriodEnd) {
-      try {
-        var sub = await stripe(env, "POST", "subscriptions/" + e.stripeSub, { cancel_at_period_end: "true" });
-        await saveSubscription(env, uid, sub);
-      } catch (err) { console.error("lifetime: could not end subscription", e.stripeSub, err.message); }
-    }
+    await stopRenewing(env, uid, e);
   }
   return Object.assign({}, e, update);
 }

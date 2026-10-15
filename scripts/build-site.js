@@ -340,7 +340,19 @@ if (process.env.SITE_DATA_OUT) {
 /* ---------------------------------------------------------------- output */
 var written = [];
 var sitemap = [];
+// Long recipe grids show their first page from the very first paint (the
+// rest marked is-more), so the page doesn't start long and then shrink when
+// the script runs, which made phones open it part-way down.
+function markPaged(html) {
+  if (html.indexOf("data-page=") === -1) return html;
+  return html.replace(/(<div class="rgrid[^"]*"[^>]*data-page="(\d+)"[^>]*>)([\s\S]*?<\/article><\/div>)/g, function (m, open, n, body) {
+    var count = 0, total = (body.match(/<article class="rcard"/g) || []).length;
+    if (total <= +n + 6) return m;
+    return open + body.replace(/<article class="rcard"/g, function (t) { return ++count > +n ? '<article class="rcard is-more"' : t; });
+  });
+}
 function out(rel, html) {
+  if (/\.html$/.test(rel)) html = markPaged(html);
   var p = path.join(ROOT, rel);
   fs.mkdirSync(path.dirname(p), { recursive: true });
   fs.writeFileSync(p, html);
@@ -416,6 +428,7 @@ function head(o) {
     '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..600;1,6..72,400..600&amp;family=Geist:wght@400;500;600;700&amp;family=Geist+Mono:wght@400;500;600&amp;display=swap">\n' +
     '<link rel="stylesheet" href="' + o.rel + V("assets/site.css") + '">\n' +
     (o.jsonld || []).map(function (j) { return '<script type="application/ld+json">' + JSON.stringify(j).replace(/</g, "\\u003c") + "</script>\n"; }).join("") +
+    "<noscript><style>.rgrid > .is-more { display: flex !important; }</style></noscript>\n" +
     "</head>\n";
 }
 

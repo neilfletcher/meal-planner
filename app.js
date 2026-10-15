@@ -771,9 +771,16 @@
       Object.keys(panels).forEach(function (k) { panels[k].hidden = (k !== btn.dataset.panel); });
       if (btn.dataset.panel === "shopping") renderShopping();
       if (btn.dataset.panel === "stats") renderStats();
+      // A new tab starts at its top, not wherever the last one was scrolled to.
+      var wasSame = btn.getAttribute("data-was-open") === "1";
+      tabBtns.forEach(function (b) { b.removeAttribute("data-was-open"); });
+      btn.setAttribute("data-was-open", "1");
+      if (!wasSame) { try { window.scrollTo(0, 0); } catch (e) { /* fine */ } }
       try { btn.scrollIntoView({ block: "nearest", inline: "nearest" }); } catch (e) { /* older browsers */ }
     });
   });
+  var openTab = document.querySelector('.tab-btn[aria-selected="true"]');
+  if (openTab) openTab.setAttribute("data-was-open", "1");
   // Fade the tab row's right edge only while there are tabs off-screen.
   var tabsNav = document.querySelector(".tabs");
   function updateTabsFade() {
@@ -4438,6 +4445,8 @@
     return "<h3>Your account</h3>" +
       '<p class="acct-email">' + esc(currentUser.email || currentUser.displayName || "Signed in") + "</p>" +
       '<p class="acct-status' + (s.pro ? " is-pro" : "") + '">' + esc(proStatusText()) + "</p>" +
+      (forever && ent && ent.stripeSub && ent.stripeStatus && ent.stripeStatus !== "canceled" ?
+        '<p class="settings-note">Your old ' + (ent.stripeInterval === "month" ? "monthly" : "yearly") + " subscription won\u2019t renew or charge you again" + (ent.stripePeriodEnd ? ". Billing shows it until it ends on " + fmtLongDate(ent.stripePeriodEnd) + "." : ".") + "</p>" : "") +
       '<div class="acct-actions">' +
       (!paid && !forever ? '<button type="button" class="btn btn-primary btn-sm" id="acct-upgrade-btn">' + (s.pro ? "See Pro plans" : "Upgrade to Pro") + "</button>" : "") +
       (hasStripeCustomer() ? '<button type="button" class="btn btn-outline btn-sm" id="acct-manage-btn">' + (paid ? "Manage subscription" : "Billing and receipts") + "</button>" : "") +

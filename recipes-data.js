@@ -738,19 +738,19 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d43", title: "Persian-Style Chicken with Saffron Rice", tags: [], cuisine: "Iran", protein: "chicken",
-      prep: 8, cook: 20,
+      prep: 8, cook: 22,
       ingredients: [
         ing(180, "g", "chicken thigh fillets", "meat"), ing(70, "g", "basmati rice", "store"),
         ing(0.5, "tsp", "ground turmeric", "spice"), ing(null, "pinch", "saffron strands (or extra turmeric)", "spice"),
         ing(0.5, "", "lemon", "produce"), ing(1, "", "garlic clove, crushed", "produce"),
-        ing(3, "", "dried apricots", "store"), ing(1.5, "tbsp", "olive oil", "store")
+        ing(3, "", "dried apricots", "store"), ing(1.5, "tbsp", "olive oil", "store"), ing(0.5, "", "onion, thinly sliced", "produce"), ing(0.25, "tsp", "ground cinnamon", "spice"), ing(10, "g", "butter", "dairy")
       ],
       steps: [
-        "Cook the rice according to the packet instructions with the turmeric and saffron stirred into the water.",
-        "Meanwhile, toss the chicken with the crushed garlic, a squeeze of lemon and half the olive oil.",
-        "Heat the remaining oil in a frying pan over medium-high heat and cook the chicken for 6–7 minutes each side until golden and cooked through (75°C in the thickest part).",
-        "Roughly chop the dried apricots and stir through the cooked rice.",
-        "Season to taste, then slice the chicken and serve over the saffron rice."
+        "Crumble the saffron into 1 tbsp just-boiled water and leave to steep. Rinse the rice, then cook according to the packet instructions with the turmeric and a pinch of salt in the water, stirring in the saffron water for the last few minutes.",
+        "Meanwhile, toss the chicken with the crushed garlic, cinnamon, ¼ tsp salt, a squeeze of lemon and half the olive oil.",
+        "Heat the remaining oil in a frying pan and fry the onion over medium heat for 8 minutes until golden, then push it to one side.",
+        "Add the chicken and cook for 6–7 minutes each side until golden and cooked through (75°C in the thickest part). For the last 2 minutes, add the butter and tuck the whole apricots into the pan so they plump up in the buttery juices.",
+        "Season to taste, then slice the chicken and serve over the saffron rice with the onions, apricots and pan juices spooned over, and the rest of the lemon cut into a wedge."
       ]
     },
     {
@@ -942,11 +942,11 @@ window.SOLO_RECIPES = (function () {
         ing(150, "g", "cod fillet", "meat"), ing(200, "g", "tinned chickpeas, drained", "store"),
         ing(100, "g", "cherry tomatoes", "produce"), ing(1, "tsp", "ras el hanout", "spice"),
         ing(1, "tbsp", "olive oil", "store"), ing(0.5, "", "lemon", "produce"),
-        ing(null, "small handful", "fresh coriander, chopped", "produce")
+        ing(null, "small handful", "fresh coriander, chopped", "produce"), ing(0.5, "", "red onion, cut into wedges", "produce")
       ],
       steps: [
         "Preheat the oven to 200°C (fan 180°C).",
-        "Toss the chickpeas and cherry tomatoes with half the oil and the ras el hanout on a baking tray, and roast for 8 minutes.",
+        "Toss the chickpeas, cherry tomatoes and red onion with half the oil and the ras el hanout on a baking tray, and roast for 8 minutes.",
         "Rub the cod with the remaining oil, nestle it on top of the chickpeas, and squeeze over the lemon juice.",
         "Roast for a further 10 minutes until the cod flakes easily.",
         "Season to taste, then scatter with coriander to serve."
@@ -1034,12 +1034,12 @@ window.SOLO_RECIPES = (function () {
       ingredients: [
         ing(100, "g", "halloumi, sliced", "dairy"), ing(1, "", "courgette, sliced", "produce"),
         ing(1, "", "pepper, sliced", "produce"), ing(1, "tbsp", "olive oil", "store"),
-        ing(1, "tbsp", "honey", "store"), ing(0.5, "tsp", "chilli flakes", "spice")
+        ing(1, "tbsp", "honey", "store"), ing(0.5, "tsp", "chilli flakes", "spice"), ing(100, "g", "cherry tomatoes", "produce"), ing(0.5, "", "red onion, cut into wedges", "produce")
       ],
       steps: [
         "Preheat the oven to 200°C (fan 180°C).",
-        "Toss the courgette and pepper with the oil on a baking tray and roast for 12 minutes.",
-        "Add the halloumi slices to the tray and roast for a further 8 minutes until golden.",
+        "Toss the courgette, pepper and red onion with the oil on a baking tray and roast for 12 minutes.",
+        "Add the halloumi slices and cherry tomatoes to the tray and roast for a further 8 minutes until golden.",
         "Taste and adjust the seasoning.",
         "Warm the honey with the chilli flakes and drizzle over everything to serve."
       ]
@@ -1845,13 +1845,14 @@ window.SOLO_RECIPES = (function () {
         ing(160, "g", "chicken breast, cubed", "meat"), ing(1, "tsp", "ground cumin", "spice"),
         ing(0.5, "tsp", "smoked paprika", "spice"), ing(2, "tbsp", "tahini", "store"),
         ing(0.5, "", "lemon", "produce"), ing(1, "", "flatbread", "bakery"),
-        ing(1, "tbsp", "vegetable oil", "store")
+        ing(1, "tbsp", "vegetable oil", "store"), ing(0.25, "", "cucumber, diced", "produce"), ing(1, "", "tomato, diced", "produce")
       ],
       steps: [
         "Toss the chicken with the cumin, paprika and a splash of oil.",
         "Thread onto skewers (or leave loose) and griddle or fry over medium-high heat for 8–9 minutes, turning, until cooked through.",
         "Whisk the tahini with the lemon juice and a splash of water until smooth and drizzly.",
-        "Season to taste, then serve the chicken in the flatbread, drizzled with the tahini sauce."
+        "Mix the cucumber and tomato with a squeeze of lemon and a pinch of salt.",
+        "Season to taste, then serve the chicken in the flatbread, drizzled with the tahini sauce, with the cucumber and tomato salad alongside."
       ]
     },
     {
@@ -2021,13 +2022,13 @@ window.SOLO_RECIPES = (function () {
       ingredients: [
         ing(160, "g", "chicken breast, sliced", "meat"), ing(1, "tsp", "curry powder", "spice"),
         ing(2, "tbsp", "peanut butter", "store"), ing(1, "tbsp", "soy sauce", "store"),
-        ing(0.5, "tsp", "chilli flakes", "spice"), ing(70, "g", "rice", "store")
+        ing(0.5, "tsp", "chilli flakes", "spice"), ing(70, "g", "rice", "store"), ing(0.25, "", "cucumber, sliced", "produce")
       ],
       steps: [
         "Cook the rice according to the packet instructions.",
         "Toss the chicken with the curry powder and a splash of oil, then fry over medium-high heat for 6–7 minutes until cooked through with no pink inside.",
         "Whisk the peanut butter, soy sauce, chilli flakes and a splash of hot water into a smooth sauce.",
-        "Season to taste, then serve the chicken over the rice, drizzled with the satay sauce."
+        "Season to taste, then serve the chicken over the rice, drizzled with the satay sauce, with the cucumber slices on the side."
       ]
     },
     {
@@ -2054,13 +2055,14 @@ window.SOLO_RECIPES = (function () {
         ing(150, "ml", "coconut milk", "store"), ing(1, "tbsp", "laksa or red curry paste", "store"),
         ing(0.5, "tsp", "chilli flakes", "spice"), ing(60, "g", "beansprouts", "produce"),
         ing(1, "tsp", "fish sauce", "store"), ing(0.5, "", "lime", "produce"),
-        ing(1, "tbsp", "vegetable oil", "store")
+        ing(1, "tbsp", "vegetable oil", "store"), ing(1, "", "egg", "dairy")
       ],
       steps: [
+        "Boil the egg for 7 minutes, then cool in cold water, peel and halve.",
         "Soak the rice noodles in boiling water for 5 minutes, then drain.",
         "Fry the chicken with the curry paste and chilli flakes in a splash of oil over medium-high heat for 5–6 minutes.",
         "Pour in the coconut milk and 100ml water, and simmer for 3 minutes.",
-        "Season to taste, then stir in the noodles and beansprouts and warm through, then add the fish sauce and a squeeze of lime to serve."
+        "Season to taste, then stir in the noodles and beansprouts and warm through, then add the fish sauce and a squeeze of lime, and top with the halved egg to serve."
       ]
     },
     {
@@ -2232,13 +2234,14 @@ window.SOLO_RECIPES = (function () {
         ing(160, "g", "beef rump steak, sliced", "meat"), ing(0.5, "", "red onion, sliced", "produce"),
         ing(1, "", "tomato, wedged", "produce"), ing(1, "tbsp", "soy sauce", "store"),
         ing(1, "", "small potato, cut into chips, par-cooked", "produce"), ing(0.5, "tsp", "smoked paprika", "spice"),
-        ing(1, "tbsp", "vegetable oil", "store")
+        ing(1, "tbsp", "vegetable oil", "store"), ing(60, "g", "rice", "store")
       ],
       steps: [
+        "Cook the rice according to the packet instructions.",
         "Microwave or par-boil the potato chips for 4 minutes, then drain.",
         "Fry the beef over high heat for 2–3 minutes until browned, then remove.",
         "Fry the potato chips in the oil for 5 minutes until golden, then add the onion, tomato and paprika and toss for 1–2 minutes.",
-        "Return the beef to the pan with the soy sauce, toss for 1 minute and serve."
+        "Return the beef to the pan with the soy sauce, toss for 1 minute and serve with the rice."
       ]
     },
     {
@@ -2506,13 +2509,13 @@ window.SOLO_RECIPES = (function () {
       ingredients: [
         ing(150, "g", "white fish fillet", "meat"), ing(1, "tbsp", "soy sauce", "store"),
         ing(1, "tsp", "fresh ginger, grated", "produce"), ing(1, "", "spring onion, shredded", "produce"),
-        ing(0.5, "tsp", "sesame oil", "store"), ing(70, "g", "rice", "store")
+        ing(0.5, "tsp", "sesame oil", "store"), ing(70, "g", "rice", "store"), ing(1, "", "pak choi, halved", "produce")
       ],
       steps: [
         "Cook the rice according to the packet instructions.",
-        "Place the fish on a plate with the ginger, and steam over a pan of simmering water, covered, for 8–9 minutes until just cooked through.",
+        "Place the fish on a plate with the ginger, and steam over a pan of simmering water, covered, for 8–9 minutes until just cooked through, adding the pak choi alongside for the last 3 minutes.",
         "Scatter with spring onion, drizzle with soy sauce and sesame oil.",
-        "Season to taste, then serve over the rice."
+        "Season to taste, then serve over the rice with the pak choi."
       ]
     },
     {
@@ -2523,12 +2526,12 @@ window.SOLO_RECIPES = (function () {
         ing(0.5, "tsp", "ground cinnamon", "spice"), ing(0.5, "tsp", "ground cumin", "spice"),
         ing(150, "g", "chopped tomatoes", "store"), ing(60, "g", "couscous", "store"),
         ing(90, "ml", "vegetable stock", "store"),
-        ing(1, "tbsp", "vegetable oil", "store")
+        ing(1, "tbsp", "vegetable oil", "store"), ing(100, "g", "tinned chickpeas, drained", "store")
       ],
       steps: [
         "Bring the stock to the boil in a small pan (or make it up with just-boiled water from the kettle). Pour it over the couscous, cover and leave for 5 minutes, then fluff with a fork.",
         "Fry the chicken with the cinnamon and cumin in a splash of oil over medium-high heat for 5 minutes.",
-        "Add the apricots and chopped tomatoes, and simmer for 8–9 minutes until the chicken is cooked through with no pink inside.",
+        "Add the apricots, chickpeas and chopped tomatoes, and simmer for 8–9 minutes until the chicken is cooked through with no pink inside.",
         "Season to taste, then serve over the couscous."
       ]
     },
@@ -2636,14 +2639,14 @@ window.SOLO_RECIPES = (function () {
         ing(150, "g", "turkey mince", "meat"), ing(1, "", "burger bun", "bakery"),
         ing(0.5, "", "sweet potato, cut into wedges", "produce"), ing(0.5, "tsp", "smoked paprika", "spice"),
         ing(1, "tbsp", "tomato ketchup", "store"),
-        ing(1, "tbsp", "vegetable oil", "store")
+        ing(1, "tbsp", "vegetable oil", "store"), ing(1, "", "slice cheese", "dairy"), ing(1, "", "lettuce leaf", "produce"), ing(1, "", "slice tomato", "produce")
       ],
       steps: [
         "Preheat the oven to 200°C (fan 180°C).",
         "Toss the sweet potato wedges with the paprika and a splash of oil, and roast for 20–25 minutes, turning once, until tender and golden.",
-        "Shape the turkey mince into a patty and fry over medium-high heat for 4–5 minutes each side until cooked through with no pink inside.",
+        "Shape the turkey mince into a patty and fry over medium-high heat for 4–5 minutes each side until cooked through with no pink inside, topping with the cheese slice for the last minute to melt.",
         "Toast the bun.",
-        "Season to taste, then build the burger with the patty and ketchup, and serve with the wedges."
+        "Season to taste, then build the burger with the lettuce, the patty and cheese, the tomato and ketchup, and serve with the wedges."
       ]
     },
     {
@@ -2680,18 +2683,20 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d163", title: "British-Style Breaded Fish Finger Sandwich", tags: ["fish", "quick"], cuisine: "UK", protein: "fish",
-      prep: 8, cook: 8,
+      prep: 8, cook: 22,
       ingredients: [
         ing(150, "g", "white fish fillet, cut into strips", "meat"), ing(2, "tbsp", "plain flour", "store"),
         ing(1, "", "egg, beaten", "dairy"), ing(3, "tbsp", "breadcrumbs", "store"),
         ing(2, "slices", "white bread", "bakery"), ing(1, "tbsp", "tartare sauce or mayonnaise", "store"),
-        ing(1, "tbsp", "vegetable oil", "store")
+        ing(1, "tbsp", "vegetable oil", "store"), ing(150, "g", "frozen chips", "frozen"), ing(60, "g", "frozen peas", "frozen")
       ],
       steps: [
+        "Cook the chips in the oven according to the packet instructions.",
         "Coat the fish strips in flour, then egg, then breadcrumbs.",
         "Fry in a splash of oil over medium heat for 3–4 minutes each side until golden and cooked through.",
         "Spread the bread with tartare sauce.",
-        "Season to taste, then build the sandwich with the fish fingers."
+        "Meanwhile, boil the peas for 3 minutes, then drain.",
+        "Season to taste, then build the sandwich with the fish fingers and serve with the chips and peas."
       ]
     },
     {
@@ -2856,14 +2861,15 @@ window.SOLO_RECIPES = (function () {
       ingredients: [
         ing(100, "g", "spinach", "produce"), ing(60, "g", "feta cheese, crumbled", "dairy"),
         ing(1, "", "egg", "dairy"), ing(2, "", "sheets filo pastry", "bakery"),
-        ing(1, "tbsp", "olive oil", "store")
+        ing(1, "tbsp", "olive oil", "store"), ing(0.25, "", "cucumber, diced", "produce"), ing(1, "", "tomato, diced", "produce"), ing(0.25, "", "red onion, thinly sliced", "produce")
       ],
       steps: [
         "Preheat the oven to 200°C (fan 180°C).",
         "Wilt the spinach in a dry pan for 2 minutes, then squeeze out excess water and chop.",
         "Mix the spinach with the feta and egg.",
         "Layer the filo sheets, brushing with oil between each, spoon the filling in and fold into a parcel.",
-        "Bake for 12–14 minutes until golden and crisp."
+        "Bake for 12–14 minutes until golden and crisp.",
+        "Meanwhile, toss the cucumber, tomato and red onion with a little olive oil and a pinch of salt, and serve alongside."
       ]
     },
     {
@@ -2936,13 +2942,14 @@ window.SOLO_RECIPES = (function () {
       ingredients: [
         ing(150, "g", "beef mince", "meat"), ing(0.5, "tsp", "ground cumin", "spice"),
         ing(0.5, "tsp", "ground cinnamon", "spice"), ing(60, "g", "bulgur wheat", "store"),
-        ing(null, "small handful", "fresh parsley, chopped", "produce")
+        ing(null, "small handful", "fresh parsley, chopped", "produce"), ing(0.25, "", "cucumber, diced", "produce"), ing(1, "", "tomato, diced", "produce"), ing(2, "tbsp", "natural yoghurt", "dairy"), ing(0.5, "", "lemon", "produce")
       ],
       steps: [
         "Cook the bulgur wheat according to the packet instructions.",
         "Mix the mince with ¼ tsp salt, the cumin and cinnamon, and shape into small koftas.",
         "Fry over medium-high heat for 7–8 minutes, turning, until browned and cooked through.",
-        "Season to taste, then serve over the bulgur, scattered with parsley."
+        "Mix the cucumber and tomato with a squeeze of lemon and a pinch of salt.",
+        "Season to taste, then serve over the bulgur, scattered with parsley, with the salad, a spoonful of yoghurt and a lemon wedge."
       ]
     },
     {
@@ -3172,12 +3179,12 @@ window.SOLO_RECIPES = (function () {
         ing(150, "g", "beef mince", "meat"), ing(150, "g", "chopped tomatoes", "store"),
         ing(20, "g", "raisins", "store"), ing(0.5, "", "onion, diced", "produce"),
         ing(0.5, "tsp", "ground cumin", "spice"), ing(70, "g", "rice", "store"),
-        ing(1, "tbsp", "vegetable oil", "store")
+        ing(1, "tbsp", "vegetable oil", "store"), ing(1, "handful", "green olives", "store")
       ],
       steps: [
         "Cook the rice according to the packet instructions.",
         "Fry the onion and beef mince in a splash of oil over medium-high heat for 6–7 minutes, breaking up the mince, until browned with no pink left.",
-        "Stir in the cumin for 30 seconds until fragrant, then add the raisins and chopped tomatoes and simmer for 5 minutes until thickened.",
+        "Stir in the cumin for 30 seconds until fragrant, then add the raisins, olives and chopped tomatoes and simmer for 5 minutes until thickened.",
         "Season to taste, then serve over the rice."
       ]
     },
@@ -3420,13 +3427,13 @@ window.SOLO_RECIPES = (function () {
         ing(150, "g", "beef rump steak, cut into 2cm cubes", "meat"), ing(70, "g", "rice", "store"),
         ing(0.5, "", "carrot, grated", "produce"), ing(0.5, "", "onion, sliced", "produce"),
         ing(0.5, "tsp", "ground cumin", "spice"), ing(150, "ml", "beef stock", "store"),
-        ing(1, "tbsp", "vegetable oil", "store")
+        ing(1, "tbsp", "vegetable oil", "store"), ing(1, "", "small garlic bulb, outer papery skin removed", "produce")
       ],
       steps: [
         "Sear the beef in a splash of oil over high heat for 3 minutes, turning, until browned all over. Tip onto a plate.",
         "Fry the onion over a medium heat for 8 minutes until soft and translucent, then add the carrot and cumin and cook for 2 minutes.",
-        "Stir in the rice and stock, cover and simmer for 14–15 minutes until the rice is tender and the liquid absorbed. Take off the heat and leave covered for 5 minutes, then fluff up with a fork.",
-        "Scatter the beef over the rice, cover, take off the heat and leave for 2 minutes to warm through. Season and serve."
+        "Stir in the rice and stock, push the whole garlic bulb into the middle, cover and simmer for 14–15 minutes until the rice is tender and the liquid absorbed. Take off the heat and leave covered for 5 minutes, then fluff up with a fork.",
+        "Scatter the beef over the rice, cover, take off the heat and leave for 2 minutes to warm through. Season and serve, squeezing the soft garlic cloves over the rice."
       ]
     },
     {
@@ -3596,13 +3603,13 @@ window.SOLO_RECIPES = (function () {
         ing(120, "g", "beef mince", "meat"), ing(150, "g", "kale, shredded", "produce"),
         ing(0.5, "", "onion, sliced", "produce"), ing(0.5, "tsp", "smoked paprika", "spice"),
         ing(70, "g", "rice", "store"),
-        ing(1, "tbsp", "vegetable oil", "store")
+        ing(1, "tbsp", "vegetable oil", "store"), ing(0.5, "", "avocado, sliced", "produce")
       ],
       steps: [
         "Cook the rice according to the packet instructions.",
         "Fry the onion and beef mince in a splash of oil over medium-high heat for 6 minutes, stirring in the paprika for the last minute.",
         "Add the kale and a splash of water, and cook for 5–6 minutes until wilted and tender.",
-        "Season to taste, then serve over the rice."
+        "Season to taste, then serve over the rice with the avocado alongside."
       ]
     },
     {
@@ -3657,16 +3664,16 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d224", title: "Belgian-Style Chicken Waterzooi-Inspired Stew", tags: ["quick"], cuisine: "Belgium", protein: "chicken",
-      prep: 8, cook: 14,
+      prep: 8, cook: 18,
       ingredients: [
         ing(160, "g", "chicken thigh, diced", "meat"), ing(0.5, "", "leek, sliced", "produce"),
         ing(0.5, "", "carrot, sliced", "produce"), ing(150, "ml", "chicken stock", "store"),
         ing(2, "tbsp", "double cream", "dairy"),
-        ing(1, "tbsp", "vegetable oil", "store")
+        ing(1, "tbsp", "vegetable oil", "store"), ing(1, "", "small potato, diced", "produce")
       ],
       steps: [
         "Fry the chicken, leek and carrot in a splash of oil over medium heat for 5 minutes.",
-        "Pour in the stock and simmer for 8–9 minutes until the chicken is cooked through with no pink inside.",
+        "Pour in the stock, add the potato and simmer for 12 minutes until the potato is tender and the chicken is cooked through with no pink inside.",
         "Stir in the cream and warm through.",
         "Season and serve, with bread if you like."
       ]
@@ -3787,13 +3794,13 @@ window.SOLO_RECIPES = (function () {
       ingredients: [
         ing(160, "g", "lamb leg steak", "meat"), ing(null, "handful", "fresh mint, chopped", "produce"),
         ing(1, "tbsp", "red wine vinegar", "store"), ing(1, "tsp", "honey", "store"),
-        ing(120, "g", "new potatoes", "produce")
+        ing(120, "g", "new potatoes", "produce"), ing(0.5, "", "carrot, sliced", "produce"), ing(40, "g", "frozen peas", "frozen")
       ],
       steps: [
-        "Halve any larger new potatoes and boil for 12–15 minutes until a knife slides in easily, then drain.",
+        "Halve any larger new potatoes and boil for 12–15 minutes until a knife slides in easily, adding the carrot for the last 8 minutes and the peas for the last 3, then drain.",
         "Mix the mint, vinegar and honey into a sauce.",
         "Fry the lamb over medium-high heat for 3–4 minutes each side, then rest for 2 minutes and slice.",
-        "Season to taste, then serve the lamb with the potatoes and mint sauce."
+        "Season to taste, then serve the lamb with the potatoes, carrot, peas and mint sauce."
       ]
     },
     {
@@ -3833,13 +3840,14 @@ window.SOLO_RECIPES = (function () {
       ingredients: [
         ing(160, "g", "pork loin, sliced", "meat"), ing(0.5, "", "lime, juiced", "produce"),
         ing(1, "", "garlic clove, crushed", "produce"), ing(0.5, "tsp", "dried oregano", "spice"),
-        ing(70, "g", "rice", "store")
+        ing(70, "g", "rice", "store"), ing(1, "", "ripe plantain, sliced", "produce"), ing(1, "tbsp", "vegetable oil", "store")
       ],
       steps: [
         "Cook the rice according to the packet instructions.",
         "Toss the pork with the lime juice, garlic and oregano.",
         "Fry over medium-high heat for 4–5 minutes, turning once, until browned and cooked through.",
-        "Season to taste, then serve over the rice."
+        "Meanwhile, fry the plantain slices in the oil for 2–3 minutes each side until caramelised.",
+        "Season to taste, then serve over the rice with the plantain."
       ]
     },
     {
@@ -3944,15 +3952,16 @@ window.SOLO_RECIPES = (function () {
         ing(1, "", "garlic clove, sliced", "produce"), ing(200, "g", "chopped tomatoes (tinned)", "store"),
         ing(1, "handful", "Kalamata olives", "store"), ing(1, "tbsp", "olive oil", "store"),
         ing(1, "tsp", "dried oregano", "spice"), ing(0.5, "", "lemon", "produce"),
-        ing(1, "handful", "fresh parsley, chopped", "produce")
+        ing(1, "handful", "fresh parsley, chopped", "produce"), ing(120, "g", "new potatoes", "produce")
       ],
       steps: [
+        "Boil the new potatoes for 15 minutes until a knife slides in easily, then drain.",
         "Preheat the oven to 200°C (180°C fan).",
         "Heat the olive oil in an ovenproof pan and sauté the onion for 8 minutes until soft and translucent, adding the garlic for the last minute.",
         "Stir in the chopped tomatoes, oregano and olives and simmer for 5 minutes.",
         "Nestle the cod fillet into the sauce and spoon a little sauce over the top.",
         "Transfer to the oven and bake for 12–15 minutes until the fish flakes easily.",
-        "Season to taste, then squeeze over the lemon juice and scatter with parsley to serve."
+        "Season to taste, then squeeze over the lemon juice and scatter with parsley, and serve with the potatoes."
       ]
     },
     {
@@ -4383,35 +4392,36 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d265", title: "Armenian-Style Trout with Walnut Herb Sauce", tags: ["quick", "fish"], cuisine: "Armenia", protein: "fish",
-      prep: 8, cook: 10,
+      prep: 8, cook: 15,
       ingredients: [
         ing(1, "", "trout fillet, about 180g", "meat"), ing(30, "g", "walnuts", "store"),
         ing(1, "", "garlic clove, finely chopped", "produce"), ing(1, "handful", "fresh coriander or parsley", "produce"),
         ing(1, "tbsp", "red wine vinegar", "store"), ing(2, "tbsp", "olive oil", "store"),
-        ing(1, "pinch", "chilli flakes", "spice"), ing(1, "tbsp", "plain flour", "store")
+        ing(1, "pinch", "chilli flakes", "spice"), ing(1, "tbsp", "plain flour", "store"), ing(120, "g", "new potatoes", "produce"), ing(1, "", "flatbread", "bakery")
       ],
       steps: [
+        "Boil the new potatoes for 15 minutes until a knife slides in easily, then drain.",
         "Blitz or finely chop the walnuts, garlic and herbs together with the vinegar, chilli flakes and 1 tbsp of the olive oil to make a chunky walnut sauce. Season to taste.",
         "Dust the trout fillet lightly in flour.",
         "Heat the remaining oil in a frying pan over medium-high heat and fry the trout, skin-side down, for 3–4 minutes, then flip and cook for 2 minutes more until just cooked through.",
-        "Spoon the walnut herb sauce over the trout to serve."
+        "Spoon the walnut herb sauce over the trout and serve with the potatoes and warm flatbread."
       ]
     },
     {
       id: "d266", title: "Chilean-Style Pork Chop with Pebre Salsa", tags: ["quick"], cuisine: "Chile", protein: "pork",
-      prep: 10, cook: 12,
+      prep: 10, cook: 15,
       ingredients: [
         ing(1, "", "pork loin chop", "meat"), ing(1, "", "tomato, finely diced", "produce"),
         ing(0.25, "", "red onion, finely diced", "produce"), ing(1, "", "garlic clove, minced", "produce"),
         ing(0.5, "", "red chilli, finely chopped", "produce"), ing(1, "handful", "fresh coriander, chopped", "produce"),
         ing(1, "tbsp", "red wine vinegar", "store"), ing(2, "tbsp", "olive oil", "store"),
-        ing(1, "tbsp", "vegetable oil", "store")
+        ing(1, "tbsp", "vegetable oil", "store"), ing(120, "g", "new potatoes", "produce")
       ],
       steps: [
+        "Boil the new potatoes for 15 minutes until a knife slides in easily, then drain.",
         "Mix the tomato, red onion, garlic, chilli and coriander with the red wine vinegar and olive oil to make the pebre salsa. Season and set aside.",
         "Season the pork chop and pan-fry in the vegetable oil over medium-high heat for 4–5 minutes per side until cooked through (65–70°C in the middle) and golden, then rest for 3 minutes.",
-        "Rest the pork chop for a couple of minutes.",
-        "Serve topped with a generous spoonful of pebre salsa."
+        "Serve topped with a generous spoonful of pebre salsa, with the potatoes alongside."
       ]
     },
     {
@@ -4510,14 +4520,15 @@ window.SOLO_RECIPES = (function () {
         ing(1, "tbsp", "tomato purée", "store"), ing(150, "ml", "chicken stock", "store"),
         ing(1, "", "small potato, diced", "produce"), ing(1, "handful", "green olives", "store"),
         ing(1, "tsp", "dried oregano", "spice"), ing(0.5, "tsp", "ground cumin", "spice"),
-        ing(1, "tbsp", "olive oil", "store"), ing(1, "handful", "fresh coriander, chopped", "produce")
+        ing(1, "tbsp", "olive oil", "store"), ing(1, "handful", "fresh coriander, chopped", "produce"), ing(60, "g", "rice", "store")
       ],
       steps: [
         "Heat the olive oil in a saucepan and brown the chicken pieces over medium-high heat for 3–4 minutes.",
         "Add the onion and pepper and cook for 8 minutes until soft and translucent, adding the garlic for the last minute.",
         "Stir in the tomato purée, oregano and cumin, cook for 1 minute, then add the stock and potato.",
         "Bring to a simmer, cover and cook for 15–18 minutes until the potato and chicken are cooked through with no pink inside.",
-        "Stir in the olives, season to taste, and scatter with coriander to serve."
+        "Meanwhile, cook the rice according to the packet instructions.",
+        "Stir in the olives, season to taste, and scatter with coriander and serve with the rice."
       ]
     },
     {
@@ -5015,40 +5026,41 @@ window.SOLO_RECIPES = (function () {
       ]
     },
     {
-      id: "d299", title: "Australian-Style Chicken Parmigiana", tags: ["quick"], cuisine: "Australia", protein: "chicken",
-      prep: 9, cook: 18,
+      id: "d299", title: "Australian-Style Chicken Parmigiana", tags: [], cuisine: "Australia", protein: "chicken",
+      prep: 9, cook: 25,
       ingredients: [
         ing(180, "g", "chicken breast, butterflied", "meat"), ing(2, "tbsp", "plain flour", "store"),
         ing(1, "", "egg, beaten", "dairy"), ing(40, "g", "breadcrumbs", "bakery"),
         ing(2, "tbsp", "vegetable oil", "store"), ing(3, "tbsp", "tomato passata", "store"),
         ing(0.5, "tsp", "dried oregano", "spice"), ing(30, "g", "mozzarella, sliced", "dairy"),
-        ing(1, "handful", "salad leaves", "produce")
+        ing(1, "handful", "salad leaves", "produce"), ing(150, "g", "frozen chips", "frozen")
       ],
       steps: [
-        "Preheat the oven to 200°C (fan 180°C).",
+        "Preheat the oven to 200°C (fan 180°C) and put the chips in to cook according to the packet instructions.",
         "Coat the chicken breast in flour, then beaten egg, then breadcrumbs.",
         "Heat the oil in an ovenproof pan and fry the chicken for 3 minutes each side until golden.",
         "Mix the passata with the oregano and spread over the chicken, then top with the mozzarella.",
         "Transfer to the oven and bake for 8–10 minutes until the chicken is cooked through (75°C in the thickest part) and the cheese is melted and bubbling.",
-        "Season to taste, then serve with a side salad."
+        "Season to taste, then serve with the chips and a side salad."
       ]
     },
     {
-      id: "d300", title: "Australian-Style Beef and Beetroot Burger", tags: ["quick"], cuisine: "Australia", protein: "beef",
-      prep: 8, cook: 12,
+      id: "d300", title: "Australian-Style Beef and Beetroot Burger", tags: [], cuisine: "Australia", protein: "beef",
+      prep: 8, cook: 25,
       ingredients: [
         ing(150, "g", "beef mince", "meat"), ing(0.5, "tsp", "salt and pepper", "spice"),
         ing(1, "", "burger bun", "bakery"), ing(1, "", "slice cooked beetroot", "store"),
         ing(1, "", "slice cheese", "dairy"), ing(1, "tsp", "mayonnaise", "store"),
         ing(1, "tsp", "tomato ketchup", "store"), ing(1, "", "lettuce leaf", "produce"),
-        ing(1, "", "slice tomato", "produce"), ing(0.5, "tsp", "vegetable oil", "store")
+        ing(1, "", "slice tomato", "produce"), ing(0.5, "tsp", "vegetable oil", "store"), ing(150, "g", "frozen chips", "frozen")
       ],
       steps: [
+        "Cook the chips in the oven according to the packet instructions.",
         "Shape the beef mince into a patty and season well.",
         "Heat the oil in a pan and fry the patty for 4–5 minutes each side until cooked through, topping with the cheese slice for the last minute to melt.",
         "Toast the burger bun cut-side down in the same pan for 1 minute.",
         "Spread the bun with mayonnaise and ketchup.",
-        "Build the burger with the lettuce, the patty and cheese, and a slice of beetroot and tomato."
+        "Build the burger with the lettuce, the patty and cheese, and a slice of beetroot and tomato, and serve with the chips."
       ]
     },
     {
@@ -5098,7 +5110,7 @@ window.SOLO_RECIPES = (function () {
         ing(1, "", "garlic clove, crushed", "produce"), ing(1, "tsp", "fresh parsley, chopped", "produce"),
         ing(2, "tbsp", "plain flour", "store"), ing(1, "", "egg, beaten", "dairy"),
         ing(40, "g", "breadcrumbs", "bakery"), ing(2, "tbsp", "vegetable oil", "store"),
-        ing(1, "handful", "green salad leaves", "produce")
+        ing(1, "handful", "green salad leaves", "produce"), ing(200, "g", "potatoes, peeled and chopped, for mash", "produce"), ing(10, "g", "butter", "dairy")
       ],
       steps: [
         "Preheat the oven to 200°C (fan 180°C).",
@@ -5107,7 +5119,8 @@ window.SOLO_RECIPES = (function () {
         "Coat the chicken parcel in flour, then beaten egg, then breadcrumbs.",
         "Heat the oil in an ovenproof pan and brown the chicken on all sides, 3–4 minutes.",
         "Transfer to the oven for 15–18 minutes until cooked through and the juices run clear.",
-        "Season to taste, then rest for 2 minutes before cutting, and serve with a green salad."
+        "Meanwhile, boil the potatoes for 15 minutes until tender, then drain and mash with the butter.",
+        "Season to taste, then rest for 2 minutes before cutting, and serve with the mash and a green salad."
       ]
     },
     {
@@ -5203,20 +5216,21 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d309", title: "Norwegian-Style Fish Cakes with Creamed Cabbage", tags: ["fish", "quick"], cuisine: "Norway", protein: "fish",
-      prep: 9, cook: 15,
+      prep: 9, cook: 18,
       ingredients: [
         ing(180, "g", "white fish fillet (e.g. haddock or cod), roughly chopped", "meat"), ing(2, "tbsp", "plain flour", "store"),
         ing(1, "", "egg", "dairy"),
         ing(null, "pinch", "nutmeg", "spice"), ing(2, "tbsp", "butter", "dairy"),
         ing(100, "g", "white cabbage, shredded", "produce"), ing(2, "tbsp", "double cream", "dairy"),
-        ing(1, "tbsp", "fresh dill, chopped", "produce")
+        ing(1, "tbsp", "fresh dill, chopped", "produce"), ing(120, "g", "new potatoes", "produce")
       ],
       steps: [
+        "Boil the new potatoes for 15 minutes until a knife slides in easily, then drain.",
         "Blitz the fish with the flour, egg and nutmeg until thick and sticky (or chop very finely and mix well).",
         "Heat half the butter in a pan and fry spoonfuls of the fish mixture for 3–4 minutes each side until golden and cooked through.",
         "Meanwhile melt the remaining butter in another pan and soften the cabbage for 6–8 minutes until tender.",
         "Stir the cream into the cabbage and simmer for 2 minutes until slightly thickened.",
-        "Season to taste, then serve the fish cakes with the creamed cabbage, scattered with dill."
+        "Season to taste, then serve the fish cakes with the potatoes and creamed cabbage, scattered with dill."
       ]
     },
     {
@@ -5335,14 +5349,15 @@ window.SOLO_RECIPES = (function () {
         ing(60, "g", "chestnut mushrooms, halved", "produce"), ing(1, "", "garlic clove, crushed", "produce"),
         ing(150, "ml", "red wine", "store"), ing(100, "ml", "beef stock", "store"),
         ing(1, "tsp", "tomato purée", "store"), ing(1, "tsp", "fresh thyme leaves", "produce"),
-        ing(1, "", "bay leaf", "spice"), ing(10, "g", "butter", "dairy")
+        ing(1, "", "bay leaf", "spice"), ing(10, "g", "butter", "dairy"), ing(200, "g", "potatoes, peeled and chopped, for mash", "produce"), ing(10, "g", "butter, for the mash", "dairy")
       ],
       steps: [
         "Melt the butter over high heat and sear the beef for 1–2 minutes until browned. Tip onto a plate.",
         "Fry the bacon and mushrooms in the same pan for 4 minutes until golden. Add to the beef.",
         "Soften the onion and carrot for 8 minutes until soft and translucent, adding the garlic for the last minute.",
         "Stir in the tomato purée and fry for 1 minute until it darkens, then add the wine, stock, thyme and bay leaf and simmer uncovered for 12–15 minutes until the carrot is tender and the sauce has reduced by half.",
-        "Return the beef, bacon and mushrooms for 1–2 minutes. Remove the bay leaf, season and serve."
+        "Meanwhile, boil the potatoes for 15 minutes until tender, then drain and mash with the butter.",
+        "Return the beef, bacon and mushrooms for 1–2 minutes. Remove the bay leaf, season and serve with the mash."
       ]
     },
     {
@@ -5476,14 +5491,15 @@ window.SOLO_RECIPES = (function () {
         ing(2, "tbsp", "vegetable oil", "store"), ing(2, "tbsp", "white wine vinegar", "store"),
         ing(1, "", "carrot, julienned", "produce"), ing(0.5, "", "each red and yellow pepper, sliced", "produce"),
         ing(1, "", "onion, sliced", "produce"), ing(0.25, "tsp", "chilli flakes", "spice"),
-        ing(0.25, "tsp", "ground allspice", "spice"), ing(1, "sprig", "thyme", "produce")
+        ing(0.25, "tsp", "ground allspice", "spice"), ing(1, "sprig", "thyme", "produce"), ing(1, "", "ripe plantain, sliced", "produce")
       ],
       steps: [
         "Season the fish and dust lightly in flour.",
         "Fry in the oil for 3–4 minutes each side until golden and cooked through, then set aside.",
         "In the same pan, soften the onion, carrot and peppers for 8 minutes until soft, adding the allspice, chilli flakes and thyme for the last minute.",
         "Add the vinegar and a splash of water, and simmer for 3–4 minutes.",
-        "Spoon the pickled vegetables over the fish to serve."
+        "Fry the plantain slices in the pan for 2–3 minutes each side until caramelised.",
+        "Spoon the pickled vegetables over the fish and serve with the plantain."
       ]
     },
     {
@@ -5496,14 +5512,15 @@ window.SOLO_RECIPES = (function () {
         ing(1, "tsp", "fresh ginger, grated", "produce"), ing(1, "", "onion, sliced", "produce"),
         ing(0.5, "", "pepper, sliced", "produce"), ing(150, "ml", "chicken stock", "store"),
         ing(1, "", "spring onion, sliced", "produce"),
-        ing(1, "tbsp", "vegetable oil", "store")
+        ing(1, "tbsp", "vegetable oil", "store"), ing(60, "g", "rice", "store"), ing(80, "g", "tinned kidney beans, drained", "store")
       ],
       steps: [
         "Marinate the chicken in the soy sauce, garlic, ginger and allspice for 5 minutes.",
         "Heat the oil and sugar in a pan over medium-high heat until the sugar turns dark amber, then add the chicken and brown well on all sides.",
         "Add the onion, pepper and thyme, and cook for 8 minutes until soft and translucent.",
         "Pour in the stock, cover and simmer for 20–25 minutes until the chicken is tender and the sauce has thickened.",
-        "Season to taste, then scatter with spring onion to serve."
+        "Meanwhile, cook the rice according to the packet instructions, stirring in the kidney beans for the last 5 minutes to heat through.",
+        "Season to taste, then scatter with spring onion and serve with the rice and beans."
       ]
     },
     {
@@ -5677,14 +5694,15 @@ window.SOLO_RECIPES = (function () {
         ing(150, "g", "beef rump or sirloin steak", "meat"), ing(1, "", "garlic clove, crushed", "produce"),
         ing(1, "tsp", "coarse sea salt", "spice"), ing(40, "g", "cassava flour or dried breadcrumbs", "store"),
         ing(15, "g", "butter", "dairy"), ing(0.5, "", "onion, finely chopped", "produce"),
-        ing(1, "", "spring onion, sliced", "produce")
+        ing(1, "", "spring onion, sliced", "produce"), ing(60, "g", "rice", "store")
       ],
       steps: [
+        "Cook the rice according to the packet instructions.",
         "Season the steak generously with the garlic and coarse salt, and rest at room temperature while a pan heats.",
         "Sear the steak for 3–4 minutes each side for medium (60°C in the middle, or 55°C for medium-rare), then rest for 5 minutes and slice.",
         "Meanwhile, melt the butter in a small pan and fry the onion for 8 minutes until soft and translucent.",
         "Stir in the cassava flour and toast for 3–4 minutes until golden and crumbly, seasoning to taste.",
-        "Serve the sliced steak with the farofa, scattered with spring onion and any pan juices."
+        "Serve the sliced steak with the farofa, scattered with spring onion and any pan juices, with the rice alongside."
       ]
     },
     {
@@ -5708,19 +5726,20 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d337", title: "Russian-Style Salmon Kotleti with Soured Cream", tags: ["quick", "fish"], cuisine: "Russia", protein: "fish",
-      prep: 9, cook: 10,
+      prep: 9, cook: 15,
       ingredients: [
         ing(150, "g", "salmon fillet, finely chopped", "meat"), ing(20, "g", "breadcrumbs", "store"),
         ing(1, "", "egg", "dairy"), ing(0.25, "", "onion, finely grated", "produce"),
         ing(1, "tsp", "dill, chopped", "produce"), ing(15, "g", "butter, for frying", "dairy"),
-        ing(2, "tbsp", "soured cream", "dairy"), ing(1, "", "lemon wedge", "produce")
+        ing(2, "tbsp", "soured cream", "dairy"), ing(1, "", "lemon wedge", "produce"), ing(120, "g", "new potatoes", "produce")
       ],
       steps: [
+        "Boil the new potatoes for 15 minutes until a knife slides in easily, then drain and toss with a little of the dill.",
         "Finely chop the salmon to a coarse mince using a knife.",
         "Mix with the breadcrumbs, egg, grated onion, dill and seasoning.",
         "Shape into two patties.",
         "Fry in the butter for 3–4 minutes each side until golden and cooked through.",
-        "Serve with a dollop of soured cream and a lemon wedge."
+        "Serve with the potatoes, a dollop of soured cream and a lemon wedge."
       ]
     },
     {
@@ -5917,19 +5936,20 @@ window.SOLO_RECIPES = (function () {
     },
     {
       id: "d349", title: "Chicken Saltimbocca alla Romana", tags: ["quick"], cuisine: "Italy", protein: "chicken",
-      prep: 8, cook: 12,
+      prep: 8, cook: 15,
       ingredients: [
         ing(150, "g", "chicken breast, sliced thin and flattened", "meat"), ing(2, "", "slices prosciutto", "meat"),
         ing(4, "", "sage leaves", "produce"), ing(1, "tbsp", "plain flour", "store"),
         ing(15, "g", "butter", "dairy"), ing(1, "tbsp", "olive oil", "store"),
-        ing(50, "ml", "white wine", "store"), ing(1, "", "lemon wedge", "produce")
+        ing(50, "ml", "white wine", "store"), ing(1, "", "lemon wedge", "produce"), ing(120, "g", "new potatoes", "produce"), ing(1, "handful", "baby spinach", "produce")
       ],
       steps: [
+        "Boil the new potatoes for 15 minutes until a knife slides in easily, then drain.",
         "Lay a sage leaf or two on each piece of flattened chicken and wrap tightly with a slice of prosciutto.",
         "Dust lightly with flour, shaking off any excess.",
         "Heat the oil in a frying pan over medium-high heat and fry the chicken, prosciutto-side down first, for 2–3 minutes each side until golden and cooked through with no pink inside. Remove and keep warm.",
-        "Add the wine and butter to the pan, scraping up any bits, and let it bubble for 1–2 minutes until slightly reduced.",
-        "Spoon the sauce over the chicken and serve with a lemon wedge."
+        "Add the wine and butter to the pan, scraping up any bits, and let it bubble for 1–2 minutes until slightly reduced, then wilt the spinach in it for 30 seconds.",
+        "Spoon the sauce over the chicken and serve with the potatoes, spinach and a lemon wedge."
       ]
     },
     {
@@ -7415,14 +7435,15 @@ window.SOLO_RECIPES = (function () {
         ing(0.5, "tsp", "paprika", "spice"), ing(4, "tbsp", "vegetable oil, for frying", "store"),
         ing(1, "tbsp", "hot sauce", "store"), ing(1, "tsp", "brown sugar", "store"),
         ing(1, "", "burger bun", "bakery"), ing(3, "", "gherkin slices", "store"),
-        ing(1, "tbsp", "mayonnaise", "store")
+        ing(2, "tbsp", "mayonnaise", "store"), ing(60, "g", "white cabbage, shredded", "produce"), ing(0.5, "", "carrot, grated", "produce")
       ],
       steps: [
         "Marinate the chicken in the buttermilk while you prepare everything else.",
         "Mix the flour with half the cayenne and paprika. Coat the chicken in the seasoned flour, pressing to adhere.",
         "Shallow-fry the chicken in hot oil for 4–5 minutes each side until golden, crisp and cooked through (75°C in the thickest part).",
         "Warm 2 tablespoons of the frying oil with the hot sauce, remaining cayenne and brown sugar to make the Nashville glaze, and brush generously over the hot chicken.",
-        "Split the bun and toast it cut-side down in a dry pan for 1 minute, then pile the chicken in with mayonnaise and gherkin slices."
+        "Mix the cabbage and carrot with half the mayonnaise and a pinch of salt for a quick slaw.",
+        "Split the bun and toast it cut-side down in a dry pan for 1 minute, then pile the chicken in with the rest of the mayonnaise, the gherkin slices and some of the slaw, with the remaining slaw on the side."
       ]
     },
     {

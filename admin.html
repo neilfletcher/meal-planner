@@ -373,6 +373,9 @@
     .group-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .group-grid > .block-wide { grid-column: 1 / -1; }
   }
+
+  .asof { display: block; margin-top: 4px; font-size: 12.5px; color: var(--ink-faint); }
+  .asof[data-asof="live"]::before { content: ""; display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--good); margin-right: 6px; vertical-align: 1px; }
 </style>
 </head>
 <body>
@@ -444,7 +447,7 @@
       <div class="block-head">
         <div>
           <div class="eyebrow">Live, straight from the database</div>
-          <h2>Sign-ups and subscriptions right now</h2>
+          <h2>Sign-ups and subscriptions right now</h2><span class="asof" data-asof="live"></span>
         </div>
         <button class="ghost" id="liveReload" type="button">Update</button>
       </div>
@@ -471,7 +474,7 @@
       <div class="block-head">
         <div>
           <div class="eyebrow">Live, from accounts</div>
-          <h2>Which channels bring paying customers</h2>
+          <h2>Which channels bring paying customers</h2><span class="asof" data-asof="live"></span>
         </div>
         <button class="ghost" id="srcReload" type="button">Update</button>
       </div>
@@ -493,7 +496,7 @@
       <div class="block-head">
         <div>
           <div class="eyebrow">Cookbook PDFs</div>
-          <h2>Book sales and downloads</h2>
+          <h2>Book sales and downloads</h2><span class="asof" data-asof="live"></span>
         </div>
         <div style="display:flex;gap:8px"><button class="ghost" id="bkRefunds" type="button">Check refunds</button><button class="ghost" id="bkReload" type="button">Update</button></div>
       </div>
@@ -515,7 +518,7 @@
       <div class="block-head">
         <div>
           <div class="eyebrow">Pro</div>
-          <h2>Lifetime Pro offer</h2>
+          <h2>Lifetime Pro offer</h2><span class="asof" data-asof="live"></span>
         </div>
         <button class="ghost" id="ltReload" type="button">Update</button>
       </div>
@@ -557,7 +560,7 @@
       <div class="block-head">
         <div>
           <div class="eyebrow">Traffic &amp; engagement</div>
-          <h2>Who's visiting, and what they read</h2>
+          <h2>Who's visiting, and what they read</h2><span class="asof" data-asof="hourly"></span>
         </div>
       </div>
       <div class="card">
@@ -582,7 +585,7 @@
       <div class="block-head">
         <div>
           <div class="eyebrow">From social</div>
-          <h2>Is social media bringing people in</h2>
+          <h2>Is social media bringing people in</h2><span class="asof" data-asof="hourly"></span>
         </div>
       </div>
       <div class="card">
@@ -607,7 +610,7 @@
       <div class="block-head">
         <div>
           <div class="eyebrow">Activation funnel</div>
-          <h2>Where people drop off</h2>
+          <h2>Where people drop off</h2><span class="asof" data-asof="hourly"></span>
         </div>
       </div>
       <div class="card">
@@ -624,7 +627,7 @@
       <div class="block-head">
         <div>
           <div class="eyebrow">Sign-ups &amp; accounts</div>
-          <h2>Who's created an account</h2>
+          <h2>Who's created an account</h2><span class="asof" data-asof="hourly"></span>
         </div>
       </div>
       <div class="card">
@@ -644,7 +647,7 @@
       <div class="block-head">
         <div>
           <div class="eyebrow">Retention &amp; activity</div>
-          <h2>Are people coming back</h2>
+          <h2>Are people coming back</h2><span class="asof" data-asof="hourly"></span>
         </div>
       </div>
       <div class="card">
@@ -672,7 +675,7 @@
       <div class="block-head">
         <div>
           <div class="eyebrow">Recipes &amp; shopping lists</div>
-          <h2>What people actually cook</h2>
+          <h2>What people actually cook</h2><span class="asof" data-asof="hourly"></span>
         </div>
       </div>
       <div class="card">
@@ -705,7 +708,7 @@
       <div class="block-head">
         <div>
           <div class="eyebrow">Recipe feedback</div>
-          <h2>Did the recipes work?</h2>
+          <h2>Did the recipes work?</h2><span class="asof" data-asof="live"></span>
         </div>
         <div style="display:flex;gap:8px;flex-wrap:wrap">
           <button class="ghost" id="fbToggle" type="button">&hellip;</button>
@@ -726,7 +729,7 @@
       <div class="block-head">
         <div>
           <div class="eyebrow">The weekly email</div>
-          <h2>Who's signing up</h2>
+          <h2>Who's signing up</h2><span class="asof" data-asof="live"></span>
         </div>
         <button class="ghost" id="nlReload" type="button">Update</button>
       </div>
@@ -744,7 +747,7 @@
       <div class="block-head">
         <div>
           <div class="eyebrow">Site health</div>
-          <h2>Is anything broken</h2>
+          <h2>Is anything broken</h2><span class="asof" data-asof="live"></span>
         </div>
       </div>
       <div class="card">
@@ -1425,13 +1428,27 @@
     els["retentionPct"].textContent = Math.round((r / total) * 100) + "%";
   }
 
+  // "Numbers from ..." under each heading, so it's clear how fresh they are.
+  function whenText(d) {
+    var today = new Date(), t = new Date(d);
+    var time = t.toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" });
+    var same = t.toDateString() === today.toDateString();
+    var yest = new Date(today.getTime() - 864e5).toDateString() === t.toDateString();
+    return time + (same ? " today" : yest ? " yesterday" : ", " + t.toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short" }));
+  }
+  function stampAsOf(kind, d) {
+    document.querySelectorAll('.asof[data-asof="' + kind + '"]').forEach(function (el) {
+      el.textContent = kind === "live" ? "Live, loaded at " + whenText(d) : "Hourly update, numbers from " + whenText(d);
+    });
+  }
   function applyDashboardData(data) {
     var hasSynced = !!data.generatedAt;
+    if (hasSynced) stampAsOf("hourly", data.generatedAt);
     els["waitingBanner"].classList.toggle("show", !hasSynced);
     var pill = els["syncPill"];
     if (hasSynced) {
       pill.classList.remove("stale");
-      els["syncText"].textContent = "Synced " + relTime(data.generatedAt);
+      els["syncText"].textContent = "Hourly numbers from " + whenText(data.generatedAt) + " (" + relTime(data.generatedAt) + ")";
     } else {
       pill.classList.add("stale");
       els["syncText"].textContent = "Not synced yet";
@@ -1542,7 +1559,7 @@
     return u.getIdToken().then(function (tok) {
       return fetch("/api/admin", { method: "POST", headers: { "content-type": "application/json", authorization: "Bearer " + tok }, body: JSON.stringify(body) });
     }).then(function (r) {
-      return r.json().catch(function () { return {}; }).then(function (j) { if (!r.ok) throw new Error(j.error || ("Error " + r.status)); return j; });
+      return r.json().catch(function () { return {}; }).then(function (j) { if (!r.ok) throw new Error(j.error || ("Error " + r.status)); if (body.action !== "dashboard") stampAsOf("live", Date.now()); return j; });
     });
   }
   function gcEsc(s) { return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }

@@ -29,7 +29,7 @@ import { BOOKS, BOOK_IDS, bookPrice, subscriptionBooks, downloadUrl, checkDownlo
 import { stripe, priceFor, verifyWebhook, subscriptionFields } from "../_shared/stripe.js";
 import { proState, addMonths, TRIAL_DAYS } from "../_shared/entitlement.js";
 import { WINDOWS, upcomingWindows, lifetimeStatus } from "../_shared/lifetime.js";
-import { sendWelcome } from "../_shared/welcome.js";
+import { sendWelcome, sendAccountWelcome } from "../_shared/welcome.js";
 import { subscribe as kitSubscribe, SOURCES as KIT_SOURCES, kit, subscriberState, unsubscribe as kitUnsubscribe, resubscribe as kitResubscribe } from "../_shared/kit.js";
 
 var DAY = 86400000;
@@ -113,12 +113,15 @@ async function account(request, env) {
   if (!doc) {
     var now = Date.now();
     var fresh = Object.assign({ email: user.email, createdAt: now, trialEndsAt: now + TRIAL_DAYS * DAY }, touch || {});
+    var created = false;
     try {
       await commit(env, [{ path: path, data: fresh, exists: false }]);
+      created = true;
     } catch (e) {
       if (e.status !== 409) throw e; // created at the same moment by another tab: read it back
     }
     doc = await getDoc(env, path);
+    if (created && user.email) await sendAccountWelcome(env, user.email, fresh.trialEndsAt);
   } else if (user.email && doc.data.email !== user.email) {
     await mergeDoc(env, path, { email: user.email });
   }

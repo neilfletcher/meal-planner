@@ -163,7 +163,7 @@ Who has Pro is stored in Firestore at `entitlements/{uid}`, written only by thes
 | `STRIPE_WEBHOOK_SECRET` | `whsec_...` from the webhook endpoint in Stripe (secret) |
 | `STRIPE_PRICE_ANNUAL`, `STRIPE_PRICE_MONTHLY` | Only needed for live mode; the test price IDs are built in |
 | `ADMIN_EMAILS` | Optional; defaults to neil.fletcher@gmail.com |
-| `RESEND_API_KEY` | Resend API key (sending access, domain solosupper.co.uk) for the welcome email new weekly-email subscribers get (functions/_shared/welcome.js). Without it, no welcome is sent (secret) |
+| `RESEND_API_KEY` | Resend API key (sending access, domain solosupper.co.uk) for the two welcome emails (joining the weekly email; creating an account), in functions/_shared/welcome.js. Without it, neither is sent (secret) |
 
 After changing them, redeploy (Deployments > ... > Retry deployment) and check `https://solosupper.co.uk/api/health`.
 

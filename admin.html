@@ -1254,9 +1254,14 @@
     els["cf-p7"].textContent = fmtNum(cf.last7.views);
     els["cf-p30"].textContent = fmtNum(cf.last30.views) + " in 30d";
     els["cf-ppv"].textContent = cf.last30.visits ? (cf.last30.views / cf.last30.visits).toFixed(1) : "\u2013";
+    // Cloudflare samples page loads (about 1 in 10), so small numbers are rough;
+    // the comparison with Google Analytics only means something with a month of data and a few hundred visits.
     var gaS = traffic && traffic.last30Days ? traffic.last30Days.sessions : null;
-    els["cf-ga"].textContent = gaS != null && cf.last30.visits ? Math.min(100, Math.round(gaS / cf.last30.visits * 100)) + "%" : "\u2013";
-    els["cf-ga-sub"].textContent = gaS != null ? fmtNum(gaS) + " of " + fmtNum(cf.last30.visits) + " visits, 30d" : " ";
+    var enough = (cf.daily || []).length >= 28 && cf.last30.visits >= 300;
+    els["cf-ga"].textContent = enough && gaS != null ? Math.min(100, Math.round(gaS / cf.last30.visits * 100)) + "%" : "\u2013";
+    els["cf-ga-sub"].textContent = enough && gaS != null ? fmtNum(gaS) + " of " + fmtNum(cf.last30.visits) + " visits, 30d" : "needs a month of data";
+    var si = (cf.daily || []).map(function (d) { return d.sample || 1; }), s = si.length ? Math.max.apply(null, si) : 1;
+    els["cfNote"].textContent = "Cloudflare counts visits without cookies, including people who say no to the banner." + (s > 1 ? " It samples about 1 page load in " + s + " and scales up, so while traffic is small these are rough estimates in steps of " + s + "." : "") + " Data from " + ((cf.daily || [])[0] || {}).date + ". Visits from apps such as Pinterest and Instagram often arrive with no referrer and show as direct.";
     lineChart(els["cfChartWrap"], (cf.daily || []).map(function (d) { return { label: d.date, value: d.visits }; }), { color: "var(--accent)" });
     renderRankedList(els["cfPages"], (cf.pages || []).map(function (p) { return { title: p.path, count: p.views }; }), "No page views yet");
     renderRankedList(els["cfRefs"], (cf.referrers || []).map(function (p) { return { title: p.host, count: p.visits }; }), "No visits yet");

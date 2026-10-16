@@ -8,6 +8,7 @@
  *   /recipes/<slug>/        one page per recipe, with Recipe structured data
  *   /collections/<slug>/    hubs such as "Vegetarian dinners for one"
  *   /cuisines/ and /cuisines/<slug>/
+ *   /weekly/ and /weekly/<week>-<pack>/   the weekly emails, once sent
  *   /404.html, /sitemap.xml, /robots.txt
  *
  * The planner app itself lives in /plan/ and is not generated.
@@ -370,7 +371,29 @@ function rmrf(rel) {
   var p = path.join(ROOT, rel);
   if (fs.existsSync(p)) fs.rmSync(p, { recursive: true, force: true });
 }
-["recipes", "collections", "cuisines", "use-up"].concat(LEGAL.map(function (l) { return l.slug; })).forEach(rmrf);
+["recipes", "collections", "cuisines", "use-up", "weekly"].concat(LEGAL.map(function (l) { return l.slug; })).forEach(rmrf);
+
+/* ------------------------------------------------- the weekly emails */
+// Every weekly email that has gone out (newsletter/history.json, written by
+// scripts/newsletter/weekly.js), newest first. A week appears once its send
+// time (8am UK on the Saturday) has passed when the site is built; the
+// workflow pushes on Saturday morning so the site rebuilds just after.
+var NL = require("./newsletter/weekly.js");
+var WEEKLY = (function () {
+  var hist = { weeks: [] };
+  try { hist = JSON.parse(fs.readFileSync(path.join(ROOT, "newsletter", "history.json"), "utf8")); } catch (e) { /* none yet */ }
+  var packNames = Object.keys(PK.PACKS).reduce(function (o, k) { o[k] = packName(k); return o; }, {});
+  var now = Date.now();
+  return (hist.weeks || []).filter(function (w) {
+    return w.format === "pair" && w.broadcast && PK.PACKS[w.pack] && (w.recipes || []).length === 2 &&
+      w.recipes.every(function (id) { return BY_ID[id]; }) && Date.parse(NL.sendTime(w.week)) <= now;
+  }).map(function (w) {
+    var d = w.recipes.map(function (id) { return BY_ID[id]; });
+    return Object.assign({ week: w.week, dinners: d, pack: w.pack, sent: NL.sendTime(w.week), tip: NL.tipFor(w.week, w.tip),
+      slug: w.week + "-" + slugify(w.pack) }, NL.words(d, w.pack, PK.PACKS, packNames));
+  }).sort(function (a, b) { return a.week < b.week ? 1 : -1; });
+})();
+function ukDate(iso, opts) { return new Date(iso).toLocaleDateString("en-GB", Object.assign({ day: "numeric", month: "long", year: "numeric", timeZone: "Europe/London" }, opts || {})); }
 
 /* -------------------------------------------------------------- partials */
 var ICON = {
@@ -489,7 +512,7 @@ function footer(rel) {
     '<p class="footer-line">Good dinners, sized for <em>one</em>.</p>' +
     nlForm(rel, "footer", "The weekly email: two dinners for one that share a pack, so nothing goes off, and a tip for the planner.", "nl-dark") + "</div>" +
     col("Recipes", [["Quick dinners for one", rel + "collections/quick-dinners-for-one/"], ["Vegetarian for one", rel + "collections/vegetarian-dinners-for-one/"], ["Fish for one", rel + "collections/fish-dinners-for-one/"], ["All recipes", rel + "recipes/"]]) +
-    col("Planner", [["Plan your week", rel + "plan/"], ["The cookbooks", rel + "books/"], ["Get the app", rel + "app/"], ["Use it up", rel + "use-up/"], ["Cuisines", rel + "cuisines/"], ["Collections", rel + "collections/"]]) +
+    col("Planner", [["Plan your week", rel + "plan/"], ["The cookbooks", rel + "books/"]].concat(WEEKLY.length ? [["The weekly email", rel + "weekly/"]] : []).concat([ ["Get the app", rel + "app/"], ["Use it up", rel + "use-up/"], ["Cuisines", rel + "cuisines/"], ["Collections", rel + "collections/"]])) +
     col("About", [["Contact", "mailto:" + CONTACT_EMAIL], ["Privacy", rel + "privacy/"], ["Terms", rel + "terms/"], ["Refunds", rel + "refunds/"], ["Cookies", rel + "cookies/"], ["Cookie settings", "#cookie-settings"]]) +
     "</div>" +
     '<div class="footer-base"><span>&copy; <span data-year>' + YEAR + "</span> Solo Supper</span><span>Every recipe written for one, and scales up with a tap when someone stays over.</span></div>" +
@@ -1387,6 +1410,81 @@ out("assets/search-index.json", JSON.stringify(RECIPES.map(function (r) {
     g: r.tags.filter(function (t) { return t !== "quick"; }), ph: r.photo ? 1 : 0,
     k: uniq(r.ingredients.map(function (i) { return i.item.split(/[,(]/)[0].trim().toLowerCase(); })).join(" ") };
 })));
+
+/* ------------------------------------------------------------ the weekly emails */
+(function buildWeekly() {
+  if (!WEEKLY.length) return;
+  var AUTHOR = { "@type": "Person", name: "Neil Fletcher" };
+  var PUBLISHER = { "@type": "Organization", name: "Solo Supper", url: SITE_URL + "/", logo: { "@type": "ImageObject", url: SITE_URL + "/icons/apple-touch-icon.png" } };
+  var signUp = function (rel, lead) { return '<section class="wrap nl-band">' + nlForm(rel, "weekly", lead) + "</section>"; };
+  var item = function (w, rel, h) {
+    return '<article class="wk-item"><a class="wk-item-link" href="' + rel + "weekly/" + w.slug + '/">' +
+      '<span class="wk-imgs">' + w.dinners.map(function (r) { return recipeImg(r, rel, "wk-img"); }).join("") + "</span>" +
+      '<span class="eyebrow">Week of ' + esc(ukDate(w.week + "T12:00:00Z", { year: undefined })) + "</span>" +
+      "<" + h + ' class="wk-item-title">' + esc(w.subject) + "</" + h + ">" +
+      '<span class="wk-item-text">' + esc(w.preview) + "</span></a></article>";
+  };
+
+  WEEKLY.forEach(function (w, i) {
+    var rel = "../../", d = w.dinners;
+    var uses = function (r) { return fmtQty(w.pack, NEEDS[r.id][w.pack]); };
+    var tip = w.tip;
+    var newer = WEEKLY[i - 1], older = WEEKLY[i + 1];
+    var others = WEEKLY.filter(function (x) { return x !== w; }).slice(0, 3);
+    var body =
+      '<div class="wrap"><nav class="crumbs" aria-label="Breadcrumb"><a href="' + rel + 'weekly/">The weekly email</a><span aria-hidden="true">/</span><span aria-current="page">Week of ' +
+        esc(ukDate(w.week + "T12:00:00Z", { year: undefined })) + "</span></nav></div>" +
+      '<section class="wrap page-head"><div class="page-head-text">' +
+      '<span class="eyebrow">Sent <time datetime="' + w.sent + '">' + esc(ukDate(w.sent, { weekday: "long" })) + "</time></span>" +
+      '<h1 class="display-m">' + esc(w.subject) + "</h1>" +
+      '<p class="lead">' + esc(w.intro) + "</p></div></section>" +
+      '<section class="wrap section-tight"><div class="rgrid wk-pair">' +
+        card(d[0], rel, "", "Opens the " + esc(w.packWord) + ": uses " + esc(uses(d[0]))) +
+        card(d[1], rel, "", "Finishes it: uses " + esc(uses(d[1]))) + "</div>" +
+      '<div class="wk-add"><div class="btn-row"><a class="btn btn-primary btn-lg" href="' + rel + "plan/?week=" + d[0].id + "," + d[1].id + '">Add both to my planner ' + ICON.plus + "</a></div>" +
+      '<p class="small muted">They go into your next empty days, and the shopping list adds up the ' + esc(packName(w.pack)) + " for you.</p></div></section>" +
+      '<section class="wrap section-tight"><aside class="wk-tip"><span class="eyebrow">Did you know?' + (tip[4] ? ' <span class="wk-pro">Pro</span>' : "") + "</span>" +
+        "<h2>" + esc(tip[0]) + "</h2><p>" + esc(tip[1]) + '</p><a class="text-link" href="' + rel + tip[2].replace(/^\//, "") + '">' + esc(tip[3]) + "</a></aside></section>" +
+      signUp(rel, "<strong>Get the next one.</strong> Every Saturday: two dinners for one that share a pack, so nothing goes off, and one handy tip.") +
+      (newer || older ? '<nav class="wrap wk-pager" aria-label="More weeks">' +
+        (older ? '<a href="../' + older.slug + '/" rel="prev"><span class="eyebrow">Week before</span><span>' + esc(older.subject) + "</span></a>" : "<span></span>") +
+        (newer ? '<a href="../' + newer.slug + '/" rel="next" class="wk-next"><span class="eyebrow">Week after</span><span>' + esc(newer.subject) + "</span></a>" : "") + "</nav>" : "") +
+      (others.length ? '<section class="wrap section">' + sectionHead("", "More weeks", rel + "weekly/", "All the weekly emails") +
+        '<div class="wk-list">' + others.map(function (x) { return item(x, rel, "h3"); }).join("") + "</div></section>" : "");
+    out("weekly/" + w.slug + "/index.html", page({
+      rel: rel, path: "weekly/" + w.slug + "/", active: "", ogType: "article",
+      title: w.subject + ": " + d[0].title + " and " + d[1].title + " | Solo Supper",
+      ogTitle: w.subject,
+      description: w.intro,
+      image: d[0].photo ? "img/recipes/" + d[0].id + ".webp" : null,
+      jsonld: [{ "@context": "https://schema.org", "@type": "BlogPosting", headline: w.subject, description: w.preview,
+        datePublished: w.sent, dateModified: w.sent, author: AUTHOR, publisher: PUBLISHER,
+        mainEntityOfPage: SITE_URL + "/weekly/" + w.slug + "/",
+        image: d.filter(function (r) { return r.photo; }).map(function (r) { return SITE_URL + "/img/recipes/" + r.id + ".webp"; }),
+        mentions: d.map(function (r) { return { "@type": "Recipe", name: r.title, url: SITE_URL + "/recipes/" + r.slug + "/" }; }) },
+        { "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [
+          { "@type": "ListItem", position: 1, name: "The weekly email", item: SITE_URL + "/weekly/" },
+          { "@type": "ListItem", position: 2, name: w.subject, item: SITE_URL + "/weekly/" + w.slug + "/" }] }]
+    }, body));
+    sitemap.push({ loc: "weekly/" + w.slug + "/", pri: "0.6", img: d[0].photo ? "img/recipes/" + d[0].id + ".webp" : null });
+  });
+
+  var rel = "../";
+  out("weekly/index.html", page({
+    rel: rel, path: "weekly/", active: "",
+    title: "The weekly email: two dinners for one that share a pack | Solo Supper",
+    description: "Every Saturday, two dinners for one where the second finishes the pack the first opens, so nothing goes off. Here is every one so far.",
+    image: WEEKLY[0].dinners[0].photo ? "img/recipes/" + WEEKLY[0].dinners[0].id + ".webp" : null,
+    jsonld: [{ "@context": "https://schema.org", "@type": "Blog", name: "The Solo Supper weekly email", url: SITE_URL + "/weekly/", publisher: PUBLISHER,
+      blogPost: WEEKLY.map(function (w) { return { "@type": "BlogPosting", headline: w.subject, datePublished: w.sent, url: SITE_URL + "/weekly/" + w.slug + "/" }; }) }]
+  },
+    '<section class="wrap page-head"><div class="page-head-text"><span class="eyebrow">Every Saturday &middot; ' + WEEKLY.length + (WEEKLY.length === 1 ? " email" : " emails") + " so far</span>" +
+    '<h1 class="display">The weekly email</h1>' +
+    '<p class="lead">Supermarket packs are sized for families. Each week we pick two dinners for one where the second finishes what the first opens, so the salmon, spinach or coriander gets used up instead of binned. Here is every one so far.</p></div></section>' +
+    '<section class="wrap section-tight"><div class="wk-list">' + WEEKLY.map(function (w) { return item(w, rel, "h2"); }).join("") + "</div></section>" +
+    signUp(rel, "<strong>Get it every Saturday.</strong> Free, short, and one email a week.")));
+  sitemap.push({ loc: "weekly/", pri: "0.7" });
+})();
 
 /* ------------------------------------------------------------ 404 */
 // The 404 page is served for any missing path, at any depth, so it links with full addresses.

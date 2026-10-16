@@ -15,6 +15,9 @@
  * newsletter/history.json remembers past weeks so a dinner isn't repeated
  * within REPEAT_WEEKS, and which tip was used. Run weekly by
  * .github/workflows/newsletter-weekly.yml.
+ *
+ * Once the email has gone out, the site shows it too at /weekly/
+ * (scripts/build-site.js reads history.json and words() below).
  */
 var fs = require("fs");
 var path = require("path");
@@ -103,13 +106,29 @@ function cap(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
 var WEEK = "";
 function utm(url, content) { return url + (url.indexOf("?") === -1 ? "?" : "&") + "utm_source=newsletter&utm_medium=email&utm_campaign=weekly-" + WEEK + (content ? "&utm_content=" + content : ""); }
 
-function buildEmail(data, week, pair, lifetime, tip) {
-  WEEK = week;
-  var e = U.esc, site = data.siteUrl, d = pair.dinners, pack = pair.pack, p = data.packs[pack];
+function shortName(r) { return r.title.replace(/ with .*$/i, ""); }
+// The words of a week's email, shared with the /weekly/ pages on the site.
+// d = the two dinners, packs and packNames as in the site data.
+function words(d, pack, packs, packNames) {
+  var p = packs[pack];
   // "bag of spinach", "tin of coconut milk", "pack of salmon fillets", "red pepper"
   var noun = (/(pack|steak|ring|pot|block|ball|box|bunch|bag|punnet|tin|carton|pouch)/.exec(p.sold || "") || [])[1] || (/litre/.test(p.sold || "") ? "carton" : "");
-  var packWord = p.unit === "" || !noun || noun === "steak" ? pack : noun + " of " + (/ of \d/.test(p.sold) ? (data.packNames[pack] || pack) : pack);
-  var shortName = function (r) { return r.title.replace(/ with .*$/i, ""); };
+  var packWord = p.unit === "" || !noun || noun === "steak" ? pack : noun + " of " + (/ of \d/.test(p.sold) ? (packNames[pack] || pack) : pack);
+  return {
+    packWord: packWord,
+    subject: "Two dinners, one " + packWord,
+    preview: shortName(d[0]) + " opens it, " + shortName(d[1]) + " finishes it. Nothing left to go off.",
+    intro: "Cooking for one, the " + packWord + " usually goes off before you finish it. Not this week: " + shortName(d[0]) + " uses some, and " + shortName(d[1]) + " uses the rest, a couple of days later."
+  };
+}
+// When a week's email goes out: 8am UK time on the Saturday before.
+function sendTime(week) { return U.londonTime(U.addDays(week, -2), 8, 0); }
+function tipFor(week, saved) { return TIPS[saved != null && TIPS[saved] ? saved : weekIndex(week) % TIPS.length]; }
+
+function buildEmail(data, week, pair, lifetime, tip) {
+  WEEK = week;
+  var e = U.esc, site = data.siteUrl, d = pair.dinners, pack = pair.pack;
+  var w = words(d, pack, data.packs, data.packNames);
 
   var btn = function (href, text) {
     return '<table role="presentation" cellpadding="0" cellspacing="0" style="margin:6px 0 4px"><tr><td style="background:#C2412A;border-radius:999px">' +
@@ -144,8 +163,8 @@ function buildEmail(data, week, pair, lifetime, tip) {
     (lifetime.until ? ", until " + e(new Date(lifetime.until - 1).toLocaleDateString("en-GB", { weekday: "long", day: "numeric", month: "long", timeZone: "Europe/London" })) : "") +
     '. <a href="' + e(utm(site + "/plan/?pro=lifetime", "lifetime")) + '" style="color:#C2412A;font-weight:600">Get lifetime Pro</a>', "border:1.5px dashed #C9C3B6;border-radius:12px") : "";
 
-  var subject = "Two dinners, one " + packWord;
-  var preview = shortName(d[0]) + " opens it, " + shortName(d[1]) + " finishes it. Nothing left to go off.";
+  var subject = w.subject;
+  var preview = w.preview;
   var weekNice = new Date(week + "T12:00:00Z").toLocaleDateString("en-GB", { day: "numeric", month: "long" });
 
   var html =
@@ -154,7 +173,7 @@ function buildEmail(data, week, pair, lifetime, tip) {
     '<tr><td style="padding:28px 20px 0">' +
     '<p style="margin:0 0 4px;font:600 12px/1.4 Menlo,Consolas,monospace;letter-spacing:.1em;text-transform:uppercase;color:#636A63">Solo Supper &middot; week of ' + e(weekNice) + "</p>" +
     '<h1 style="margin:0 0 12px;font:normal 30px/1.15 Georgia,serif">' + e(subject) + "</h1>" +
-    '<p style="margin:0 0 18px">Cooking for one, the ' + e(packWord) + " usually goes off before you finish it. Not this week: " + e(shortName(d[0])) + " uses some, and " + e(shortName(d[1])) + " uses the rest, a couple of days later.</p>" +
+    '<p style="margin:0 0 18px">' + e(w.intro) + "</p>" +
     '<table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>' + card(d[0], 0) + card(d[1], 1) + "</tr></table>" +
     '<div style="margin:18px 0 0">' + btn(utm(site + "/plan/?week=" + d[0].id + "," + d[1].id, "add-both"), "Add both to my planner") + "</div>" +
     '<p style="margin:0;font-size:13px;color:#636A63">They go into your next empty days, and the shopping list adds up the ' + e(data.packNames[pack] || pack) + " for you.</p>" +
@@ -190,7 +209,8 @@ async function main() {
   // A week already drafted in this format is remade the same way (and not drafted twice).
   var done = (history.weeks || []).filter(function (w) { return w.week === week && w.format === FORMAT; })[0];
   var pair = done ? { dinners: done.recipes.map(function (id) { return data.byId[id]; }), pack: done.pack } : choosePair(data, history, week);
-  var tip = TIPS[weekIndex(week) % TIPS.length];
+  var tipNo = done && done.tip != null ? done.tip : weekIndex(week) % TIPS.length;
+  var tip = tipFor(week, tipNo);
   // Lifetime Pro, if it's on offer right now (switched on from the admin page).
   var lifetime = null;
   try { var lr = await fetch(data.siteUrl + "/api/lifetime"); if (lr.ok) lifetime = await lr.json(); } catch (e) { /* no banner */ }
@@ -213,9 +233,10 @@ async function main() {
     var b = await kitBroadcast(email, week, sendAt);
     log((sendAt ? "Scheduled in Kit for " + sendAt : "Draft made in Kit") + ": broadcast " + b.id + " (" + b.status + ")");
     history.weeks = (history.weeks || []).filter(function (w) { return w.week !== week && w.week >= U.addDays(week, -7 * 52); });
-    history.weeks.push({ week: week, format: FORMAT, recipes: email.ids, pack: pair.pack, broadcast: b.id });
+    history.weeks.push({ week: week, format: FORMAT, recipes: email.ids, pack: pair.pack, tip: tipNo, broadcast: b.id });
     U.writeJson(histPath, history);
   }
 }
 
-main().catch(function (e) { console.error("[newsletter] " + e.message); process.exit(1); });
+module.exports = { TIPS: TIPS, words: words, sendTime: sendTime, tipFor: tipFor };
+if (require.main === module) main().catch(function (e) { console.error("[newsletter] " + e.message); process.exit(1); });

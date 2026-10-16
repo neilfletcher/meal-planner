@@ -3,9 +3,12 @@ name: Weekly email
 # Every Friday morning: picks next week's two dinners and schedules the email
 # in Kit for 8am UK time on Saturday. To check or stop one, open Kit >
 # Broadcasts before then. Needs the KIT_API_KEY repository secret.
+# On Saturday morning, after it has gone out, it pushes an empty commit so
+# Cloudflare rebuilds the site and the email appears at /weekly/.
 on:
   schedule:
     - cron: "0 6 * * 5"   # Fridays at 06:00 UTC
+    - cron: "20 9 * * 6"  # Saturdays at 09:20 UTC, after the 8am UK send
   workflow_dispatch:
     inputs:
       mode:
@@ -26,6 +29,7 @@ concurrency:
 
 jobs:
   draft:
+    if: github.event_name == 'workflow_dispatch' || github.event.schedule == '0 6 * * 5'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     env:
@@ -58,3 +62,16 @@ jobs:
           git config user.name "Solo Supper autopilot"; git config user.email "hello@solosupper.co.uk"
           git add newsletter/history.json 2>/dev/null || true
           git diff --cached --quiet || (git commit -q -m "Weekly email" && git pull -q --rebase && git push -q)
+
+  publish:
+    if: github.event.schedule == '20 9 * * 6'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Rebuild the site so this week's email shows at /weekly/
+        run: |
+          git config user.name "Solo Supper autopilot"; git config user.email "hello@solosupper.co.uk"
+          git commit -q --allow-empty -m "Weekly email: on the site"
+          git pull -q --rebase && git push -q

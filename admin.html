@@ -2148,8 +2148,8 @@
         '<tr class="fc-total"><td>All other books</td>' + obYear.map(function (v) { return "<td>" + money(v) + "</td>"; }).join("") + "</tr></tbody>"
         : "<tbody><tr><td>No KDP readings yet: the evening task fills this in.</td></tr></tbody>";
       var mName = function (m) { return new Date(m + "-01T00:00:00Z").toLocaleDateString("en-GB", { month: "long", timeZone: "UTC" }); };
-      var basisText = kdp.basis.length ? "the average month from " + (kdp.basis.length > 1 ? mName(kdp.basis[0]) + " to " + mName(kdp.basis[kdp.basis.length - 1]) : mName(kdp.basis[0])) : "this month so far, scaled up to a month";
-      document.getElementById("fcBooksHow").textContent = "Each book's " + basisText + ", made into a year, then x0.7, x1 or x1.5 for a book fading, holding or picking up. It moves on a month as each month finishes. New titles join automatically.";
+      var basisText = kdp.basis.length ? "average month" + (kdp.basis.length > 1 ? " from " + mName(kdp.basis[0]) + " to " + mName(kdp.basis[kdp.basis.length - 1]) : " in " + mName(kdp.basis[0])) : "royalties this month so far, scaled up to a whole month";
+      document.getElementById("fcBooksHow").textContent = "Based on each book's " + basisText + ", made into a year, then x0.7, x1 or x1.5 for a book fading, holding or picking up. It moves on a month as each month finishes. New titles join automatically.";
       document.getElementById("fcBooksNow").innerHTML = haveKdp ? "<thead><tr><th>Book</th><th>This month so far</th><th>Last 30 days</th><th>First seen</th></tr></thead><tbody>" +
         kb.slice().sort(function (a, b) { return (a.group === "solo") - (b.group === "solo") || b.last30 - a.last30; }).map(function (b) {
           return "<tr><td>" + escapeHtml(b.title.split(":")[0]) + (b.group === "solo" ? " (Solo Supper)" : "") + "</td><td>£" + b.mtd.toFixed(2) + "</td><td>£" + b.last30.toFixed(2) + (kdp.estimated ? "*" : "") + "</td><td>" + (b.firstSeen || "") + "</td></tr>"; }).join("") + "</tbody>"

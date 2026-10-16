@@ -6,6 +6,12 @@
  *    browser extensions and other sites' scripts are ignored, and at most 5
  *    are sent per page.
  *
+ * 3. Counting visits. Each page view sends the page, phone/tablet/computer
+ *    and, for a new arrival, where they came from, to /api/hit, which only
+ *    adds to daily totals. No cookies, nothing stored, nothing identifying,
+ *    so it counts everyone, including people who say no to the banner.
+ *    Skipped in the owner's own browser (the admin page marks it).
+ *
  * 2. How someone first found the site (Pinterest, Google, a link with
  *    utm_source=..., or direct), kept in this browser only if they allow
  *    usage statistics, and sent with their account when they sign up so the
@@ -77,6 +83,17 @@
     pending = null;
   }
   consented();
+
+  /* ---------- counting visits ---------- */
+  (function hit() {
+    if (lsGet("soloSupper.internal") === "1" || navigator.webdriver || /\/admin/.test(location.pathname)) return;
+    var c = classify(), w = window.innerWidth || 1024;
+    var body = JSON.stringify({ p: location.pathname.slice(0, 120), v: c.ref || /utm_source=/.test(location.search) || !document.referrer ? 1 : 0,
+      s: c.src, d: w < 768 ? "mobile" : w < 1100 ? "tablet" : "desktop" });
+    // A visit is an arrival from outside (or typed in); moving between our own pages is a page view.
+    try { if (navigator.sendBeacon && navigator.sendBeacon(API + "hit", new Blob([body], { type: "text/plain" }))) return; } catch (e) { /* fall through */ }
+    try { fetch(API + "hit", { method: "POST", body: body, keepalive: true, headers: { "content-type": "text/plain" } }).catch(function () {}); } catch (e) { /* ignore */ }
+  })();
 
   window.SoloTelemetry = {
     consented: consented,

@@ -557,6 +557,33 @@
     <div class="group" id="g-visitors">
       <div class="group-head"><h2 class="group-title">Visitors</h2><span class="group-sub">Who comes, from where, and how far they get</span></div>
       <div class="group-grid">
+    <section class="block block-wide" id="hitBlock">
+      <div class="block-head">
+        <div>
+          <div class="eyebrow">Every visit, counted by the site</div>
+          <h2>How many people come, really</h2><span class="asof" data-asof="live"></span>
+        </div>
+        <button class="ghost" id="hitReload" type="button">Update</button>
+      </div>
+      <div class="card">
+        <div class="kpi-row">
+          <div class="kpi"><div class="label">Visits, 7d</div><div class="value num" id="hit-v7">&ndash;</div><div class="delta" id="hit-v30">&nbsp;</div></div>
+          <div class="kpi"><div class="label">Page views, 7d</div><div class="value num" id="hit-p7">&ndash;</div><div class="delta" id="hit-p30">&nbsp;</div></div>
+          <div class="kpi"><div class="label">From search, 30d</div><div class="value num" id="hit-search">&ndash;</div><div class="delta" id="hit-search-sub">Google, Bing and others</div></div>
+          <div class="kpi"><div class="label">From Pinterest &amp; Instagram, 30d</div><div class="value num" id="hit-social">&ndash;</div><div class="delta" id="hit-social-sub">&nbsp;</div></div>
+        </div>
+        <div class="sub-eyebrow">Visits per day, last 30 days</div>
+        <div class="chart-wrap" id="hitChartWrap"><div class="empty-state">No visits counted yet</div></div>
+        <div class="cf-cols">
+          <div><div class="sub-eyebrow">Most-viewed pages, 30d</div><ul class="top-pages" id="hitPages"></ul></div>
+          <div><div class="sub-eyebrow">Where visits come from, 30d</div><ul class="top-pages" id="hitSources"></ul></div>
+          <div><div class="sub-eyebrow">Countries, 30d</div><ul class="top-pages" id="hitCountries"></ul></div>
+          <div><div class="sub-eyebrow">Devices, 30d</div><ul class="top-pages" id="hitDevices"></ul></div>
+        </div>
+        <p class="fine" id="hitNote">Counted by the site itself from 16 October 2026: every page view, no cookies, nothing about the person kept, your own browser left out. A visit is an arrival from outside the site; moving between pages adds page views.</p>
+      </div>
+    </section>
+
     <section class="block block-wide">
       <div class="block-head">
         <div>
@@ -1885,13 +1912,50 @@
   document.getElementById("fbToggle").addEventListener("click", function () {
     adminApi({ action: "feedbackSet", on: !fbOn }).then(loadFeedback);
   });
+  // ---------- the site's own visit counter ----------
+  function hitPage(k) { return k === "home" ? "/" : "/" + k.split("__").map(function (x) { return x.replace(/_/g, "-"); }).join("/") + "/"; }
+  function loadVisits() {
+    adminApi({ action: "pageviews" }).then(function (j) {
+      var days = j.days || [], today = new Date(j.at).toISOString().slice(0, 10);
+      var ago = function (n) { return new Date(j.at - n * 86400000).toISOString().slice(0, 10); };
+      var sum = function (from, field) { return days.filter(function (d) { return d.day >= from; }).reduce(function (t, d) { return t + (d[field] || 0); }, 0); };
+      var tally = function (from, prefix) {
+        var t = {};
+        days.filter(function (d) { return d.day >= from; }).forEach(function (d) {
+          Object.keys(d).forEach(function (k) { if (k.indexOf(prefix) === 0) t[k.slice(prefix.length)] = (t[k.slice(prefix.length)] || 0) + d[k]; });
+        });
+        return Object.keys(t).map(function (k) { return { k: k, n: t[k] }; }).sort(function (a, b) { return b.n - a.n; });
+      };
+      var d7 = ago(6), d30 = ago(29);
+      setText("hit-v7", fmtNum(sum(d7, "visits"))); setText("hit-v30", fmtNum(sum(d30, "visits")) + " in 30d");
+      setText("hit-p7", fmtNum(sum(d7, "views"))); setText("hit-p30", fmtNum(sum(d30, "views")) + " in 30d");
+      var src = tally(d30, "s_"), pick = function (re) { return src.filter(function (x) { return re.test(x.k); }).reduce(function (t, x) { return t + x.n; }, 0); };
+      setText("hit-search", fmtNum(pick(/^(google|bing|duckduckgo|yahoo|ecosia)$/)));
+      var pin = pick(/^pinterest$/), ig = pick(/^instagram$/);
+      setText("hit-social", fmtNum(pin + ig)); setText("hit-social-sub", fmtNum(pin) + " Pinterest, " + fmtNum(ig) + " Instagram");
+      var series = [];
+      for (var i = 29; i >= 0; i--) { var dd = ago(i), row = days.filter(function (d) { return d.day === dd; })[0]; series.push({ label: dd, value: row ? row.visits || 0 : 0 }); }
+      if (days.length) lineChart(document.getElementById("hitChartWrap"), series, { color: "var(--accent)" });
+      renderRankedList(document.getElementById("hitPages"), tally(d30, "p_").map(function (x) { return { title: hitPage(x.k), count: x.n }; }), "No page views yet");
+      renderRankedList(document.getElementById("hitSources"), src.map(function (x) { return { title: x.k, count: x.n }; }), "No visits yet");
+      renderRankedList(document.getElementById("hitCountries"), tally(d30, "c_").map(function (x) { return { title: x.k.toUpperCase(), count: x.n }; }), "No visits yet");
+      renderRankedList(document.getElementById("hitDevices"), tally(d30, "d_").map(function (x) { return { title: x.k, count: x.n }; }), "No visits yet");
+      var tv = (days.filter(function (d) { return d.day === today; })[0] || {}), views = tv.views || 0;
+      var cost = Math.max(0, views - 20000) * 0.18 / 100000;
+      document.getElementById("hitNote").innerHTML = "Counted by the site itself from 16 October 2026: every page view, no cookies, nothing about the person kept, your own browser left out. A visit is an arrival from outside the site; moving between pages adds page views." +
+        "<br><strong>Today:</strong> " + fmtNum(views) + " of the " + fmtNum(j.cap) + " page views a day it will count" + (tv.cappedAt ? " (limit reached, counting paused until midnight UTC)" : "") +
+        ". Firebase cost of the counter today: about $" + cost.toFixed(2) + " (free up to about 20,000 writes a day across the whole site, then about $0.18 per 100,000; at the limit it would be about $" + (Math.max(0, j.cap - 20000) * 0.18 / 100000).toFixed(2) + " a day).";
+    }).catch(function (e) { document.getElementById("hitNote").textContent = "Couldn't load: " + e.message; });
+  }
+  document.getElementById("hitReload").addEventListener("click", loadVisits);
+
   function loadNewsletter() {
     adminApi({ action: "newsletter" }).then(function (j) {
       setText("nl-size", j.listSize === null ? "\u2013" : j.listSize);
       setText("nl-size-sub", !j.configured ? "KIT_API_KEY isn't set in Cloudflare" : j.kitError ? "Kit: " + j.kitError : "active subscribers in Kit");
       setText("nl-30", j.last30.total || 0);
       setText("nl-all", (j.allTime || 0) + " since counting began");
-      var names = { src_footer: "footer", src_recipe: "recipe pages", src_planner: "planner", src_books: "book buyers", src_home: "home page" };
+      var names = { src_footer: "footer", src_recipe: "recipe pages", src_planner: "planner", src_books: "book buyers", src_home: "home page", src_weekly: "weekly email pages", src_hub: "browse pages" };
       var parts = Object.keys(names).filter(function (k) { return j.last30[k]; }).map(function (k) { return j.last30[k] + " " + names[k]; });
       setText("nl-src", parts.length ? parts.join(", ") : "none yet");
     }).catch(function (e) { setText("nl-size-sub", "Couldn't load: " + e.message); });
@@ -2063,6 +2127,7 @@
       loadBooks();
       loadLifetime();
       loadNewsletter();
+      loadVisits();
       loadFeedback();
       loadSources();
       loadErrors();

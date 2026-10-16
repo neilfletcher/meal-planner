@@ -29,7 +29,7 @@ import { BOOKS, BOOK_IDS, bookPrice, subscriptionBooks, downloadUrl, checkDownlo
 import { stripe, priceFor, verifyWebhook, subscriptionFields } from "../_shared/stripe.js";
 import { proState, addMonths, TRIAL_DAYS } from "../_shared/entitlement.js";
 import { WINDOWS, upcomingWindows, lifetimeStatus } from "../_shared/lifetime.js";
-import { sendWelcome, sendAccountWelcome } from "../_shared/welcome.js";
+import { sendWelcome, sendAccountWelcome, sendAlert } from "../_shared/welcome.js";
 import { subscribe as kitSubscribe, SOURCES as KIT_SOURCES, kit, subscriberState, unsubscribe as kitUnsubscribe, resubscribe as kitResubscribe } from "../_shared/kit.js";
 
 var DAY = 86400000;
@@ -329,6 +329,11 @@ async function admin(request, env) {
     return json({ sources: sources, landings: landings, total: total, at: now });
   }
 
+  if (body.action === "pageviews") {
+    var rows = await listCollection(env, "pageviews", null, 400);
+    rows.sort(function (a, b) { return a.id < b.id ? 1 : -1; });
+    return json({ days: rows.slice(0, 60).map(function (r) { return Object.assign({ day: r.id }, r.data); }), cap: parseInt(env.HIT_CAP, 10) || 50000, at: Date.now() });
+  }
   if (body.action === "dashboard") {
     var dash = await getDoc(env, "admin/dashboard");
     if (!dash || !dash.data.json) return json({ dashboard: null });
@@ -1121,6 +1126,61 @@ async function logError(request, env) {
   return json({ ok: true });
 }
 
+/* ---------------------------------------------------------- visit counter */
+// Every page view adds to one Firestore document per day (pageviews/YYYY-MM-DD,
+// UTC): views, visits, and per-page, per-source, per-device and per-country
+// tallies. One write per page view; nothing about the person is kept.
+// A daily cap (HIT_CAP, default 50,000 page views) stops counting so the
+// counter can't run up Firebase costs or use up the Functions allowance
+// that sign-ups and checkout share; the first time it's hit you get an email.
+var HIT_BOTS = /bot|crawl|spider|slurp|headless|lighthouse|pagespeed|preview|facebookexternalhit|embedly|monitor|uptime|curl|wget|python|node-fetch|axios/i;
+var hitCache = { day: "", n: 0, at: 0, capped: false };
+function hitKey(s, n) { return String(s || "").toLowerCase().replace(/[^a-z0-9]+/g, "_").replace(/^_+|_+$/g, "").slice(0, n || 80); }
+async function countHit(request, env) {
+  var none = new Response(null, { status: 204 });
+  var origin = request.headers.get("origin") || "";
+  if (origin && origin !== new URL(request.url).origin && !/^https:\/\/([a-z0-9-]+\.)?solosupper\.co\.uk$/.test(origin) && !/\.pages\.dev$/.test(origin)) return none;
+  if (HIT_BOTS.test(request.headers.get("user-agent") || "")) return none;
+  var text = await request.text();
+  if (text.length > 1000) return none;
+  var b; try { b = JSON.parse(text); } catch (e) { return none; }
+  var day = new Date().toISOString().slice(0, 10), path = "pageviews/" + day, now = Date.now();
+  var cap = parseInt(env.HIT_CAP, 10) || 50000;
+  try {
+    if (hitCache.day !== day || now - hitCache.at > 60000) {
+      var doc = await getDoc(env, path);
+      hitCache = { day: day, n: doc ? doc.data.views || 0 : 0, at: now, capped: !!(doc && doc.data.cappedAt) };
+    }
+    if (hitCache.n >= cap) {
+      if (!hitCache.capped) {
+        hitCache.capped = true;
+        var d2 = await getDoc(env, path);
+        if (!(d2 && d2.data.cappedAt)) {
+          await mergeDoc(env, path, { cappedAt: now });
+          await sendAlert(env, "Solo Supper: visit counter paused for today",
+            "The site counted " + cap + " page views today (" + day + ", UTC), so the visit counter has stopped until midnight UTC to keep Firebase and Cloudflare within their free allowances. Everything else on the site keeps working.\n\nIf this is real traffic, congratulations. Raise the limit with HIT_CAP in Cloudflare if you want counting to carry on.");
+        }
+      }
+      return none;
+    }
+    hitCache.n++;
+    // "/recipes/boxing-day-turkey-curry/" -> "recipes__boxing_day_turkey_curry"
+    var page = String(b.p || "/").replace(/index\.html$/, "").split("/").map(function (x) { return hitKey(x, 70); }).filter(Boolean).join("__").slice(0, 120) || "home";
+    var counts = { views: 1 };
+    counts["p_" + page] = 1;
+    if (b.v) {
+      counts.visits = 1;
+      counts["s_" + (hitKey(b.s, 40) || "direct")] = 1;
+      var dev = b.d === "mobile" || b.d === "tablet" ? b.d : "desktop";
+      counts["d_" + dev] = 1;
+      var cc = request.cf && request.cf.country ? hitKey(request.cf.country, 2) : "";
+      if (cc) counts["c_" + cc] = 1;
+    }
+    await increment(env, path, counts);
+  } catch (e) { /* a missed count is fine */ }
+  return none;
+}
+
 function health(env) {
   var ok = function (v) { return !!v; };
   var sa = null;
@@ -1146,6 +1206,7 @@ var ROUTES = {
   "POST admin": admin,
   "POST stripe-webhook": stripeWebhook,
   "POST log": logError,
+  "POST hit": countHit,
   "POST book-checkout": bookCheckout,
   "POST book-link": bookLink,
   "POST my-books": myBooks,

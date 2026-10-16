@@ -121,3 +121,17 @@ async function sendOnce(env, kind, email, subject, html, text) {
     return "failed";
   }
 }
+
+// A plain email to the site owner (first address in ADMIN_EMAILS). Never throws.
+export async function sendAlert(env, subject, text) {
+  try {
+    if (!env.RESEND_API_KEY) return "skipped";
+    var to = String(env.ADMIN_EMAILS || "neil.fletcher@gmail.com").split(/[,\s]+/).filter(Boolean)[0];
+    var r = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: { authorization: "Bearer " + env.RESEND_API_KEY, "content-type": "application/json" },
+      body: JSON.stringify({ from: env.WELCOME_FROM || "Solo Supper <hello@solosupper.co.uk>", to: [to], subject: subject, text: text })
+    });
+    return r.ok ? "sent" : "failed";
+  } catch (e) { return "failed"; }
+}

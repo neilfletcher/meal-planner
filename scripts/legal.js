@@ -40,7 +40,7 @@ module.exports = [
       "<p>If you say yes in the cookie banner, the site uses Google Analytics to count visits and see which pages and features are used. IP addresses are anonymised. If you say no, or ignore the banner, Google Analytics is not loaded. You can change your mind at any time from <a href=\"#cookie-settings\">cookie settings</a>.</p>",
       "<p>If you say yes, your browser also remembers how you first found Solo Supper (for example Pinterest, a search engine or a link with a campaign name) and the page you arrived on. If you then create an account, that is saved with it, so I can see which channels lead to people signing up and subscribing. If you say no, it is not kept.</p>",
       "<p><strong>Legal basis:</strong> your consent.</p>",
-      "<p>Separately, Cloudflare Web Analytics counts page views from every visitor, without cookies, without storing anything on your device and without identifying you. It notes the page, the site you came from, your country and the kind of device, and I only ever see totals.</p>",
+      "<p>Separately, the site counts page views from every visitor, and so does Cloudflare Web Analytics. Neither uses cookies, stores anything on your device or identifies you. They note the page, the site or app you came from, your country and whether you're on a phone, tablet or computer, and only daily totals are kept: no IP addresses, no record of any one visit.</p>",
       "<p><strong>Legal basis:</strong> legitimate interests (knowing how many people use the site and which pages help).</p>",
 
       "<h3>Pro subscriptions</h3>",

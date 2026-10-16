@@ -777,7 +777,7 @@ async function fetchCloudflare() {
     const day = (n) => new Date(Date.now() - n * DAY_MS).toISOString().slice(0, 10);
     const f = '{ date_geq: $d0, date_leq: $d1, requestHost: $h }';
     const query = `query ($a: String!, $d0: Date!, $d1: Date!, $h: String!) { viewer { accounts(filter: { accountTag: $a }) {
-      daily: rumPageloadEventsAdaptiveGroups(limit: 100, filter: ${f}, orderBy: [date_ASC]) { count sum { visits } dimensions { date } }
+      daily: rumPageloadEventsAdaptiveGroups(limit: 100, filter: ${f}, orderBy: [date_ASC]) { count sum { visits } avg { sampleInterval } dimensions { date } }
       pages: rumPageloadEventsAdaptiveGroups(limit: 10, filter: ${f}, orderBy: [count_DESC]) { count dimensions { requestPath } }
       refs: rumPageloadEventsAdaptiveGroups(limit: 10, filter: ${f}, orderBy: [sum_visits_DESC]) { sum { visits } dimensions { refererHost } }
       countries: rumPageloadEventsAdaptiveGroups(limit: 8, filter: ${f}, orderBy: [sum_visits_DESC]) { sum { visits } dimensions { countryName } }
@@ -787,7 +787,7 @@ async function fetchCloudflare() {
     const j = await r.json();
     if (j.errors && j.errors.length) throw new Error(j.errors.map((e) => e.message).join('; '));
     const acc = (((j.data || {}).viewer || {}).accounts || [])[0] || {};
-    const daily = (acc.daily || []).map((x) => ({ date: x.dimensions.date, visits: x.sum.visits, views: x.count }));
+    const daily = (acc.daily || []).map((x) => ({ date: x.dimensions.date, visits: x.sum.visits, views: x.count, sample: x.avg ? x.avg.sampleInterval : null }));
     const since = (n) => daily.filter((x) => x.date >= day(n - 1)).reduce((t, x) => ({ visits: t.visits + x.visits, views: t.views + x.views }), { visits: 0, views: 0 });
     return {
       configured: true, host,
@@ -828,7 +828,7 @@ async function main() {
 
   console.log('Fetching Cloudflare Web Analytics...');
   const cloudflare = await fetchCloudflare();
-  console.log(cloudflare.configured ? '::notice title=Cloudflare Web Analytics::Connected' : `::warning title=Cloudflare Web Analytics::Not ready: ${cloudflare.error}`);
+  console.log(cloudflare.configured ? '::notice title=Cloudflare Web Analytics::Connected, sample intervals ' + JSON.stringify((cloudflare.daily || []).map((d) => d.sample)) : `::warning title=Cloudflare Web Analytics::Not ready: ${cloudflare.error}`);
 
   console.log('Fetching Firebase sign-up data...');
   const signups = await fetchFirebaseSignups();

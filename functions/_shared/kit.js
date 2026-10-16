@@ -35,7 +35,7 @@ async function tagId(env, name) {
   return tagIds[name];
 }
 
-export var SOURCES = { footer: "Source: footer", recipe: "Source: recipe", home: "Source: home page", planner: "Source: planner", books: "Source: book buyer", weekly: "Source: weekly email page" };
+export var SOURCES = { footer: "Source: footer", recipe: "Source: recipe", home: "Source: home page", planner: "Source: planner", books: "Source: book buyer", weekly: "Source: weekly email page", hub: "Source: browse pages" };
 
 export function validEmail(e) {
   return typeof e === "string" && e.length <= 254 && /^[^@\s<>"]+@[^@\s<>"]+\.[^@\s<>"]{2,}$/.test(e);

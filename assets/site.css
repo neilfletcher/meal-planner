@@ -837,3 +837,22 @@ h1, .display, .display-l, .display-m, .week-range { letter-spacing: -0.02em; }
 .why-sign { font-family: var(--serif); font-style: italic; font-size: 24px !important; color: var(--ink) !important; margin: 4px 0 0 !important; }
 .about { font-size: 18px; }
 .about .btn-row { margin-top: 28px; }
+
+/* Home: a free account and the free printable week, side by side */
+.join2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 20px; flex-direction: unset; }
+.join-card { background: var(--plate); border: 1px solid var(--line); border-radius: 16px; padding: clamp(24px, 3vw, 40px); display: flex; flex-direction: column; gap: 14px; align-items: flex-start; }
+.join-card[hidden] { display: none; }
+.join-card p { color: var(--ink-2); margin: 0; }
+.join-card strong { color: var(--ink); }
+.join-email { flex-direction: row; align-items: center; gap: clamp(20px, 3vw, 36px); background: var(--board); }
+.join-email-text { display: flex; flex-direction: column; gap: 14px; flex: 1; min-width: 0; }
+.join-cover { width: clamp(110px, 14vw, 170px); height: auto; border-radius: 6px; box-shadow: var(--lift); transform: rotate(2deg); flex: none; }
+.nl-plain .nl-label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+.nl-plain { max-width: none; width: 100%; }
+@media (max-width: 560px) {
+  .join-email { flex-direction: column-reverse; align-items: flex-start; }
+  .join-cover { width: 120px; }
+  .nl-plain .nl-row { flex-direction: column; }
+}
+.join-email .nl-row { flex-wrap: wrap; }
+.join-email .nl-row input { flex: 1 1 220px; }

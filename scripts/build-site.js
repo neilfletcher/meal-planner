@@ -488,11 +488,11 @@ function header(rel, active) {
     link("books", "books/", "Books") +
     link("planner", "plan/", "The planner") +
     link("pro", "#pro", "Pro") +
-    '<a class="nav-signin" href="' + rel + 'plan/?signin=1" data-signin-link>Sign in</a>' +
+    '<a class="nav-signin" href="' + rel + 'plan/?signin=1" data-signin-link>Sign in or create an account</a>' +
     "</nav>" +
     '<div class="site-header-actions">' +
     '<button type="button" class="ss-search-btn" data-search-open aria-label="Search recipes">' + ICON.search + "<span>Search</span><kbd>/</kbd></button>" +
-    '<a class="hdr-signin" href="' + rel + 'plan/?signin=1" data-signin-link>Sign in</a>' +
+    '<a class="hdr-signin" href="' + rel + 'plan/?signin=1" data-signin-link>Sign in / Join</a>' +
     '<a class="btn btn-ink" href="' + rel + 'plan/" data-planner-cta><span class="cta-long">Plan your week</span><span class="cta-short">Plan</span></a>' +
     "</div></div></header>\n";
 }
@@ -810,6 +810,20 @@ function demoHtml(rel) {
     '<li><span class="offer-tag">Free</span><h3>A planner and one shopping list</h3><p>Put dinners into your week and get one list for the shop, added up, so two half lemons become one lemon.</p><a class="text-link" href="plan/">Open the planner</a></li>' +
     '<li><span class="offer-tag offer-tag-pro">Pro</span><h3>Low-waste planning</h3><p>Pro picks the week for you, choosing dinners that share their packs and finish what&rsquo;s already in your fridge. The average person in the UK bins about &pound;250 of food a year; Pro is &pound;14.99 a year.</p><a class="text-link" href="#pro">How Pro works</a></li>' +
     "</ul></section>" +
+
+    // Two ways in, side by side: a free account (hidden once signed in) and
+    // the Saturday email with the free printable week.
+    '<section class="wrap section join2">' +
+    '<div class="join-card" data-signin-link><span class="eyebrow">Free account</span>' +
+    '<h2 class="display-s">Your week on every device</h2>' +
+    "<p>Make a free account and your planner, shopping list and favourites follow you from phone to laptop. New accounts get <strong>14 days of Pro free</strong>, no card needed.</p>" +
+    '<div class="btn-row"><a class="btn btn-primary" href="plan/?signin=1">Create a free account</a><a class="text-link" href="plan/?signin=1">Already have one? Sign in</a></div></div>' +
+    '<div class="join-card join-email"><div class="join-email-text"><span class="eyebrow">Free download</span>' +
+    '<h2 class="display-s">A low-waste week, ready to print</h2>' +
+    "<p>Five dinners for one that share their shopping, with the list for all five. Yours free when you join the Saturday email.</p>" +
+    nlForm(rel, "home", "Your email address", "nl-plain") + "</div>" +
+    '<img class="join-cover" src="img/free-week-cover.webp" alt="The free low-waste week: five dinners for one, one shop" width="420" height="594" loading="lazy"></div>' +
+    "</section>" +
 
     // 2. The fridge demo: pick what needs using up, see three dinners that finish it.
     fridgeDemoHtml(rel) +
@@ -1158,6 +1172,7 @@ function hubPage(o) {
         return "<li><span>" + esc(c.name.charAt(0).toUpperCase() + c.name.slice(1)) + '</span><span class="mono small muted">in ' + c.n + (c.n === 1 ? " recipe" : " recipes") + "</span></li>";
       }).join("") + "</ul></div>" : "") + "</section></div>" : "") +
     '<section class="wrap section-tight"><div class="rgrid" data-page="24">' + o.recipes.map(function (r) { return card(r, rel); }).join("") + "</div></section>" +
+    '<section class="wrap nl-band">' + nlForm(rel, "hub", "<strong>Get a free low-waste week.</strong> Five dinners for one that share their shopping, ready to print, when you join the Saturday email.") + "</section>" +
     '<section class="wrap section">' + sectionHead("Keep browsing", o.moreTitle) +
     '<div class="link-cloud">' + o.more + "</div></section>";
   var ld = {

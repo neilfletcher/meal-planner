@@ -4209,7 +4209,7 @@
       var confirm = mode === "confirm";
       signinModal.innerHTML = close +
         '<span class="eyebrow">' + (confirm ? "Nearly there" : "Your account") + "</span>" +
-        "<h2>" + (confirm ? "Confirm your email" : (opts.title || "Sign in to Solo Supper")) + "</h2>" +
+        "<h2>" + (confirm ? "Confirm your email" : (opts.title || "Sign in or create an account")) + "</h2>" +
         '<p class="modal-lead">' + (confirm
           ? "You opened the sign-in link on a different device or browser. Enter the email address you used, to finish signing in."
           : (opts.lead || "Keep your week on every device. New accounts get 14 days of Pro free, no card needed.")) + "</p>" +

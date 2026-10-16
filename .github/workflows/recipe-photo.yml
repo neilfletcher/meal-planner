@@ -48,8 +48,10 @@ jobs:
           npm install --no-save --no-package-lock sharp@0.33.5
           node scripts/photos/use.js "${{ inputs.recipe }}" "${{ inputs.choice }}"
           rm -f photo-options/${{ inputs.recipe }}-*.png
+          # Rebuild the pages too, so the photo shows on the site straight away.
+          node scripts/build-site.js
       - name: Save
         run: |
           git config user.name "Solo Supper autopilot"; git config user.email "hello@solosupper.co.uk"
-          git add -A photo-options img/recipes
+          git add -A
           git diff --cached --quiet || (git commit -q -m "Recipe photo: ${{ inputs.recipe }} (${{ inputs.mode }})" && git pull -q --rebase && git push -q)

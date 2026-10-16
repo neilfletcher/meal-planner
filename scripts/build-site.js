@@ -371,7 +371,7 @@ function rmrf(rel) {
   var p = path.join(ROOT, rel);
   if (fs.existsSync(p)) fs.rmSync(p, { recursive: true, force: true });
 }
-["recipes", "collections", "cuisines", "use-up", "weekly"].concat(LEGAL.map(function (l) { return l.slug; })).forEach(rmrf);
+["recipes", "collections", "cuisines", "use-up", "weekly", "about"].concat(LEGAL.map(function (l) { return l.slug; })).forEach(rmrf);
 
 /* ------------------------------------------------- the weekly emails */
 // Every weekly email that has gone out (newsletter/history.json, written by
@@ -513,7 +513,7 @@ function footer(rel) {
     nlForm(rel, "footer", "The weekly email: two dinners for one that share a pack, so nothing goes off, and a tip for the planner.", "nl-dark") + "</div>" +
     col("Recipes", [["Quick dinners for one", rel + "collections/quick-dinners-for-one/"], ["Vegetarian for one", rel + "collections/vegetarian-dinners-for-one/"], ["Fish for one", rel + "collections/fish-dinners-for-one/"], ["All recipes", rel + "recipes/"]]) +
     col("Planner", [["Plan your week", rel + "plan/"], ["The cookbooks", rel + "books/"]].concat(WEEKLY.length ? [["The weekly email", rel + "weekly/"]] : []).concat([ ["Get the app", rel + "app/"], ["Use it up", rel + "use-up/"], ["Cuisines", rel + "cuisines/"], ["Collections", rel + "collections/"]])) +
-    col("About", [["Contact", "mailto:" + CONTACT_EMAIL], ["Privacy", rel + "privacy/"], ["Terms", rel + "terms/"], ["Refunds", rel + "refunds/"], ["Cookies", rel + "cookies/"], ["Cookie settings", "#cookie-settings"]]) +
+    col("About", [["Why I built this", rel + "about/"], ["Contact", "mailto:" + CONTACT_EMAIL], ["Privacy", rel + "privacy/"], ["Terms", rel + "terms/"], ["Refunds", rel + "refunds/"], ["Cookies", rel + "cookies/"], ["Cookie settings", "#cookie-settings"]]) +
     "</div>" +
     '<div class="footer-base"><span>&copy; <span data-year>' + YEAR + "</span> Solo Supper</span><span>Every recipe written for one, and scales up with a tap when someone stays over.</span></div>" +
     "</div></footer>\n" +
@@ -785,14 +785,22 @@ function demoHtml(rel) {
     '<section class="hero2">' +
     '<div class="hero2-text">' +
     '<h1 class="display">Dinner for one, without the waste.</h1>' +
-    '<p class="lead">' + RECIPES.length + " recipes written for a single portion, and each one scales up with a tap when someone joins you. The planner picks dinners that share their packs, so the spinach you open on Monday is finished by Thursday, and the shopping list adds it all up.</p>" +
-    '<div class="btn-row"><a class="btn btn-primary btn-lg" href="plan/">Plan this week ' + ICON.arrow + "</a>" +
-    '<a class="btn btn-outline btn-lg" href="recipes/">Browse recipes</a></div>' +
-    '<p class="small muted">Every recipe, the planner and the shopping list are free. <a href="#pro">Pro</a> adds low-waste planning: try it free for 14 days.</p>' +
+    '<p class="lead">Supermarkets sell for families. Cook for one and half the coriander, the rest of the mince and most of a bag of spinach end up in the bin. Solo Supper is ' + RECIPES.length + " free recipes written for one, and a planner that makes sure the packs you open get finished.</p>" +
+    '<div class="btn-row"><a class="btn btn-primary btn-lg" href="recipes/">Find a dinner ' + ICON.arrow + "</a>" +
+    '<a class="btn btn-outline btn-lg" href="plan/">Plan my week</a></div>' +
+    '<p class="free-line"><strong>Free:</strong> every recipe, the planner and the shopping list. <strong>Pro, &pound;2.49 a month:</strong> <a href="#pro">low-waste planning</a>.</p>' +
     "</div>" +
     '<div class="hero2-mosaic">' + heroScript + "<noscript>" + mosaic.map(function (r, i) { return tile(r, i === 0 ? "tile-big" : "", true); }).join("") + "</noscript>" +
     demoHtml(rel) + "</div>" +
     "</section>" +
+
+    // What's here, in plain words, before any demo.
+    '<section class="wrap section offer"><ul class="steps3 offer-list">' +
+    '<li><span class="offer-tag">Free</span><h3>Recipes for one</h3><p>' + RECIPES.length + " dinners from " + CUISINES.length + " countries, each written for a single portion. Someone staying over? Every recipe scales up with a tap.</p><a class=\"text-link\" href=\"recipes/\">Browse the recipes</a></li>" +
+    '<li><span class="offer-tag">Free</span><h3>Cook with what you&rsquo;ve got</h3><p>Half a tin of chickpeas, the rest of the coriander: pick what needs using up and get dinners that finish it.</p><a class="text-link" href="use-up/">Use it up</a></li>' +
+    '<li><span class="offer-tag">Free</span><h3>A planner and one shopping list</h3><p>Put dinners into your week and get one list for the shop, added up, so two half lemons become one lemon.</p><a class="text-link" href="plan/">Open the planner</a></li>' +
+    '<li><span class="offer-tag offer-tag-pro">Pro</span><h3>Low-waste planning</h3><p>Pro picks the week for you, choosing dinners that share their packs and finish what&rsquo;s already in your fridge. The average person in the UK bins about &pound;250 of food a year; Pro is &pound;14.99 a year.</p><a class="text-link" href="#pro">How Pro works</a></li>' +
+    "</ul></section>" +
 
     // 2. The fridge demo: pick what needs using up, see three dinners that finish it.
     fridgeDemoHtml(rel) +
@@ -828,6 +836,14 @@ function demoHtml(rel) {
     '<ul class="lc-shop">' + DEMO.shop.map(function (l) { return '<li><span>' + esc(l.name) + "<small>used " + esc(l.on) + '</small></span><span class="mono">' + esc(l.qty) + "</span></li>"; }).join("") + "</ul>" +
     '<p class="lc-foot">' + DEMO.shared + " packs shared across the week" + (DEMO.left ? "" : ", nothing to bin") + ".</p></div>" +
     "</div></section>" +
+
+    // Why it exists, in Neil's words (the full story is at /about/).
+    '<section class="wrap section why"><div class="why-in">' +
+    '<span class="eyebrow">Why I built it</span>' +
+    '<h2 class="display-m">I was tired of binning half a bag of spinach</h2>' +
+    '<p>I live on my own, and I&rsquo;m an idle cook. Without a plan, a trip to the supermarket meant ready meals and snacks. With one, it meant packs sized for two and half of everything in the bin by Friday. Solo Supper is what fixed that for me: simple dinners for one, and a planner that makes sure what I open gets eaten. I hope it does the same for you.</p>' +
+    '<p class="why-sign">Neil</p>' +
+    '<a class="text-link" href="about/">Read the whole story</a></div></section>' +
 
     // 4. Pro, on its own tinted band, with the lifetime offer (when on) as its own strip.
     '<div class="band band-board" id="pro"><section class="wrap section"><div class="pro-band pro-band-flat">' +
@@ -1410,6 +1426,37 @@ out("assets/search-index.json", JSON.stringify(RECIPES.map(function (r) {
     g: r.tags.filter(function (t) { return t !== "quick"; }), ph: r.photo ? 1 : 0,
     k: uniq(r.ingredients.map(function (i) { return i.item.split(/[,(]/)[0].trim().toLowerCase(); })).join(" ") };
 })));
+
+/* ------------------------------------------------------------ about */
+(function buildAbout() {
+  var rel = "../";
+  var para = function (t) { return "<p>" + t + "</p>"; };
+  out("about/index.html", page({
+    rel: rel, path: "about/", active: "",
+    title: "Why I built Solo Supper | Solo Supper",
+    description: "I live on my own, I'm an idle cook, and I was tired of binning half a bag of spinach every week. Here's how Solo Supper came about, and how the recipes are made.",
+    image: "img/recipes/d9.webp",
+    jsonld: [{ "@context": "https://schema.org", "@type": "AboutPage", name: "Why I built Solo Supper", url: SITE_URL + "/about/",
+      author: { "@type": "Person", name: "Neil Fletcher" } }]
+  }, '<section class="wrap page-head"><div class="page-head-text"><span class="eyebrow">About Solo Supper</span>' +
+    '<h1 class="display-m">Why I built this</h1></div></section>' +
+    '<section class="wrap"><article class="legal about">' +
+    para("I live on my own. I&rsquo;m not a terrible cook, but I am incredibly idle, so for years dinner was a takeaway, a ready meal, or steak and frozen chips. Every so often I&rsquo;d get inspired and batch cook something enormous at the weekend, and be terminally bored of it by day three.") +
+    para("The supermarket didn&rsquo;t help. Unless I walked in with a plan, my mind went blank and I came home with ready meals and snacks. And when I did cook properly, I&rsquo;d buy a bag of spinach for one recipe, use a third of it, and throw the rest away at the end of the week, along with half a pack of mince and a sad bunch of coriander. Nearly everything in a supermarket is sized for two or more.") +
+    para("So I asked AI to come up with simple dinners for one, each with a recipe and a shopping list I could just follow. It worked. The supermarket panic stopped and I started cooking. Then I thought other people who cook for one might find it useful too, and things escalated.") +
+    "<h2>What it does</h2>" +
+    para("Every recipe is written for one person, and scales up when someone joins you. The planner puts dinners into your week and adds up one shopping list. The clever part picks dinners that share their packs, so the spinach you open on Monday gets finished by Thursday instead of binned.") +
+    "<h2>How the recipes are made</h2>" +
+    para("I&rsquo;d rather be upfront about this. The recipes started out AI-generated. I&rsquo;ve reviewed every one, I&rsquo;ve been cooking from them myself for weeks, and a few friends are cooking from them too and telling me what doesn&rsquo;t work. The photos are AI-generated as well, made to show each finished dish. If something in a recipe isn&rsquo;t right, the feedback box at the bottom of every recipe comes straight to me, and I fix it.") +
+    "<h2>What&rsquo;s free, and what isn&rsquo;t</h2>" +
+    para("The recipes are free and will stay free, along with the planner and the shopping list. Pro adds the low-waste planning: weeks picked to share their packs, plans built around what&rsquo;s already in your fridge, and a count of what you&rsquo;ve saved. It&rsquo;s &pound;2.49 a month or &pound;14.99 a year, with a 14-day free trial.") +
+    para("For scale: the average person in the UK throws away about &pound;250 of food a year, according to <a href=\"https://wrap.ngo/media-centre/press-releases/urgent-action-needed-scale-tackle-food-waste-our-homes\" rel=\"noopener\">WRAP</a>. Solo Supper isn&rsquo;t a business I&rsquo;m trying to grow; if you find it useful and want to chip in, that&rsquo;s lovely, and if not, cook away.") +
+    '<p class="why-sign">Neil</p>' +
+    '<p>Questions or ideas: <a href="mailto:' + CONTACT_EMAIL + '">' + CONTACT_EMAIL + "</a></p>" +
+    '<div class="btn-row"><a class="btn btn-primary btn-lg" href="' + rel + 'recipes/">Find a dinner ' + ICON.arrow + '</a><a class="btn btn-outline btn-lg" href="' + rel + 'plan/">Plan my week</a></div>' +
+    "</article></section>"));
+  sitemap.push({ loc: "about/", pri: "0.5" });
+})();
 
 /* ------------------------------------------------------------ the weekly emails */
 (function buildWeekly() {

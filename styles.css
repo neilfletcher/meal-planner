@@ -855,3 +855,16 @@ h1, .display, .display-l, .display-m, .week-range { letter-spacing: -0.02em; }
 .fav-cuisines summary { cursor: pointer; font-weight: 600; font-size: 15px; padding: 4px 0; }
 .fav-count { font-weight: 400; font-size: 13px; color: var(--ink-3); margin-left: 6px; }
 .fav-cuisines .chip-row { margin-top: 8px; }
+
+/* Your kitchen: badges */
+.badge-row { margin: 14px 0 4px; }
+.badge-row-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; font-size: 15px; }
+.badge-row-head span { font-family: var(--mono); font-size: 13px; color: var(--ink-3); }
+.badge-row .collect-badges { margin: 8px 0 4px; }
+.season-challenge { display: flex; align-items: center; gap: 14px 18px; flex-wrap: wrap; padding: 14px 16px; border: 1px solid var(--line); border-radius: 12px; background: var(--plate, #fff); margin: 10px 0 8px; }
+.season-challenge > div:first-child { flex: 1 1 260px; }
+.season-challenge p { margin: 4px 0 0; }
+.season-challenge.is-done { border-color: var(--tomato); }
+.sc-dots { display: inline-flex; gap: 6px; }
+.sc-dots span { width: 14px; height: 14px; border-radius: 50%; border: 1.5px solid var(--line-strong); }
+.sc-dots span.on { background: var(--tomato); border-color: var(--tomato); }

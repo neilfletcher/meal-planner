@@ -206,6 +206,7 @@
     newOnly: false,      // suggestions (Surprise me, fills) only pick dishes not cooked yet
     quickWeeknights: false, // suggestions for Monday to Thursday lean to dinners of 25 minutes or less
     favCuisines: {},     // cuisines that come up more often in suggestions: { "Italy": true }
+    badgesSeen: null,    // badges already announced: { badgeId: ts }; null until first worked out
     next: null           // next week's plan: { week, plan, cooked, leftovers, checked }
   };
   var HISTORY_LIMIT = 400; // keep this bounded so it never grows the saved state unreasonably
@@ -496,6 +497,7 @@
     if (typeof data.fridgeFrom === "string" || data.fridgeFrom === null) state.fridgeFrom = data.fridgeFrom;
     if (typeof data.newOnly === "boolean") state.newOnly = data.newOnly;
     if (typeof data.quickWeeknights === "boolean") state.quickWeeknights = data.quickWeeknights;
+    if (data.badgesSeen && typeof data.badgesSeen === "object" && !Array.isArray(data.badgesSeen)) state.badgesSeen = data.badgesSeen;
     if (data.favCuisines && typeof data.favCuisines === "object" && !Array.isArray(data.favCuisines)) state.favCuisines = data.favCuisines;
     if (data.swaps && typeof data.swaps === "object" && !Array.isArray(data.swaps)) state.swaps = data.swaps;
     if (Array.isArray(data.cookDays) && data.cookDays.length === 7) state.cookDays = data.cookDays.map(function (v) { return v !== false; });
@@ -533,6 +535,7 @@
     if (state.cookLog.length > HISTORY_LIMIT) {
       state.cookLog = state.cookLog.slice(state.cookLog.length - HISTORY_LIMIT);
     }
+    setTimeout(announceNewBadges, 700);
     return ts;
   }
   function unlogCook(recipeId, ts) {
@@ -2736,6 +2739,7 @@
     html += '<div class="stats-section"><div class="week-heading stats-heading"><span class="eyebrow">Counts only dinners you ticked as cooked</span><h1 class="week-range">Your <em>kitchen</em></h1></div>';
     html += savingsSectionHtml();
     html += collectionSectionHtml();
+    html += safeSection(badgesSectionHtml, "badges");
 
     /* Actually cooked: only counts a dish once you tick the checkmark on its
        day, so these numbers never assume a planned dinner got made. */
@@ -3895,7 +3899,7 @@
 
   /* ============================= CLOUD SYNC ============================= */
   var SYNC_FIELDS = ["servings", "mode", "plan", "batch", "checked", "ratings", "noSeafood", "history", "cooked", "cookLog", "statsResetAt",
-    "planWeek", "leftovers", "guests", "staples", "avoid", "customRecipes", "lastWeek", "newWeekNotice", "next", "cookDays", "weekStart", "fridge", "fridgeFrom", "newOnly", "quickWeeknights", "favCuisines", "swaps"];
+    "planWeek", "leftovers", "guests", "staples", "avoid", "customRecipes", "lastWeek", "newWeekNotice", "next", "cookDays", "weekStart", "fridge", "fridgeFrom", "newOnly", "quickWeeknights", "favCuisines", "badgesSeen", "swaps"];
   var UNSYNCED_KEY = "soloSupper.unsynced";
   var lastSyncedJson = {};
   var savePending = false;
@@ -3960,6 +3964,7 @@
     M.newOnly = typeof L.newOnly === "boolean" ? L.newOnly : !!C.newOnly;
     M.quickWeeknights = typeof L.quickWeeknights === "boolean" ? L.quickWeeknights : !!C.quickWeeknights;
     M.favCuisines = L.favCuisines && typeof L.favCuisines === "object" ? L.favCuisines : (C.favCuisines || {});
+    if (L.badgesSeen || C.badgesSeen) M.badgesSeen = Object.assign({}, C.badgesSeen || {}, L.badgesSeen || {});
     M.swaps = Object.assign({}, C.swaps || {}, L.swaps || {});
     M.noSeafood = !!(L.noSeafood || C.noSeafood);
     return M;
@@ -4648,6 +4653,111 @@
       }).join("") + "</div>" : "") +
       (untried.length ? '<p class="stats-note"><strong>Not tried yet:</strong> ' + esc(untried.join(", ")) + ".</p>" : "") +
       "</details>";
+    return html;
+  }
+
+  /* ============================= BADGES ============================= */
+  // Small things to aim for, all from dinners ticked as cooked: countries
+  // (a passport), weeks in a row with three or more dinners, quick dinners,
+  // finishing a whole country, packs finished (Pro), and a seasonal challenge
+  // each month. Nothing is lost by missing a week; the best run is kept.
+  var BADGE_SETS = [
+    { id: "passport", title: "Passport", unit: "countries", marks: [5, 10, 20, 35, 50] },
+    { id: "streak", title: "Weeks in a row", unit: "weeks", marks: [2, 4, 8, 12, 26] },
+    { id: "quick", title: "Quick cook (20 min or less)", unit: "dinners", marks: [5, 15, 40] },
+    { id: "country", title: "Whole country", unit: "countries finished", marks: [1, 3, 10] },
+    { id: "packs", title: "Waste beater", unit: "packs finished", marks: [10, 25, 50, 100], pro: true }
+  ];
+  function seasonOfMonth(m) { return m >= 10 || m <= 3 ? "warm" : m >= 5 && m <= 9 ? "light" : ""; }
+  var SEASON_TARGET = 4;
+  function badgeFacts() {
+    var log = (state.cookLog || []).filter(function (h) { return RECIPES_BY_ID[h.id] && !RECIPES_BY_ID[h.id].custom; });
+    var countries = {}, quick = 0, weeks = {}, months = {};
+    log.forEach(function (h) {
+      var r = RECIPES_BY_ID[h.id];
+      countries[r.cuisine] = 1;
+      if (r.prep + r.cook <= 20) quick++;
+      var wk = mondayKeyOf(h.ts);
+      weeks[wk] = (weeks[wk] || 0) + 1;
+      var d = new Date(h.ts), mk = d.getFullYear() + "-" + (d.getMonth() + 1 < 10 ? "0" : "") + (d.getMonth() + 1);
+      var tag = window.SOLO_SEASON && window.SOLO_SEASON[r.id], want = seasonOfMonth(d.getMonth() + 1);
+      if (want && tag === want) { months[mk] = months[mk] || {}; months[mk][r.id] = 1; }
+    });
+    // Weeks in a row with 3 or more cooked dinners. This week counts once it gets to 3.
+    var DAYMS = 86400000, thisWk = mondayKeyOf(Date.now()), best = 0, run = 0, current = 0, prev = null;
+    Object.keys(weeks).filter(function (k) { return weeks[k] >= 3; }).sort().forEach(function (k) {
+      var gap = prev ? Math.round((new Date(k) - new Date(prev)) / (7 * DAYMS)) : 1;
+      run = gap === 1 ? run + 1 : 1;
+      best = Math.max(best, run);
+      prev = k;
+    });
+    if (prev) {
+      var since = Math.round((new Date(thisWk) - new Date(prev)) / (7 * DAYMS));
+      current = since <= 1 ? run : 0; // last week still counts until this week is over
+    }
+    var cooked = cookedCounts(), byC = {};
+    RECIPES.forEach(function (r) { if (r.custom) return; var c = byC[r.cuisine] = byC[r.cuisine] || { n: 0, d: 0 }; c.n++; if (cooked[r.id]) c.d++; });
+    var finished = Object.keys(byC).filter(function (c) { return byC[c].d === byC[c].n; }).length;
+    var seasonsDone = Object.keys(months).filter(function (m) { return Object.keys(months[m]).length >= SEASON_TARGET; });
+    var now = new Date(), nowMk = now.getFullYear() + "-" + (now.getMonth() + 1 < 10 ? "0" : "") + (now.getMonth() + 1);
+    var packs = 0;
+    if (hasProFeatures()) { try { packs = savingsSummary().all.packs; } catch (e) { packs = 0; } }
+    return {
+      values: { passport: Object.keys(countries).length, streak: best, quick: quick, country: finished, packs: Math.floor(packs) },
+      current: current, seasonNow: seasonOfMonth(now.getMonth() + 1), seasonCount: Object.keys(months[nowMk] || {}).length,
+      seasonsDone: seasonsDone, totalCountries: Object.keys(byC).length
+    };
+  }
+  function earnedBadges(f) {
+    var out = {};
+    BADGE_SETS.forEach(function (set) {
+      if (set.pro && !hasProFeatures()) return;
+      set.marks.forEach(function (m) { if (f.values[set.id] >= m) out[set.id + "-" + m] = set.title + ": " + m + " " + set.unit; });
+    });
+    f.seasonsDone.forEach(function (mk) {
+      var d = new Date(mk + "-01T12:00:00");
+      out["season-" + mk] = d.toLocaleDateString("en-GB", { month: "long", year: "numeric" }) + " seasonal challenge";
+    });
+    return out;
+  }
+  // A toast for each badge earned since last time (one at a time, newest first).
+  function announceNewBadges() {
+    var f, got;
+    try { f = badgeFacts(); got = earnedBadges(f); } catch (e) { return; }
+    var first = !state.badgesSeen;
+    state.badgesSeen = state.badgesSeen || {};
+    var fresh = Object.keys(got).filter(function (k) { return !state.badgesSeen[k]; });
+    if (!fresh.length) { if (first) scheduleSave(); return; }
+    fresh.forEach(function (k) { state.badgesSeen[k] = Date.now(); });
+    scheduleSave();
+    if (first) return; // people who were cooking before badges existed: no flood of toasts
+    track("badge_earned", { badge: fresh[fresh.length - 1] });
+    toast("New badge: " + got[fresh[fresh.length - 1]] + (fresh.length > 1 ? " (and " + (fresh.length - 1) + " more)" : "") + ". See Your kitchen.");
+  }
+  function badgesSectionHtml() {
+    var f = badgeFacts(), got = earnedBadges(f);
+    var html = '<h3 class="stats-subhead">Badges</h3>';
+    if (f.seasonNow) {
+      var c = Math.min(SEASON_TARGET, f.seasonCount), done = c >= SEASON_TARGET;
+      var monthName = new Date().toLocaleDateString("en-GB", { month: "long" });
+      html += '<div class="season-challenge' + (done ? " is-done" : "") + '"><div><span class="eyebrow">' + monthName + " challenge</span>" +
+        "<p><strong>" + (done ? "Done: " : "") + "Cook " + SEASON_TARGET + " different " + (f.seasonNow === "warm" ? "warming" : "light, summery") + " dinners this month.</strong> " +
+        (done ? "That’s this month’s badge." : c + " of " + SEASON_TARGET + " so far.") + "</p></div>" +
+        '<div class="sc-dots" aria-hidden="true">' + [0, 1, 2, 3].map(function (i) { return '<span class="' + (i < c ? "on" : "") + '"></span>'; }).join("") + "</div>" +
+        (done ? "" : '<a class="btn btn-outline btn-sm" href="../collections/' + (f.seasonNow === "warm" ? "warming-dinners-for-one" : "light-dinners-for-one") + '/">Ideas</a>') + "</div>";
+    }
+    if (f.current >= 1) html += '<p class="stats-note">You’re on a run of <strong>' + f.current + (f.current === 1 ? " week" : " weeks") + "</strong> with three or more dinners cooked. Best so far: " + f.values.streak + ".</p>";
+    BADGE_SETS.forEach(function (set) {
+      var locked = set.pro && !hasProFeatures(), v = f.values[set.id];
+      var marks = set.id === "passport" ? set.marks.concat([f.totalCountries]) : set.marks;
+      html += '<div class="badge-row"><div class="badge-row-head"><strong>' + set.title + "</strong><span>" + (locked ? "Pro" : v + " " + set.unit) + "</span></div>" +
+        '<div class="collect-badges">' + marks.map(function (m, i) {
+          var isGot = !locked && v >= m, all = set.id === "passport" && i === marks.length - 1;
+          return '<span class="collect-badge' + (isGot ? " is-got" : "") + '" title="' + (locked ? "Pro" : isGot ? "Earned" : (m - v) + " to go") + '"><span class="cb-n">' + (all ? "All" : m) + '</span><span class="cb-l">' + (set.id === "streak" ? "weeks" : set.id === "packs" ? "packs" : set.id === "quick" ? "quick" : set.id === "country" ? (m === 1 ? "country" : "countries") : "countries") + "</span></span>";
+        }).join("") + "</div></div>";
+    });
+    if (f.seasonsDone.length) html += '<p class="stats-note">Seasonal challenges completed: <strong>' + f.seasonsDone.length + "</strong>.</p>";
+    html += '<p class="stats-note">' + Object.keys(got).length + (Object.keys(got).length === 1 ? " badge" : " badges") + " so far. Weeks in a row count weeks with three or more dinners ticked as cooked; eating out never breaks anything you’ve already earned.</p>";
     return html;
   }
 

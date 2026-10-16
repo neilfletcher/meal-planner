@@ -367,7 +367,51 @@ async function admin(request, env) {
     var kc = await getDoc(env, "kdp/catalogue");
     var kd = await listCollection(env, "kdpDays", null, 800);
     kd.sort(function (a, b) { return a.id < b.id ? -1 : 1; });
-    return json({ catalogue: (kc && kc.data) || {}, days: kd.slice(-120).map(function (r) { return r.data; }), at: now });
+    // Each month's last reading, for the actuals (the month-to-date figure on
+    // the last evening read is that month's royalties).
+    var kmonths = {};
+    kd.forEach(function (r) { if (r.data.month) kmonths[r.data.month] = { day: r.data.day, books: r.data.books || {} }; });
+    return json({ catalogue: (kc && kc.data) || {}, days: kd.slice(-120).map(function (r) { return r.data; }), months: kmonths, at: now });
+  }
+  // Actual money in, month by month: subscriptions from Stripe's paid
+  // invoices, Lifetime Pro and PDFs from the site's own purchase records, and
+  // Stripe's real fees from the balance. Amounts in pence; the owner's own
+  // purchases are left out.
+  if (body.action === "actuals") {
+    var aFrom = Math.floor(Date.UTC(2026, 0, 1) / 1000), mon = {};
+    var monthOf = function (ms) { return new Date(ms).toISOString().slice(0, 7); };
+    var bump = function (m, k, v) { mon[m] = mon[m] || { subs: 0, lifetime: 0, pdfs: 0, fees: 0 }; mon[m][k] += v; };
+    var pages = async function (path, params, each) {
+      var after = null;
+      for (var pg = 0; pg < 20; pg++) {
+        var q = Object.assign({ limit: 100 }, params); if (after) q.starting_after = after;
+        var res = await stripe(env, "GET", path, q);
+        (res.data || []).forEach(each);
+        if (!res.has_more || !res.data.length) break;
+        after = res.data[res.data.length - 1].id;
+      }
+    };
+    var errs = [];
+    await pages("invoices", { status: "paid", created: { gte: aFrom } }, function (inv) {
+      if (!inv.amount_paid || isInternal(env, inv.customer_email)) return;
+      var at = ((inv.status_transitions && inv.status_transitions.paid_at) || inv.created) * 1000;
+      bump(monthOf(at), "subs", inv.amount_paid - (inv.post_payment_credit_notes_amount || 0));
+    }).catch(function (e) { errs.push("invoices: " + e.message); });
+    await pages("balance_transactions", { created: { gte: aFrom } }, function (bt) {
+      if (bt.fee) bump(monthOf(bt.created * 1000), "fees", bt.fee);
+    }).catch(function (e) { errs.push("fees: " + e.message); });
+    var aRows = await Promise.all([listCollection(env, "purchases", null, 5000), listCollection(env, "lifetimePurchases", null, 5000)]);
+    aRows[0].forEach(function (r) {
+      var p = r.data;
+      if (p.gift || !p.amount || isInternal(env, p.email) || !p.createdAt) return;
+      bump(monthOf(p.createdAt), "pdfs", p.amount - (p.refundedAmount || (p.refunded ? p.amount : 0)));
+    });
+    aRows[1].forEach(function (r) {
+      var p = r.data;
+      if (p.refunded || !p.amount || isInternal(env, p.email) || !p.createdAt) return;
+      bump(monthOf(p.createdAt), "lifetime", p.amount);
+    });
+    return json({ months: mon, errors: errs, at: now });
   }
   if (body.action === "pageviews") {
     var rows = await listCollection(env, "pageviews", null, 400);

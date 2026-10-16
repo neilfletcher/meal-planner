@@ -329,6 +329,20 @@ async function admin(request, env) {
     return json({ sources: sources, landings: landings, total: total, at: now });
   }
 
+  // The forecast tab's own settings (things the site can't see, like Amazon royalties).
+  if (body.action === "forecast" || body.action === "forecastSet") {
+    if (body.action === "forecastSet" && body.settings && typeof body.settings === "object") {
+      var clean = {};
+      ["amazonPerMonth", "costsPerYear", "bufferPerMonth", "convLow", "convMid", "convHigh"].forEach(function (k) {
+        var v = Number(body.settings[k]);
+        if (isFinite(v) && v >= 0 && v < 100000) clean[k] = v;
+      });
+      clean.updatedAt = now;
+      await mergeDoc(env, "settings/forecast", clean);
+    }
+    var fdoc = await getDoc(env, "settings/forecast");
+    return json({ settings: (fdoc && fdoc.data) || {}, at: now });
+  }
   if (body.action === "pageviews") {
     var rows = await listCollection(env, "pageviews", null, 400);
     rows.sort(function (a, b) { return a.id < b.id ? 1 : -1; });

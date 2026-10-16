@@ -250,6 +250,14 @@
   footer { margin-top: 32px; padding-top: 16px; border-top: 1px solid var(--border); font-size: 12px; color: var(--ink-faint); line-height: 1.6; }
 
   .cf-cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 8px 24px; margin-top: 6px; }
+  .fc-lead { font-size: 15px; line-height: 1.6; margin: 0 0 14px; }
+  .fc-table td, .fc-table th { text-align: right; }
+  .fc-table td:first-child, .fc-table th:first-child { text-align: left; }
+  .fc-table tr.fc-total td { font-weight: 600; border-top: 1px solid var(--border); }
+  .fc-table th.fc-on { color: var(--accent); }
+  .fc-form { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px 20px; margin-bottom: 14px; }
+  .fc-form label { display: flex; flex-direction: column; gap: 4px; font-size: 13px; color: var(--ink-muted); }
+  .fc-form input { font: inherit; font-size: 15px; padding: 7px 10px; border: 1px solid var(--border); border-radius: 8px; background: transparent; color: inherit; }
   .src-table { width: 100%; border-collapse: collapse; font-size: 13.5px; margin-top: 6px; }
   .src-table th { text-align: right; font-weight: 500; font-size: 12px; color: var(--ink-muted); padding: 6px 8px; border-bottom: 1px solid var(--border); }
   .src-table th:first-child, .src-table td:first-child { text-align: left; padding-left: 0; }
@@ -409,6 +417,7 @@
     <nav class="tabs" aria-label="Dashboard">
       <a href="#solo" id="tabSolo" aria-current="page">Solo Supper</a>
       <a href="#sites" id="tabSites">Other sites</a>
+      <a href="#forecast" id="tabForecast">Forecast</a>
     </nav>
 
     <div id="viewSolo">
@@ -988,6 +997,38 @@
       </section>
     </div>
 
+    <div id="viewForecast" hidden>
+      <section class="block block-wide">
+        <div class="block-head"><div><div class="eyebrow">Calendar year 2027</div><h2>Where this is heading</h2><span class="asof" data-asof="live"></span></div>
+          <button class="ghost" id="fcReload" type="button">Recalculate</button></div>
+        <div class="card">
+          <p class="fc-lead" id="fcLead">Working it out from the live numbers&hellip;</p>
+          <div class="src-scroll"><table class="src-table fc-table" id="fcTable"></table></div>
+          <p class="fine" id="fcTax"></p>
+        </div>
+      </section>
+      <section class="block block-wide">
+        <div class="block-head"><div><div class="eyebrow">What it's built on</div><h2>Today's numbers</h2></div></div>
+        <div class="card"><div class="src-scroll"><table class="src-table fc-table" id="fcNow"></table></div>
+          <p class="fine">Everything here is read live each time you open this tab, so the forecast moves as real numbers arrive. Once there are 20 finished free trials, the real trial-to-paid rate replaces the assumed one; once people have bought PDFs, the real rate replaces the guess.</p></div>
+      </section>
+      <section class="block block-wide">
+        <div class="block-head"><div><div class="eyebrow">Your inputs</div><h2>Things the site can't see</h2></div></div>
+        <div class="card">
+          <div class="fc-form">
+            <label>Amazon royalties, £ a month<input type="number" min="0" step="1" id="fc-amazon"></label>
+            <label>Running costs, £ a year (domain, ICO fee)<input type="number" min="0" step="1" id="fc-costs"></label>
+            <label>Buffer or other tools, £ a month<input type="number" min="0" step="1" id="fc-buffer"></label>
+            <label>Trial to paid, low (%)<input type="number" min="0" step="0.5" id="fc-cl"></label>
+            <label>Trial to paid, middle (%)<input type="number" min="0" step="0.5" id="fc-cm"></label>
+            <label>Trial to paid, high (%)<input type="number" min="0" step="0.5" id="fc-ch"></label>
+          </div>
+          <button class="ghost" id="fcSave" type="button">Save and recalculate</button> <span class="fine" id="fcSaved"></span>
+          <p class="fine" id="fcHow"></p>
+        </div>
+      </section>
+    </div>
+
     <footer>
       Traffic and usage figures sync every hour from Google Analytics and Firebase via a
       GitHub Action in the meal-planner repo; sign-ups, subscriptions and visitors on the site now are live. Times are UTC. This page is only visible to the
@@ -1515,15 +1556,20 @@
   }
 
   // Two tabs on one page: #solo (default) and #sites.
+  var forecastLoaded = false;
   function showTab() {
-    var sites = location.hash === "#sites";
-    document.getElementById("viewSolo").hidden = sites;
+    var sites = location.hash === "#sites", fc = location.hash === "#forecast", solo = !sites && !fc;
+    document.getElementById("viewSolo").hidden = !solo;
     document.getElementById("viewSites").hidden = !sites;
-    document.getElementById("tabSolo").setAttribute("aria-current", sites ? "false" : "page");
+    document.getElementById("viewForecast").hidden = !fc;
+    document.getElementById("tabSolo").setAttribute("aria-current", solo ? "page" : "false");
     document.getElementById("tabSites").setAttribute("aria-current", sites ? "page" : "false");
-    document.querySelector("header.top .titles h1").textContent = sites ? "Other sites" : "Solo Supper";
-    var jumpNav = document.querySelector("nav.jump"); if (jumpNav) jumpNav.hidden = sites;
-    document.querySelector("header.top .titles p").textContent = sites ? "Everything in Google Analytics that isn't Solo Supper" : "Business dashboard";
+    document.getElementById("tabForecast").setAttribute("aria-current", fc ? "page" : "false");
+    document.querySelector("header.top .titles h1").textContent = sites ? "Other sites" : fc ? "Forecast" : "Solo Supper";
+    var jumpNav = document.querySelector("nav.jump"); if (jumpNav) jumpNav.hidden = !solo;
+    document.querySelector("header.top .titles p").textContent = sites ? "Everything in Google Analytics that isn't Solo Supper" : fc ? "Users and profit for 2027, from the live numbers" : "Business dashboard";
+    // Worked out each time the tab is opened (once signed in), so it always uses the latest numbers.
+    if (fc && window.__adminReady) loadForecast();
   }
   window.addEventListener("hashchange", showTab);
   showTab();
@@ -1912,6 +1958,117 @@
   document.getElementById("fbToggle").addEventListener("click", function () {
     adminApi({ action: "feedbackSet", on: !fbOn }).then(loadFeedback);
   });
+
+  // ---------- forecast for 2027 ----------
+  // A small, transparent model, recalculated from the live numbers each time:
+  //  * Accounts: the launch word of mouth fades (halving each month), while
+  //    organic sign-ups (search and social) start from today's rate and grow
+  //    steadily to a multiple of it by December 2027: x3 low, x12 middle, x50 high.
+  //  * Pro: new 2027 accounts x trial-to-paid (real rate once 20 trials have
+  //    finished); half monthly (paying about 5 months of the year on average),
+  //    half yearly. About 13% goes in Stripe fees.
+  //  * Lifetime Pro: 2 / 6 / 20 sales in the year's offer windows.
+  //  * PDFs: the real 30-day rate once there are sales, otherwise 5 / 20 / 80 a year.
+  //  * Amazon and running costs: your inputs below.
+  var FC = { growth: [3, 12, 50], lifetime: [2, 6, 20], pdfs: [5, 20, 80], amazonX: [0.5, 1, 2.5], names: ["Low", "Middle", "High"] };
+  var FEE = 0.87, YEARLY = 14.99, MONTHLY = 2.49, LIFETIME_NET = 39 * 0.94 - 0.2, PDF_NET = 4.99 * 0.88;
+  function money(v) { return (v < 0 ? "-" : "") + "£" + Math.round(Math.abs(v)).toLocaleString("en-GB"); }
+  function fcSettings(s) {
+    return { amazonPerMonth: s.amazonPerMonth != null ? s.amazonPerMonth : 10, costsPerYear: s.costsPerYear != null ? s.costsPerYear : 65,
+      bufferPerMonth: s.bufferPerMonth || 0, conv: [s.convLow != null ? s.convLow : 2, s.convMid != null ? s.convMid : 4, s.convHigh != null ? s.convHigh : 5] };
+  }
+  function loadForecast() {
+    var lead = document.getElementById("fcLead");
+    lead.textContent = "Working it out from the live numbers…";
+    Promise.all([
+      adminApi({ action: "liveCounts" }), adminApi({ action: "sources" }), adminApi({ action: "listCodes" }),
+      adminApi({ action: "lifetime" }), adminApi({ action: "books" }), adminApi({ action: "newsletter" }),
+      adminApi({ action: "pageviews" }).catch(function () { return { days: [] }; }), adminApi({ action: "forecast" })
+    ]).then(function (r) {
+      var live = r[0], src = r[1], codes = r[2].codes || [], lt = r[3], bk = r[4], nl = r[5], pv = r[6], st = fcSettings(r[7].settings || {});
+      var now = live.at, c = live.counts, m = live.money, D = 86400000;
+      document.getElementById("fc-amazon").value = st.amazonPerMonth; document.getElementById("fc-costs").value = st.costsPerYear;
+      document.getElementById("fc-buffer").value = st.bufferPerMonth;
+      document.getElementById("fc-cl").value = st.conv[0]; document.getElementById("fc-cm").value = st.conv[1]; document.getElementById("fc-ch").value = st.conv[2];
+      // Sign-ups in the last 30 days: from gift codes, from search/social, and the rest (word of mouth).
+      var gifts30 = codes.filter(function (k) { return k.redeemedAt && k.redeemedAt > now - 30 * D; }).length;
+      var ORG = /^(google|bing|duckduckgo|yahoo|ecosia|pinterest|instagram|facebook|tiktok|reddit|x|buffer|link-in-bio)$/;
+      var org30 = (src.sources || []).filter(function (s) { return ORG.test(s.source); }).reduce(function (t, s) { return t + s.last30; }, 0);
+      var wom30 = Math.max(0, c.new30 - gifts30 - org30);
+      var orgBase = Math.max(org30, 3); // at least a few a month from search and Pinterest, even before they show up in the numbers
+      // Months from now to the end of 2026, and through 2027.
+      var d = new Date(now), monthsTo2027 = 11 - d.getUTCMonth() + (1 - d.getUTCDate() / 31);
+      var rows = FC.names.map(function (name, i) {
+        var total = c.accounts, wom = wom30, org = orgBase, new2027 = 0, path = [];
+        var steps = Math.round(monthsTo2027 + 12), peak = orgBase * FC.growth[i];
+        for (var k = 1; k <= steps; k++) {
+          wom = wom / 2;
+          org = orgBase + (peak - orgBase) * (k / steps);
+          var add = wom + org;
+          total += add;
+          if (k > steps - 12) new2027 += add;
+          path.push(total);
+        }
+        var conv = m.trialsDone >= 20 ? m.trialsPaid / m.trialsDone : st.conv[i] / 100;
+        var payers = new2027 * conv;
+        var subs = payers * 0.5 * YEARLY * FEE + payers * 0.5 * MONTHLY * 5 * FEE + (m.mrr / 100) * 12 * FEE;
+        var payingEnd = c.paying + payers * 0.5 + payers * 0.5 * 0.7;
+        var life = FC.lifetime[i] * LIFETIME_NET;
+        var pdfYear = bk.totals && bk.totals.sales30 > 0 ? bk.totals.sales30 * 12 * (i === 0 ? 0.6 : i === 1 ? 1 : 2) : FC.pdfs[i];
+        var pdf = pdfYear * PDF_NET;
+        var amazon = st.amazonPerMonth * 12 * FC.amazonX[i];
+        var income = subs + life + pdf + amazon;
+        var costs = st.costsPerYear + st.bufferPerMonth * 12;
+        var listRate = nl.listSize != null && c.accounts >= 20 ? Math.max(0.15, Math.min(0.8, nl.listSize / c.accounts)) : 0.35;
+        return { name: name, accounts: total, email: Math.max(nl.listSize || 0, total * Math.max(listRate, 0.3)), payingEnd: payingEnd, lifetime: FC.lifetime[i],
+          subs: subs, life: life, pdf: pdf, amazon: amazon, income: income, costs: costs, profit: income - costs, conv: conv, monthNow: wom30 / 2 + orgBase + (peak - orgBase) / steps };
+      });
+      // Which line are we on? Compare this month's organic sign-ups with what each line expects.
+      var on = org30 >= rows[2].monthNow * 0.6 ? 2 : org30 >= rows[1].monthNow * 0.4 ? 1 : 0;
+      if (orgBase === 3 && org30 < 3) on = 0;
+      var th = function (t, i) { return "<th" + (i === on ? ' class="fc-on"' : "") + ">" + t + (i === on ? " (on track)" : "") + "</th>"; };
+      var line = function (label, f, cls) { return "<tr" + (cls ? ' class="' + cls + '"' : "") + "><td>" + label + "</td>" + rows.map(function (x) { return "<td>" + f(x) + "</td>"; }).join("") + "</tr>"; };
+      document.getElementById("fcTable").innerHTML = "<thead><tr><th>End of 2027</th>" + rows.map(function (x, i) { return th(x.name, i); }).join("") + "</tr></thead><tbody>" +
+        line("Accounts", function (x) { return fmtNum(Math.round(x.accounts / 10) * 10); }) +
+        line("Email list", function (x) { return fmtNum(Math.round(x.email / 10) * 10); }) +
+        line("Paying subscribers", function (x) { return fmtNum(Math.round(x.payingEnd)); }) +
+        line("Lifetime Pro sold in 2027", function (x) { return fmtNum(x.lifetime); }) +
+        line("Subscriptions", function (x) { return money(x.subs); }) +
+        line("Lifetime Pro", function (x) { return money(x.life); }) +
+        line("PDFs on the site", function (x) { return money(x.pdf); }) +
+        line("Amazon (your figure)", function (x) { return money(x.amazon); }) +
+        line("Income after Stripe fees", function (x) { return money(x.income); }, "fc-total") +
+        line("Running costs", function (x) { return money(x.costs); }) +
+        line("Profit before tax", function (x) { return money(x.profit); }, "fc-total") + "</tbody>";
+      lead.innerHTML = "Based on today's numbers, 2027 looks like <strong>" + rows[on].name.toLowerCase() + "</strong>: about <strong>" + money(rows[on].profit) + " profit</strong> and " +
+        fmtNum(Math.round(rows[on].accounts / 10) * 10) + " accounts by the end of the year. " +
+        (on === 0 ? "Search and social sign-ups are still too few to lift it; one press mention or a Pinterest Pin that takes off would move it up a column." :
+         on === 1 ? "Search and social are bringing in a steady trickle; keep Pinterest posting and it should hold." :
+         "Search and social are growing fast. Lifetime Pro in the Black Friday and Christmas windows is where most of the money comes from.");
+      document.getElementById("fcTax").textContent = "UK sole traders have a £1,000 trading allowance: if total trading income from everything (including your other books) stays under £1,000 in a tax year, you may not need to report it. Check with an accountant; this isn't tax advice.";
+      var pvDays = pv.days || [], v30 = pvDays.filter(function (x) { return x.day >= new Date(now - 29 * D).toISOString().slice(0, 10); }).reduce(function (t, x) { return t + (x.visits || 0); }, 0);
+      var nrow = function (a, b) { return "<tr><td>" + a + "</td><td>" + b + "</td></tr>"; };
+      document.getElementById("fcNow").innerHTML = "<tbody>" +
+        nrow("Accounts", fmtNum(c.accounts) + " (" + fmtNum(c.freePro) + " with free Pro)") +
+        nrow("New accounts, last 30 days", fmtNum(c.new30) + ": " + gifts30 + " from gift codes, " + org30 + " from search or social, " + wom30 + " word of mouth or direct") +
+        nrow("Paying now", fmtNum(c.paying) + " subscribers, " + fmtNum(c.lifetime) + " lifetime; " + money(m.mrr / 100) + " a month coming in") +
+        nrow("Trial to paid", m.trialsDone ? m.trialsPaid + " of " + m.trialsDone + " finished trials (" + Math.round(m.trialsPaid / m.trialsDone * 100) + "%)" + (m.trialsDone < 20 ? ", too few to use yet" : ", used in the forecast") : "no trials finished yet, so the assumed rates are used") +
+        nrow("Lifetime Pro sold so far", fmtNum(lt.sold || 0)) +
+        nrow("PDFs sold, last 30 days", fmtNum(bk.totals ? bk.totals.sales30 : 0)) +
+        nrow("Email list", nl.listSize == null ? "–" : fmtNum(nl.listSize)) +
+        nrow("Visits, last 30 days (site's own count)", pvDays.length ? fmtNum(v30) + " (counting since 16 October 2026)" : "not counted yet") + "</tbody>";
+      document.getElementById("fcHow").textContent = "How it works: launch word of mouth fades by half each month, while sign-ups from search and social start at today's rate (at least 3 a month) and grow steadily to 3x, 12x or 50x by December 2027. New 2027 accounts x trial-to-paid gives subscribers, half monthly and half yearly; about 13% of each payment goes in Stripe fees. Lifetime Pro: 2, 6 or 20 sales in the year's offer windows. The \"on track\" column compares this month's search and social sign-ups with what each column expects now.";
+      document.querySelectorAll('#viewForecast [data-asof]').forEach(function (e) { e.textContent = "Recalculated " + new Date(now).toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" }) + " today"; });
+    }).catch(function (e) { lead.textContent = "Couldn't work it out: " + e.message; });
+  }
+  document.getElementById("fcReload").addEventListener("click", loadForecast);
+  document.getElementById("fcSave").addEventListener("click", function () {
+    var g = function (id) { return Number(document.getElementById(id).value); };
+    adminApi({ action: "forecastSet", settings: { amazonPerMonth: g("fc-amazon"), costsPerYear: g("fc-costs"), bufferPerMonth: g("fc-buffer"), convLow: g("fc-cl"), convMid: g("fc-cm"), convHigh: g("fc-ch") } })
+      .then(function () { document.getElementById("fcSaved").textContent = "Saved."; loadForecast(); })
+      .catch(function (e) { document.getElementById("fcSaved").textContent = "Couldn't save: " + e.message; });
+  });
+
   // ---------- the site's own visit counter ----------
   function hitPage(k) { return k === "home" ? "/" : "/" + k.split("__").map(function (x) { return x.replace(/_/g, "-"); }).join("/") + "/"; }
   function loadVisits() {
@@ -2128,6 +2285,8 @@
       loadLifetime();
       loadNewsletter();
       loadVisits();
+      window.__adminReady = true;
+      if (location.hash === "#forecast") loadForecast();
       loadFeedback();
       loadSources();
       loadErrors();

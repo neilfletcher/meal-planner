@@ -190,7 +190,7 @@
     cooked: {},  // which of THIS week's day slots have been confirmed cooked: { dayIdx: { id, ts } }
     statsResetAt: 0, // "Start my stats again": cooks and plans before this are ignored
     cookLog: [], // durable log of confirmed cooks only, separate from planning: { id, ts }
-    planWeek: null,      // "YYYY-MM-DD" of the Monday the plan belongs to
+    planWeek: null,      // "YYYY-MM-DD" of the first day of the week the plan belongs to (see weekStart)
     leftovers: {},       // { dayIdx: true } - that day is leftovers of the day before
     guests: {},          // { dayIdx: n } - people eating that day, when it isn't the usual "Cooking for"
     staples: {},         // shopping keys the person always has in the cupboard
@@ -198,11 +198,14 @@
     customRecipes: [],   // the person's own recipes
     lastWeek: null,      // { week, plan } kept for "Copy last week"
     newWeekNotice: false,
-    cookDays: [true, true, true, true, true, true, true], // which days of the week they cook (Mon..Sun)
+    cookDays: [true, true, true, true, true, true, true], // which days of the week they cook (Mon..Sun, whatever day the week starts on)
+    weekStart: 0,        // the day the planner's week starts on: 0 Monday .. 6 Sunday
     fridge: {},          // leftovers to use up: { packKey: amount in the pack's unit }
     swaps: {},           // ingredient swaps the person has chosen: { swapId: true } (see SOLO_SWAPS)
     fridgeFrom: null,    // "YYYY-MM-DD" Monday of the first week the fridge applies to
     newOnly: false,      // suggestions (Surprise me, fills) only pick dishes not cooked yet
+    quickWeeknights: false, // suggestions for Monday to Thursday lean to dinners of 25 minutes or less
+    favCuisines: {},     // cuisines that come up more often in suggestions: { "Italy": true }
     next: null           // next week's plan: { week, plan, cooked, leftovers, checked }
   };
   var HISTORY_LIMIT = 400; // keep this bounded so it never grows the saved state unreasonably
@@ -301,10 +304,22 @@
     var now = SEASON_W[window.SOLO_SEASON_NOW(viewNext ? new Date(Date.now() + 7 * 86400000) : new Date())];
     return (now && now[tag]) || 1;
   }
+  // Settings: favourite cuisines, as chips inside a fold so 65 of them don't swamp the panel.
+  function favCuisinesHtml() {
+    var fav = state.favCuisines || {}, n = Object.keys(fav).length, seen = {}, list = [];
+    RECIPES.forEach(function (r) { if (r.cuisine && !seen[r.cuisine]) { seen[r.cuisine] = 1; list.push(r.cuisine); } });
+    list.sort(function (a, b) { return a.localeCompare(b); });
+    return '<details class="fav-cuisines"' + (n ? " open" : "") + '><summary>Favourite cuisines <span class="fav-count">' + (n ? n + " chosen" : "none chosen") + "</span></summary>" +
+      '<p class="settings-note">These come up about twice as often in suggestions. Everything else still appears.</p>' +
+      '<div class="chip-row">' + list.map(function (c) {
+        return '<button type="button" class="chip" data-favcuisine="' + esc(c) + '" aria-pressed="' + (fav[c] ? "true" : "false") + '">' + esc(c) + "</button>";
+      }).join("") + "</div></details>";
+  }
   function prefWeight(r) {
     var stars = state.ratings && state.ratings[r.id];
     var w = stars === 5 ? 3 : stars === 4 ? 2 : stars === 3 ? 1 : stars === 2 ? 0.4 : (cookedCounts()[r.id] ? 1.25 : 2);
     w *= seasonWeight(r);
+    if (state.favCuisines && state.favCuisines[r.cuisine]) w *= 2.2; // "Favourite cuisines" in settings
     var last = lastCooked(r.id);
     if (last && Date.now() - last < 21 * 86400000) w *= 0.35;
     return w;
@@ -328,7 +343,18 @@
     f *= Math.pow(0.4, t.cuisines[r.cuisine] || 0);
     return f;
   }
-  function pickDinners(n, existingIds) {
+  // "Keep weeknights quick": Monday to Thursday lean hard towards dinners of
+  // 25 minutes or less, and away from anything over 40. Other nights are left alone.
+  function isWeeknight(slot) { return slot != null && (slot + WS()) % 7 <= 3; }
+  function quickFactor(r, slot) {
+    if (!state.quickWeeknights || !isWeeknight(slot)) return 1;
+    var t = (r.prep || 0) + (r.cook || 0);
+    if (!t) return 1;
+    return t <= 25 ? 1.6 : t <= 30 ? 1 : t <= 40 ? 0.3 : 0.08;
+  }
+  // days (optional): the planner slot each pick is for, in order, so per-day
+  // settings such as quick weeknights can be applied.
+  function pickDinners(n, existingIds, days) {
     existingIds = (existingIds || []).filter(Boolean);
     var pool = suggestPool(freeRecipePool(RECIPES));
     if (!pool.length) return [];
@@ -336,7 +362,8 @@
     for (var k = 0; k < n; k++) {
       var cands = pool.filter(function (r) { return existingIds.indexOf(r.id) === -1 && chosen.indexOf(r.id) === -1; });
       if (!cands.length) cands = pool; // more dinners than dishes: repeats are allowed
-      var weights = cands.map(function (r) { return prefWeight(r) * varietyFactor(r, tally); });
+      var slot = days ? days[k] : null;
+      var weights = cands.map(function (r) { return prefWeight(r) * varietyFactor(r, tally) * quickFactor(r, slot); });
       var total = weights.reduce(function (a, b) { return a + b; }, 0), x = Math.random() * total, pick = cands[cands.length - 1];
       for (var i = 0; i < cands.length; i++) { x -= weights[i]; if (x <= 0) { pick = cands[i]; break; } }
       chosen.push(pick.id);
@@ -353,11 +380,16 @@
   var LEGACY_LOCAL_KEY = "plateAndList.state.v1"; // old key from the app's previous name, Plate & List
   var firestoreUnsub = null;    // unsubscribe fn for the live Firestore listener
 
+  // The planner's week starts on a day of the person's choosing (state.weekStart,
+  // 0 Monday .. 6 Sunday). MONDAY and the "...Monday" names below mean "the
+  // first day of the week", which is a Monday unless they have changed it.
+  function WS() { var w = state.weekStart; return w >= 0 && w <= 6 ? w | 0 : 0; }
+  function monIdx(d) { return (d.getDay() + 6) % 7; } // 0 Monday .. 6 Sunday
+  function dayName(i) { return DOW_NAMES[((i + WS()) % 7 + 7) % 7]; } // name of slot i of the planner's week
+  function computeToday() { return (monIdx(new Date()) - WS() + 7) % 7; }
   function weekMonday() {
     var d = new Date();
-    var day = d.getDay(); // 0 Sun .. 6 Sat
-    var diff = (day === 0 ? -6 : 1 - day);
-    d.setDate(d.getDate() + diff);
+    d.setDate(d.getDate() - (monIdx(d) - WS() + 7) % 7);
     d.setHours(0, 0, 0, 0);
     return d;
   }
@@ -382,7 +414,9 @@
   function firstOpenDay() { return viewNext ? 0 : todayIdx; }
   // Cooking days are a standing choice (e.g. Monday to Thursday) that every
   // fill respects. A day that is off can still have a dinner added by hand.
-  function isCookDay(d) { return !state.cookDays || state.cookDays[d] !== false; }
+  // cookDays is kept by weekday (Monday first), so it means the same days
+  // whatever day the week starts on; d here is a slot of the planner's week.
+  function isCookDay(d) { return !state.cookDays || state.cookDays[(d + WS()) % 7] !== false; }
   function cookDayCount() { var n = 0; for (var d = 0; d < 7; d++) if (isCookDay(d)) n++; return n; }
   // Days a fill may put a dinner on: still to come, a cooking day, and empty.
   function fillableDays() {
@@ -461,8 +495,12 @@
     if (data.fridge && typeof data.fridge === "object" && !Array.isArray(data.fridge)) state.fridge = data.fridge;
     if (typeof data.fridgeFrom === "string" || data.fridgeFrom === null) state.fridgeFrom = data.fridgeFrom;
     if (typeof data.newOnly === "boolean") state.newOnly = data.newOnly;
+    if (typeof data.quickWeeknights === "boolean") state.quickWeeknights = data.quickWeeknights;
+    if (data.favCuisines && typeof data.favCuisines === "object" && !Array.isArray(data.favCuisines)) state.favCuisines = data.favCuisines;
     if (data.swaps && typeof data.swaps === "object" && !Array.isArray(data.swaps)) state.swaps = data.swaps;
     if (Array.isArray(data.cookDays) && data.cookDays.length === 7) state.cookDays = data.cookDays.map(function (v) { return v !== false; });
+    if (typeof data.weekStart === "number" && data.weekStart >= 0 && data.weekStart <= 6) state.weekStart = data.weekStart | 0;
+    refreshWeekClock();
     if (data.next && typeof data.next === "object" && Array.isArray(data.next.plan) && data.next.plan.length === 7) state.next = data.next;
     registerCustomRecipes();
   }
@@ -820,7 +858,9 @@
   /* ============================= PLANNER RENDER ============================= */
   var dayList = document.getElementById("day-list");
   var batchList = document.getElementById("batch-list");
-  var todayIdx = (function () { var d = new Date().getDay(); return d === 0 ? 6 : d - 1; })();
+  var todayIdx = computeToday();
+  // After loading a saved state whose week starts on another day.
+  function refreshWeekClock() { MONDAY = weekMonday(); todayIdx = computeToday(); }
 
   function shuffle(arr) {
     for (var i = arr.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = arr[i]; arr[i] = arr[j]; arr[j] = t; }
@@ -975,7 +1015,7 @@
 
       var label = document.createElement("div");
       label.className = "day-label";
-      label.innerHTML = '<span class="dow">' + DOW_NAMES[idx].slice(0, 3).toUpperCase() + '</span><span class="dom">' + date.getDate() + "</span>" +
+      label.innerHTML = '<span class="dow">' + dayName(idx).slice(0, 3).toUpperCase() + '</span><span class="dom">' + date.getDate() + "</span>" +
         (idx === viewToday() ? '<span class="today-pill">Today</span>' : "");
       card.appendChild(label);
 
@@ -987,7 +1027,7 @@
         assigned.className = "assigned";
         assigned.innerHTML = recipeThumb(r) +
           '<span class="info"><span class="title">' + esc(r.title) + '</span>' +
-          '<span class="meta">' + metaLine(r, leftover ? DOW_NAMES[idx - 1] : null) +
+          '<span class="meta">' + metaLine(r, leftover ? dayName(idx - 1) : null) +
           (dayServes(idx) !== state.servings ? ' &middot; <span class="guests-tag">For ' + dayServes(idx) + "</span>" : "") +
           (isCooked ? ' &middot; <span class="cooked-word">' + (leftover ? "eaten" : "cooked") + "</span>" : "") + "</span></span>";
         assigned.addEventListener("click", function (rid, i) { return function () { openRecipeModal(rid, { dayIdx: i }); }; }(recipeId, idx));
@@ -1013,7 +1053,7 @@
           '<button type="button" class="btn btn-outline btn-sm" data-act="surprise">Surprise me</button></span>';
         empty.querySelector('[data-act="add"]').addEventListener("click", function (i) { return function () { openPicker({ type: "day", dayIdx: i }); }; }(idx));
         empty.querySelector('[data-act="surprise"]').addEventListener("click", function (i) { return function () {
-          var pickId = pickDinners(1, W().plan)[0];
+          var pickId = pickDinners(1, W().plan, [i])[0];
           if (!pickId) return;
           applyPick({ type: "day", dayIdx: i }, pickId, "surprise");
           onStateChanged();
@@ -1075,7 +1115,7 @@
       '<div class="glance"><div><span class="glance-big">' + fmtDuration(mins) + '</span><span class="glance-small">in the kitchen</span></div>' +
       '<div><span class="glance-big">' + Object.keys(countries).length + '</span><span class="glance-small">' + (Object.keys(countries).length === 1 ? "country" : "countries") + "</span></div></div>" +
       (bars.length ? '<div class="mini-bars">' + bars.map(function (m, i) {
-        return '<div class="mini-bar"><span class="mini-val">' + (m || "") + '</span><span class="mini-fill' + (i === viewToday() ? " is-today" : "") + '" style="height:' + Math.round(m / max * 64) + 'px"></span><span class="mini-day">' + DOW_NAMES[i].charAt(0) + "</span></div>";
+        return '<div class="mini-bar"><span class="mini-val">' + (m || "") + '</span><span class="mini-fill' + (i === viewToday() ? " is-today" : "") + '" style="height:' + Math.round(m / max * 64) + 'px"></span><span class="mini-day">' + dayName(i).charAt(0) + "</span></div>";
       }).join("") + "</div>" : "") +
       "</section>";
     html += fridgeAsideHtml();
@@ -1101,8 +1141,51 @@
   }
   function setCookDay(d, on) {
     if (!Array.isArray(state.cookDays) || state.cookDays.length !== 7) state.cookDays = [true, true, true, true, true, true, true];
-    state.cookDays[d] = on;
+    state.cookDays[(d + WS()) % 7] = on;
     onStateChanged();
+  }
+  // Changing the first day of the week. Dinners already planned stay on the
+  // same dates: each one moves to the slot that date has in the new week.
+  // Anything that would fall outside this week and next is listed, not lost silently.
+  function setWeekStart(n) {
+    n = n | 0;
+    if (n === WS() || n < 0 || n > 6) return;
+    var DAY = 86400000, oldStart = new Date(MONDAY), old = WS(), items = [];
+    var weeks = [[state, 0]];
+    if (state.next && state.next.week === nextMondayKey() && Array.isArray(state.next.plan)) weeks.push([state.next, 7]);
+    weeks.forEach(function (w) {
+      var src = w[0];
+      for (var i = 0; i < 7; i++) {
+        var it = { off: w[1] + i, id: src.plan[i], cooked: (src.cooked || {})[i], left: (src.leftovers || {})[i], guests: (src.guests || {})[i] };
+        if (it.id || it.cooked || it.left || it.guests) items.push(it);
+      }
+    });
+    var nextChecked = state.next ? state.next.checked : null;
+    state.weekStart = n;
+    refreshWeekClock();
+    var shift = Math.round((MONDAY.getTime() - oldStart.getTime()) / DAY);
+    state.plan = [null, null, null, null, null, null, null];
+    state.cooked = {}; state.leftovers = {}; state.guests = {};
+    state.planWeek = weekKey(MONDAY);
+    state.next = emptyWeek(nextMondayKey());
+    if (nextChecked) state.next.checked = nextChecked;
+    var dropped = [];
+    items.forEach(function (it) {
+      var k = it.off - shift, w = k >= 0 && k < 7 ? state : k >= 7 && k < 14 ? state.next : null;
+      if (!w) { if (it.id) dropped.push(it.id); return; }
+      var j = k % 7;
+      w.plan[j] = it.id || null;
+      if (it.cooked) w.cooked[j] = it.cooked;
+      if (it.left) w.leftovers[j] = it.left;
+      if (it.guests) w.guests[j] = it.guests;
+    });
+    // "Copy last week" copies by weekday, so turn last week round the same way.
+    if (state.lastWeek && Array.isArray(state.lastWeek.plan) && state.lastWeek.plan.length === 7) {
+      var lp = state.lastWeek.plan;
+      state.lastWeek.plan = lp.map(function (x, j) { return lp[(j + n - old + 7) % 7]; });
+    }
+    onStateChanged();
+    toast("Your week now starts on " + DOW_NAMES[n] + "." + (dropped.length ? " " + dropped.length + (dropped.length === 1 ? " dinner was" : " dinners were") + " more than a week ahead, so " + (dropped.length === 1 ? "it was" : "they were") + " taken off the plan." : ""));
   }
   function renderCookDays() {
     var wrap = document.getElementById("cook-days");
@@ -1111,11 +1194,15 @@
     var html = '<span class="cook-days-label">Cooking on</span><span class="cook-days-chips" role="group" aria-label="Days you cook">';
     for (var d = 0; d < 7; d++) {
       var on = isCookDay(d);
-      html += '<button type="button" class="cook-day" data-day="' + d + '" aria-pressed="' + on + '" title="' + DOW_NAMES[d] + (on ? ": cooking. Click to skip" : ": not cooking. Click to cook") + '">' +
-        DOW_NAMES[d].slice(0, 2) + "</button>";
+      html += '<button type="button" class="cook-day" data-day="' + d + '" aria-pressed="' + on + '" title="' + dayName(d) + (on ? ": cooking. Click to skip" : ": not cooking. Click to cook") + '">' +
+        dayName(d).slice(0, 2) + "</button>";
     }
-    html += '</span><span class="cook-days-count">' + n + (n === 1 ? " dinner" : " dinners") + " a week</span>";
+    html += '</span><span class="cook-days-count">' + n + (n === 1 ? " dinner" : " dinners") + " a week</span>" +
+      '<label class="week-start">Week starts <select id="week-start-select" aria-label="Day your week starts on">' +
+      DOW_NAMES.map(function (nm, i) { return '<option value="' + i + '"' + (i === WS() ? " selected" : "") + ">" + nm + "</option>"; }).join("") + "</select></label>";
     wrap.innerHTML = html;
+    var wsSel = document.getElementById("week-start-select");
+    if (wsSel) wsSel.addEventListener("change", function () { setWeekStart(+wsSel.value); });
     wrap.querySelectorAll(".cook-day").forEach(function (b) {
       b.addEventListener("click", function () { var d = +b.getAttribute("data-day"); setCookDay(d, !isCookDay(d)); });
     });
@@ -1139,7 +1226,7 @@
     state.newWeekNotice = false;
     setTimeout(function () { toast("Week filled", "Undo", function () { applyState(JSON.parse(undoSnap)); onStateChanged(); }); }, 0);
     // Weighted and varied (see pickDinners); 1-star dishes never come up.
-    var picks = pickDinners(days.length, W().plan);
+    var picks = pickDinners(days.length, W().plan, days);
     days.forEach(function (d, i) {
       if (!picks[i]) return;
       W().plan[d] = picks[i];
@@ -1674,7 +1761,7 @@
   // Greedy low-waste picker: start from a dinner, keep adding whichever
   // candidate leaves the least in opened packs, with a nudge towards variety.
   // Several random starts; the best finished set wins.
-  function planLowWaste(fixedIds, n) {
+  function planLowWaste(fixedIds, n, days) {
     var fixedEntries = fixedIds; // ids or { id, serves } (days with guests)
     fixedIds = fixedIds.map(function (x) { return portionOf(x).id; });
     var pool = suggestPool(freeRecipePool(RECIPES)).filter(function (r) { return !r.custom; });
@@ -1700,6 +1787,7 @@
           var dt = dishType(r), dn = types[dt] || 0;
           if (dt !== "other") s += dn >= dishTypeCap(dt) ? 4 : dn * 0.6;
           s -= Math.log(prefWeight(r)) * 0.4; // favourites and new dishes a little more likely
+          if (days) s -= Math.log(quickFactor(r, days[k])) * 0.8; // quick weeknights, when switched on
           s += Math.random() * 0.35;
           if (s < pickScore) { pickScore = s; pickR = r; }
         });
@@ -1723,7 +1811,7 @@
     var empty = fillableDays();
     if (!empty.length) { noFillableToast(); return; }
     var undoSnap = JSON.stringify(syncPayload());
-    var picks = planLowWaste(currentPortions(), empty.length);
+    var picks = planLowWaste(currentPortions(), empty.length, empty);
     picks.forEach(function (id, i) { W().plan[empty[i]] = id; logHistory(id, "lowwaste"); });
     state.newWeekNotice = false;
     onStateChanged();
@@ -1946,7 +2034,7 @@
   function plannedDinners() {
     if (state.mode === "batch") return state.batch.map(function (b, k) { return { id: b.id, serves: state.servings, uid: b.uid, label: "Dinner " + (k + 1) }; });
     var out = [];
-    W().plan.forEach(function (id, d) { if (id && !isLeftover(d)) out.push({ id: id, serves: dayServes(d), dayIdx: d, label: DOW_NAMES[d] }); });
+    W().plan.forEach(function (id, d) { if (id && !isLeftover(d)) out.push({ id: id, serves: dayServes(d), dayIdx: d, label: dayName(d) }); });
     return out;
   }
   function shopUsage() {
@@ -2303,8 +2391,8 @@
 
       if (ctx && ctx.dayIdx !== undefined) {
         var dsN = dayServes(ctx.dayIdx), dsUsual = dsN === state.servings;
-        actionsHtml = '<div class="day-serves" role="group" aria-label="People eating on ' + DOW_NAMES[ctx.dayIdx] + '">' +
-          '<span class="day-serves-label">' + DOW_NAMES[ctx.dayIdx] + ": cooking for</span>" +
+        actionsHtml = '<div class="day-serves" role="group" aria-label="People eating on ' + dayName(ctx.dayIdx) + '">' +
+          '<span class="day-serves-label">' + dayName(ctx.dayIdx) + ": cooking for</span>" +
           '<div class="stepper"><button type="button" data-ds="-1" aria-label="Fewer people"' + (dsN <= 1 ? " disabled" : "") + ">" + ico("minus") + "</button>" +
           '<span class="stepper-value">' + dsN + '</span><button type="button" data-ds="1" aria-label="More people"' + (dsN >= 12 ? " disabled" : "") + ">" + ico("plus") + "</button></div>" +
           (dsUsual ? '<span class="day-serves-hint">Got guests? Change it for just this day, and the shopping list follows.</span>'
@@ -2386,11 +2474,11 @@
       for (var d = 0; d < 7; d++) {
         var b = document.createElement("button");
         b.className = "day-pick-btn" + (W().plan[d] === r.id ? " filled" : "");
-        b.textContent = DOW_NAMES[d].slice(0, 3);
+        b.textContent = dayName(d).slice(0, 3);
         b.type = "button";
         if (d === viewToday()) b.classList.add("is-today");
         if (!isCookDay(d)) b.classList.add("is-off");
-        b.title = "Add to " + DOW_NAMES[d];
+        b.title = "Add to " + dayName(d);
         b.addEventListener("click", function (dayIdx) { return function () {
           clearCooked(dayIdx);
           W().plan[dayIdx] = r.id;
@@ -2448,7 +2536,7 @@
     var titleText, subText;
     if (ctx.type === "day") {
       var date = VM(); date.setDate(date.getDate() + ctx.dayIdx);
-      titleText = "Pick a dinner for " + DOW_NAMES[ctx.dayIdx];
+      titleText = "Pick a dinner for " + dayName(ctx.dayIdx);
       subText = date.toLocaleDateString("en-GB", { day: "numeric", month: "long" });
     } else if (ctx.type === "batchReplace") {
       titleText = "Change this dinner";
@@ -2548,8 +2636,9 @@
       // in the (unlikely) case every single recipe has been rated 1 star.
       // When not unlocked, only ever surprise with something already free.
       var around = ctx && (ctx.type === "batchAdd" || ctx.batchUid !== undefined) ? state.batch.map(function (b) { return b.id; }) : W().plan;
-      var pickId = pickDinners(1, around)[0];
-      for (var tries = 0; ctx.without && pickId && tries < 30 && recipeUsesKey(RECIPES_BY_ID[pickId], ctx.without.key); tries++) pickId = pickDinners(1, around)[0];
+      var forDay = ctx && ctx.type === "day" ? [ctx.dayIdx] : null;
+      var pickId = pickDinners(1, around, forDay)[0];
+      for (var tries = 0; ctx.without && pickId && tries < 30 && recipeUsesKey(RECIPES_BY_ID[pickId], ctx.without.key); tries++) pickId = pickDinners(1, around, forDay)[0];
       if (!pickId || (ctx.without && recipeUsesKey(RECIPES_BY_ID[pickId], ctx.without.key))) return;
       applyPick(ctx, pickId, "surprise");
       onStateChanged();
@@ -2935,7 +3024,7 @@
     var now = weekMonday();
     if (now.getTime() !== MONDAY.getTime()) {
       MONDAY = now;
-      todayIdx = (function () { var d = new Date().getDay(); return d === 0 ? 6 : d - 1; })();
+      todayIdx = computeToday();
     }
     var key = weekKey(MONDAY);
     if (!state.planWeek) { state.planWeek = key; return true; } // older saves: adopt this week
@@ -3323,7 +3412,7 @@
         if (w.cooked && w.cooked[d] && w.cooked[d].id === id) return;
         if (w.leftovers && w.leftovers[d] && d > 0 && w.plan[d - 1] === id) return; // eating leftovers, not cooking
         var g = w.guests && w.guests[d];
-        out.push({ id: id, serves: g >= 1 ? g : state.servings, label: (pos === 1 && !viewNext ? "Next " : "") + DOW_NAMES[d] });
+        out.push({ id: id, serves: g >= 1 ? g : state.servings, label: (pos === 1 && !viewNext ? "Next " : "") + dayName(d) });
       });
     }
     return out;
@@ -3553,6 +3642,9 @@
       "<h3>Suggestions</h3>" +
       '<label class="switch-row"><input type="checkbox" id="newonly-on"' + (state.newOnly ? " checked" : "") + "> Only suggest dishes I haven\u2019t cooked yet</label>" +
       '<p class="settings-note">Applies to Surprise me and the fill buttons. Dishes you\u2019ve ticked as cooked are skipped until there are too few left to fill a week.</p>' +
+      '<label class="switch-row"><input type="checkbox" id="quickweek-on"' + (state.quickWeeknights ? " checked" : "") + "> Keep weeknights quick</label>" +
+      '<p class="settings-note">Monday to Thursday, suggestions lean towards dinners ready in 25 minutes or less. Friday to Sunday are left as they are.</p>' +
+      favCuisinesHtml() +
       "<h3>Your stats</h3>" +
       '<button type="button" class="btn btn-ghost btn-sm acct-delete' + (resetArmed ? " is-armed" : "") + '" id="stats-reset-btn">' + (resetArmed ? "Tap again to clear them" : "Start my stats again") + "</button>" +
       '<p class="settings-note">' + (resetArmed ? "This clears every dinner you’ve ticked as cooked and your planning history, on all your devices. Your ratings, recipes and any books you’ve earned stay." : "Clears what you’ve cooked and planned so far, so your kitchen stats start from today.") + "</p>" +
@@ -3586,6 +3678,18 @@
     if (up) up.addEventListener("click", function () { setUsualServings(state.servings + 1); });
     var inst = document.getElementById("install-app-btn");
     if (inst) inst.addEventListener("click", function () { closeSettings(); promptInstall(); });
+    document.getElementById("quickweek-on").addEventListener("change", function (e) { state.quickWeeknights = e.target.checked; onStateChanged(); toast(state.quickWeeknights ? "Weeknight suggestions now lean to quick dinners." : "Weeknight suggestions can be any length."); });
+    settingsModal.querySelectorAll("[data-favcuisine]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        var c = b.getAttribute("data-favcuisine");
+        state.favCuisines = state.favCuisines || {};
+        if (state.favCuisines[c]) delete state.favCuisines[c]; else state.favCuisines[c] = true;
+        b.setAttribute("aria-pressed", state.favCuisines[c] ? "true" : "false");
+        var n = Object.keys(state.favCuisines).length, cnt = settingsModal.querySelector(".fav-count");
+        if (cnt) cnt.textContent = n ? n + " chosen" : "none chosen";
+        onStateChanged();
+      });
+    });
     document.getElementById("newonly-on").addEventListener("change", function (e) { state.newOnly = e.target.checked; onStateChanged(); toast(state.newOnly ? "Suggestions now skip dishes you\u2019ve cooked." : "Suggestions can include dishes you\u2019ve cooked."); });
     if (NativeExtras) {
       var status = document.getElementById("reminder-status");
@@ -3791,7 +3895,7 @@
 
   /* ============================= CLOUD SYNC ============================= */
   var SYNC_FIELDS = ["servings", "mode", "plan", "batch", "checked", "ratings", "noSeafood", "history", "cooked", "cookLog", "statsResetAt",
-    "planWeek", "leftovers", "guests", "staples", "avoid", "customRecipes", "lastWeek", "newWeekNotice", "next", "cookDays", "fridge", "fridgeFrom", "newOnly", "swaps"];
+    "planWeek", "leftovers", "guests", "staples", "avoid", "customRecipes", "lastWeek", "newWeekNotice", "next", "cookDays", "weekStart", "fridge", "fridgeFrom", "newOnly", "quickWeeknights", "favCuisines", "swaps"];
   var UNSYNCED_KEY = "soloSupper.unsynced";
   var lastSyncedJson = {};
   var savePending = false;
@@ -3850,9 +3954,12 @@
     }
     M.servings = L.servings; M.mode = L.mode;
     M.cookDays = (Array.isArray(C.cookDays) && C.cookDays.length === 7) ? C.cookDays : L.cookDays;
+    M.weekStart = typeof C.weekStart === "number" ? C.weekStart : (L.weekStart || 0);
     M.fridge = Object.assign({}, C.fridge || {}, L.fridge || {});
     M.fridgeFrom = L.fridgeFrom || C.fridgeFrom || null;
     M.newOnly = typeof L.newOnly === "boolean" ? L.newOnly : !!C.newOnly;
+    M.quickWeeknights = typeof L.quickWeeknights === "boolean" ? L.quickWeeknights : !!C.quickWeeknights;
+    M.favCuisines = L.favCuisines && typeof L.favCuisines === "object" ? L.favCuisines : (C.favCuisines || {});
     M.swaps = Object.assign({}, C.swaps || {}, L.swaps || {});
     M.noSeafood = !!(L.noSeafood || C.noSeafood);
     return M;

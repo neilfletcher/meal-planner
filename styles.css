@@ -617,6 +617,9 @@ h1, .display, .display-l, .display-m, .week-range { letter-spacing: -0.02em; }
 .cook-day[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: var(--paper); }
 .cook-day:focus-visible { outline: 2px solid var(--tomato); outline-offset: 2px; }
 .cook-days-count { font-family: var(--mono); font-size: 13px; color: var(--ink-3); }
+.week-start { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; color: var(--ink-2); margin-left: auto; }
+.week-start select { font: inherit; font-size: 14px; color: var(--ink); background: var(--plate, #fff); border: 1px solid var(--line-strong, #C9C3B6); border-radius: 8px; padding: 4px 8px; }
+@media (max-width: 560px) { .week-start { margin-left: 0; } }
 .day-card.is-off { background: transparent; border: 1px solid var(--line); padding-top: 6px; padding-bottom: 6px; }
 .day-card.is-off .day-label, .day-card.is-past.is-empty .day-label { width: auto; min-width: 60px; }
 .day-card.is-off .day-label { flex-direction: row; gap: 10px; align-items: baseline; }
@@ -846,3 +849,9 @@ h1, .display, .display-l, .display-m, .week-range { letter-spacing: -0.02em; }
 
 /* Serves only needs room for a small number, so the times get the space */
 .meta4 { grid-template-columns: repeat(3, minmax(0, 1fr)) minmax(64px, auto); }
+
+/* Settings: favourite cuisines fold */
+.fav-cuisines { margin: 14px 0 4px; }
+.fav-cuisines summary { cursor: pointer; font-weight: 600; font-size: 15px; padding: 4px 0; }
+.fav-count { font-weight: 400; font-size: 13px; color: var(--ink-3); margin-left: 6px; }
+.fav-cuisines .chip-row { margin-top: 8px; }

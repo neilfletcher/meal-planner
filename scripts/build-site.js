@@ -484,7 +484,7 @@ function footer(rel) {
     col("Planner", [["Plan your week", rel + "plan/"], ["The cookbooks", rel + "books/"], ["Get the app", rel + "app/"], ["Use it up", rel + "use-up/"], ["Cuisines", rel + "cuisines/"], ["Collections", rel + "collections/"]]) +
     col("About", [["Contact", "mailto:" + CONTACT_EMAIL], ["Privacy", rel + "privacy/"], ["Terms", rel + "terms/"], ["Refunds", rel + "refunds/"], ["Cookies", rel + "cookies/"], ["Cookie settings", "#cookie-settings"]]) +
     "</div>" +
-    '<div class="footer-base"><span>&copy; <span data-year>' + YEAR + "</span> Solo Supper</span><span>Every recipe written for one. Scaled for two when someone stays over.</span></div>" +
+    '<div class="footer-base"><span>&copy; <span data-year>' + YEAR + "</span> Solo Supper</span><span>Every recipe written for one, and scales up with a tap when someone stays over.</span></div>" +
     "</div></footer>\n" +
     '<div class="consent" id="consent" role="region" aria-label="Usage statistics" hidden></div>\n' +
     '<script src="' + rel + V("assets/telemetry.js") + '"></script>\n' +
@@ -682,7 +682,7 @@ function demoHtml(rel) {
     '<section class="hero2">' +
     '<div class="hero2-text">' +
     '<h1 class="display">Dinner for one, without the waste.</h1>' +
-    '<p class="lead">' + RECIPES.length + " recipes written for a single portion. The planner picks dinners that share their packs, so the spinach you open on Monday is finished by Thursday, and the shopping list adds it all up.</p>" +
+    '<p class="lead">' + RECIPES.length + " recipes written for a single portion, and each one scales up with a tap when someone joins you. The planner picks dinners that share their packs, so the spinach you open on Monday is finished by Thursday, and the shopping list adds it all up.</p>" +
     '<div class="btn-row"><a class="btn btn-primary btn-lg" href="plan/">Plan this week ' + ICON.arrow + "</a>" +
     '<a class="btn btn-outline btn-lg" href="recipes/">Browse recipes</a></div>' +
     '<p class="small muted">Every recipe, the planner and the shopping list are free. <a href="#pro">Pro</a> adds low-waste planning: try it free for 14 days.</p>' +
@@ -904,6 +904,7 @@ RECIPES.forEach(function (r) {
     '<div class="ing-head"><h2 id="ing-h">Ingredients</h2>' +
     '<div class="stepper" role="group" aria-label="Servings"><button type="button" data-serve="-1" aria-label="Fewer servings">' + ICON.minus + '</button>' +
     '<span>Serves <output class="mono" data-serves-out>1</output></span><button type="button" data-serve="1" aria-label="More servings">' + ICON.plus + "</button></div></div>" +
+    '<p class="ing-scale-note">Written for one. Cooking for more? Tap + and every amount scales, up to eight.</p>' +
     ingHtml +
     '<a class="btn btn-outline btn-block" href="' + rel + "plan/?add=" + r.id + '">' + ICON.basket + "Add to my shopping list</a>" +
     "</aside>" +

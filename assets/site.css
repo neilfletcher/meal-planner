@@ -237,6 +237,7 @@ em { font-style: italic; }
 @media (min-width: 1000px) { .ing-card { position: sticky; top: 24px; } }
 .ing-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
 .ing-head h2, .method h2 { font-size: 36px; line-height: 1; }
+.ing-scale-note { margin: 8px 0 4px; font-size: 13px; color: var(--ink-3); }
 .stepper { display: inline-flex; align-items: center; border: 1px solid var(--line-strong); border-radius: 999px; height: 44px; font-size: 14px; }
 .stepper button { width: 44px; height: 44px; border: 0; background: transparent; color: var(--ink); display: inline-flex; align-items: center; justify-content: center; cursor: pointer; border-radius: 999px; }
 .stepper button:disabled { color: var(--line-strong); cursor: default; }
@@ -520,7 +521,7 @@ h1, .display, .display-l, .display-m, .week-range { letter-spacing: -0.02em; }
   @page { margin: 14mm; }
   body { background: #fff; color: #000; }
   .skip, .site-header, .site-footer, .consent, .crumbs, .recipe-media, .recipe-intro .btn-row, .recipe-intro .marks,
-  .ing-head .stepper, .ing-card .btn, .in-colls, .useup, .section, .ing-swap, .cook-notes { display: none !important; }
+  .ing-head .stepper, .ing-scale-note, .ing-card .btn, .in-colls, .useup, .section, .ing-swap, .cook-notes { display: none !important; }
   .wrap { max-width: none; padding: 0; }
   .recipe-head { display: block; padding-top: 0; }
   .recipe-intro .eyebrow { font-size: 9pt; }

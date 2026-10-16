@@ -2027,7 +2027,8 @@
     return { books: out, lastDay: k.catalogue && k.catalogue.lastDay, estimated: span < 29 };
   }
   // For the scheduled evening task: window.SoloAdmin.saveKdp({ day, month, books: [{ title, mtd }] }).
-  window.SoloAdmin = { saveKdp: function (o) { return adminApi(Object.assign({ action: "kdpSave" }, o)); }, ready: function () { return !!window.__adminReady; } };
+  window.SoloAdmin = { saveKdp: function (o) { return adminApi(Object.assign({ action: "kdpSave" }, o)); },
+    saveKdpMonth: function (o) { return adminApi(Object.assign({ action: "kdpMonthSave" }, o)); }, ready: function () { return !!window.__adminReady; } };
 
   // Actuals: money in, month by month. Stripe fees are Stripe's own figures;
   // KDP is each month's last evening reading (blank before readings began).
@@ -2055,7 +2056,7 @@
     }).reverse().join("");
     document.getElementById("fcActuals").innerHTML = "<thead><tr><th>Month</th><th>Subscriptions</th><th>Lifetime Pro</th><th>PDFs</th><th>Stripe fees</th><th>Solo Supper on Amazon</th><th>Other books</th><th>Total</th></tr></thead><tbody>" + rowsHtml +
       '<tr class="fc-total"><td>' + thisMonth.slice(0, 4) + " so far</td><td>" + p2(sum.subs / 100) + "</td><td>" + p2(sum.lifetime / 100) + "</td><td>" + p2(sum.pdfs / 100) + "</td><td>" + (sum.fees ? "-" + p2(sum.fees / 100) : "£0.00") + "</td><td>" + p2(sum.ss) + "</td><td>" + p2(sum.ob) + "</td><td>" + p2(sum.total) + "</td></tr></tbody>";
-    document.getElementById("fcActualsNote").textContent = "Subscriptions are Stripe's paid invoices; Lifetime Pro and PDFs are the site's own sales records, after refunds; Stripe fees are what Stripe actually took. Amazon is KDP royalties as at the last evening reading of each month (\u2013 before readings began on 16 October 2026), and KDP pays about two months later. Your own test purchases are left out." +
+    document.getElementById("fcActualsNote").textContent = "Subscriptions are Stripe's paid invoices; Lifetime Pro and PDFs are the site's own sales records, after refunds; Stripe fees are what Stripe actually took. Amazon is KDP royalties in pounds: finished months from KDP's Royalties Estimator for the whole month, this month from the evening reading. KDP pays about two months later. Your own test purchases are left out." +
       (a.errors && a.errors.length ? " Couldn't read some of it from Stripe just now (" + a.errors.join("; ") + "), so those columns may be short." : "");
   }
 

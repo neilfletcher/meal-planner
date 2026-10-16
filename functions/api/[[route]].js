@@ -363,6 +363,25 @@ async function admin(request, env) {
     await mergeDoc(env, "kdp/catalogue", { books: known, lastRead: now, lastDay: kday });
     return json({ ok: true, saved: Object.keys(books).length, newBooks: added });
   }
+  // Finished months from KDP's reports (final royalties per title, GBP):
+  // kdpMonths/YYYY-MM. These take the place of the evening readings for that
+  // month, and fill in the months before the readings began.
+  if (body.action === "kdpMonthSave") {
+    var mm = String(body.month || "").slice(0, 7);
+    if (!/^\d{4}-\d{2}$/.test(mm) || !Array.isArray(body.books)) throw httpError(400, "Send month (YYYY-MM) and books: [{ title, royalty }]");
+    var mcat = (await getDoc(env, "kdp/catalogue")) || { data: {} };
+    var mknown = mcat.data.books || {}, madded = [], mbooks = {}, today = new Date(now).toISOString().slice(0, 10);
+    body.books.slice(0, 200).forEach(function (b) {
+      var title = String(b.title || "").trim().slice(0, 300), v = Number(b.royalty);
+      if (!title || !isFinite(v)) return;
+      var key = hitKey(title, 60);
+      mbooks[key] = { title: title, mtd: Math.round(((mbooks[key] && mbooks[key].mtd) || 0) * 100 + v * 100) / 100 };
+      if (!mknown[key]) { mknown[key] = { title: title, firstSeen: today, group: /^solo supper/i.test(title) ? "solo" : "other" }; madded.push(title); }
+    });
+    await mergeDoc(env, "kdpMonths/" + mm, { month: mm, at: now, books: mbooks, source: String(body.source || "KDP reports").slice(0, 80) });
+    if (madded.length) await mergeDoc(env, "kdp/catalogue", { books: mknown });
+    return json({ ok: true, month: mm, saved: Object.keys(mbooks).length, newBooks: madded });
+  }
   if (body.action === "kdp") {
     var kc = await getDoc(env, "kdp/catalogue");
     var kd = await listCollection(env, "kdpDays", null, 800);
@@ -371,6 +390,7 @@ async function admin(request, env) {
     // the last evening read is that month's royalties).
     var kmonths = {};
     kd.forEach(function (r) { if (r.data.month) kmonths[r.data.month] = { day: r.data.day, books: r.data.books || {} }; });
+    (await listCollection(env, "kdpMonths", null, 240)).forEach(function (r) { kmonths[r.data.month] = { day: r.data.month, final: true, books: r.data.books || {} }; });
     return json({ catalogue: (kc && kc.data) || {}, days: kd.slice(-120).map(function (r) { return r.data; }), months: kmonths, at: now });
   }
   // Actual money in, month by month: subscriptions from Stripe's paid

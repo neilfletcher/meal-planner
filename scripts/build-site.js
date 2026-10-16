@@ -531,6 +531,78 @@ function sectionHead(eyebrow, h2, linkHref, linkText) {
     (linkHref ? '<a class="text-link" href="' + linkHref + '">' + linkText + "</a>" : "") + "</div>";
 }
 
+/* ------------------------------------------ home page: the fridge demo */
+// "What's in your fridge?": tap one ingredient and see three dinners that
+// finish it between them, worked out here at build time with the same pack
+// maths as the planner's low-waste fill. No sign-in, no planner needed.
+var FRIDGE_KEYS = ["chicken thigh", "chicken breast", "beef mince", "pork mince", "pork sausage", "white fish fillet", "salmon fillet", "coriander", "chopped tomato", "chestnut mushroom",
+  "baby spinach", "spinach", "halloumi", "feta", "courgette", "green beans", "tenderstem broccoli", "cooking chorizo", "streaky bacon", "coconut milk", "cherry tomato", "spring onion"];
+function fridgeSets() {
+  var cache = fridgeSets.cache;
+  if (cache) return cache;
+  var photo = RECIPES.filter(function (r) { return r.photo; }), byKey = {};
+  photo.forEach(function (r) { Object.keys(NEEDS[r.id]).forEach(function (k) { (byKey[k] = byKey[k] || []).push(r); }); });
+  cache = FRIDGE_KEYS.map(function (k) { return USEUP.filter(function (u) { return u.key === k; })[0]; }).filter(Boolean).map(function (u) {
+    var cands = u.users.filter(function (r) { return r.photo; }).slice(0, 20), best = null, pk = PK.PACKS[u.key];
+    var score = function (set) {
+      var ids = set.map(function (r) { return r.id; }), need = sumNeeds(ids), sc = PK.wasteOf(need);
+      var keySpare = Math.ceil(need[u.key] / pk.size - 0.08) * pk.size - need[u.key];
+      sc += Math.max(0, keySpare) / pk.size * 4; // the point is to use this one up
+      for (var i = 0; i < set.length; i++) for (var j = i + 1; j < set.length; j++) {
+        if (set[i].cuisine === set[j].cuisine) sc += 0.5;
+        if (set[i].protein === set[j].protein && u.key.indexOf(set[i].protein) === -1) sc += 0.25;
+      }
+      set.forEach(function (r) { if (total(r) > 35) sc += 0.15; });
+      return { score: sc, set: set, ids: ids };
+    };
+    // Two dinners that use it, then a third that shares one of the packs they open.
+    for (var a = 0; a < cands.length; a++) for (var b = a + 1; b < cands.length; b++) {
+      var pairNeed = sumNeeds([cands[a].id, cands[b].id]), seen = {};
+      Object.keys(pairNeed).forEach(function (k) {
+        (byKey[k] || []).forEach(function (c) {
+          if (c === cands[a] || c === cands[b] || seen[c.id]) return;
+          seen[c.id] = 1;
+          var x = score([cands[a], cands[b], c]);
+          if (!best || x.score < best.score || (x.score === best.score && x.ids.join() < best.ids.join())) best = x;
+        });
+      });
+    }
+    if (!best) return null;
+    var left = leftoversOf(sumNeeds(best.ids));
+    var keyLeft = left.filter(function (x) { return x.name === u.key; })[0];
+    var otherCost = left.filter(function (x) { return x !== keyLeft; }).reduce(function (s2, x) { return s2 + x.cost; }, 0);
+    if (process.env.FD_DEBUG) console.log(u.key, best.score.toFixed(2), left.map(function (x) { return x.name + ":" + x.cost.toFixed(2); }).join(", "));
+    // Offer it only when the three really do use most of it, without leaving much else.
+    if ((keyLeft && keyLeft.spare / pk.size > 0.3) || otherCost > 0.8) return null;
+    return { u: u, set: best.set, ids: best.ids, left: left, keyLeft: keyLeft, label: /mushroom$/.test(u.name) ? u.name + "s" : u.name };
+  }).filter(Boolean);
+  fridgeSets.cache = cache;
+  return cache;
+}
+function fridgeDemoHtml(rel) {
+  var sets = fridgeSets();
+  if (!sets.length) return "";
+  var chips = sets.map(function (x, i) {
+    return '<button type="button" class="chip fd-chip" data-fd="' + i + '" aria-pressed="' + (i === 0 ? "true" : "false") + '">' + esc(x.label) + "</button>";
+  }).join("");
+  var panels = sets.map(function (x, i) {
+    var leftNote = x.left.length ? "All that's left over is a little " + listAnd(x.left.slice(0, 2).map(function (l) { return l.name; })) + "." : "Every pack you open gets finished.";
+    return '<div class="fd-panel" data-fd-panel="' + i + '"' + (i === 0 ? "" : " hidden") + ">" +
+      '<p class="fd-lead">Three dinners that use up your <strong>' + esc(x.label) + "</strong> between them. " + leftNote + "</p>" +
+      '<div class="rgrid">' + x.set.map(function (r, d) { return card(r, rel, "", "Day " + (d + 1)); }).join("") + "</div>" +
+      '<div class="btn-row fd-actions"><a class="btn btn-primary" href="' + rel + "plan/?week=" + x.ids.join(",") + '&amp;from=fridge">Put these in my week ' + ICON.arrow + "</a>" +
+      '<a class="text-link" href="' + rel + "use-up/" + x.u.slug + '/">More ways to use up ' + esc(x.label) + "</a></div></div>";
+  }).join("");
+  return '<section class="wrap section home-fridge" aria-labelledby="fd-h">' +
+    '<div class="section-head"><div class="section-head-text"><span class="eyebrow">Try it, no sign-in</span><h2 id="fd-h">What needs using up in your fridge?</h2></div></div>' +
+    '<div class="chip-row fd-chips" role="group" aria-label="Pick an ingredient">' + chips + "</div>" + panels +
+    "<script>(function(){var s=document.currentScript.parentNode;s.querySelectorAll('[data-fd]').forEach(function(b){b.addEventListener('click',function(){var i=b.getAttribute('data-fd');" +
+    "s.querySelectorAll('[data-fd]').forEach(function(c){c.setAttribute('aria-pressed',c===b?'true':'false');});" +
+    "s.querySelectorAll('[data-fd-panel]').forEach(function(p){p.hidden=p.getAttribute('data-fd-panel')!==i;});" +
+    "try{if(window.gtag)gtag('event','fridge_demo',{item:b.textContent});}catch(e){}});});})();</script>" +
+    "</section>";
+}
+
 /* ------------------------------------------------- home page: the hero */
 // Three dinners that change every day. A small inline script picks them by
 // the visitor's date from HERO_POOL (each dinner once per 40-day cycle), so they change
@@ -690,6 +762,9 @@ function demoHtml(rel) {
     '<div class="hero2-mosaic">' + heroScript + "<noscript>" + mosaic.map(function (r, i) { return tile(r, i === 0 ? "tile-big" : "", true); }).join("") + "</noscript>" +
     demoHtml(rel) + "</div>" +
     "</section>" +
+
+    // 2. The fridge demo: pick what needs using up, see three dinners that finish it.
+    fridgeDemoHtml(rel) +
 
     // 2. Something to cook tonight: four dinners, and the ways in as words, not more photos.
     '<section class="wrap section home-tonight">' +

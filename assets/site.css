@@ -784,3 +784,11 @@ h1, .display, .display-l, .display-m, .week-range { letter-spacing: -0.02em; }
 
 /* Seasonal sets on the home page: only the one for today shows */
 [data-season-set][hidden] { display: none !important; }
+
+/* Home: fridge demo */
+.home-fridge .fd-chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 4px 0 22px; }
+@media (min-width: 900px) { .home-fridge .rgrid { grid-template-columns: repeat(3, minmax(0, 1fr)); max-width: 900px; } }
+.home-fridge .fd-chip { cursor: pointer; }
+.home-fridge .fd-chip[aria-pressed="true"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.home-fridge .fd-lead { margin: 0 0 16px; color: var(--ink-2); max-width: 62ch; }
+.home-fridge .fd-actions { margin-top: 18px; align-items: center; gap: 12px 20px; }

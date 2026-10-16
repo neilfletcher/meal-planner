@@ -5016,7 +5016,7 @@
       var placed = Math.min(ids.length, slots.length);
       if (!placed) { toast("Every cooking day this week and next already has a dinner."); return; }
       var spills = slots.slice(0, placed).some(function (sl) { return sl.w !== state; });
-      withUndo("Added " + placed + " dinner" + (placed === 1 ? "" : "s") + " from the weekly email" + (spills ? ", some in next week" : ""), function () {
+      withUndo("Added " + placed + " dinner" + (placed === 1 ? "" : "s") + (q.get("from") === "fridge" ? "" : " from the weekly email") + (spills ? ", some in next week" : ""), function () {
         for (var k = 0; k < placed; k++) { slots[k].w.plan[slots[k].d] = ids[k]; logHistory(ids[k], "newsletter"); }
         onStateChanged();
       });

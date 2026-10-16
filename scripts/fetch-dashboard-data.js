@@ -779,7 +779,8 @@ async function main() {
 
   console.log('Fetching Search Console data...');
   const search = await fetchSearchConsole(ga4Key);
-  console.log(search.configured ? `Search Console: ${search.site}, data to ${search.dataTo}` : `Search Console not ready: ${search.error}`);
+  // As a GitHub annotation too, so the run's summary shows whether it worked.
+  console.log(search.configured ? `::notice title=Search Console::Connected to ${search.site}, data to ${search.dataTo}, ${search.last28.impressions} impressions in 28 days` : `::warning title=Search Console::Not ready (${search.serviceAccount}): ${search.error}`);
 
   console.log('Fetching Firebase sign-up data...');
   const signups = await fetchFirebaseSignups();

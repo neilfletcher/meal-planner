@@ -4482,7 +4482,8 @@
     if (nlState === "error") return head + about + '<p class="settings-note">Couldn\u2019t check just now. Try again later.</p>';
     if (nlState === "bounced" || nlState === "complained") return head + about + '<p class="settings-note">Emails to this address couldn\u2019t be delivered, so it\u2019s been taken off the list. Email us if you\u2019d like it back on.</p>';
     return head + '<label class="switch-row"><input type="checkbox" id="nl-switch"' + (nlState === "active" ? " checked" : "") + "> Send me the weekly email</label>" + about +
-      (nlState === "inactive" ? '<p class="settings-note">Waiting for you to confirm: tap the link in the email Kit sent you.</p>' : "");
+      (nlState === "inactive" ? '<p class="settings-note">Waiting for you to confirm: tap the link in the email Kit sent you.</p>' : "") +
+      (nlState === "active" ? '<p class="settings-note">Your free <a href="' + ASSET_BASE + 'free/low-waste-week.pdf" download>low-waste week (PDF)</a>: five dinners that share their packs, with the shopping list.</p>' : "");
   }
   // Kit only lets someone who unsubscribed back in if they sign up through a
   // Kit form themselves, so the browser submits the form (as the embed would),
@@ -4507,7 +4508,7 @@
   }
   function nlResult(j, on) {
     nlState = j.state; nlRemember(j.state);
-    if (on && j.state === "active") { track("sign_up", { method: "newsletter", source: "planner" }); toast("You're on the list. The first one arrives on Saturday."); }
+    if (on && j.state === "active") { track("sign_up", { method: "newsletter", source: "planner" }); toast("You're on the list. Your free low-waste week is in Settings, and the first email arrives on Saturday."); }
     else if (on && j.state === "inactive") toast("Kit has emailed you a link to confirm. Tap it and you're back on the list.");
     else if (on) toast("Kit didn't switch it back on. Check your inbox for a confirm link, or email us and we'll add you back.");
     else toast("Unsubscribed. No more weekly emails.");

@@ -758,6 +758,50 @@ async function fetchSearchConsole(keyJson) {
   return out;
 }
 
+// ------------------------------------------------------------ Cloudflare Web Analytics
+// Every visit, cookies or not (Google Analytics only counts people who say
+// yes to the banner). Needs a Cloudflare API token with Account > Account
+// Analytics > Read, as the CF_API_TOKEN secret. CF_ACCOUNT_ID is optional.
+async function fetchCloudflare() {
+  const token = process.env.CF_API_TOKEN;
+  if (!token) return { configured: false, error: 'Add a Cloudflare API token (Account Analytics: Read) as the GitHub secret CF_API_TOKEN.' };
+  const host = process.env.CF_HOST || 'solosupper.co.uk';
+  const headers = { authorization: 'Bearer ' + token, 'content-type': 'application/json' };
+  try {
+    let account = process.env.CF_ACCOUNT_ID;
+    if (!account) {
+      const a = await (await fetch('https://api.cloudflare.com/client/v4/accounts', { headers })).json();
+      if (!a.success || !a.result || !a.result.length) throw new Error('The token can\'t see a Cloudflare account: ' + JSON.stringify(a.errors || []));
+      account = a.result[0].id;
+    }
+    const day = (n) => new Date(Date.now() - n * DAY_MS).toISOString().slice(0, 10);
+    const f = '{ date_geq: $d0, date_leq: $d1, requestHost: $h }';
+    const query = `query ($a: String!, $d0: Date!, $d1: Date!, $h: String!) { viewer { accounts(filter: { accountTag: $a }) {
+      daily: rumPageloadEventsAdaptiveGroups(limit: 100, filter: ${f}, orderBy: [date_ASC]) { count sum { visits } dimensions { date } }
+      pages: rumPageloadEventsAdaptiveGroups(limit: 10, filter: ${f}, orderBy: [count_DESC]) { count dimensions { requestPath } }
+      refs: rumPageloadEventsAdaptiveGroups(limit: 10, filter: ${f}, orderBy: [sum_visits_DESC]) { sum { visits } dimensions { refererHost } }
+      countries: rumPageloadEventsAdaptiveGroups(limit: 8, filter: ${f}, orderBy: [sum_visits_DESC]) { sum { visits } dimensions { countryName } }
+      devices: rumPageloadEventsAdaptiveGroups(limit: 5, filter: ${f}, orderBy: [sum_visits_DESC]) { sum { visits } dimensions { deviceType } }
+    } } }`;
+    const r = await fetch('https://api.cloudflare.com/client/v4/graphql', { method: 'POST', headers, body: JSON.stringify({ query, variables: { a: account, d0: day(29), d1: day(0), h: host } }) });
+    const j = await r.json();
+    if (j.errors && j.errors.length) throw new Error(j.errors.map((e) => e.message).join('; '));
+    const acc = (((j.data || {}).viewer || {}).accounts || [])[0] || {};
+    const daily = (acc.daily || []).map((x) => ({ date: x.dimensions.date, visits: x.sum.visits, views: x.count }));
+    const since = (n) => daily.filter((x) => x.date >= day(n - 1)).reduce((t, x) => ({ visits: t.visits + x.visits, views: t.views + x.views }), { visits: 0, views: 0 });
+    return {
+      configured: true, host,
+      daily, last7: since(7), last30: since(30),
+      pages: (acc.pages || []).map((x) => ({ path: x.dimensions.requestPath, views: x.count })),
+      referrers: (acc.refs || []).map((x) => ({ host: x.dimensions.refererHost || '(direct or app)', visits: x.sum.visits })),
+      countries: (acc.countries || []).map((x) => ({ name: x.dimensions.countryName, visits: x.sum.visits })),
+      devices: (acc.devices || []).map((x) => ({ name: x.dimensions.deviceType, visits: x.sum.visits })),
+    };
+  } catch (err) {
+    return { configured: false, error: err.message };
+  }
+}
+
 async function main() {
   const propertyId = requireEnv('GA4_PROPERTY_ID');
   const ga4Key = requireEnv('GA4_SERVICE_ACCOUNT_KEY');
@@ -782,6 +826,10 @@ async function main() {
   // As a GitHub annotation too, so the run's summary shows whether it worked.
   console.log(search.configured ? `::notice title=Search Console::Connected to ${search.site}, data to ${search.dataTo}, ${search.last28.impressions} impressions in 28 days` : `::warning title=Search Console::Not ready (${search.serviceAccount}): ${search.error}`);
 
+  console.log('Fetching Cloudflare Web Analytics...');
+  const cloudflare = await fetchCloudflare();
+  console.log(cloudflare.configured ? '::notice title=Cloudflare Web Analytics::Connected' : `::warning title=Cloudflare Web Analytics::Not ready: ${cloudflare.error}`);
+
   console.log('Fetching Firebase sign-up data...');
   const signups = await fetchFirebaseSignups();
 
@@ -799,6 +847,7 @@ async function main() {
     siteHealth: ga4Data.siteHealth,
     social,
     search,
+    cloudflare,
     otherSites,
     engagement,
   };

@@ -5,7 +5,7 @@
  *
  * {EMAIL} and {SITE} are filled in by the build.
  */
-var UPDATED = "13 October 2026";
+var UPDATED = "16 October 2026";
 
 module.exports = [
   {
@@ -40,6 +40,8 @@ module.exports = [
       "<p>If you say yes in the cookie banner, the site uses Google Analytics to count visits and see which pages and features are used. IP addresses are anonymised. If you say no, or ignore the banner, Google Analytics is not loaded. You can change your mind at any time from <a href=\"#cookie-settings\">cookie settings</a>.</p>",
       "<p>If you say yes, your browser also remembers how you first found Solo Supper (for example Pinterest, a search engine or a link with a campaign name) and the page you arrived on. If you then create an account, that is saved with it, so I can see which channels lead to people signing up and subscribing. If you say no, it is not kept.</p>",
       "<p><strong>Legal basis:</strong> your consent.</p>",
+      "<p>Separately, Cloudflare Web Analytics counts page views from every visitor, without cookies, without storing anything on your device and without identifying you. It notes the page, the site you came from, your country and the kind of device, and I only ever see totals.</p>",
+      "<p><strong>Legal basis:</strong> legitimate interests (knowing how many people use the site and which pages help).</p>",
 
       "<h3>Pro subscriptions</h3>",
       "<p>On the website, Pro is sold through Stripe's Managed Payments service, with Onelink (Stripe's checkout service, formerly Link) acting as the merchant of record. Onelink takes your payment details and handles payment, tax, receipts and renewal reminders; I never see your card details. I receive your email address, what you bought and whether your subscription is active, so that Pro can be switched on for your account. In the Android app, purchases go through Google Play in the same way.</p>",
@@ -61,7 +63,7 @@ module.exports = [
       "<ul>",
       "<li><strong>Google (Firebase)</strong>: sign-in and storing the planner data of signed-in users.</li>",
       "<li><strong>Google Analytics</strong>: usage statistics, only if you agree.</li>",
-      "<li><strong>Cloudflare</strong>: hosts the website, protects it from attacks and forwards email sent to Solo Supper addresses.</li>",
+      "<li><strong>Cloudflare</strong>: hosts the website, protects it from attacks, counts visits without cookies (Web Analytics) and forwards email sent to Solo Supper addresses.</li>",
       "<li><strong>Resend</strong>: sends email from Solo Supper addresses.</li>",
       "<li><strong>Kit</strong>: sends the weekly email, only if you sign up for it.</li>",
       "<li><strong>Stripe and Onelink</strong> and <strong>Google Play</strong>: payments for Pro.</li>",

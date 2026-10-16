@@ -587,7 +587,7 @@
         <div class="cf-cols">
           <div><div class="sub-eyebrow">Most-viewed pages, 30d</div><ul class="top-pages" id="hitPages"></ul></div>
           <div><div class="sub-eyebrow">Where visits come from, 30d</div><ul class="top-pages" id="hitSources"></ul></div>
-          <div><div class="sub-eyebrow">Countries, 30d</div><ul class="top-pages" id="hitCountries"></ul></div>
+          <div><div class="sub-eyebrow">Countries, 30d</div><ul class="top-pages" id="hitCountries"></ul><p class="fine" id="hitUs"></p></div>
           <div><div class="sub-eyebrow">Devices, 30d</div><ul class="top-pages" id="hitDevices"></ul></div>
         </div>
         <p class="fine" id="hitNote">Counted by the site itself from 16 October 2026: every page view, no cookies, nothing about the person kept, your own browser left out. A visit is an arrival from outside the site; moving between pages adds page views.</p>
@@ -2219,7 +2219,14 @@
       if (days.length) lineChart(document.getElementById("hitChartWrap"), series, { color: "var(--accent)" });
       renderRankedList(document.getElementById("hitPages"), tally(d30, "p_").map(function (x) { return { title: hitPage(x.k), count: x.n }; }), "No page views yet");
       renderRankedList(document.getElementById("hitSources"), src.map(function (x) { return { title: x.k, count: x.n }; }), "No visits yet");
-      renderRankedList(document.getElementById("hitCountries"), tally(d30, "c_").map(function (x) { return { title: x.k.toUpperCase(), count: x.n }; }), "No visits yet");
+      // Countries by visits, with names and shares, and the US share against
+      // the point where a US version would be worth a look (about 1 in 5 visits).
+      var ctry = tally(d30, "c_"), cTotal = ctry.reduce(function (t, x) { return t + x.n; }, 0);
+      var cName = function (code) { try { return new Intl.DisplayNames(["en-GB"], { type: "region" }).of(code.toUpperCase()); } catch (e) { return code.toUpperCase(); } };
+      renderRankedList(document.getElementById("hitCountries"), ctry.map(function (x) { return { title: cName(x.k) + " (" + Math.round(x.n / cTotal * 100) + "%)", count: x.n }; }), "No visits yet");
+      var us = ctry.filter(function (x) { return x.k === "us"; }).reduce(function (t, x) { return t + x.n; }, 0), usPct = cTotal ? us / cTotal * 100 : 0;
+      setText("hitUs", cTotal ? "United States: " + Math.round(usPct) + "% of visits in 30 days (" + fmtNum(us) + " of " + fmtNum(cTotal) + "). " +
+        (usPct >= 20 && cTotal >= 200 ? "That's past 1 in 5: worth looking at cups and ounces, and maybe a US version." : "A US version is worth a look once this passes about 20% on a decent number of visits.") : "");
       renderRankedList(document.getElementById("hitDevices"), tally(d30, "d_").map(function (x) { return { title: x.k, count: x.n }; }), "No visits yet");
       var tv = (days.filter(function (d) { return d.day === today; })[0] || {}), views = tv.views || 0;
       var cost = Math.max(0, views - 20000) * 0.18 / 100000;

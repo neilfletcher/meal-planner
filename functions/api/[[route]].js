@@ -29,6 +29,7 @@ import { BOOKS, BOOK_IDS, bookPrice, subscriptionBooks, downloadUrl, checkDownlo
 import { stripe, priceFor, verifyWebhook, subscriptionFields } from "../_shared/stripe.js";
 import { proState, addMonths, TRIAL_DAYS } from "../_shared/entitlement.js";
 import { WINDOWS, upcomingWindows, lifetimeStatus } from "../_shared/lifetime.js";
+import { sendWelcome } from "../_shared/welcome.js";
 import { subscribe as kitSubscribe, SOURCES as KIT_SOURCES, kit, subscriberState, unsubscribe as kitUnsubscribe, resubscribe as kitResubscribe } from "../_shared/kit.js";
 
 var DAY = 86400000;
@@ -741,7 +742,10 @@ async function newsletterSubscribe(request, env) {
   }
   var ip = request.headers.get("cf-connecting-ip") || "";
   if (nlLimited("ip:" + ip) || nlLimited("e:" + String(email).toLowerCase())) throw httpError(429, "Too many tries. Please wait a few minutes.");
-  await kitSubscribe(env, email, source);
+  var was = await subscriberState(env, email).catch(function () { return ""; });
+  var res = await kitSubscribe(env, email, source);
+  // New to the list (Kit's search can lag, so "none" is the usual answer): say hello.
+  if (was !== "active" && was !== "cancelled" && (!res || !res.state || res.state === "active")) await sendWelcome(env, res && res.email || email);
   if (!isInternal(env, email)) {
     var c = { total: 1 }; c["src_" + source] = 1;
     try { await increment(env, "newsletterStats/" + new Date().toISOString().slice(0, 10), c); } catch (e) { /* not counted */ }
@@ -760,6 +764,7 @@ async function newsletterSetting(request, env) {
     if (nlLimited("e:" + user.email.toLowerCase())) throw httpError(429, "Too many tries. Please wait a few minutes.");
     var was = await subscriberState(env, user.email);
     var res = await kitResubscribe(env, user.email, "planner");
+    if (res.state === "active" && was !== "active") await sendWelcome(env, user.email);
     if (res.state === "active" && was !== "active" && !isInternal(env, user.email)) {
       try { await increment(env, "newsletterStats/" + new Date().toISOString().slice(0, 10), { total: 1, src_planner: 1 }); } catch (e) { /* not counted */ }
     }

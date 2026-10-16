@@ -792,3 +792,5 @@ h1, .display, .display-l, .display-m, .week-range { letter-spacing: -0.02em; }
 .home-fridge .fd-chip[aria-pressed="true"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
 .home-fridge .fd-lead { margin: 0 0 16px; color: var(--ink-2); max-width: 62ch; }
 .home-fridge .fd-actions { margin-top: 18px; align-items: center; gap: 12px 20px; }
+
+.nutri-line { font-size: 13px; color: var(--ink-3); margin: 10px 0 0; max-width: 60ch; }

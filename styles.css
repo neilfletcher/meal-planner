@@ -868,3 +868,5 @@ h1, .display, .display-l, .display-m, .week-range { letter-spacing: -0.02em; }
 .sc-dots { display: inline-flex; gap: 6px; }
 .sc-dots span { width: 14px; height: 14px; border-radius: 50%; border: 1.5px solid var(--line-strong); }
 .sc-dots span.on { background: var(--tomato); border-color: var(--tomato); }
+
+.nutri-line { font-size: 13px; color: var(--ink-3); margin: 6px 0 0; }

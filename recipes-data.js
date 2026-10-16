@@ -1,6 +1,8 @@
 // Solo Supper recipe data: every built-in dinner, each written for one person.
 // Shared by the planner (app.js) and the static site generator (scripts/build-site.js).
 // Each ingredient is ing(amount, unit, item, shopping category).
+// nutrition (per serving: kcal, protein g, carbs g, fat g) is worked out from the
+// ingredients by scripts/nutrition.js: run `node scripts/nutrition.js` after editing them.
 window.SOLO_RECIPES = (function () {
   "use strict";
   function ing(amt, unit, item, cat) { return { amt: amt, unit: unit, item: item, cat: cat }; }
@@ -8,6 +10,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d1", title: "Sticky Hoisin Pork with Egg-Fried Rice", tags: ["quick"], cuisine: "China", protein: "pork",
       prep: 8, cook: 10,
+      nutrition: { kcal: 760, protein: 48, carbs: 69, fat: 32 },
       ingredients: [
         ing(150, "g", "pork loin steak, sliced into strips", "meat"), ing(2, "tbsp", "hoisin sauce", "store"),
         ing(1, "tsp", "soy sauce", "store"), ing(1, "", "garlic clove, finely chopped", "produce"),
@@ -27,6 +30,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d2", title: "Harissa Salmon with Lemon Couscous", tags: ["fish"], cuisine: "Morocco", protein: "fish",
       prep: 5, cook: 12,
+      nutrition: { kcal: 600, protein: 39, carbs: 48, fat: 27 },
       ingredients: [
         ing(150, "g", "salmon fillet", "meat"), ing(1.5, "tbsp", "harissa paste", "store"),
         ing(60, "g", "couscous", "store"), ing(80, "ml", "vegetable stock", "store"),
@@ -45,6 +49,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d3", title: "Thai Green Curry with Chicken", tags: ["spicy"], cuisine: "Thailand", protein: "chicken",
       prep: 8, cook: 15,
+      nutrition: { kcal: 930, protein: 50, carbs: 75, fat: 46 },
       ingredients: [
         ing(150, "g", "chicken breast", "meat"), ing(2, "tbsp", "Thai green curry paste", "store"),
         ing(200, "ml", "coconut milk", "store"), ing(70, "g", "jasmine rice", "store"),
@@ -63,6 +68,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d4", title: "Sesame Ginger Beef Stir-Fry", tags: ["quick"], cuisine: "China", protein: "beef",
       prep: 6, cook: 8,
+      nutrition: { kcal: 650, protein: 41, carbs: 62, fat: 27 },
       ingredients: [
         ing(130, "g", "beef frying strips", "meat"), ing(3, "tbsp", "shop-bought sesame ginger stir-fry sauce", "store"),
         ing(150, "g", "mixed stir-fry vegetables", "produce"), ing(70, "g", "noodles", "store"),
@@ -81,6 +87,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d5", title: "Spiced Chickpea & Spinach Curry", tags: ["vegetarian"], cuisine: "India", protein: "plant-based",
       prep: 8, cook: 19,
+      nutrition: { kcal: 660, protein: 23, carbs: 97, fat: 18 },
       ingredients: [
         ing(200, "g", "chickpeas, drained", "store"), ing(200, "g", "chopped tomatoes", "store"),
         ing(0.5, "", "onion, finely chopped", "produce"), ing(1, "", "garlic clove, finely chopped", "produce"),
@@ -101,6 +108,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d6", title: "Cajun Chicken with Charred Corn Salsa", tags: ["spicy"], cuisine: "USA", protein: "chicken",
       prep: 6, cook: 12,
+      nutrition: { kcal: 450, protein: 40, carbs: 18, fat: 25 },
       ingredients: [
         ing(150, "g", "chicken breast", "meat"), ing(1.5, "tsp", "Cajun seasoning", "spice"),
         ing(80, "g", "sweetcorn", "store"), ing(80, "g", "shop-bought fresh tomato salsa", "store"),
@@ -117,6 +125,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d7", title: "Quick Matar Paneer", tags: ["vegetarian"], cuisine: "India", protein: "plant-based",
       prep: 10, cook: 20,
+      nutrition: { kcal: 860, protein: 33, carbs: 68, fat: 50 },
       ingredients: [
         ing(120, "g", "paneer, cubed", "dairy"), ing(60, "g", "frozen peas", "frozen"),
         ing(150, "g", "chopped tomatoes", "store"), ing(0.25, "", "onion, finely chopped", "produce"),
@@ -137,6 +146,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d8", title: "One-Pan Chorizo & Butter Bean Stew", tags: ["quick"], cuisine: "Spain", protein: "pork",
       prep: 8, cook: 16,
+      nutrition: { kcal: 690, protein: 36, carbs: 67, fat: 28 },
       ingredients: [
         ing(60, "g", "cooking chorizo", "meat"), ing(200, "g", "butter beans, drained", "store"),
         ing(200, "g", "chopped tomatoes", "store"), ing(0.5, "", "onion, finely chopped", "produce"),
@@ -155,6 +165,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d9", title: "Lemon & Herb Cod with Crushed Potatoes", tags: ["fish"], cuisine: "UK", protein: "fish",
       prep: 6, cook: 15,
+      nutrition: { kcal: 510, protein: 31, carbs: 34, fat: 28 },
       ingredients: [
         ing(150, "g", "cod fillet (or other firm white fish)", "meat"), ing(150, "g", "new potatoes", "produce"),
         ing(15, "g", "butter", "dairy"), ing(0.5, "", "lemon", "produce"),
@@ -172,6 +183,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d10", title: "Chicken Katsu Curry", tags: [], cuisine: "Japan", protein: "chicken",
       prep: 8, cook: 15,
+      nutrition: { kcal: 920, protein: 56, carbs: 110, fat: 27 },
       ingredients: [
         ing(150, "g", "chicken breast", "meat"), ing(40, "g", "panko breadcrumbs", "store"),
         ing(1, "", "egg", "dairy"), ing(2, "tbsp", "plain flour", "store"),
@@ -189,6 +201,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d11", title: "Creamy Garlic Mushroom Tagliatelle", tags: ["vegetarian"], cuisine: "Italy", protein: "plant-based",
       prep: 7, cook: 10,
+      nutrition: { kcal: 1000, protein: 23, carbs: 64, fat: 72 },
       ingredients: [
         ing(80, "g", "tagliatelle", "store"), ing(150, "g", "chestnut mushrooms, sliced", "produce"),
         ing(2, "", "garlic cloves, finely chopped", "produce"), ing(80, "ml", "double cream", "dairy"),
@@ -207,6 +220,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d12", title: "Moroccan-Spiced Lamb with Couscous", tags: [], cuisine: "Morocco", protein: "lamb",
       prep: 8, cook: 16,
+      nutrition: { kcal: 670, protein: 34, carbs: 49, fat: 37 },
       ingredients: [
         ing(150, "g", "lamb mince", "meat"), ing(60, "g", "couscous", "store"),
         ing(80, "ml", "vegetable stock", "store"), ing(0.5, "tsp", "ground cumin", "spice"),
@@ -226,6 +240,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d13", title: "Peri-Peri Chicken with Charred Tenderstem", tags: ["spicy"], cuisine: "Portugal", protein: "chicken",
       prep: 5, cook: 15,
+      nutrition: { kcal: 690, protein: 40, carbs: 62, fat: 30 },
       ingredients: [
         ing(180, "g", "boneless chicken thighs", "meat"), ing(2, "tbsp", "peri-peri sauce", "store"),
         ing(100, "g", "tenderstem broccoli", "produce"), ing(70, "g", "jasmine rice", "store"),
@@ -242,6 +257,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d14", title: "Beetroot & Goat's Cheese Orzo", tags: ["vegetarian"], cuisine: "Greece", protein: "plant-based",
       prep: 8, cook: 8,
+      nutrition: { kcal: 620, protein: 22, carbs: 62, fat: 32 },
       ingredients: [
         ing(70, "g", "orzo pasta", "store"), ing(100, "g", "cooked beetroot (vacuum-packed)", "produce"),
         ing(50, "g", "goat's cheese", "dairy"), ing(1, "tbsp", "walnuts", "store"),
@@ -259,6 +275,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d15", title: "Turkey & Sweetcorn Chilli", tags: ["quick"], cuisine: "USA", protein: "turkey",
       prep: 8, cook: 20,
+      nutrition: { kcal: 730, protein: 47, carbs: 88, fat: 20 },
       ingredients: [
         ing(150, "g", "turkey mince", "meat"), ing(60, "g", "sweetcorn", "frozen"),
         ing(100, "g", "kidney beans, drained", "store"), ing(200, "g", "chopped tomatoes", "store"),
@@ -279,6 +296,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d16", title: "Honey Mustard Chicken Traybake", tags: [], cuisine: "UK", protein: "chicken",
       prep: 6, cook: 25,
+      nutrition: { kcal: 600, protein: 38, carbs: 35, fat: 34 },
       ingredients: [
         ing(180, "g", "boneless chicken thighs", "meat"), ing(150, "g", "new potatoes, halved", "produce"),
         ing(2, "tbsp", "shop-bought honey mustard sauce or dressing", "store"), ing(1, "tbsp", "olive oil", "store"),
@@ -297,6 +315,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d17", title: "Teriyaki Salmon with Sesame Greens", tags: ["fish"], cuisine: "Japan", protein: "fish",
       prep: 4, cook: 15,
+      nutrition: { kcal: 720, protein: 38, carbs: 80, fat: 26 },
       ingredients: [
         ing(150, "g", "salmon fillet", "meat"), ing(3, "tbsp", "shop-bought teriyaki sauce", "store"),
         ing(100, "g", "tenderstem broccoli or greens", "produce"), ing(1, "tsp", "sesame seeds", "store"),
@@ -314,6 +333,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d18", title: "Beef & Black Bean Noodles", tags: ["quick"], cuisine: "China", protein: "beef",
       prep: 8, cook: 8,
+      nutrition: { kcal: 610, protein: 39, carbs: 54, fat: 26 },
       ingredients: [
         ing(130, "g", "beef frying strips", "meat"), ing(2, "tbsp", "black bean sauce", "store"),
         ing(1, "", "garlic clove, finely chopped", "produce"), ing(0.5, "", "pepper, sliced", "produce"),
@@ -333,6 +353,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d19", title: "Spiced Red Lentil Dahl with Flatbread", tags: ["vegetarian", "vegan"], cuisine: "India", protein: "plant-based",
       prep: 8, cook: 20,
+      nutrition: { kcal: 650, protein: 28, carbs: 87, fat: 19 },
       ingredients: [
         ing(75, "g", "red lentils", "store"), ing(100, "g", "chopped tomatoes", "store"),
         ing(0.25, "", "onion, finely chopped", "produce"), ing(1, "", "garlic clove, finely chopped", "produce"),
@@ -353,6 +374,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d20", title: "Chicken Fajita Bowl", tags: ["quick"], cuisine: "Mexico", protein: "chicken",
       prep: 8, cook: 15,
+      nutrition: { kcal: 550, protein: 42, carbs: 56, fat: 18 },
       ingredients: [
         ing(150, "g", "chicken breast, sliced", "meat"), ing(0.5, "", "pepper, sliced", "produce"),
         ing(0.5, "", "red onion, sliced", "produce"), ing(1.5, "tsp", "fajita seasoning", "spice"),
@@ -370,6 +392,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d21", title: "Pork Chop with Apple & Mustard Sauce", tags: [], cuisine: "France", protein: "pork",
       prep: 5, cook: 12,
+      nutrition: { kcal: 720, protein: 43, carbs: 44, fat: 41 },
       ingredients: [
         ing(180, "g", "pork chop", "meat"), ing(0.5, "", "apple, thinly sliced", "produce"),
         ing(100, "g", "shop-bought creamy mustard or peppercorn sauce", "store"),
@@ -387,6 +410,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d22", title: "Butternut Squash & Feta Traybake", tags: ["vegetarian"], cuisine: "Greece", protein: "plant-based",
       prep: 8, cook: 30,
+      nutrition: { kcal: 590, protein: 18, carbs: 52, fat: 33 },
       ingredients: [
         ing(200, "g", "butternut squash, cubed", "produce"), ing(50, "g", "feta cheese", "dairy"),
         ing(0.5, "", "red onion, cut into wedges", "produce"), ing(1.5, "tbsp", "olive oil", "store"),
@@ -405,6 +429,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d23", title: "Sausage & Butter Bean Cassoulet", tags: [], cuisine: "France", protein: "pork",
       prep: 8, cook: 19,
+      nutrition: { kcal: 710, protein: 34, carbs: 59, fat: 35 },
       ingredients: [
         ing(2, "", "pork sausages", "meat"), ing(200, "g", "butter beans, drained", "store"),
         ing(150, "g", "chopped tomatoes", "store"), ing(1, "", "small carrot, finely diced", "produce"),
@@ -424,6 +449,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d24", title: "White Fish Tacos with Lime Slaw", tags: ["fish"], cuisine: "Mexico", protein: "fish",
       prep: 8, cook: 8,
+      nutrition: { kcal: 490, protein: 36, carbs: 50, fat: 16 },
       ingredients: [
         ing(150, "g", "white fish fillet (pollock or cod)", "meat"), ing(0.5, "tsp", "ground cumin", "spice"),
         ing(0.5, "tsp", "smoked paprika", "spice"), ing(2, "", "soft tortillas", "bakery"),
@@ -442,6 +468,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d25", title: "Beef Massaman-Style Curry", tags: ["spicy"], cuisine: "Thailand", protein: "beef",
       prep: 8, cook: 20,
+      nutrition: { kcal: 1100, protein: 47, carbs: 87, fat: 62 },
       ingredients: [
         ing(150, "g", "beef frying strips", "meat"), ing(2, "tbsp", "massaman or red curry paste", "store"),
         ing(200, "ml", "coconut milk", "store"), ing(1, "", "small potato, diced", "produce"),
@@ -462,6 +489,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d26", title: "Halloumi & Roasted Veg Couscous", tags: ["vegetarian"], cuisine: "Cyprus", protein: "plant-based",
       prep: 8, cook: 12,
+      nutrition: { kcal: 840, protein: 38, carbs: 77, fat: 42 },
       ingredients: [
         ing(100, "g", "halloumi", "dairy"), ing(0.5, "", "courgette, sliced", "produce"),
         ing(8, "", "cherry tomatoes", "produce"), ing(60, "g", "couscous", "store"),
@@ -480,6 +508,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d27", title: "Chicken Shawarma Flatbread", tags: ["spicy"], cuisine: "Lebanon", protein: "chicken",
       prep: 6, cook: 10,
+      nutrition: { kcal: 650, protein: 36, carbs: 44, fat: 36 },
       ingredients: [
         ing(150, "g", "chicken thigh fillets", "meat"), ing(0.5, "tsp", "ground cumin", "spice"),
         ing(null, "pinch", "ground cinnamon", "spice"), ing(0.5, "tsp", "smoked paprika", "spice"),
@@ -496,6 +525,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d28", title: "Sausage & Lentil One-Pot", tags: [], cuisine: "France", protein: "pork",
       prep: 8, cook: 21,
+      nutrition: { kcal: 990, protein: 56, carbs: 101, fat: 35 },
       ingredients: [
         ing(2, "", "pork sausages", "meat"), ing(150, "g", "green or brown lentils, drained", "store"),
         ing(150, "g", "chopped tomatoes", "store"), ing(1, "", "small carrot, diced", "produce"),
@@ -515,6 +545,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d29", title: "Sweet & Sour Pork", tags: [], cuisine: "China", protein: "pork",
       prep: 7, cook: 15,
+      nutrition: { kcal: 940, protein: 41, carbs: 130, fat: 28 },
       ingredients: [
         ing(150, "g", "pork loin steak, cubed", "meat"), ing(80, "g", "pineapple chunks, tinned", "store"),
         ing(0.5, "", "pepper, sliced", "produce"), ing(150, "g", "shop-bought sweet and sour sauce", "store"),
@@ -533,6 +564,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d30", title: "Baked Feta Pasta", tags: ["vegetarian"], cuisine: "Greece", protein: "plant-based",
       prep: 6, cook: 20,
+      nutrition: { kcal: 690, protein: 24, carbs: 67, fat: 35 },
       ingredients: [
         ing(200, "g", "cherry tomatoes", "produce"), ing(80, "g", "feta cheese, block", "dairy"),
         ing(2, "", "garlic cloves, whole", "produce"), ing(2, "tbsp", "olive oil", "store"),
@@ -551,6 +583,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d31", title: "Chicken & Chorizo Jambalaya", tags: ["spicy"], cuisine: "USA", protein: "chicken",
       prep: 11, cook: 35,
+      nutrition: { kcal: 670, protein: 36, carbs: 66, fat: 28 },
       ingredients: [
         ing(100, "g", "chicken thigh, diced", "meat"), ing(40, "g", "cooking chorizo, sliced", "meat"),
         ing(70, "g", "basmati or long-grain rice", "store"), ing(150, "g", "chopped tomatoes", "store"),
@@ -569,6 +602,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d32", title: "Beef Tacos with Pico de Gallo", tags: ["quick"], cuisine: "Mexico", protein: "beef",
       prep: 5, cook: 10,
+      nutrition: { kcal: 620, protein: 39, carbs: 21, fat: 42 },
       ingredients: [
         ing(150, "g", "beef mince", "meat"), ing(1.5, "tsp", "taco seasoning", "spice"),
         ing(80, "g", "shop-bought pico de gallo or fresh salsa", "store"),
@@ -584,6 +618,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d33", title: "Pan-Seared Trout with Almonds", tags: ["fish"], cuisine: "France", protein: "fish",
       prep: 5, cook: 8,
+      nutrition: { kcal: 550, protein: 40, carbs: 21, fat: 32 },
       ingredients: [
         ing(150, "g", "trout fillet", "meat"), ing(1, "tbsp", "flaked almonds", "store"),
         ing(20, "g", "butter", "dairy"), ing(0.5, "", "lemon", "produce"),
@@ -601,6 +636,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d34", title: "Spiced Squash & Coconut Soup", tags: ["vegetarian", "vegan"], cuisine: "Thailand", protein: "plant-based",
       prep: 8, cook: 20,
+      nutrition: { kcal: 540, protein: 13, carbs: 42, fat: 36 },
       ingredients: [
         ing(250, "g", "butternut squash, cubed", "produce"), ing(150, "ml", "coconut milk", "store"),
         ing(250, "ml", "vegetable stock", "store"), ing(0.25, "", "onion, finely chopped", "produce"),
@@ -620,6 +656,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d35", title: "Chicken Tikka Skewers with Minted Yoghurt", tags: ["spicy"], cuisine: "India", protein: "chicken",
       prep: 8, cook: 10,
+      nutrition: { kcal: 500, protein: 47, carbs: 46, fat: 14 },
       ingredients: [
         ing(150, "g", "chicken breast, cubed", "meat"), ing(2, "tbsp", "natural yoghurt", "dairy"),
         ing(1.5, "tbsp", "tikka curry paste", "store"), ing(3, "tbsp", "shop-bought mint yoghurt dip or raita", "store"),
@@ -635,6 +672,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d36", title: "Beef & Broccoli in Oyster Sauce", tags: ["quick"], cuisine: "China", protein: "beef",
       prep: 8, cook: 15,
+      nutrition: { kcal: 640, protein: 37, carbs: 64, fat: 25 },
       ingredients: [
         ing(130, "g", "beef frying strips", "meat"), ing(120, "g", "tenderstem broccoli", "produce"),
         ing(2, "tbsp", "oyster sauce", "store"), ing(1, "tsp", "soy sauce", "store"),
@@ -653,6 +691,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d37", title: "Halloumi & Vegetable Skewers with Tzatziki", tags: ["vegetarian"], cuisine: "Greece", protein: "plant-based",
       prep: 8, cook: 10,
+      nutrition: { kcal: 850, protein: 37, carbs: 69, fat: 48 },
       ingredients: [
         ing(100, "g", "halloumi, cubed", "dairy"), ing(0.5, "", "courgette, cubed", "produce"),
         ing(6, "", "cherry tomatoes", "produce"), ing(0.5, "", "pepper, cubed", "produce"),
@@ -670,6 +709,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d38", title: "Duck Breast with Plum Sauce and Egg Noodles", tags: [], cuisine: "China", protein: "duck",
       prep: 6, cook: 16,
+      nutrition: { kcal: 680, protein: 41, carbs: 67, fat: 27 },
       ingredients: [
         ing(1, "", "duck breast (about 150g)", "meat"), ing(2, "tbsp", "plum sauce", "store"),
         ing(1, "tsp", "soy sauce", "store"), ing(1, "", "spring onion, sliced", "produce"),
@@ -687,6 +727,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d39", title: "Sausage, Kale & White Bean Stew", tags: [], cuisine: "Italy", protein: "pork",
       prep: 7, cook: 19,
+      nutrition: { kcal: 700, protein: 34, carbs: 55, fat: 35 },
       ingredients: [
         ing(2, "", "pork sausages", "meat"), ing(200, "g", "cannellini beans, drained", "store"),
         ing(150, "g", "chopped tomatoes", "store"), ing(null, "large handful", "kale or cavolo nero", "produce"),
@@ -705,6 +746,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d40", title: "Spiced Cauliflower & Chickpea Traybake", tags: ["vegetarian", "vegan"], cuisine: "India", protein: "plant-based",
       prep: 8, cook: 25,
+      nutrition: { kcal: 480, protein: 15, carbs: 31, fat: 31 },
       ingredients: [
         ing(0.5, "", "small cauliflower", "produce"), ing(150, "g", "chickpeas, drained", "store"),
         ing(1, "tsp", "ground cumin", "spice"), ing(0.5, "tsp", "ground turmeric", "spice"),
@@ -722,6 +764,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d41", title: "Ginger Chicken Noodle Soup", tags: [], cuisine: "China", protein: "chicken",
       prep: 8, cook: 12,
+      nutrition: { kcal: 400, protein: 40, carbs: 49, fat: 5 },
       ingredients: [
         ing(120, "g", "chicken breast, sliced", "meat"), ing(400, "ml", "chicken stock", "store"),
         ing(1, "", "thumb-sized piece fresh ginger, finely sliced", "produce"), ing(1, "", "garlic clove, finely sliced", "produce"),
@@ -740,6 +783,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d42", title: "Beef Bulgogi Lettuce Cups", tags: [], cuisine: "Korea", protein: "beef",
       prep: 6, cook: 8,
+      nutrition: { kcal: 420, protein: 37, carbs: 28, fat: 18 },
       ingredients: [
         ing(150, "g", "beef frying strips", "meat"), ing(3, "tbsp", "shop-bought bulgogi marinade", "store"),
         ing(1, "", "little gem lettuce", "produce"), ing(1, "", "spring onion, sliced", "produce"),
@@ -756,6 +800,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d43", title: "Persian-Style Chicken with Saffron Rice", tags: [], cuisine: "Iran", protein: "chicken",
       prep: 8, cook: 22,
+      nutrition: { kcal: 860, protein: 39, carbs: 64, fat: 49 },
       ingredients: [
         ing(180, "g", "chicken thigh fillets", "meat"), ing(70, "g", "basmati rice", "store"),
         ing(0.5, "tsp", "ground turmeric", "spice"), ing(null, "pinch", "saffron strands (or extra turmeric)", "spice"),
@@ -773,6 +818,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d44", title: "Pork Meatballs in Tomato Sauce with Spaghetti", tags: [], cuisine: "Italy", protein: "pork",
       prep: 7, cook: 15,
+      nutrition: { kcal: 880, protein: 40, carbs: 75, fat: 45 },
       ingredients: [
         ing(6, "", "shop-bought pork meatballs", "meat"), ing(1, "", "garlic clove, finely chopped", "produce"),
         ing(0.5, "tsp", "dried oregano", "spice"), ing(200, "g", "chopped tomatoes", "store"),
@@ -789,6 +835,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d45", title: "Smoked Mackerel & Beetroot Salad", tags: ["fish", "quick"], cuisine: "UK", protein: "fish",
       prep: 6, cook: 0,
+      nutrition: { kcal: 470, protein: 26, carbs: 31, fat: 27 },
       ingredients: [
         ing(100, "g", "smoked mackerel fillet", "meat"), ing(100, "g", "cooked beetroot", "produce"),
         ing(null, "large handful", "baby spinach or rocket", "produce"), ing(1, "tsp", "horseradish sauce", "store"),
@@ -805,6 +852,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d46", title: "Jerk Chicken with Rice and Peas", tags: ["spicy"], cuisine: "Jamaica", protein: "chicken",
       prep: 8, cook: 20,
+      nutrition: { kcal: 840, protein: 45, carbs: 68, fat: 42 },
       ingredients: [
         ing(180, "g", "chicken thigh fillets", "meat"), ing(1.5, "tbsp", "jerk seasoning", "spice"),
         ing(60, "g", "basmati rice", "store"), ing(100, "ml", "coconut milk", "store"),
@@ -821,6 +869,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d47", title: "Spiced Sweet Potato & Black Bean Bowl", tags: ["vegetarian", "vegan"], cuisine: "Mexico", protein: "plant-based",
       prep: 8, cook: 20,
+      nutrition: { kcal: 570, protein: 15, carbs: 57, fat: 30 },
       ingredients: [
         ing(1, "", "medium sweet potato, cubed", "produce"), ing(150, "g", "black beans, drained", "store"),
         ing(0.5, "tsp", "ground cumin", "spice"), ing(0.5, "tsp", "smoked paprika", "spice"),
@@ -839,6 +888,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d48", title: "Beef Ragu with Pappardelle", tags: [], cuisine: "Italy", protein: "beef",
       prep: 10, cook: 24,
+      nutrition: { kcal: 910, protein: 47, carbs: 76, fat: 45 },
       ingredients: [
         ing(150, "g", "beef mince", "meat"), ing(200, "g", "chopped tomatoes", "store"),
         ing(1, "", "small carrot, finely diced", "produce"), ing(0.25, "", "onion, finely diced", "produce"),
@@ -858,6 +908,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d49", title: "Lemon Chicken Piccata with Green Beans", tags: [], cuisine: "Italy", protein: "chicken",
       prep: 8, cook: 10,
+      nutrition: { kcal: 600, protein: 45, carbs: 25, fat: 35 },
       ingredients: [
         ing(150, "g", "chicken breast", "meat"), ing(1, "tbsp", "capers", "store"),
         ing(0.5, "", "lemon", "produce"), ing(20, "g", "butter", "dairy"),
@@ -875,6 +926,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d50", title: "Sweet Potato Katsu Curry", tags: ["vegetarian", "vegan"], cuisine: "Japan", protein: "plant-based",
       prep: 8, cook: 15,
+      nutrition: { kcal: 820, protein: 17, carbs: 141, fat: 20 },
       ingredients: [
         ing(1, "", "medium sweet potato, sliced into rounds", "produce"), ing(40, "g", "panko breadcrumbs", "store"),
         ing(2, "tbsp", "plain flour", "store"), ing(3, "tbsp", "plant milk or milk", "dairy"),
@@ -892,6 +944,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d51", title: "Sticky Sesame Tofu with Rice", tags: ["vegetarian", "vegan"], cuisine: "China", protein: "plant-based",
       prep: 8, cook: 15,
+      nutrition: { kcal: 730, protein: 27, carbs: 90, fat: 28 },
       ingredients: [
         ing(150, "g", "firm tofu", "store"), ing(1.5, "tbsp", "cornflour", "store"),
         ing(3, "tbsp", "shop-bought sticky sesame or teriyaki sauce", "store"), ing(1, "tsp", "sesame seeds", "store"),
@@ -910,6 +963,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d52", title: "Lamb Koftas with Tzatziki and Flatbread", tags: [], cuisine: "Greece", protein: "lamb",
       prep: 4, cook: 10,
+      nutrition: { kcal: 860, protein: 42, carbs: 55, fat: 54 },
       ingredients: [
         ing(4, "", "shop-bought lamb koftas", "meat"), ing(1, "tsp", "olive oil", "store"),
         ing(4, "tbsp", "shop-bought tzatziki", "store"), ing(1, "", "flatbread", "bakery"),
@@ -925,6 +979,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d53", title: "Korean Gochujang Chicken Traybake", tags: ["spicy"], cuisine: "Korea", protein: "chicken",
       prep: 8, cook: 22,
+      nutrition: { kcal: 470, protein: 37, carbs: 18, fat: 27 },
       ingredients: [
         ing(180, "g", "boneless chicken thighs, cut into chunks", "meat"), ing(150, "g", "tenderstem broccoli", "produce"),
         ing(1, "tbsp", "gochujang (Korean chilli paste)", "store"), ing(1, "tbsp", "soy sauce", "store"),
@@ -942,6 +997,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d54", title: "Sausage, Apple & Red Onion Traybake", tags: [], cuisine: "UK", protein: "pork",
       prep: 6, cook: 25,
+      nutrition: { kcal: 800, protein: 28, carbs: 51, fat: 55 },
       ingredients: [
         ing(3, "", "pork sausages", "meat"), ing(1, "", "apple, cored and cut into wedges", "produce"),
         ing(1, "", "red onion, cut into wedges", "produce"), ing(1, "tbsp", "olive oil", "store"),
@@ -958,6 +1014,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d55", title: "Moroccan-Spiced Cod Traybake with Chickpeas", tags: ["fish"], cuisine: "Morocco", protein: "fish",
       prep: 7, cook: 18,
+      nutrition: { kcal: 540, protein: 43, carbs: 44, fat: 19 },
       ingredients: [
         ing(150, "g", "cod fillet", "meat"), ing(200, "g", "tinned chickpeas, drained", "store"),
         ing(100, "g", "cherry tomatoes", "produce"), ing(1, "tsp", "ras el hanout", "spice"),
@@ -975,6 +1032,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d56", title: "Harissa Chickpea & Sweet Potato Traybake", tags: ["vegetarian", "vegan"], cuisine: "Morocco", protein: "plant-based",
       prep: 8, cook: 25,
+      nutrition: { kcal: 610, protein: 21, carbs: 84, fat: 20 },
       ingredients: [
         ing(200, "g", "sweet potato, cubed", "produce"), ing(200, "g", "tinned chickpeas, drained", "store"),
         ing(1.5, "tbsp", "harissa paste", "store"), ing(1, "tbsp", "olive oil", "store"),
@@ -991,6 +1049,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d57", title: "Sticky Soy Salmon Traybake with Broccoli", tags: ["fish", "quick"], cuisine: "China", protein: "fish",
       prep: 5, cook: 12,
+      nutrition: { kcal: 430, protein: 34, carbs: 16, fat: 25 },
       ingredients: [
         ing(150, "g", "salmon fillet", "meat"), ing(120, "g", "tenderstem broccoli", "produce"),
         ing(1.5, "tbsp", "soy sauce", "store"), ing(1, "tsp", "honey", "store"),
@@ -1009,6 +1068,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d58", title: "Cajun Sausage & Pepper Traybake", tags: ["spicy"], cuisine: "USA", protein: "pork",
       prep: 6, cook: 25,
+      nutrition: { kcal: 700, protein: 26, carbs: 25, fat: 55 },
       ingredients: [
         ing(3, "", "pork sausages", "meat"), ing(1, "", "pepper, sliced", "produce"),
         ing(0.5, "", "red onion, sliced", "produce"), ing(1.5, "tsp", "Cajun seasoning", "spice"),
@@ -1023,6 +1083,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d59", title: "Lemon Herb Chicken Thigh Traybake with New Potatoes", tags: [], cuisine: "UK", protein: "chicken",
       prep: 6, cook: 28,
+      nutrition: { kcal: 570, protein: 36, carbs: 29, fat: 34 },
       ingredients: [
         ing(180, "g", "boneless chicken thighs", "meat"), ing(150, "g", "new potatoes, halved", "produce"),
         ing(1, "tbsp", "olive oil", "store"), ing(0.5, "", "lemon", "produce"),
@@ -1039,6 +1100,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d60", title: "Chorizo & New Potato Traybake with Peppers", tags: ["spicy"], cuisine: "Spain", protein: "pork",
       prep: 7, cook: 25,
+      nutrition: { kcal: 610, protein: 23, carbs: 30, fat: 44 },
       ingredients: [
         ing(80, "g", "cooking chorizo, sliced", "meat"), ing(150, "g", "new potatoes, halved", "produce"),
         ing(1, "", "pepper, sliced", "produce"), ing(1, "tbsp", "olive oil", "store"),
@@ -1055,6 +1117,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d61", title: "Halloumi & Vegetable Traybake with Chilli Honey", tags: ["vegetarian"], cuisine: "Cyprus", protein: "plant-based",
       prep: 7, cook: 20,
+      nutrition: { kcal: 610, protein: 26, carbs: 37, fat: 40 },
       ingredients: [
         ing(100, "g", "halloumi, sliced", "dairy"), ing(1, "", "courgette, sliced", "produce"),
         ing(1, "", "pepper, sliced", "produce"), ing(1, "tbsp", "olive oil", "store"),
@@ -1071,6 +1134,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d62", title: "Greek-Style Chicken Traybake with Feta and Olives", tags: [], cuisine: "Greece", protein: "chicken",
       prep: 7, cook: 25,
+      nutrition: { kcal: 630, protein: 41, carbs: 13, fat: 46 },
       ingredients: [
         ing(180, "g", "boneless chicken thighs", "meat"), ing(100, "g", "cherry tomatoes", "produce"),
         ing(0.5, "", "red onion, cut into wedges", "produce"), ing(40, "g", "feta, crumbled", "dairy"),
@@ -1088,6 +1152,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d63", title: "Filipino-Style Pork Adobo with Rice", tags: [], cuisine: "Philippines", protein: "pork",
       prep: 8, cook: 14,
+      nutrition: { kcal: 580, protein: 47, carbs: 53, fat: 20 },
       ingredients: [
         ing(180, "g", "pork loin steak, cut into 2cm cubes", "meat"), ing(2, "tbsp", "soy sauce", "store"),
         ing(2, "tbsp", "white or rice vinegar", "store"), ing(1, "", "garlic clove, crushed", "produce"),
@@ -1105,6 +1170,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d64", title: "Vietnamese-Style Caramel Pork with Rice", tags: [], cuisine: "Vietnam", protein: "pork",
       prep: 8, cook: 15,
+      nutrition: { kcal: 690, protein: 33, carbs: 69, fat: 31 },
       ingredients: [
         ing(150, "g", "pork mince", "meat"), ing(1.5, "tbsp", "fish sauce", "store"),
         ing(1.5, "tbsp", "brown sugar", "store"), ing(1, "", "garlic clove, finely chopped", "produce"),
@@ -1122,6 +1188,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d65", title: "Kung Pao-Style Chicken with Peanuts", tags: ["spicy"], cuisine: "China", protein: "chicken",
       prep: 8, cook: 12,
+      nutrition: { kcal: 780, protein: 57, carbs: 62, fat: 34 },
       ingredients: [
         ing(180, "g", "chicken breast, diced", "meat"), ing(30, "g", "roasted peanuts", "store"),
         ing(1, "", "pepper, diced", "produce"), ing(2, "tbsp", "soy sauce", "store"),
@@ -1142,6 +1209,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d66", title: "Egg & Vegetable Chow Mein", tags: ["vegetarian", "quick"], cuisine: "China", protein: "plant-based",
       prep: 8, cook: 8,
+      nutrition: { kcal: 540, protein: 28, carbs: 50, fat: 27 },
       ingredients: [
         ing(100, "g", "dried egg noodles", "store"), ing(2, "", "eggs", "dairy"),
         ing(100, "g", "stir-fry vegetable mix", "produce"), ing(1.5, "tbsp", "soy sauce", "store"),
@@ -1159,6 +1227,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d67", title: "Char Siu-Style Pork Steaks with Steamed Rice", tags: [], cuisine: "China", protein: "pork",
       prep: 6, cook: 10,
+      nutrition: { kcal: 590, protein: 45, carbs: 67, fat: 16 },
       ingredients: [
         ing(180, "g", "pork loin steak", "meat"), ing(2, "tbsp", "hoisin sauce", "store"),
         ing(1, "tsp", "soy sauce", "store"), ing(1, "tsp", "honey", "store"),
@@ -1173,6 +1242,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d68", title: "Thai Basil Pork (Pad Krapow)", tags: ["spicy", "quick"], cuisine: "Thailand", protein: "pork",
       prep: 6, cook: 8,
+      nutrition: { kcal: 900, protein: 46, carbs: 64, fat: 50 },
       ingredients: [
         ing(180, "g", "pork mince", "meat"), ing(1, "tbsp", "fish sauce", "store"),
         ing(1, "tsp", "soy sauce", "store"), ing(1, "tsp", "brown sugar", "store"),
@@ -1192,6 +1262,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d69", title: "Thai Peanut Noodles with Tofu", tags: ["vegetarian", "vegan"], cuisine: "Thailand", protein: "plant-based",
       prep: 8, cook: 8,
+      nutrition: { kcal: 910, protein: 37, carbs: 96, fat: 42 },
       ingredients: [
         ing(150, "g", "firm tofu, cubed", "store"), ing(100, "g", "flat rice noodles", "store"),
         ing(2, "tbsp", "peanut butter", "store"), ing(1, "tbsp", "soy sauce", "store"),
@@ -1208,6 +1279,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d70", title: "Butter Chicken with Basmati Rice", tags: [], cuisine: "India", protein: "chicken",
       prep: 8, cook: 15,
+      nutrition: { kcal: 590, protein: 52, carbs: 66, fat: 13 },
       ingredients: [
         ing(180, "g", "chicken breast, diced", "meat"), ing(2, "tbsp", "butter chicken or tikka curry paste", "store"),
         ing(100, "ml", "passata", "store"), ing(2, "tbsp", "single cream or plain yoghurt", "dairy"),
@@ -1226,6 +1298,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d71", title: "Saag Paneer with Rice", tags: ["vegetarian"], cuisine: "India", protein: "plant-based",
       prep: 8, cook: 20,
+      nutrition: { kcal: 970, protein: 39, carbs: 76, fat: 56 },
       ingredients: [
         ing(150, "g", "paneer, cubed", "dairy"), ing(150, "g", "baby spinach", "produce"),
         ing(1, "tbsp", "medium curry powder", "spice"), ing(1, "", "garlic clove, crushed", "produce"),
@@ -1246,6 +1319,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d72", title: "Chana Masala with Rice", tags: ["vegetarian", "vegan"], cuisine: "India", protein: "plant-based",
       prep: 8, cook: 20,
+      nutrition: { kcal: 690, protein: 23, carbs: 103, fat: 18 },
       ingredients: [
         ing(200, "g", "tinned chickpeas, drained", "store"), ing(150, "g", "chopped tomatoes", "store"),
         ing(0.5, "", "onion, diced", "produce"), ing(1, "", "garlic clove, finely chopped", "produce"),
@@ -1265,6 +1339,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d73", title: "Lamb Keema Curry with Peas", tags: [], cuisine: "India", protein: "lamb",
       prep: 8, cook: 23,
+      nutrition: { kcal: 960, protein: 42, carbs: 76, fat: 54 },
       ingredients: [
         ing(180, "g", "lamb mince", "meat"), ing(60, "g", "frozen peas", "frozen"),
         ing(150, "g", "chopped tomatoes", "store"), ing(0.5, "", "onion, diced", "produce"),
@@ -1283,6 +1358,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d74", title: "Tandoori-Style Chicken with Minted Rice", tags: ["spicy"], cuisine: "India", protein: "chicken",
       prep: 8, cook: 15,
+      nutrition: { kcal: 540, protein: 51, carbs: 63, fat: 8 },
       ingredients: [
         ing(180, "g", "chicken breast or thigh, sliced", "meat"), ing(2, "tbsp", "tandoori curry paste", "store"),
         ing(2, "tbsp", "plain yoghurt", "dairy"), ing(70, "g", "basmati rice", "store"),
@@ -1299,6 +1375,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d75", title: "Falafel Bowl with Hummus and Flatbread", tags: ["vegetarian", "vegan"], cuisine: "Lebanon", protein: "plant-based",
       prep: 6, cook: 8,
+      nutrition: { kcal: 800, protein: 24, carbs: 89, fat: 39 },
       ingredients: [
         ing(6, "", "shop-bought falafel", "store"), ing(3, "tbsp", "shop-bought hummus", "store"),
         ing(1, "", "flatbread", "bakery"), ing(0.5, "", "cucumber, diced", "produce"),
@@ -1315,6 +1392,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d76", title: "Za'atar Chicken with Lemon Rice", tags: [], cuisine: "Lebanon", protein: "chicken",
       prep: 8, cook: 15,
+      nutrition: { kcal: 720, protein: 39, carbs: 60, fat: 35 },
       ingredients: [
         ing(180, "g", "chicken thigh, sliced", "meat"), ing(1.5, "tbsp", "za'atar", "spice"),
         ing(1, "tbsp", "olive oil", "store"), ing(70, "g", "basmati rice", "store"),
@@ -1330,6 +1408,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d77", title: "Sumac Turkey Flatbread with Pickled Onion", tags: [], cuisine: "Turkey", protein: "turkey",
       prep: 8, cook: 10,
+      nutrition: { kcal: 700, protein: 54, carbs: 49, fat: 32 },
       ingredients: [
         ing(180, "g", "turkey breast steak, sliced", "meat"), ing(1, "tsp", "sumac", "spice"),
         ing(1, "tbsp", "olive oil", "store"), ing(1, "", "flatbread", "bakery"),
@@ -1347,6 +1426,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d78", title: "Chipotle Beef Burrito Bowl", tags: ["spicy", "quick"], cuisine: "Mexico", protein: "beef",
       prep: 8, cook: 8,
+      nutrition: { kcal: 970, protein: 50, carbs: 79, fat: 48 },
       ingredients: [
         ing(180, "g", "beef mince or steak strips", "meat"), ing(1, "tsp", "chipotle paste", "store"),
         ing(150, "g", "cooked rice", "store"), ing(100, "g", "tinned black beans, drained", "store"),
@@ -1363,6 +1443,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d79", title: "Black Bean & Sweetcorn Quesadillas", tags: ["vegetarian", "quick"], cuisine: "Mexico", protein: "plant-based",
       prep: 6, cook: 8,
+      nutrition: { kcal: 400, protein: 22, carbs: 30, fat: 20 },
       ingredients: [
         ing(100, "g", "tinned black beans, drained", "store"), ing(60, "g", "sweetcorn", "frozen"),
         ing(2, "", "flour tortillas", "bakery"), ing(50, "g", "cheddar, grated", "dairy"),
@@ -1379,6 +1460,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d80", title: "Chilaquiles-Style Baked Eggs with Tortilla Chips and Salsa", tags: ["vegetarian", "quick"], cuisine: "Mexico", protein: "plant-based",
       prep: 5, cook: 10,
+      nutrition: { kcal: 490, protein: 24, carbs: 30, fat: 30 },
       ingredients: [
         ing(2, "", "eggs", "dairy"), ing(150, "g", "shop-bought tomato salsa", "store"),
         ing(40, "g", "tortilla chips", "store"), ing(30, "g", "cheddar, grated", "dairy"),
@@ -1394,6 +1476,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d81", title: "Jamaican-Style Chicken Curry with Rice and Peas", tags: ["spicy"], cuisine: "Jamaica", protein: "chicken",
       prep: 8, cook: 25,
+      nutrition: { kcal: 1130, protein: 48, carbs: 84, fat: 65 },
       ingredients: [
         ing(180, "g", "chicken thigh, diced", "meat"), ing(1.5, "tbsp", "curry powder", "spice"),
         ing(150, "ml", "coconut milk", "store"), ing(0.5, "", "onion, diced", "produce"),
@@ -1413,6 +1496,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d82", title: "Cuban-Style Black Bean Rice Bowl", tags: ["vegetarian", "vegan", "quick"], cuisine: "Cuba", protein: "plant-based",
       prep: 7, cook: 14,
+      nutrition: { kcal: 530, protein: 16, carbs: 77, fat: 17 },
       ingredients: [
         ing(150, "g", "tinned black beans, drained", "store"), ing(150, "g", "cooked rice", "store"),
         ing(0.5, "", "pepper, diced", "produce"), ing(0.25, "", "red onion, diced", "produce"),
@@ -1429,6 +1513,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d83", title: "Spanish-Style Chicken and Chorizo Rice", tags: ["spicy"], cuisine: "Spain", protein: "chicken",
       prep: 10, cook: 25,
+      nutrition: { kcal: 660, protein: 36, carbs: 63, fat: 28 },
       ingredients: [
         ing(100, "g", "chicken thigh, diced", "meat"), ing(40, "g", "cooking chorizo, sliced", "meat"),
         ing(70, "g", "paella or short-grain rice", "store"), ing(150, "g", "chopped tomatoes", "store"),
@@ -1446,6 +1531,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d84", title: "Spanish Tortilla-Style Potato & Onion Omelette", tags: ["vegetarian", "quick"], cuisine: "Spain", protein: "plant-based",
       prep: 8, cook: 15,
+      nutrition: { kcal: 500, protein: 23, carbs: 33, fat: 31 },
       ingredients: [
         ing(150, "g", "potato, thinly sliced", "produce"), ing(0.5, "", "onion, thinly sliced", "produce"),
         ing(3, "", "eggs", "dairy"), ing(2, "tbsp", "olive oil", "store")
@@ -1460,6 +1546,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d85", title: "Patatas Bravas Bowl with Fried Egg", tags: ["vegetarian"], cuisine: "Spain", protein: "plant-based",
       prep: 6, cook: 30,
+      nutrition: { kcal: 380, protein: 12, carbs: 40, fat: 19 },
       ingredients: [
         ing(200, "g", "potato, cubed", "produce"), ing(1, "tbsp", "olive oil", "store"),
         ing(100, "g", "chopped tomatoes", "store"), ing(0.5, "tsp", "smoked paprika", "spice"),
@@ -1477,6 +1564,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d86", title: "Greek-Style Lamb Gyros Bowl with Tzatziki", tags: [], cuisine: "Greece", protein: "lamb",
       prep: 8, cook: 15,
+      nutrition: { kcal: 820, protein: 39, carbs: 62, fat: 45 },
       ingredients: [
         ing(180, "g", "lamb mince", "meat"), ing(1, "tsp", "dried oregano", "spice"),
         ing(0.5, "tsp", "ground cumin", "spice"), ing(1, "", "garlic clove, crushed", "produce"),
@@ -1493,6 +1581,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d87", title: "Greek-Style Lemon Orzo with Feta", tags: ["vegetarian"], cuisine: "Greece", protein: "plant-based",
       prep: 6, cook: 12,
+      nutrition: { kcal: 520, protein: 17, carbs: 55, fat: 26 },
       ingredients: [
         ing(70, "g", "orzo", "store"), ing(50, "g", "feta, crumbled", "dairy"),
         ing(80, "g", "cherry tomatoes, halved", "produce"), ing(0.5, "", "lemon", "produce"),
@@ -1508,6 +1597,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d88", title: "Mushroom & Pea Risotto", tags: ["vegetarian"], cuisine: "Italy", protein: "plant-based",
       prep: 8, cook: 22,
+      nutrition: { kcal: 530, protein: 19, carbs: 68, fat: 19 },
       ingredients: [
         ing(70, "g", "risotto rice", "store"), ing(120, "g", "chestnut mushrooms, sliced", "produce"),
         ing(60, "g", "frozen peas", "frozen"), ing(400, "ml", "vegetable stock", "store"),
@@ -1525,6 +1615,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d89", title: "Italian Sausage & Rocket Pasta", tags: ["quick"], cuisine: "Italy", protein: "pork",
       prep: 6, cook: 12,
+      nutrition: { kcal: 690, protein: 31, carbs: 65, fat: 33 },
       ingredients: [
         ing(2, "", "pork sausages, skins removed", "meat"), ing(70, "g", "pasta", "store"),
         ing(1, "", "garlic clove, finely chopped", "produce"), ing(0.5, "tsp", "chilli flakes", "spice"),
@@ -1541,6 +1632,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d90", title: "Pesto Gnocchi with Cherry Tomatoes", tags: ["vegetarian", "quick"], cuisine: "Italy", protein: "plant-based",
       prep: 5, cook: 8,
+      nutrition: { kcal: 580, protein: 16, carbs: 70, fat: 26 },
       ingredients: [
         ing(200, "g", "fresh gnocchi", "store"), ing(3, "tbsp", "shop-bought basil pesto", "store"),
         ing(100, "g", "cherry tomatoes, halved", "produce"), ing(15, "g", "parmesan, grated", "dairy")
@@ -1554,6 +1646,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d91", title: "Aglio e Olio with Chilli and Crispy Breadcrumbs", tags: ["vegetarian", "vegan", "quick"], cuisine: "Italy", protein: "plant-based",
       prep: 5, cook: 10,
+      nutrition: { kcal: 520, protein: 11, carbs: 62, fat: 26 },
       ingredients: [
         ing(70, "g", "spaghetti", "store"), ing(2, "", "garlic cloves, thinly sliced", "produce"),
         ing(0.5, "tsp", "chilli flakes", "spice"), ing(3, "tbsp", "olive oil", "store"),
@@ -1570,6 +1663,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d92", title: "Croque Monsieur-Style Ham & Cheese Toastie with Salad", tags: ["quick"], cuisine: "France", protein: "pork",
       prep: 5, cook: 8,
+      nutrition: { kcal: 530, protein: 27, carbs: 31, fat: 34 },
       ingredients: [
         ing(2, "", "slices bread", "bakery"), ing(2, "", "slices ham", "meat"),
         ing(40, "g", "cheddar or gruyere, grated", "dairy"), ing(1, "tsp", "dijon mustard", "store"),
@@ -1586,6 +1680,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d93", title: "French-Style Chicken Chasseur", tags: [], cuisine: "France", protein: "chicken",
       prep: 8, cook: 24,
+      nutrition: { kcal: 640, protein: 42, carbs: 39, fat: 35 },
       ingredients: [
         ing(180, "g", "chicken thigh", "meat"), ing(100, "g", "chestnut mushrooms, sliced", "produce"),
         ing(0.5, "", "onion, diced", "produce"), ing(100, "g", "chopped tomatoes", "store"),
@@ -1604,6 +1699,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d94", title: "German-Style Currywurst with Fries", tags: ["spicy"], cuisine: "Germany", protein: "pork",
       prep: 6, cook: 20,
+      nutrition: { kcal: 720, protein: 22, carbs: 74, fat: 36 },
       ingredients: [
         ing(2, "", "pork sausages, sliced", "meat"), ing(150, "g", "frozen fries", "frozen"),
         ing(3, "tbsp", "ketchup", "store"), ing(1, "tsp", "curry powder", "spice"),
@@ -1620,6 +1716,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d95", title: "Speedy Cottage Pie Mash Cup", tags: [], cuisine: "UK", protein: "beef",
       prep: 8, cook: 24,
+      nutrition: { kcal: 800, protein: 42, carbs: 59, fat: 44 },
       ingredients: [
         ing(180, "g", "beef mince", "meat"), ing(0.5, "", "onion, diced", "produce"),
         ing(1, "", "carrot, diced", "produce"), ing(1, "tbsp", "tomato puree", "store"),
@@ -1637,6 +1734,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d96", title: "Bangers and Colcannon Mash with Onion Gravy", tags: [], cuisine: "Ireland", protein: "pork",
       prep: 7, cook: 24,
+      nutrition: { kcal: 910, protein: 33, carbs: 71, fat: 54 },
       ingredients: [
         ing(3, "", "pork sausages", "meat"), ing(250, "g", "potato, peeled and cubed", "produce"),
         ing(60, "g", "cabbage or kale, shredded", "produce"), ing(15, "g", "butter", "dairy"),
@@ -1654,6 +1752,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d97", title: "Miso Butter Salmon with Steamed Rice", tags: ["fish"], cuisine: "Japan", protein: "fish",
       prep: 6, cook: 15,
+      nutrition: { kcal: 690, protein: 36, carbs: 58, fat: 34 },
       ingredients: [
         ing(150, "g", "salmon fillet", "meat"), ing(1, "tbsp", "miso paste", "store"),
         ing(15, "g", "butter, softened", "dairy"), ing(1, "tsp", "soy sauce", "store"),
@@ -1671,6 +1770,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d98", title: "Yaki Udon with Beef and Vegetables", tags: ["quick"], cuisine: "Japan", protein: "beef",
       prep: 8, cook: 8,
+      nutrition: { kcal: 620, protein: 44, carbs: 66, fat: 19 },
       ingredients: [
         ing(150, "g", "beef strips (sirloin or rump)", "meat"), ing(200, "g", "straight-to-wok udon noodles", "store"),
         ing(100, "g", "stir-fry vegetable mix", "produce"), ing(2, "tbsp", "soy sauce", "store"),
@@ -1687,6 +1787,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d99", title: "Bibimbap-Style Beef Rice Bowl", tags: [], cuisine: "Korea", protein: "beef",
       prep: 8, cook: 15,
+      nutrition: { kcal: 780, protein: 43, carbs: 66, fat: 37 },
       ingredients: [
         ing(150, "g", "beef strips or mince", "meat"), ing(1, "tbsp", "soy sauce", "store"),
         ing(1, "tsp", "sesame oil", "store"), ing(70, "g", "jasmine or short-grain rice", "store"),
@@ -1704,6 +1805,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d100", title: "Kimchi Fried Rice with Fried Egg", tags: ["vegetarian"], cuisine: "Korea", protein: "plant-based",
       prep: 6, cook: 10,
+      nutrition: { kcal: 360, protein: 13, carbs: 52, fat: 10 },
       ingredients: [
         ing(150, "g", "cooked rice, cold", "store"), ing(80, "g", "kimchi, chopped", "store"),
         ing(1, "tbsp", "kimchi juice (from the jar)", "store"), ing(1, "tsp", "sesame oil", "store"),
@@ -1719,6 +1821,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d101", title: "Ethiopian-Inspired Spiced Red Lentil Stew", tags: ["vegetarian", "vegan"], cuisine: "Ethiopia", protein: "plant-based",
       prep: 8, cook: 24,
+      nutrition: { kcal: 460, protein: 14, carbs: 49, fat: 24 },
       ingredients: [
         ing(80, "g", "dried red lentils", "store"), ing(150, "g", "chopped tomatoes", "store"),
         ing(0.5, "", "onion, diced", "produce"), ing(1, "", "garlic clove, finely chopped", "produce"),
@@ -1738,6 +1841,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d102", title: "Tofu Satay Bowl with Peanut Sauce", tags: ["vegetarian", "vegan"], cuisine: "Indonesia", protein: "plant-based",
       prep: 8, cook: 15,
+      nutrition: { kcal: 660, protein: 34, carbs: 68, fat: 28 },
       ingredients: [
         ing(150, "g", "firm tofu, cubed", "store"), ing(70, "g", "jasmine rice", "store"),
         ing(2, "tbsp", "peanut butter", "store"), ing(1, "tbsp", "soy sauce", "store"),
@@ -1754,6 +1858,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d103", title: "Polish Sausage & Sauerkraut Skillet", tags: ["quick"], cuisine: "Poland", protein: "pork",
       prep: 7, cook: 12,
+      nutrition: { kcal: 650, protein: 23, carbs: 44, fat: 42 },
       ingredients: [
         ing(2, "", "pork sausages, sliced", "meat"), ing(150, "g", "sauerkraut, drained", "store"),
         ing(1, "", "small potato, diced", "produce"), ing(0.5, "", "onion, sliced", "produce"),
@@ -1770,6 +1875,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d104", title: "Polish-Style Potato & Curd Cheese Bake", tags: ["vegetarian"], cuisine: "Poland", protein: "plant-based",
       prep: 8, cook: 25,
+      nutrition: { kcal: 520, protein: 18, carbs: 55, fat: 26 },
       ingredients: [
         ing(250, "g", "potato, sliced thin", "produce"), ing(100, "g", "cottage cheese or curd cheese", "dairy"),
         ing(0.5, "", "onion, sliced", "produce"), ing(1, "tbsp", "soured cream", "dairy"),
@@ -1787,6 +1893,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d105", title: "Polish Dill Chicken with Soured Cream", tags: ["quick"], cuisine: "Poland", protein: "chicken",
       prep: 8, cook: 15,
+      nutrition: { kcal: 430, protein: 39, carbs: 18, fat: 22 },
       ingredients: [
         ing(150, "g", "chicken breast, sliced", "meat"), ing(2, "tbsp", "soured cream", "dairy"),
         ing(1, "tsp", "plain flour", "store"), ing(100, "ml", "chicken stock", "store"),
@@ -1804,6 +1911,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d106", title: "Hungarian-Style Chicken Paprikash", tags: ["quick"], cuisine: "Hungary", protein: "chicken",
       prep: 8, cook: 19,
+      nutrition: { kcal: 790, protein: 42, carbs: 65, fat: 40 },
       ingredients: [
         ing(160, "g", "chicken thigh, diced", "meat"), ing(0.5, "", "onion, diced", "produce"),
         ing(1, "tbsp", "sweet paprika", "spice"), ing(2, "tbsp", "soured cream", "dairy"),
@@ -1821,6 +1929,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d107", title: "Hungarian Beef Goulash-Style Stew", tags: [], cuisine: "Hungary", protein: "beef",
       prep: 9, cook: 24,
+      nutrition: { kcal: 570, protein: 42, carbs: 38, fat: 28 },
       ingredients: [
         ing(160, "g", "beef rump steak, cut into strips", "meat"), ing(1, "", "small potato, cut into 1.5cm cubes", "produce"),
         ing(0.5, "", "red pepper, sliced", "produce"), ing(1.5, "tbsp", "sweet paprika", "spice"),
@@ -1838,6 +1947,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d108", title: "Hungarian Cabbage & Sausage Skillet", tags: ["quick"], cuisine: "Hungary", protein: "pork",
       prep: 7, cook: 13,
+      nutrition: { kcal: 780, protein: 29, carbs: 19, fat: 66 },
       ingredients: [
         ing(2, "", "smoked sausages, sliced", "meat"), ing(200, "g", "white cabbage, shredded", "produce"),
         ing(0.5, "", "onion, sliced", "produce"), ing(1, "tsp", "sweet paprika", "spice"),
@@ -1853,6 +1963,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d109", title: "Israeli-Style Shakshuka", tags: ["vegetarian", "spicy", "quick"], cuisine: "Israel", protein: "plant-based",
       prep: 7, cook: 15,
+      nutrition: { kcal: 580, protein: 24, carbs: 59, fat: 27 },
       ingredients: [
         ing(2, "", "eggs", "dairy"), ing(200, "g", "chopped tomatoes", "store"),
         ing(0.5, "", "red pepper, sliced", "produce"), ing(0.5, "", "onion, diced", "produce"),
@@ -1870,6 +1981,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d110", title: "Israeli Couscous Salad with Halloumi", tags: ["vegetarian", "quick"], cuisine: "Israel", protein: "plant-based",
       prep: 8, cook: 8,
+      nutrition: { kcal: 660, protein: 27, carbs: 58, fat: 35 },
       ingredients: [
         ing(70, "g", "giant couscous", "store"), ing(80, "g", "halloumi, sliced", "dairy"),
         ing(60, "g", "cucumber, diced", "produce"), ing(50, "g", "cherry tomatoes, halved", "produce"),
@@ -1886,6 +1998,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d111", title: "Israeli-Style Chicken Skewers with Tahini", tags: ["quick"], cuisine: "Israel", protein: "chicken",
       prep: 9, cook: 9,
+      nutrition: { kcal: 740, protein: 53, carbs: 51, fat: 37 },
       ingredients: [
         ing(160, "g", "chicken breast, cubed", "meat"), ing(1, "tsp", "ground cumin", "spice"),
         ing(0.5, "tsp", "smoked paprika", "spice"), ing(2, "tbsp", "tahini", "store"),
@@ -1904,6 +2017,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d112", title: "Egyptian-Style Koshari Bowl", tags: ["vegetarian", "vegan"], cuisine: "Egypt", protein: "plant-based",
       prep: 8, cook: 22,
+      nutrition: { kcal: 630, protein: 16, carbs: 84, fat: 27 },
       ingredients: [
         ing(50, "g", "dried brown lentils", "store"), ing(50, "g", "rice", "store"),
         ing(30, "g", "small dried pasta", "store"), ing(150, "g", "chopped tomatoes", "store"),
@@ -1921,6 +2035,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d113", title: "Egyptian-Style Spiced Beef Rice", tags: ["quick"], cuisine: "Egypt", protein: "beef",
       prep: 7, cook: 14,
+      nutrition: { kcal: 790, protein: 37, carbs: 68, fat: 40 },
       ingredients: [
         ing(150, "g", "beef mince", "meat"), ing(70, "g", "rice", "store"),
         ing(0.5, "", "onion, diced", "produce"), ing(1, "tsp", "ground cumin", "spice"),
@@ -1938,6 +2053,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d114", title: "Tunisian-Style Harissa Chickpea Stew", tags: ["vegetarian", "vegan", "spicy", "quick"], cuisine: "Tunisia", protein: "plant-based",
       prep: 7, cook: 12,
+      nutrition: { kcal: 590, protein: 24, carbs: 71, fat: 20 },
       ingredients: [
         ing(1, "tin", "chickpeas, drained", "store"), ing(150, "g", "chopped tomatoes", "store"),
         ing(1, "tbsp", "harissa paste", "store"), ing(0.5, "", "red pepper, sliced", "produce"),
@@ -1955,6 +2071,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d115", title: "Tunisian-Style Spiced Lamb with Couscous", tags: ["spicy", "quick"], cuisine: "Tunisia", protein: "lamb",
       prep: 8, cook: 10,
+      nutrition: { kcal: 780, protein: 36, carbs: 51, fat: 47 },
       ingredients: [
         ing(150, "g", "lamb mince", "meat"), ing(60, "g", "couscous", "store"),
         ing(1, "tsp", "harissa paste", "store"), ing(0.5, "tsp", "ground cumin", "spice"),
@@ -1973,6 +2090,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d116", title: "West African-Style Jollof Rice with Chicken", tags: ["spicy"], cuisine: "Nigeria", protein: "chicken",
       prep: 8, cook: 27,
+      nutrition: { kcal: 740, protein: 36, carbs: 75, fat: 32 },
       ingredients: [
         ing(150, "g", "chicken thigh, diced", "meat"), ing(70, "g", "rice", "store"),
         ing(150, "g", "chopped tomatoes", "store"), ing(0.5, "", "red pepper, sliced", "produce"),
@@ -1992,6 +2110,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d117", title: "West African-Style Peanut & Vegetable Stew", tags: ["vegetarian", "vegan", "spicy"], cuisine: "Nigeria", protein: "plant-based",
       prep: 8, cook: 21,
+      nutrition: { kcal: 730, protein: 19, carbs: 95, fat: 31 },
       ingredients: [
         ing(2, "tbsp", "peanut butter", "store"), ing(150, "g", "chopped tomatoes", "store"),
         ing(0.5, "", "sweet potato, diced", "produce"), ing(60, "g", "spinach or kale", "produce"),
@@ -2010,6 +2129,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d118", title: "West African-Style Spiced Beef Skewers", tags: ["spicy", "quick"], cuisine: "Nigeria", protein: "beef",
       prep: 9, cook: 9,
+      nutrition: { kcal: 670, protein: 46, carbs: 47, fat: 34 },
       ingredients: [
         ing(160, "g", "beef rump steak, cubed", "meat"), ing(1, "tsp", "ground ginger", "spice"),
         ing(0.5, "tsp", "cayenne pepper", "spice"), ing(0.5, "tsp", "smoked paprika", "spice"),
@@ -2027,6 +2147,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d119", title: "Sri Lankan-Style Coconut Chicken Curry", tags: ["spicy", "quick"], cuisine: "Sri Lanka", protein: "chicken",
       prep: 8, cook: 21,
+      nutrition: { kcal: 980, protein: 38, carbs: 69, fat: 61 },
       ingredients: [
         ing(160, "g", "chicken thigh, diced", "meat"), ing(150, "ml", "coconut milk", "store"),
         ing(1, "tsp", "curry powder", "spice"), ing(0.5, "tsp", "ground turmeric", "spice"),
@@ -2046,6 +2167,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d120", title: "Sri Lankan-Style Coconut Dhal", tags: ["vegetarian", "vegan", "spicy"], cuisine: "Sri Lanka", protein: "plant-based",
       prep: 6, cook: 15,
+      nutrition: { kcal: 800, protein: 20, carbs: 81, fat: 46 },
       ingredients: [
         ing(80, "g", "dried red lentils", "store"), ing(150, "ml", "coconut milk", "store"),
         ing(0.5, "tsp", "ground turmeric", "spice"), ing(0.25, "tsp", "chilli flakes", "spice"),
@@ -2063,6 +2185,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d121", title: "Sri Lankan-Style Spiced Fish", tags: ["fish", "spicy", "quick"], cuisine: "Sri Lanka", protein: "fish",
       prep: 8, cook: 15,
+      nutrition: { kcal: 580, protein: 37, carbs: 67, fat: 17 },
       ingredients: [
         ing(150, "g", "white fish fillet", "meat"), ing(1, "tsp", "curry powder", "spice"),
         ing(0.5, "tsp", "ground turmeric", "spice"), ing(0.5, "", "lime", "produce"),
@@ -2079,6 +2202,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d122", title: "Malaysian-Style Chicken Satay", tags: ["spicy", "quick"], cuisine: "Malaysia", protein: "chicken",
       prep: 9, cook: 15,
+      nutrition: { kcal: 690, protein: 54, carbs: 72, fat: 21 },
       ingredients: [
         ing(160, "g", "chicken breast, sliced", "meat"), ing(1, "tsp", "curry powder", "spice"),
         ing(2, "tbsp", "peanut butter", "store"), ing(1, "tbsp", "soy sauce", "store"),
@@ -2096,6 +2220,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d123", title: "Malaysian-Style Nasi Goreng", tags: ["spicy", "quick"], cuisine: "Malaysia", protein: "chicken",
       prep: 7, cook: 8,
+      nutrition: { kcal: 590, protein: 39, carbs: 60, fat: 22 },
       ingredients: [
         ing(150, "g", "cooked rice, cold", "store"), ing(100, "g", "chicken breast, diced", "meat"),
         ing(1, "", "egg", "dairy"), ing(1, "tbsp", "soy sauce", "store"),
@@ -2113,6 +2238,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d124", title: "Malaysian-Style Coconut Laksa", tags: ["spicy", "quick"], cuisine: "Malaysia", protein: "chicken",
       prep: 8, cook: 10,
+      nutrition: { kcal: 970, protein: 47, carbs: 75, fat: 52 },
       ingredients: [
         ing(120, "g", "chicken breast, sliced", "meat"), ing(70, "g", "rice noodles", "store"),
         ing(150, "ml", "coconut milk", "store"), ing(1, "tbsp", "laksa or red curry paste", "store"),
@@ -2131,6 +2257,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d125", title: "Singapore-Style Chilli Chicken Noodles", tags: ["spicy", "quick"], cuisine: "Singapore", protein: "chicken",
       prep: 8, cook: 8,
+      nutrition: { kcal: 610, protein: 43, carbs: 63, fat: 19 },
       ingredients: [
         ing(120, "g", "chicken breast, sliced", "meat"), ing(70, "g", "egg noodles", "store"),
         ing(1, "tbsp", "tomato ketchup", "store"), ing(1, "tsp", "chilli sauce", "store"),
@@ -2149,6 +2276,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d126", title: "Singapore-Style Turmeric Rice Bowl", tags: ["quick"], cuisine: "Singapore", protein: "chicken",
       prep: 7, cook: 20,
+      nutrition: { kcal: 670, protein: 35, carbs: 61, fat: 32 },
       ingredients: [
         ing(150, "g", "chicken thigh, diced", "meat"), ing(70, "g", "rice", "store"),
         ing(0.5, "tsp", "ground turmeric", "spice"), ing(1, "", "garlic clove, finely chopped", "produce"),
@@ -2166,6 +2294,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d127", title: "Pakistani-Style Chicken Karahi", tags: ["spicy", "quick"], cuisine: "Pakistan", protein: "chicken",
       prep: 10, cook: 15,
+      nutrition: { kcal: 700, protein: 40, carbs: 56, fat: 35 },
       ingredients: [
         ing(160, "g", "chicken thigh, diced", "meat"), ing(150, "g", "chopped tomatoes", "store"),
         ing(1, "", "green chilli, sliced", "produce"), ing(1, "tsp", "ground ginger", "spice"),
@@ -2183,6 +2312,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d128", title: "Pakistani-Style Spiced Lentil Dhal", tags: ["vegetarian", "vegan", "spicy"], cuisine: "Pakistan", protein: "plant-based",
       prep: 6, cook: 15,
+      nutrition: { kcal: 410, protein: 11, carbs: 41, fat: 24 },
       ingredients: [
         ing(80, "g", "dried red lentils", "store"), ing(0.5, "", "onion, diced", "produce"),
         ing(1, "tsp", "ground cumin", "spice"), ing(0.5, "tsp", "ground turmeric", "spice"),
@@ -2199,6 +2329,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d129", title: "Pakistani-Style Beef Seekh Kebabs", tags: ["spicy", "quick"], cuisine: "Pakistan", protein: "beef",
       prep: 9, cook: 9,
+      nutrition: { kcal: 610, protein: 38, carbs: 47, fat: 30 },
       ingredients: [
         ing(150, "g", "beef mince", "meat"), ing(1, "tsp", "ground cumin", "spice"),
         ing(0.5, "tsp", "chilli flakes", "spice"), ing(1, "", "garlic clove, crushed", "produce"),
@@ -2216,6 +2347,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d130", title: "Swedish-Style Meatballs with Lingonberry", tags: ["quick"], cuisine: "Sweden", protein: "beef",
       prep: 10, cook: 15,
+      nutrition: { kcal: 910, protein: 38, carbs: 53, fat: 61 },
       ingredients: [
         ing(150, "g", "beef mince", "meat"), ing(1, "tbsp", "breadcrumbs", "store"),
         ing(1, "", "egg yolk", "dairy"), ing(100, "ml", "beef stock", "store"),
@@ -2234,6 +2366,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d131", title: "Swedish-Style Dill Salmon with New Potatoes", tags: ["fish", "quick"], cuisine: "Sweden", protein: "fish",
       prep: 7, cook: 15,
+      nutrition: { kcal: 500, protein: 33, carbs: 22, fat: 31 },
       ingredients: [
         ing(150, "g", "salmon fillet", "meat"), ing(120, "g", "new potatoes, halved", "produce"),
         ing(null, "handful", "fresh dill, chopped", "produce"), ing(1, "tbsp", "butter", "dairy"),
@@ -2249,6 +2382,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d132", title: "Brazilian-Style Black Bean & Rice Bowl", tags: ["vegetarian", "vegan", "quick"], cuisine: "Brazil", protein: "plant-based",
       prep: 7, cook: 19,
+      nutrition: { kcal: 710, protein: 24, carbs: 109, fat: 18 },
       ingredients: [
         ing(1, "tin", "black beans, drained", "store"), ing(70, "g", "rice", "store"),
         ing(0.5, "", "onion, diced", "produce"), ing(1, "", "garlic clove, finely chopped", "produce"),
@@ -2266,6 +2400,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d133", title: "Brazilian-Style Lime Chicken with Rice", tags: ["quick"], cuisine: "Brazil", protein: "chicken",
       prep: 8, cook: 15,
+      nutrition: { kcal: 670, protein: 34, carbs: 59, fat: 32 },
       ingredients: [
         ing(160, "g", "chicken thigh, diced", "meat"), ing(70, "g", "rice", "store"),
         ing(1, "", "lime", "produce"), ing(1, "", "garlic clove, finely chopped", "produce"),
@@ -2282,6 +2417,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d134", title: "Brazilian-Style Beef & Pepper Skewers", tags: ["quick"], cuisine: "Brazil", protein: "beef",
       prep: 9, cook: 17,
+      nutrition: { kcal: 690, protein: 43, carbs: 68, fat: 28 },
       ingredients: [
         ing(160, "g", "beef rump steak, cubed", "meat"), ing(0.5, "", "red pepper, chunked", "produce"),
         ing(0.5, "", "onion, chunked", "produce"), ing(1, "", "garlic clove, crushed", "produce"),
@@ -2299,6 +2435,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d135", title: "Peruvian-Style Lomo Saltado", tags: ["quick"], cuisine: "Peru", protein: "beef",
       prep: 8, cook: 10,
+      nutrition: { kcal: 760, protein: 45, carbs: 81, fat: 28 },
       ingredients: [
         ing(160, "g", "beef rump steak, sliced", "meat"), ing(0.5, "", "red onion, sliced", "produce"),
         ing(1, "", "tomato, wedged", "produce"), ing(1, "tbsp", "soy sauce", "store"),
@@ -2318,6 +2455,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d136", title: "Peruvian-Style Chicken with Green Sauce", tags: ["spicy", "quick"], cuisine: "Peru", protein: "chicken",
       prep: 9, cook: 15,
+      nutrition: { kcal: 590, protein: 46, carbs: 60, fat: 19 },
       ingredients: [
         ing(160, "g", "chicken breast, sliced", "meat"), ing(null, "handful", "fresh coriander, finely chopped", "produce"),
         ing(1, "", "garlic clove, finely chopped", "produce"), ing(2, "tbsp", "natural yoghurt", "dairy"),
@@ -2335,6 +2473,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d137", title: "Argentinian-Style Chimichurri Steak", tags: ["quick"], cuisine: "Argentina", protein: "beef",
       prep: 8, cook: 15,
+      nutrition: { kcal: 490, protein: 39, carbs: 24, fat: 27 },
       ingredients: [
         ing(160, "g", "beef sirloin steak", "meat"), ing(null, "handful", "fresh parsley, chopped", "produce"),
         ing(1, "", "garlic clove, crushed", "produce"), ing(1, "tbsp", "red wine vinegar", "store"),
@@ -2351,6 +2490,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d138", title: "Argentinian-Style Empanada Bowl", tags: ["quick"], cuisine: "Argentina", protein: "beef",
       prep: 8, cook: 10,
+      nutrition: { kcal: 800, protein: 37, carbs: 68, fat: 43 },
       ingredients: [
         ing(150, "g", "beef mince", "meat"), ing(0.5, "", "onion, diced", "produce"),
         ing(0.5, "tsp", "ground cumin", "spice"), ing(0.25, "tsp", "chilli flakes", "spice"),
@@ -2368,6 +2508,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d139", title: "Australian-Style Barramundi with Salad", tags: ["fish", "quick"], cuisine: "Australia", protein: "fish",
       prep: 8, cook: 15,
+      nutrition: { kcal: 500, protein: 31, carbs: 17, fat: 34 },
       ingredients: [
         ing(150, "g", "white fish fillet", "meat"), ing(60, "g", "mixed salad leaves", "produce"),
         ing(0.5, "", "avocado, sliced", "produce"), ing(0.5, "", "lemon", "produce"),
@@ -2384,6 +2525,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d140", title: "Australian-Style Lamb Chops with Mint", tags: ["quick"], cuisine: "Australia", protein: "lamb",
       prep: 7, cook: 18,
+      nutrition: { kcal: 650, protein: 40, carbs: 33, fat: 39 },
       ingredients: [
         ing(2, "", "lamb chops", "meat"), ing(null, "handful", "fresh mint, chopped", "produce"),
         ing(1, "tbsp", "natural yoghurt", "dairy"), ing(120, "g", "new potatoes", "produce"),
@@ -2400,6 +2542,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d141", title: "Russian-Style Beetroot Soup", tags: ["vegetarian", "quick"], cuisine: "Russia", protein: "plant-based",
       prep: 7, cook: 16,
+      nutrition: { kcal: 400, protein: 10, carbs: 43, fat: 21 },
       ingredients: [
         ing(150, "g", "cooked beetroot, diced", "produce"), ing(0.5, "", "onion, diced", "produce"),
         ing(300, "ml", "vegetable stock", "store"), ing(2, "tbsp", "soured cream", "dairy"),
@@ -2417,6 +2560,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d142", title: "Russian-Style Chicken & Mushroom Skillet", tags: ["quick"], cuisine: "Russia", protein: "chicken",
       prep: 8, cook: 15,
+      nutrition: { kcal: 670, protein: 48, carbs: 65, fat: 24 },
       ingredients: [
         ing(160, "g", "chicken breast, sliced", "meat"), ing(100, "g", "chestnut mushrooms, sliced", "produce"),
         ing(0.5, "", "onion, sliced", "produce"), ing(2, "tbsp", "soured cream", "dairy"),
@@ -2434,6 +2578,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d143", title: "Austrian-Style Chicken Schnitzel", tags: ["quick"], cuisine: "Austria", protein: "chicken",
       prep: 9, cook: 9,
+      nutrition: { kcal: 550, protein: 47, carbs: 29, fat: 27 },
       ingredients: [
         ing(150, "g", "chicken breast, flattened", "meat"), ing(2, "tbsp", "plain flour", "store"),
         ing(1, "", "egg, beaten", "dairy"), ing(3, "tbsp", "breadcrumbs", "store"),
@@ -2450,6 +2595,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d144", title: "Austrian-Style Sausage & Potato Salad", tags: ["quick"], cuisine: "Austria", protein: "pork",
       prep: 7, cook: 12,
+      nutrition: { kcal: 820, protein: 28, carbs: 37, fat: 63 },
       ingredients: [
         ing(2, "", "frankfurter or pork sausages", "meat"), ing(150, "g", "new potatoes, sliced", "produce"),
         ing(1, "tsp", "Dijon mustard", "store"), ing(1, "tbsp", "red wine vinegar", "store"),
@@ -2465,6 +2611,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d145", title: "Dutch-Style Kale & Sausage Mash", tags: ["quick"], cuisine: "Netherlands", protein: "pork",
       prep: 8, cook: 17,
+      nutrition: { kcal: 650, protein: 23, carbs: 49, fat: 40 },
       ingredients: [
         ing(2, "", "pork sausages, sliced", "meat"), ing(200, "g", "potato, chunked", "produce"),
         ing(60, "g", "kale, shredded", "produce"), ing(1, "tbsp", "butter", "dairy"),
@@ -2480,6 +2627,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d146", title: "Dutch-Style Pea Soup with Sausage", tags: ["quick"], cuisine: "Netherlands", protein: "pork",
       prep: 7, cook: 17,
+      nutrition: { kcal: 640, protein: 26, carbs: 44, fat: 41 },
       ingredients: [
         ing(1, "", "smoked sausage, sliced", "meat"), ing(150, "g", "frozen peas", "frozen"),
         ing(0.5, "", "onion, diced", "produce"), ing(250, "ml", "vegetable stock", "store"),
@@ -2496,6 +2644,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d147", title: "South African-Style Bobotie-Inspired Mince Bake", tags: ["quick"], cuisine: "South Africa", protein: "beef",
       prep: 9, cook: 15,
+      nutrition: { kcal: 930, protein: 43, carbs: 85, fat: 46 },
       ingredients: [
         ing(150, "g", "beef mince", "meat"), ing(0.5, "", "onion, diced", "produce"),
         ing(1, "tsp", "mild curry powder", "spice"), ing(20, "g", "raisins", "store"),
@@ -2517,6 +2666,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d148", title: "South African-Style Peri-Peri Chicken", tags: ["spicy", "quick"], cuisine: "South Africa", protein: "chicken",
       prep: 8, cook: 15,
+      nutrition: { kcal: 670, protein: 34, carbs: 58, fat: 32 },
       ingredients: [
         ing(160, "g", "chicken thigh, diced", "meat"), ing(1, "tsp", "smoked paprika", "spice"),
         ing(0.5, "tsp", "chilli flakes", "spice"), ing(1, "", "garlic clove, crushed", "produce"),
@@ -2533,6 +2683,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d149", title: "Hawaiian-Style Salmon Poke Bowl", tags: ["fish", "quick"], cuisine: "Hawaii", protein: "fish",
       prep: 9, cook: 0,
+      nutrition: { kcal: 650, protein: 32, carbs: 54, fat: 33 },
       ingredients: [
         ing(120, "g", "sushi-grade salmon, cubed", "meat"), ing(150, "g", "cooked rice, cold", "store"),
         ing(1, "tbsp", "soy sauce", "store"), ing(0.5, "tsp", "sesame oil", "store"),
@@ -2551,6 +2702,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d150", title: "Hawaiian-Style Teriyaki Chicken Rice Bowl", tags: ["quick"], cuisine: "Hawaii", protein: "chicken",
       prep: 8, cook: 15,
+      nutrition: { kcal: 780, protein: 36, carbs: 85, fat: 32 },
       ingredients: [
         ing(160, "g", "chicken thigh, diced", "meat"), ing(2, "tbsp", "soy sauce", "store"),
         ing(1, "tbsp", "honey", "store"), ing(70, "g", "rice", "store"),
@@ -2569,6 +2721,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d151", title: "Mapo Tofu-Inspired Spiced Pork & Tofu", tags: ["spicy", "quick"], cuisine: "China", protein: "pork",
       prep: 8, cook: 15,
+      nutrition: { kcal: 880, protein: 50, carbs: 63, fat: 46 },
       ingredients: [
         ing(100, "g", "pork mince", "meat"), ing(200, "g", "firm tofu, cubed", "store"),
         ing(1, "tbsp", "soy sauce", "store"), ing(1, "tsp", "chilli bean sauce or chilli flakes", "store"),
@@ -2586,6 +2739,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d152", title: "Chinese-Style Steamed Fish with Ginger", tags: ["fish", "quick"], cuisine: "China", protein: "fish",
       prep: 8, cook: 15,
+      nutrition: { kcal: 450, protein: 36, carbs: 62, fat: 5 },
       ingredients: [
         ing(150, "g", "white fish fillet", "meat"), ing(1, "tbsp", "soy sauce", "store"),
         ing(1, "tsp", "fresh ginger, grated", "produce"), ing(1, "", "spring onion, shredded", "produce"),
@@ -2601,6 +2755,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d153", title: "Moroccan-Style Chicken Tagine with Apricots", tags: ["quick"], cuisine: "Morocco", protein: "chicken",
       prep: 8, cook: 15,
+      nutrition: { kcal: 870, protein: 49, carbs: 80, fat: 38 },
       ingredients: [
         ing(160, "g", "chicken thigh, diced", "meat"), ing(30, "g", "dried apricots, chopped", "store"),
         ing(0.5, "tsp", "ground cinnamon", "spice"), ing(0.5, "tsp", "ground cumin", "spice"),
@@ -2619,6 +2774,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d154", title: "Moroccan-Style Beef Kefta with Couscous", tags: ["spicy", "quick"], cuisine: "Morocco", protein: "beef",
       prep: 9, cook: 9,
+      nutrition: { kcal: 580, protein: 37, carbs: 47, fat: 27 },
       ingredients: [
         ing(150, "g", "beef mince", "meat"), ing(0.5, "tsp", "ground cumin", "spice"),
         ing(0.5, "tsp", "smoked paprika", "spice"), ing(0.25, "tsp", "chilli flakes", "spice"),
@@ -2636,6 +2792,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d155", title: "Thai Red Curry with Chicken", tags: ["spicy", "quick"], cuisine: "Thailand", protein: "chicken",
       prep: 7, cook: 15,
+      nutrition: { kcal: 960, protein: 51, carbs: 75, fat: 49 },
       ingredients: [
         ing(160, "g", "chicken breast, sliced", "meat"), ing(150, "ml", "coconut milk", "store"),
         ing(1.5, "tbsp", "red curry paste", "store"), ing(60, "g", "green beans", "produce"),
@@ -2654,6 +2811,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d156", title: "Thai-Style Pineapple Fried Rice", tags: ["quick"], cuisine: "Thailand", protein: "chicken",
       prep: 7, cook: 8,
+      nutrition: { kcal: 540, protein: 33, carbs: 65, fat: 17 },
       ingredients: [
         ing(100, "g", "chicken breast, diced", "meat"), ing(150, "g", "cooked rice, cold", "store"),
         ing(60, "g", "pineapple chunks", "produce"), ing(1, "tbsp", "soy sauce", "store"),
@@ -2671,6 +2829,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d157", title: "Indian-Style Egg Curry", tags: ["vegetarian", "spicy", "quick"], cuisine: "India", protein: "plant-based",
       prep: 7, cook: 19,
+      nutrition: { kcal: 590, protein: 21, carbs: 70, fat: 24 },
       ingredients: [
         ing(2, "", "eggs", "dairy"), ing(150, "g", "chopped tomatoes", "store"),
         ing(0.5, "", "onion, diced", "produce"), ing(1, "tsp", "mild curry powder", "spice"),
@@ -2688,6 +2847,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d158", title: "Indian-Style Spiced Potato Bowl", tags: ["vegetarian", "vegan", "spicy", "quick"], cuisine: "India", protein: "plant-based",
       prep: 7, cook: 13,
+      nutrition: { kcal: 530, protein: 12, carbs: 84, fat: 17 },
       ingredients: [
         ing(250, "g", "potato, diced", "produce"), ing(0.5, "tsp", "ground cumin", "spice"),
         ing(0.5, "tsp", "ground turmeric", "spice"), ing(0.25, "tsp", "chilli flakes", "spice"),
@@ -2704,6 +2864,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d159", title: "American-Style BBQ Pulled Chicken", tags: ["quick"], cuisine: "USA", protein: "chicken",
       prep: 7, cook: 12,
+      nutrition: { kcal: 580, protein: 44, carbs: 36, fat: 29 },
       ingredients: [
         ing(160, "g", "chicken breast, sliced", "meat"), ing(2, "tbsp", "barbecue sauce", "store"),
         ing(1, "", "burger bun", "bakery"), ing(60, "g", "coleslaw mix", "produce"),
@@ -2720,6 +2881,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d160", title: "American Diner-Style Turkey Burger", tags: [], cuisine: "USA", protein: "turkey",
       prep: 8, cook: 25,
+      nutrition: { kcal: 710, protein: 46, carbs: 47, fat: 38 },
       ingredients: [
         ing(150, "g", "turkey mince", "meat"), ing(1, "", "burger bun", "bakery"),
         ing(0.5, "", "sweet potato, cut into wedges", "produce"), ing(0.5, "tsp", "smoked paprika", "spice"),
@@ -2738,6 +2900,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d161", title: "Spanish-Style Garlic Mushrooms Tapas Bowl", tags: ["vegetarian", "vegan", "quick"], cuisine: "Spain", protein: "plant-based",
       prep: 7, cook: 8,
+      nutrition: { kcal: 280, protein: 10, carbs: 25, fat: 16 },
       ingredients: [
         ing(200, "g", "chestnut mushrooms, halved", "produce"), ing(2, "", "garlic cloves, sliced", "produce"),
         ing(0.5, "tsp", "smoked paprika", "spice"), ing(null, "small handful", "fresh parsley, chopped", "produce"),
@@ -2754,6 +2917,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d162", title: "Spanish-Style Baked Cod with Romesco", tags: ["fish", "quick"], cuisine: "Spain", protein: "fish",
       prep: 8, cook: 15,
+      nutrition: { kcal: 420, protein: 33, carbs: 25, fat: 20 },
       ingredients: [
         ing(150, "g", "cod fillet", "meat"), ing(0.5, "", "red pepper, sliced", "produce"),
         ing(1, "tbsp", "flaked almonds", "store"), ing(150, "g", "chopped tomatoes", "store"),
@@ -2772,6 +2936,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d163", title: "British-Style Breaded Fish Finger Sandwich", tags: ["fish", "quick"], cuisine: "UK", protein: "fish",
       prep: 8, cook: 22,
+      nutrition: { kcal: 1020, protein: 51, carbs: 108, fat: 42 },
       ingredients: [
         ing(150, "g", "white fish fillet, cut into strips", "meat"), ing(2, "tbsp", "plain flour", "store"),
         ing(1, "", "egg, beaten", "dairy"), ing(3, "tbsp", "breadcrumbs", "store"),
@@ -2791,6 +2956,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d164", title: "British-Style Leek & Potato Soup", tags: ["vegetarian", "quick"], cuisine: "UK", protein: "plant-based",
       prep: 7, cook: 23,
+      nutrition: { kcal: 500, protein: 11, carbs: 68, fat: 21 },
       ingredients: [
         ing(1, "", "leek, sliced", "produce"), ing(200, "g", "potato, chunked", "produce"),
         ing(300, "ml", "vegetable stock", "store"), ing(1, "tbsp", "butter", "dairy"),
@@ -2807,6 +2973,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d165", title: "Japanese-Style Chicken Teriyaki Rice Bowl", tags: ["quick"], cuisine: "Japan", protein: "chicken",
       prep: 7, cook: 15,
+      nutrition: { kcal: 760, protein: 37, carbs: 79, fat: 32 },
       ingredients: [
         ing(160, "g", "chicken thigh, sliced", "meat"), ing(2, "tbsp", "soy sauce", "store"),
         ing(1, "tbsp", "honey", "store"), ing(70, "g", "rice", "store"),
@@ -2824,6 +2991,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d166", title: "Japanese-Style Ginger Pork (Shogayaki)", tags: ["quick"], cuisine: "Japan", protein: "pork",
       prep: 8, cook: 15,
+      nutrition: { kcal: 560, protein: 40, carbs: 68, fat: 13 },
       ingredients: [
         ing(150, "g", "pork loin steak, sliced thin", "meat"), ing(1, "tbsp", "soy sauce", "store"),
         ing(1, "tsp", "fresh ginger, grated", "produce"), ing(1, "tsp", "honey", "store"),
@@ -2840,6 +3008,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d167", title: "Italian-Style Chicken Cacciatore", tags: ["quick"], cuisine: "Italy", protein: "chicken",
       prep: 8, cook: 15,
+      nutrition: { kcal: 700, protein: 42, carbs: 57, fat: 33 },
       ingredients: [
         ing(160, "g", "chicken thigh, diced", "meat"), ing(100, "g", "chestnut mushrooms, sliced", "produce"),
         ing(150, "g", "chopped tomatoes", "store"), ing(0.5, "", "onion, diced", "produce"),
@@ -2857,6 +3026,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d168", title: "Italian Caprese-Style Chicken Traybake", tags: [], cuisine: "Italy", protein: "chicken",
       prep: 7, cook: 28,
+      nutrition: { kcal: 580, protein: 54, carbs: 27, fat: 29 },
       ingredients: [
         ing(160, "g", "chicken breast", "meat"), ing(100, "g", "cherry tomatoes", "produce"),
         ing(60, "g", "mozzarella, torn", "dairy"), ing(null, "handful", "fresh basil leaves", "produce"),
@@ -2874,6 +3044,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d169", title: "Portuguese-Style Chouriço & Bean Stew", tags: ["spicy", "quick"], cuisine: "Portugal", protein: "pork",
       prep: 8, cook: 16,
+      nutrition: { kcal: 760, protein: 40, carbs: 72, fat: 32 },
       ingredients: [
         ing(1, "", "chorizo sausage, sliced", "meat"), ing(1, "tin", "butter beans, drained", "store"),
         ing(150, "g", "chopped tomatoes", "store"), ing(0.5, "", "onion, diced", "produce"),
@@ -2889,6 +3060,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d170", title: "Portuguese-Style Baked Fish with Peppers", tags: ["fish", "quick"], cuisine: "Portugal", protein: "fish",
       prep: 8, cook: 14,
+      nutrition: { kcal: 440, protein: 35, carbs: 67, fat: 3 },
       ingredients: [
         ing(150, "g", "white fish fillet", "meat"), ing(0.5, "", "red pepper, sliced", "produce"),
         ing(150, "g", "chopped tomatoes", "store"), ing(1, "", "garlic clove, finely chopped", "produce"),
@@ -2905,6 +3077,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d171", title: "French-Style Summer Vegetable Stew", tags: ["vegetarian", "vegan", "quick"], cuisine: "France", protein: "plant-based",
       prep: 10, cook: 16,
+      nutrition: { kcal: 250, protein: 6, carbs: 22, fat: 15 },
       ingredients: [
         ing(0.5, "", "courgette, diced", "produce"), ing(0.5, "", "red pepper, diced", "produce"),
         ing(150, "g", "chopped tomatoes", "store"), ing(0.5, "", "onion, diced", "produce"),
@@ -2921,6 +3094,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d172", title: "French Onion Soup with Cheese Toast", tags: ["vegetarian"], cuisine: "France", protein: "plant-based",
       prep: 7, cook: 25,
+      nutrition: { kcal: 430, protein: 15, carbs: 39, fat: 24 },
       ingredients: [
         ing(1.5, "", "onions, thinly sliced", "produce"), ing(300, "ml", "beef or vegetable stock", "store"),
         ing(1, "tbsp", "butter", "dairy"), ing(1, "slice", "crusty bread", "bakery"),
@@ -2936,6 +3110,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d173", title: "Greek-Style Chicken Souvlaki Bowl", tags: ["quick"], cuisine: "Greece", protein: "chicken",
       prep: 8, cook: 15,
+      nutrition: { kcal: 620, protein: 46, carbs: 62, fat: 21 },
       ingredients: [
         ing(160, "g", "chicken breast, cubed", "meat"), ing(1, "tsp", "dried oregano", "spice"),
         ing(0.5, "", "lemon", "produce"), ing(70, "g", "rice", "store"),
@@ -2952,6 +3127,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d174", title: "Greek-Style Spinach & Feta Filo Bake", tags: ["vegetarian", "quick"], cuisine: "Greece", protein: "plant-based",
       prep: 9, cook: 15,
+      nutrition: { kcal: 540, protein: 23, carbs: 37, fat: 33 },
       ingredients: [
         ing(100, "g", "spinach", "produce"), ing(60, "g", "feta cheese, crumbled", "dairy"),
         ing(1, "", "egg", "dairy"), ing(2, "", "sheets filo pastry", "bakery"),
@@ -2969,6 +3145,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d175", title: "Mexican-Style Chicken Tinga Tacos", tags: ["spicy", "quick"], cuisine: "Mexico", protein: "chicken",
       prep: 8, cook: 16,
+      nutrition: { kcal: 650, protein: 49, carbs: 60, fat: 24 },
       ingredients: [
         ing(160, "g", "chicken breast, shredded after cooking", "meat"), ing(150, "g", "chopped tomatoes", "store"),
         ing(0.5, "", "onion, sliced", "produce"), ing(1, "tsp", "chipotle paste", "store"),
@@ -2986,6 +3163,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d176", title: "Mexican-Style Turkey & Black Bean Chilli", tags: ["spicy", "quick"], cuisine: "Mexico", protein: "turkey",
       prep: 8, cook: 14,
+      nutrition: { kcal: 920, protein: 54, carbs: 101, fat: 30 },
       ingredients: [
         ing(150, "g", "turkey mince", "meat"), ing(1, "tin", "black beans, drained", "store"),
         ing(150, "g", "chopped tomatoes", "store"), ing(0.5, "tsp", "smoked paprika", "spice"),
@@ -3003,6 +3181,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d177", title: "Cypriot-Style Pork Souvlaki with Pitta", tags: ["quick"], cuisine: "Cyprus", protein: "pork",
       prep: 8, cook: 9,
+      nutrition: { kcal: 620, protein: 44, carbs: 44, fat: 30 },
       ingredients: [
         ing(160, "g", "pork loin, cubed", "meat"), ing(1, "tsp", "dried oregano", "spice"),
         ing(0.5, "", "lemon", "produce"), ing(1, "", "pitta bread", "bakery"),
@@ -3019,6 +3198,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d178", title: "Cypriot-Style Lemon Chicken with Bulgur", tags: ["quick"], cuisine: "Cyprus", protein: "chicken",
       prep: 8, cook: 12,
+      nutrition: { kcal: 630, protein: 37, carbs: 47, fat: 32 },
       ingredients: [
         ing(160, "g", "chicken thigh, diced", "meat"), ing(60, "g", "bulgur wheat", "store"),
         ing(0.5, "", "lemon", "produce"), ing(1, "", "garlic clove, finely chopped", "produce"),
@@ -3034,6 +3214,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d179", title: "Lebanese-Style Beef Kofta with Bulgur", tags: ["quick"], cuisine: "Lebanon", protein: "beef",
       prep: 9, cook: 9,
+      nutrition: { kcal: 630, protein: 40, carbs: 53, fat: 28 },
       ingredients: [
         ing(150, "g", "beef mince", "meat"), ing(0.5, "tsp", "ground cumin", "spice"),
         ing(0.5, "tsp", "ground cinnamon", "spice"), ing(60, "g", "bulgur wheat", "store"),
@@ -3050,6 +3231,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d180", title: "Lebanese-Style Lentil & Rice (Mujadara)", tags: ["vegetarian", "vegan", "quick"], cuisine: "Lebanon", protein: "plant-based",
       prep: 7, cook: 22,
+      nutrition: { kcal: 580, protein: 14, carbs: 78, fat: 24 },
       ingredients: [
         ing(60, "g", "dried brown lentils", "store"), ing(50, "g", "rice", "store"),
         ing(1, "", "onion, thinly sliced", "produce"), ing(0.5, "tsp", "ground cumin", "spice"),
@@ -3066,6 +3248,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d181", title: "Korean-Style Spicy Pork Bulgogi", tags: ["spicy", "quick"], cuisine: "Korea", protein: "pork",
       prep: 8, cook: 15,
+      nutrition: { kcal: 660, protein: 44, carbs: 75, fat: 20 },
       ingredients: [
         ing(150, "g", "pork loin steak, sliced thin", "meat"), ing(1, "tbsp", "gochujang paste", "store"),
         ing(1, "tbsp", "soy sauce", "store"), ing(1, "tsp", "honey", "store"),
@@ -3083,6 +3266,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d182", title: "Korean-Style Tofu & Kimchi Stew", tags: ["vegetarian", "spicy", "quick"], cuisine: "Korea", protein: "plant-based",
       prep: 7, cook: 18,
+      nutrition: { kcal: 610, protein: 35, carbs: 69, fat: 21 },
       ingredients: [
         ing(200, "g", "firm tofu, cubed", "store"), ing(100, "g", "kimchi, chopped", "store"),
         ing(1, "tsp", "gochujang paste", "store"), ing(200, "ml", "vegetable stock", "store"),
@@ -3101,6 +3285,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d183", title: "Persian-Style Herb & Bean Rice", tags: ["vegetarian", "vegan", "quick"], cuisine: "Iran", protein: "plant-based",
       prep: 8, cook: 14,
+      nutrition: { kcal: 660, protein: 22, carbs: 96, fat: 18 },
       ingredients: [
         ing(70, "g", "rice", "store"), ing(1, "tin", "cannellini beans, drained", "store"),
         ing(null, "handful", "fresh parsley, chopped", "produce"), ing(null, "handful", "fresh coriander, chopped", "produce"),
@@ -3118,6 +3303,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d184", title: "Persian-Style Lamb & Split Pea Stew", tags: [], cuisine: "Iran", protein: "lamb",
       prep: 8, cook: 28,
+      nutrition: { kcal: 950, protein: 38, carbs: 85, fat: 51 },
       ingredients: [
         ing(150, "g", "lamb mince", "meat"), ing(40, "g", "dried red lentils", "store"),
         ing(150, "g", "chopped tomatoes", "store"), ing(0.5, "tsp", "ground turmeric", "spice"),
@@ -3136,6 +3322,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d185", title: "Jamaican-Style Jerk Pork Chops", tags: ["spicy", "quick"], cuisine: "Jamaica", protein: "pork",
       prep: 8, cook: 18,
+      nutrition: { kcal: 760, protein: 47, carbs: 71, fat: 29 },
       ingredients: [
         ing(1, "", "pork chop", "meat"), ing(1, "tsp", "jerk seasoning", "spice"),
         ing(0.5, "", "lime", "produce"), ing(70, "g", "rice", "store"),
@@ -3152,6 +3339,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d186", title: "Jamaican-Style Callaloo-Inspired Greens", tags: ["vegetarian", "vegan", "quick"], cuisine: "Jamaica", protein: "plant-based",
       prep: 7, cook: 18,
+      nutrition: { kcal: 470, protein: 10, carbs: 73, fat: 15 },
       ingredients: [
         ing(150, "g", "kale or spinach, shredded", "produce"), ing(0.5, "", "onion, diced", "produce"),
         ing(0.5, "", "red pepper, diced", "produce"), ing(0.25, "tsp", "chilli flakes", "spice"),
@@ -3169,6 +3357,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d187", title: "Filipino-Style Chicken Adobo", tags: ["quick"], cuisine: "Philippines", protein: "chicken",
       prep: 7, cook: 16,
+      nutrition: { kcal: 580, protein: 36, carbs: 65, fat: 19 },
       ingredients: [
         ing(160, "g", "chicken thigh, diced", "meat"), ing(2, "tbsp", "soy sauce", "store"),
         ing(1, "tbsp", "white wine vinegar", "store"), ing(2, "", "garlic cloves, crushed", "produce"),
@@ -3185,6 +3374,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d188", title: "Filipino-Style Garlic Fried Rice with Sausage", tags: ["quick"], cuisine: "Philippines", protein: "pork",
       prep: 7, cook: 9,
+      nutrition: { kcal: 790, protein: 29, carbs: 63, fat: 46 },
       ingredients: [
         ing(2, "", "pork sausages, sliced", "meat"), ing(150, "g", "cooked rice, cold", "store"),
         ing(2, "", "garlic cloves, finely chopped", "produce"), ing(1, "", "egg", "dairy"),
@@ -3201,6 +3391,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d189", title: "Vietnamese-Style Beef Noodle Soup", tags: ["quick"], cuisine: "Vietnam", protein: "beef",
       prep: 8, cook: 12,
+      nutrition: { kcal: 530, protein: 39, carbs: 63, fat: 13 },
       ingredients: [
         ing(150, "g", "beef sirloin, thinly sliced", "meat"), ing(70, "g", "rice noodles", "store"),
         ing(300, "ml", "beef stock", "store"), ing(1, "", "star anise", "spice"),
@@ -3219,6 +3410,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d190", title: "Vietnamese-Style Lemongrass Chicken", tags: ["quick"], cuisine: "Vietnam", protein: "chicken",
       prep: 8, cook: 15,
+      nutrition: { kcal: 590, protein: 36, carbs: 67, fat: 19 },
       ingredients: [
         ing(160, "g", "chicken thigh, sliced", "meat"), ing(1, "tsp", "fresh ginger, grated", "produce"),
         ing(1, "tbsp", "soy sauce", "store"), ing(1, "tsp", "honey", "store"),
@@ -3236,6 +3428,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d191", title: "Turkish-Style Chicken Iskender", tags: ["quick"], cuisine: "Turkey", protein: "chicken",
       prep: 8, cook: 10,
+      nutrition: { kcal: 780, protein: 40, carbs: 48, fat: 47 },
       ingredients: [
         ing(160, "g", "chicken thigh, sliced", "meat"), ing(150, "g", "chopped tomatoes", "store"),
         ing(1, "", "flatbread", "bakery"), ing(2, "tbsp", "natural yoghurt", "dairy"),
@@ -3254,6 +3447,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d192", title: "Turkish-Style Red Lentil Soup", tags: ["vegetarian", "quick"], cuisine: "Turkey", protein: "plant-based",
       prep: 6, cook: 19,
+      nutrition: { kcal: 520, protein: 15, carbs: 62, fat: 25 },
       ingredients: [
         ing(80, "g", "dried red lentils", "store"), ing(0.5, "", "onion, diced", "produce"),
         ing(0.5, "tsp", "ground cumin", "spice"), ing(0.5, "tsp", "smoked paprika", "spice"),
@@ -3271,6 +3465,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d193", title: "Cuban-Style Mojo Chicken with Rice", tags: ["quick"], cuisine: "Cuba", protein: "chicken",
       prep: 8, cook: 15,
+      nutrition: { kcal: 580, protein: 35, carbs: 66, fat: 19 },
       ingredients: [
         ing(160, "g", "chicken thigh, diced", "meat"), ing(0.5, "", "lime", "produce"),
         ing(0.5, "", "orange, juiced", "produce"), ing(1, "", "garlic clove, crushed", "produce"),
@@ -3287,6 +3482,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d194", title: "Cuban-Style Picadillo Beef Hash", tags: ["quick"], cuisine: "Cuba", protein: "beef",
       prep: 8, cook: 15,
+      nutrition: { kcal: 880, protein: 37, carbs: 82, fat: 45 },
       ingredients: [
         ing(150, "g", "beef mince", "meat"), ing(150, "g", "chopped tomatoes", "store"),
         ing(20, "g", "raisins", "store"), ing(0.5, "", "onion, diced", "produce"),
@@ -3304,6 +3500,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d195", title: "German-Style Bratwurst with Braised Red Cabbage", tags: ["quick"], cuisine: "Germany", protein: "pork",
       prep: 7, cook: 19,
+      nutrition: { kcal: 780, protein: 28, carbs: 27, fat: 63 },
       ingredients: [
         ing(2, "", "bratwurst sausages", "meat"), ing(200, "g", "red cabbage, shredded", "produce"),
         ing(0.5, "", "apple, sliced", "produce"), ing(1, "tbsp", "red wine vinegar", "store"),
@@ -3321,6 +3518,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d196", title: "German-Style Pork Schnitzel with Potato Salad", tags: ["quick"], cuisine: "Germany", protein: "pork",
       prep: 9, cook: 10,
+      nutrition: { kcal: 680, protein: 46, carbs: 53, fat: 31 },
       ingredients: [
         ing(150, "g", "pork loin steak, flattened", "meat"), ing(2, "tbsp", "plain flour", "store"),
         ing(1, "", "egg, beaten", "dairy"), ing(3, "tbsp", "breadcrumbs", "store"),
@@ -3338,6 +3536,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d197", title: "Irish-Style Beef & Stout Stew", tags: [], cuisine: "Ireland", protein: "beef",
       prep: 8, cook: 20,
+      nutrition: { kcal: 590, protein: 39, carbs: 32, fat: 27 },
       ingredients: [
         ing(160, "g", "beef rump steak, cut into strips", "meat"), ing(100, "ml", "stout or dark ale", "store"),
         ing(1, "", "small potato, cut into 2cm cubes", "produce"), ing(0.5, "", "onion, diced", "produce"),
@@ -3355,6 +3554,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d198", title: "Irish-Style Smoked Fish Chowder", tags: ["fish", "quick"], cuisine: "Ireland", protein: "fish",
       prep: 8, cook: 18,
+      nutrition: { kcal: 500, protein: 44, carbs: 45, fat: 15 },
       ingredients: [
         ing(150, "g", "smoked haddock fillet", "meat"), ing(1, "", "leek, sliced", "produce"),
         ing(150, "g", "potato, diced", "produce"), ing(150, "ml", "milk", "dairy"),
@@ -3371,6 +3571,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d199", title: "Ethiopian-Style Spiced Chicken (Doro Wat)", tags: ["spicy", "quick"], cuisine: "Ethiopia", protein: "chicken",
       prep: 8, cook: 19,
+      nutrition: { kcal: 760, protein: 46, carbs: 55, fat: 40 },
       ingredients: [
         ing(160, "g", "chicken thigh, diced", "meat"), ing(150, "g", "chopped tomatoes", "store"),
         ing(0.5, "", "onion, diced", "produce"), ing(0.5, "tsp", "smoked paprika", "spice"),
@@ -3391,6 +3592,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d200", title: "Ethiopian-Style Spiced Collard Greens", tags: ["vegetarian", "vegan", "quick"], cuisine: "Ethiopia", protein: "plant-based",
       prep: 8, cook: 17,
+      nutrition: { kcal: 460, protein: 9, carbs: 71, fat: 15 },
       ingredients: [
         ing(150, "g", "kale or spring greens, shredded", "produce"), ing(0.5, "", "onion, sliced", "produce"),
         ing(0.5, "", "carrot, sliced", "produce"), ing(0.25, "tsp", "ground ginger", "spice"),
@@ -3408,6 +3610,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d201", title: "Indonesian-Style Beef Rendang Stew", tags: ["spicy", "quick"], cuisine: "Indonesia", protein: "beef",
       prep: 8, cook: 18,
+      nutrition: { kcal: 950, protein: 43, carbs: 67, fat: 56 },
       ingredients: [
         ing(160, "g", "beef sirloin, thinly sliced", "meat"), ing(150, "ml", "coconut milk", "store"),
         ing(1, "tsp", "curry powder", "spice"), ing(0.5, "tsp", "ground ginger", "spice"),
@@ -3427,6 +3630,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d202", title: "Indonesian-Style Sweet Soy Nasi Goreng", tags: ["spicy", "quick"], cuisine: "Indonesia", protein: "chicken",
       prep: 7, cook: 8,
+      nutrition: { kcal: 540, protein: 36, carbs: 51, fat: 21 },
       ingredients: [
         ing(100, "g", "chicken breast, diced", "meat"), ing(150, "g", "cooked rice, cold", "store"),
         ing(1, "tbsp", "dark soy sauce", "store"), ing(1, "tsp", "sweet soy sauce (kecap manis) or honey with soy", "store"),
@@ -3444,6 +3648,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d203", title: "Georgian-Style Cheese-Filled Bread (Khachapuri-Inspired)", tags: ["vegetarian", "quick"], cuisine: "Georgia", protein: "plant-based",
       prep: 8, cook: 12,
+      nutrition: { kcal: 690, protein: 34, carbs: 41, fat: 43 },
       ingredients: [
         ing(1, "", "flatbread", "bakery"), ing(80, "g", "mozzarella, grated", "dairy"),
         ing(40, "g", "feta cheese, crumbled", "dairy"), ing(1, "", "egg", "dairy"),
@@ -3460,6 +3665,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d204", title: "Georgian-Style Walnut Chicken", tags: ["quick"], cuisine: "Georgia", protein: "chicken",
       prep: 8, cook: 15,
+      nutrition: { kcal: 840, protein: 41, carbs: 61, fat: 48 },
       ingredients: [
         ing(160, "g", "chicken thigh, diced", "meat"), ing(30, "g", "walnuts, chopped", "store"),
         ing(1, "", "garlic clove, finely chopped", "produce"), ing(0.5, "tsp", "ground coriander", "spice"),
@@ -3477,6 +3683,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d205", title: "Armenian-Style Lamb & Bulgur Pilaf", tags: ["quick"], cuisine: "Armenia", protein: "lamb",
       prep: 8, cook: 20,
+      nutrition: { kcal: 800, protein: 36, carbs: 56, fat: 47 },
       ingredients: [
         ing(150, "g", "lamb mince", "meat"), ing(60, "g", "bulgur wheat", "store"),
         ing(0.5, "", "onion, diced", "produce"), ing(150, "g", "chopped tomatoes", "store"),
@@ -3493,6 +3700,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d206", title: "Armenian-Style Stuffed Pepper Bowl", tags: [], cuisine: "Armenia", protein: "beef",
       prep: 9, cook: 39,
+      nutrition: { kcal: 660, protein: 30, carbs: 56, fat: 35 },
       ingredients: [
         ing(1, "", "red pepper, halved and deseeded", "produce"), ing(120, "g", "beef mince", "meat"),
         ing(50, "g", "rice", "store"), ing(0.5, "tsp", "ground cinnamon", "spice"),
@@ -3512,6 +3720,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d207", title: "Ukrainian-Style Beetroot & Beef Stew", tags: ["quick"], cuisine: "Ukraine", protein: "beef",
       prep: 8, cook: 17,
+      nutrition: { kcal: 500, protein: 38, carbs: 18, fat: 32 },
       ingredients: [
         ing(150, "g", "beef rump steak, cut into strips", "meat"), ing(100, "g", "cooked beetroot, diced", "produce"),
         ing(0.5, "", "onion, diced", "produce"), ing(200, "ml", "beef stock", "store"),
@@ -3528,6 +3737,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d208", title: "Ukrainian-Style Cabbage Rolls Bowl", tags: ["quick"], cuisine: "Ukraine", protein: "pork",
       prep: 12, cook: 18,
+      nutrition: { kcal: 830, protein: 41, carbs: 75, fat: 40 },
       ingredients: [
         ing(120, "g", "pork mince", "meat"), ing(50, "g", "rice", "store"),
         ing(3, "", "large cabbage leaves", "produce"), ing(150, "g", "chopped tomatoes", "store"),
@@ -3546,6 +3756,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d209", title: "Uzbek-Style Beef Plov Rice", tags: [], cuisine: "Uzbekistan", protein: "beef",
       prep: 8, cook: 31,
+      nutrition: { kcal: 660, protein: 40, carbs: 66, fat: 27 },
       ingredients: [
         ing(150, "g", "beef rump steak, cut into 2cm cubes", "meat"), ing(70, "g", "rice", "store"),
         ing(0.5, "", "carrot, grated", "produce"), ing(0.5, "", "onion, sliced", "produce"),
@@ -3562,6 +3773,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d210", title: "Uzbek-Style Chicken & Chickpea Rice", tags: ["quick"], cuisine: "Uzbekistan", protein: "chicken",
       prep: 7, cook: 20,
+      nutrition: { kcal: 940, protein: 50, carbs: 101, fat: 35 },
       ingredients: [
         ing(150, "g", "chicken thigh, diced", "meat"), ing(70, "g", "rice", "store"),
         ing(1, "tin", "chickpeas, drained", "store"), ing(0.5, "", "carrot, grated", "produce"),
@@ -3578,6 +3790,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d211", title: "Colombian-Style Chicken & Rice (Arroz con Pollo)", tags: ["quick"], cuisine: "Colombia", protein: "chicken",
       prep: 8, cook: 21,
+      nutrition: { kcal: 730, protein: 37, carbs: 69, fat: 33 },
       ingredients: [
         ing(160, "g", "chicken thigh, diced", "meat"), ing(70, "g", "rice", "store"),
         ing(0.5, "", "red pepper, diced", "produce"), ing(150, "g", "chopped tomatoes", "store"),
@@ -3595,6 +3808,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d212", title: "Colombian-Style Beef & Potato Stew", tags: ["quick"], cuisine: "Colombia", protein: "beef",
       prep: 8, cook: 20,
+      nutrition: { kcal: 630, protein: 34, carbs: 33, fat: 40 },
       ingredients: [
         ing(150, "g", "beef mince", "meat"), ing(1, "", "small potato, diced", "produce"),
         ing(0.5, "", "onion, diced", "produce"), ing(150, "g", "chopped tomatoes", "store"),
@@ -3611,6 +3825,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d213", title: "Chilean-Style Beef & Corn Bowl (Pastel-Inspired)", tags: ["quick"], cuisine: "Chile", protein: "beef",
       prep: 8, cook: 18,
+      nutrition: { kcal: 660, protein: 39, carbs: 24, fat: 45 },
       ingredients: [
         ing(150, "g", "beef mince", "meat"), ing(0.5, "", "onion, diced", "produce"),
         ing(100, "g", "sweetcorn", "frozen"), ing(0.5, "tsp", "smoked paprika", "spice"),
@@ -3628,6 +3843,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d214", title: "Chilean-Style Fish with Tomato Salsa", tags: ["fish", "quick"], cuisine: "Chile", protein: "fish",
       prep: 8, cook: 15,
+      nutrition: { kcal: 550, protein: 34, carbs: 65, fat: 16 },
       ingredients: [
         ing(150, "g", "white fish fillet", "meat"), ing(1, "", "tomato, diced", "produce"),
         ing(0.5, "", "red onion, diced", "produce"), ing(0.5, "", "lime", "produce"),
@@ -3644,6 +3860,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d215", title: "Trinidadian-Style Curry Chicken", tags: ["spicy", "quick"], cuisine: "Trinidad", protein: "chicken",
       prep: 8, cook: 15,
+      nutrition: { kcal: 790, protein: 38, carbs: 85, fat: 33 },
       ingredients: [
         ing(160, "g", "chicken thigh, diced", "meat"), ing(1, "tbsp", "curry powder", "spice"),
         ing(1, "", "small potato, diced", "produce"), ing(0.5, "", "onion, diced", "produce"),
@@ -3661,6 +3878,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d216", title: "Trinidadian-Style Curried Chickpea Flatbread (Doubles-Inspired)", tags: ["vegetarian", "vegan", "spicy", "quick"], cuisine: "Trinidad", protein: "plant-based",
       prep: 8, cook: 12,
+      nutrition: { kcal: 650, protein: 25, carbs: 86, fat: 21 },
       ingredients: [
         ing(1, "tin", "chickpeas, drained", "store"), ing(0.5, "tsp", "curry powder", "spice"),
         ing(0.25, "tsp", "chilli flakes", "spice"), ing(1, "", "flatbread", "bakery"),
@@ -3678,6 +3896,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d217", title: "Ghanaian-Style Peanut Chicken Stew", tags: ["spicy", "quick"], cuisine: "Ghana", protein: "chicken",
       prep: 8, cook: 20,
+      nutrition: { kcal: 910, protein: 45, carbs: 72, fat: 48 },
       ingredients: [
         ing(160, "g", "chicken thigh, diced", "meat"), ing(2, "tbsp", "peanut butter", "store"),
         ing(150, "g", "chopped tomatoes", "store"), ing(0.25, "tsp", "chilli flakes", "spice"),
@@ -3695,6 +3914,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d218", title: "Ghanaian-Style Spiced Rice (Waakye-Inspired)", tags: ["vegetarian", "vegan", "quick"], cuisine: "Ghana", protein: "plant-based",
       prep: 7, cook: 15,
+      nutrition: { kcal: 650, protein: 23, carbs: 92, fat: 18 },
       ingredients: [
         ing(60, "g", "rice", "store"), ing(1, "tin", "black-eyed beans, drained", "store"),
         ing(0.5, "tsp", "smoked paprika", "spice"), ing(0.25, "tsp", "chilli flakes", "spice"),
@@ -3711,6 +3931,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d219", title: "Kenyan-Style Coconut Chicken Stew", tags: ["spicy", "quick"], cuisine: "Kenya", protein: "chicken",
       prep: 8, cook: 15,
+      nutrition: { kcal: 990, protein: 39, carbs: 70, fat: 61 },
       ingredients: [
         ing(160, "g", "chicken thigh, diced", "meat"), ing(150, "ml", "coconut milk", "store"),
         ing(150, "g", "chopped tomatoes", "store"), ing(0.5, "tsp", "curry powder", "spice"),
@@ -3728,6 +3949,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d220", title: "Kenyan-Style Spiced Beef Greens (Sukuma Wiki-Inspired)", tags: ["quick"], cuisine: "Kenya", protein: "beef",
       prep: 8, cook: 15,
+      nutrition: { kcal: 860, protein: 33, carbs: 69, fat: 50 },
       ingredients: [
         ing(120, "g", "beef mince", "meat"), ing(150, "g", "kale, shredded", "produce"),
         ing(0.5, "", "onion, sliced", "produce"), ing(0.5, "tsp", "smoked paprika", "spice"),
@@ -3744,6 +3966,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d221", title: "Senegalese-Style Spiced Fish with Rice", tags: ["fish", "spicy"], cuisine: "Senegal", protein: "fish",
       prep: 8, cook: 20,
+      nutrition: { kcal: 670, protein: 38, carbs: 91, fat: 17 },
       ingredients: [
         ing(150, "g", "white fish fillet", "meat"), ing(70, "g", "rice", "store"),
         ing(150, "g", "chopped tomatoes", "store"), ing(1, "", "carrot, cut into chunks", "produce"),
@@ -3761,6 +3984,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d222", title: "Senegalese-Style Peanut & Vegetable Rice (Maafe-Inspired)", tags: ["vegetarian", "vegan", "quick"], cuisine: "Senegal", protein: "plant-based",
       prep: 8, cook: 22,
+      nutrition: { kcal: 730, protein: 18, carbs: 95, fat: 31 },
       ingredients: [
         ing(2, "tbsp", "peanut butter", "store"), ing(150, "g", "chopped tomatoes", "store"),
         ing(0.5, "", "sweet potato, diced", "produce"), ing(0.5, "", "carrot, sliced", "produce"),
@@ -3779,6 +4003,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d223", title: "Belgian-Style Beef & Beer Stew (Carbonnade-Inspired)", tags: ["quick"], cuisine: "Belgium", protein: "beef",
       prep: 8, cook: 20,
+      nutrition: { kcal: 590, protein: 37, carbs: 36, fat: 26 },
       ingredients: [
         ing(150, "g", "beef rump steak, cut into strips", "meat"), ing(0.5, "", "onion, sliced", "produce"),
         ing(1, "", "small potato, cut into 2cm cubes", "produce"), ing(100, "ml", "brown ale or stout", "store"),
@@ -3797,6 +4022,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d224", title: "Belgian-Style Chicken Waterzooi-Inspired Stew", tags: ["quick"], cuisine: "Belgium", protein: "chicken",
       prep: 8, cook: 18,
+      nutrition: { kcal: 680, protein: 34, carbs: 32, fat: 46 },
       ingredients: [
         ing(160, "g", "chicken thigh, diced", "meat"), ing(0.5, "", "leek, sliced", "produce"),
         ing(0.5, "", "carrot, sliced", "produce"), ing(150, "ml", "chicken stock", "store"),
@@ -3814,6 +4040,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d225", title: "Swiss-Style Cheese & Potato Bake (Rösti-Inspired)", tags: ["vegetarian", "quick"], cuisine: "Switzerland", protein: "plant-based",
       prep: 8, cook: 14,
+      nutrition: { kcal: 600, protein: 21, carbs: 45, fat: 37 },
       ingredients: [
         ing(250, "g", "potato, grated", "produce"), ing(60, "g", "gruyere or cheddar cheese, grated", "dairy"),
         ing(1, "tbsp", "butter", "dairy"), ing(60, "g", "mixed salad leaves", "produce"),
@@ -3829,6 +4056,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d226", title: "Swiss-Style Chicken & Mushroom in Cream Sauce", tags: ["quick"], cuisine: "Switzerland", protein: "chicken",
       prep: 8, cook: 12,
+      nutrition: { kcal: 1030, protein: 52, carbs: 56, fat: 66 },
       ingredients: [
         ing(160, "g", "chicken breast, sliced", "meat"), ing(100, "g", "chestnut mushrooms, sliced", "produce"),
         ing(100, "ml", "double cream", "dairy"), ing(1, "tsp", "Dijon mustard", "store"),
@@ -3845,6 +4073,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d227", title: "Finnish-Style Salmon & Potato Soup", tags: ["fish", "quick"], cuisine: "Finland", protein: "fish",
       prep: 8, cook: 19,
+      nutrition: { kcal: 600, protein: 39, carbs: 40, fat: 31 },
       ingredients: [
         ing(150, "g", "salmon fillet, cubed", "meat"), ing(150, "g", "potato, diced", "produce"),
         ing(0.5, "", "leek, sliced", "produce"), ing(150, "ml", "milk", "dairy"),
@@ -3861,6 +4090,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d228", title: "Finnish-Style Meatballs with Lingonberry", tags: ["quick"], cuisine: "Finland", protein: "pork",
       prep: 8, cook: 15,
+      nutrition: { kcal: 680, protein: 34, carbs: 46, fat: 39 },
       ingredients: [
         ing(150, "g", "pork mince", "meat"), ing(1, "tbsp", "breadcrumbs", "store"),
         ing(1, "", "egg yolk", "dairy"), ing(150, "g", "new potatoes", "produce"),
@@ -3877,6 +4107,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d229", title: "Danish-Style Open Rye Sandwich (Smørrebrød-Inspired)", tags: ["fish", "quick"], cuisine: "Denmark", protein: "fish",
       prep: 8, cook: 0,
+      nutrition: { kcal: 500, protein: 24, carbs: 45, fat: 25 },
       ingredients: [
         ing(2, "slices", "rye bread", "bakery"), ing(80, "g", "smoked mackerel, flaked", "meat"),
         ing(1, "tbsp", "soured cream", "dairy"), ing(null, "small handful", "fresh dill, chopped", "produce"),
@@ -3893,6 +4124,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d230", title: "Danish-Style Pork Meatballs (Frikadeller-Inspired)", tags: [], cuisine: "Denmark", protein: "pork",
       prep: 10, cook: 20,
+      nutrition: { kcal: 730, protein: 37, carbs: 46, fat: 43 },
       ingredients: [
         ing(150, "g", "pork mince", "meat"), ing(2, "tbsp", "plain flour", "store"),
         ing(1, "", "egg yolk", "dairy"), ing(150, "g", "new potatoes", "produce"),
@@ -3912,6 +4144,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d231", title: "Norwegian-Style Baked Salmon with Dill Sauce", tags: ["fish", "quick"], cuisine: "Norway", protein: "fish",
       prep: 7, cook: 15,
+      nutrition: { kcal: 520, protein: 38, carbs: 32, fat: 26 },
       ingredients: [
         ing(150, "g", "salmon fillet", "meat"), ing(2, "tbsp", "soured cream", "dairy"),
         ing(null, "handful", "fresh dill, chopped", "produce"), ing(120, "g", "new potatoes", "produce"),
@@ -3928,6 +4161,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d232", title: "New Zealand-Style Lamb with Mint Sauce", tags: ["quick"], cuisine: "New Zealand", protein: "lamb",
       prep: 7, cook: 15,
+      nutrition: { kcal: 420, protein: 41, carbs: 35, fat: 14 },
       ingredients: [
         ing(160, "g", "lamb leg steak", "meat"), ing(null, "handful", "fresh mint, chopped", "produce"),
         ing(1, "tbsp", "red wine vinegar", "store"), ing(1, "tsp", "honey", "store"),
@@ -3944,6 +4178,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d233", title: "Canadian-Style Maple Pork Chops", tags: ["quick"], cuisine: "Canada", protein: "pork",
       prep: 7, cook: 18,
+      nutrition: { kcal: 660, protein: 43, carbs: 56, fat: 28 },
       ingredients: [
         ing(1, "", "pork chop", "meat"), ing(1.5, "tbsp", "maple syrup", "store"),
         ing(1, "tsp", "Dijon mustard", "store"), ing(120, "g", "new potatoes", "produce"),
@@ -3959,6 +4194,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d234", title: "Puerto Rican-Style Rice with Pigeon Peas", tags: ["vegetarian", "vegan", "quick"], cuisine: "Puerto Rico", protein: "plant-based",
       prep: 7, cook: 20,
+      nutrition: { kcal: 690, protein: 24, carbs: 103, fat: 18 },
       ingredients: [
         ing(70, "g", "rice", "store"), ing(1, "tin", "pigeon peas or black-eyed beans, drained", "store"),
         ing(0.5, "", "red pepper, diced", "produce"), ing(0.5, "tsp", "ground cumin", "spice"),
@@ -3976,6 +4212,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d235", title: "Puerto Rican-Style Mojo Pork", tags: ["quick"], cuisine: "Puerto Rico", protein: "pork",
       prep: 8, cook: 15,
+      nutrition: { kcal: 860, protein: 43, carbs: 122, fat: 25 },
       ingredients: [
         ing(160, "g", "pork loin, sliced", "meat"), ing(0.5, "", "lime, juiced", "produce"),
         ing(1, "", "garlic clove, crushed", "produce"), ing(0.5, "tsp", "dried oregano", "spice"),
@@ -3993,6 +4230,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d236", title: "Cantonese White-Cut Chicken with Ginger-Scallion Oil", tags: ["quick"], cuisine: "China", protein: "chicken",
       prep: 8, cook: 18,
+      nutrition: { kcal: 650, protein: 48, carbs: 56, fat: 25 },
       ingredients: [
         ing(1, "", "chicken breast (about 170g)", "meat"), ing(2, "", "spring onions, finely shredded", "produce"),
         ing(1, "thumb", "fresh ginger, finely grated", "produce"), ing(2, "tbsp", "vegetable oil", "store"),
@@ -4011,6 +4249,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d237", title: "Sichuan Dry-Fried Green Beans with Pork Mince", tags: ["quick", "spicy"], cuisine: "China", protein: "pork",
       prep: 8, cook: 14,
+      nutrition: { kcal: 860, protein: 38, carbs: 88, fat: 37 },
       ingredients: [
         ing(200, "g", "green beans, trimmed", "produce"), ing(100, "g", "pork mince", "meat"),
         ing(2, "", "garlic cloves, minced", "produce"), ing(1, "tsp", "fresh ginger, grated", "produce"),
@@ -4029,6 +4268,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d238", title: "Shandong-Style Braised Fish in Brown Sauce", tags: ["quick", "fish"], cuisine: "China", protein: "fish",
       prep: 8, cook: 15,
+      nutrition: { kcal: 570, protein: 33, carbs: 65, fat: 19 },
       ingredients: [
         ing(1, "", "white fish fillet, about 180g (e.g. seabass or cod)", "meat"), ing(1, "tbsp", "cornflour", "store"),
         ing(2, "tbsp", "vegetable oil", "store"), ing(1, "", "garlic clove, sliced", "produce"),
@@ -4049,6 +4289,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d239", title: "Chinese-Style Cumin Lamb Stir-Fry with Peppers", tags: ["quick", "spicy"], cuisine: "China", protein: "lamb",
       prep: 10, cook: 10,
+      nutrition: { kcal: 700, protein: 41, carbs: 67, fat: 30 },
       ingredients: [
         ing(150, "g", "lamb leg steak, thinly sliced", "meat"), ing(1, "tsp", "cumin seeds", "spice"),
         ing(0.5, "tsp", "chilli flakes", "spice"), ing(1, "", "red pepper, sliced", "produce"),
@@ -4069,6 +4310,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d240", title: "Greek Avgolemono Chicken & Orzo Soup", tags: [], cuisine: "Greece", protein: "chicken",
       prep: 8, cook: 24,
+      nutrition: { kcal: 600, protein: 51, carbs: 47, fat: 23 },
       ingredients: [
         ing(150, "g", "chicken breast, diced", "meat"), ing(500, "ml", "chicken stock", "store"),
         ing(40, "g", "orzo", "store"), ing(1, "", "egg", "dairy"),
@@ -4087,6 +4329,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d241", title: "Greek-Style Baked Cod Plaki with Tomatoes and Olives", tags: ["fish"], cuisine: "Greece", protein: "fish",
       prep: 8, cook: 24,
+      nutrition: { kcal: 460, protein: 32, carbs: 37, fat: 20 },
       ingredients: [
         ing(1, "", "cod fillet, about 180g", "meat"), ing(0.5, "", "onion, sliced", "produce"),
         ing(1, "", "garlic clove, sliced", "produce"), ing(200, "g", "chopped tomatoes (tinned)", "store"),
@@ -4107,6 +4350,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d242", title: "Greek Beef Giouvetsi with Orzo", tags: [], cuisine: "Greece", protein: "beef",
       prep: 10, cook: 25,
+      nutrition: { kcal: 740, protein: 51, carbs: 59, fat: 33 },
       ingredients: [
         ing(150, "g", "beef rump steak, cut into 2cm pieces", "meat"), ing(60, "g", "orzo", "store"),
         ing(200, "g", "chopped tomatoes", "store"), ing(0.5, "", "onion, diced", "produce"),
@@ -4125,6 +4369,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d243", title: "Greek Gigantes-Style Butter Beans in Tomato Sauce", tags: ["vegetarian", "vegan"], cuisine: "Greece", protein: "plant-based",
       prep: 8, cook: 24,
+      nutrition: { kcal: 770, protein: 35, carbs: 98, fat: 22 },
       ingredients: [
         ing(400, "g", "butter beans (tinned), drained", "store"), ing(200, "g", "chopped tomatoes", "store"),
         ing(0.5, "", "onion, diced", "produce"), ing(1, "", "garlic clove, minced", "produce"),
@@ -4143,6 +4388,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d244", title: "Philly-Style Cheesesteak Hoagie", tags: ["quick"], cuisine: "USA", protein: "beef",
       prep: 8, cook: 10,
+      nutrition: { kcal: 670, protein: 48, carbs: 30, fat: 41 },
       ingredients: [
         ing(150, "g", "beef sirloin or rump steak, very thinly sliced", "meat"), ing(0.5, "", "white onion, sliced", "produce"),
         ing(0.5, "", "green pepper, sliced", "produce"), ing(1, "", "sub roll", "bakery"),
@@ -4160,6 +4406,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d245", title: "New Orleans-Style Blackened Fish with Dirty Rice", tags: ["quick", "spicy", "fish"], cuisine: "USA", protein: "fish",
       prep: 9, cook: 19,
+      nutrition: { kcal: 650, protein: 39, carbs: 59, fat: 28 },
       ingredients: [
         ing(1, "", "white fish fillet, about 180g (e.g. haddock)", "meat"), ing(1, "tsp", "paprika", "spice"),
         ing(0.5, "tsp", "cayenne pepper", "spice"), ing(0.5, "tsp", "garlic powder", "spice"),
@@ -4179,6 +4426,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d246", title: "Carolina-Style Pulled Pork Sandwich with Vinegar Slaw", tags: ["quick"], cuisine: "USA", protein: "pork",
       prep: 9, cook: 18,
+      nutrition: { kcal: 770, protein: 52, carbs: 46, fat: 43 },
       ingredients: [
         ing(200, "g", "pork shoulder steak, thinly sliced", "meat"), ing(1, "tbsp", "brown sugar", "store"),
         ing(1, "tsp", "smoked paprika", "spice"), ing(0.5, "tsp", "garlic powder", "spice"),
@@ -4199,6 +4447,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d247", title: "Korean Dak Galbi-Style Spicy Chicken with Rice Cakes", tags: ["quick", "spicy"], cuisine: "Korea", protein: "chicken",
       prep: 11, cook: 16,
+      nutrition: { kcal: 750, protein: 39, carbs: 66, fat: 36 },
       ingredients: [
         ing(180, "g", "chicken thigh, diced", "meat"), ing(100, "g", "Korean rice cakes (tteok)", "frozen"),
         ing(1, "tbsp", "gochujang", "store"), ing(1, "tsp", "gochugaru (Korean chilli flakes)", "spice"),
@@ -4219,6 +4468,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d248", title: "Korean-Style Braised Mackerel with Gochugaru (Godeungeo Jorim)", tags: ["quick", "spicy", "fish"], cuisine: "Korea", protein: "fish",
       prep: 8, cook: 15,
+      nutrition: { kcal: 670, protein: 37, carbs: 72, fat: 26 },
       ingredients: [
         ing(1, "", "mackerel fillet, about 150g", "meat"), ing(0.5, "", "daikon radish or 1 potato, thinly sliced", "produce"),
         ing(1, "tbsp", "soy sauce", "store"), ing(1, "tbsp", "gochugaru", "spice"),
@@ -4238,6 +4488,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d249", title: "Korean Japchae Glass Noodles with Pork", tags: ["quick"], cuisine: "Korea", protein: "pork",
       prep: 10, cook: 12,
+      nutrition: { kcal: 760, protein: 34, carbs: 74, fat: 36 },
       ingredients: [
         ing(60, "g", "sweet potato glass noodles (dangmyeon)", "store"), ing(120, "g", "pork loin, thinly sliced", "meat"),
         ing(0.5, "", "carrot, julienned", "produce"), ing(0.25, "", "onion, sliced", "produce"),
@@ -4257,6 +4508,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d250", title: "Vietnamese-Style Turmeric Dill Fish (Chả Cá) with Rice Noodles", tags: ["quick", "fish"], cuisine: "Vietnam", protein: "fish",
       prep: 11, cook: 10,
+      nutrition: { kcal: 880, protein: 47, carbs: 91, fat: 35 },
       ingredients: [
         ing(180, "g", "white fish fillet (e.g. haddock), cut into chunks", "meat"), ing(1, "tsp", "ground turmeric", "spice"),
         ing(1, "tsp", "fresh ginger, grated", "produce"), ing(1, "", "garlic clove, minced", "produce"),
@@ -4276,6 +4528,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d251", title: "Vietnamese-Style Tofu & Vegetable Pho", tags: ["vegetarian", "vegan", "quick"], cuisine: "Vietnam", protein: "plant-based",
       prep: 9, cook: 15,
+      nutrition: { kcal: 610, protein: 27, carbs: 70, fat: 25 },
       ingredients: [
         ing(120, "g", "firm tofu, cubed", "store"), ing(500, "ml", "vegetable stock", "store"),
         ing(1, "", "star anise", "spice"), ing(1, "", "cinnamon stick", "spice"),
@@ -4297,6 +4550,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d252", title: "Irish-Style Lamb Shepherd's Pie Mash Cup", tags: [], cuisine: "Ireland", protein: "lamb",
       prep: 9, cook: 24,
+      nutrition: { kcal: 1030, protein: 40, carbs: 60, fat: 69 },
       ingredients: [
         ing(180, "g", "lamb mince", "meat"), ing(0.5, "", "onion, diced", "produce"),
         ing(1, "", "carrot, diced", "produce"), ing(1, "tbsp", "tomato purée", "store"),
@@ -4316,6 +4570,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d253", title: "Irish Boxty Potato Pancakes with Bacon and Cabbage", tags: ["quick"], cuisine: "Ireland", protein: "pork",
       prep: 9, cook: 15,
+      nutrition: { kcal: 530, protein: 20, carbs: 41, fat: 32 },
       ingredients: [
         ing(150, "g", "potatoes, peeled", "produce"), ing(1, "", "egg", "dairy"),
         ing(2, "tbsp", "plain flour", "store"), ing(1, "tbsp", "milk", "dairy"),
@@ -4333,6 +4588,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d254", title: "Hungarian-Style Paprika Fish Soup (Halászlé)", tags: ["spicy", "fish"], cuisine: "Hungary", protein: "fish",
       prep: 10, cook: 23,
+      nutrition: { kcal: 380, protein: 38, carbs: 19, fat: 17 },
       ingredients: [
         ing(180, "g", "white fish fillet (e.g. pollock or haddock), cut into chunks", "meat"), ing(0.5, "", "onion, finely chopped", "produce"),
         ing(1, "tbsp", "sweet paprika", "spice"), ing(0.5, "tsp", "hot paprika", "spice"),
@@ -4351,6 +4607,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d255", title: "Hungarian Stuffed Peppers with Pork and Rice (Töltött Paprika)", tags: [], cuisine: "Hungary", protein: "pork",
       prep: 9, cook: 40,
+      nutrition: { kcal: 500, protein: 29, carbs: 38, fat: 25 },
       ingredients: [
         ing(1, "", "large bell pepper, top cut off and deseeded", "produce"), ing(120, "g", "pork mince", "meat"),
         ing(40, "g", "cooked rice", "store"), ing(0.25, "", "onion, finely diced", "produce"),
@@ -4370,6 +4627,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d256", title: "Nigerian Suya-Spiced Chicken Skewers with Onions", tags: ["quick", "spicy"], cuisine: "Nigeria", protein: "chicken",
       prep: 9, cook: 10,
+      nutrition: { kcal: 470, protein: 49, carbs: 12, fat: 26 },
       ingredients: [
         ing(180, "g", "chicken breast, cut into strips", "meat"), ing(2, "tbsp", "roasted peanuts, crushed", "store"),
         ing(1, "tsp", "paprika", "spice"), ing(0.5, "tsp", "cayenne pepper", "spice"),
@@ -4389,6 +4647,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d257", title: "Nigerian-Style Efo Riro Spinach & Turkey Stew", tags: ["spicy"], cuisine: "Nigeria", protein: "turkey",
       prep: 13, cook: 20,
+      nutrition: { kcal: 470, protein: 45, carbs: 31, fat: 19 },
       ingredients: [
         ing(150, "g", "turkey breast, diced", "meat"), ing(200, "g", "spinach, roughly chopped", "produce"),
         ing(0.5, "", "onion, chopped", "produce"), ing(0.5, "", "red pepper, chopped", "produce"),
@@ -4408,6 +4667,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d258", title: "Pakistani-Style Spiced Fried Fish with Chaat Masala", tags: ["quick", "spicy", "fish"], cuisine: "Pakistan", protein: "fish",
       prep: 8, cook: 10,
+      nutrition: { kcal: 350, protein: 28, carbs: 17, fat: 19 },
       ingredients: [
         ing(1, "", "white fish fillet, about 180g", "meat"), ing(1, "tbsp", "gram flour (besan)", "store"),
         ing(1, "tsp", "ground cumin", "spice"), ing(1, "tsp", "chilli powder", "spice"),
@@ -4426,6 +4686,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d259", title: "Pakistani-Style Chapli Kebab with Yoghurt Chutney", tags: ["quick", "spicy"], cuisine: "Pakistan", protein: "beef",
       prep: 13, cook: 12,
+      nutrition: { kcal: 710, protein: 41, carbs: 26, fat: 50 },
       ingredients: [
         ing(180, "g", "beef mince", "meat"), ing(0.25, "", "onion, finely diced", "produce"),
         ing(1, "", "tomato, finely diced (seeds removed)", "produce"), ing(1, "", "green chilli, finely chopped", "produce"),
@@ -4445,6 +4706,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d260", title: "Argentinian-Style Chicken Milanesa with Tomato Salad", tags: ["quick"], cuisine: "Argentina", protein: "chicken",
       prep: 9, cook: 10,
+      nutrition: { kcal: 910, protein: 63, carbs: 61, fat: 46 },
       ingredients: [
         ing(1, "", "chicken breast, butterflied and flattened", "meat"), ing(30, "g", "plain flour", "store"),
         ing(1, "", "egg, beaten", "dairy"), ing(40, "g", "breadcrumbs", "bakery"),
@@ -4464,6 +4726,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d261", title: "Argentinian-Style Choripán Sausage Sandwich with Chimichurri", tags: ["quick", "spicy"], cuisine: "Argentina", protein: "pork",
       prep: 8, cook: 10,
+      nutrition: { kcal: 670, protein: 22, carbs: 26, fat: 53 },
       ingredients: [
         ing(1, "", "chorizo or spicy pork sausage", "meat"), ing(1, "", "crusty bread roll", "bakery"),
         ing(1, "handful", "fresh parsley, finely chopped", "produce"), ing(1, "", "garlic clove, finely chopped", "produce"),
@@ -4481,6 +4744,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d262", title: "Dutch-Style Herring Salad with Pickled Onion and Apple", tags: ["quick", "fish"], cuisine: "Netherlands", protein: "fish",
       prep: 8, cook: 12,
+      nutrition: { kcal: 810, protein: 38, carbs: 110, fat: 25 },
       ingredients: [
         ing(120, "g", "soused herring fillets", "meat"), ing(0.5, "", "apple, diced", "produce"),
         ing(0.25, "", "red onion, finely sliced", "produce"), ing(2, "", "baby potatoes, boiled and diced", "produce"),
@@ -4498,6 +4762,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d263", title: "Dutch-Style Chicken Hutspot with Carrot & Onion Mash", tags: ["quick"], cuisine: "Netherlands", protein: "chicken",
       prep: 9, cook: 20,
+      nutrition: { kcal: 790, protein: 49, carbs: 69, fat: 35 },
       ingredients: [
         ing(1, "", "chicken breast", "meat"), ing(250, "g", "potatoes, peeled and chopped", "produce"),
         ing(2, "", "carrots, chopped", "produce"), ing(1, "", "onion, chopped", "produce"),
@@ -4516,6 +4781,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d264", title: "Armenian-Style Chicken Khorovats Skewers", tags: ["quick"], cuisine: "Armenia", protein: "chicken",
       prep: 10, cook: 12,
+      nutrition: { kcal: 530, protein: 35, carbs: 14, fat: 37 },
       ingredients: [
         ing(180, "g", "chicken thigh, cut into chunks", "meat"), ing(0.5, "", "onion, cut into wedges", "produce"),
         ing(0.5, "", "red pepper, cut into chunks", "produce"), ing(2, "tbsp", "olive oil", "store"),
@@ -4533,6 +4799,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d265", title: "Armenian-Style Trout with Walnut Herb Sauce", tags: ["quick", "fish"], cuisine: "Armenia", protein: "fish",
       prep: 8, cook: 15,
+      nutrition: { kcal: 880, protein: 47, carbs: 72, fat: 45 },
       ingredients: [
         ing(1, "", "trout fillet, about 180g", "meat"), ing(30, "g", "walnuts", "store"),
         ing(1, "", "garlic clove, finely chopped", "produce"), ing(1, "handful", "fresh coriander or parsley", "produce"),
@@ -4550,6 +4817,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d266", title: "Chilean-Style Pork Chop with Pebre Salsa", tags: ["quick"], cuisine: "Chile", protein: "pork",
       prep: 10, cook: 15,
+      nutrition: { kcal: 820, protein: 41, carbs: 34, fat: 57 },
       ingredients: [
         ing(1, "", "pork loin chop", "meat"), ing(1, "", "tomato, finely diced", "produce"),
         ing(0.25, "", "red onion, finely diced", "produce"), ing(1, "", "garlic clove, minced", "produce"),
@@ -4567,6 +4835,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d267", title: "Chilean-Style Porotos Granados Bean & Squash Stew", tags: ["vegetarian", "vegan"], cuisine: "Chile", protein: "plant-based",
       prep: 9, cook: 23,
+      nutrition: { kcal: 770, protein: 36, carbs: 97, fat: 22 },
       ingredients: [
         ing(400, "g", "borlotti or cannellini beans (tinned), drained", "store"), ing(150, "g", "butternut squash, diced", "produce"),
         ing(80, "g", "sweetcorn kernels", "frozen"), ing(0.5, "", "onion, diced", "produce"),
@@ -4584,6 +4853,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d268", title: "Senegalese-Style Chicken Yassa with Onions and Lemon", tags: [], cuisine: "Senegal", protein: "chicken",
       prep: 9, cook: 28,
+      nutrition: { kcal: 750, protein: 40, carbs: 68, fat: 35 },
       ingredients: [
         ing(180, "g", "chicken thigh", "meat"), ing(1, "", "onion, thinly sliced", "produce"),
         ing(1, "", "lemon, juiced", "produce"), ing(1, "tbsp", "Dijon mustard", "store"),
@@ -4602,6 +4872,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d269", title: "Senegalese-Style Beef Mafé Peanut Stew with Rice", tags: ["spicy"], cuisine: "Senegal", protein: "beef",
       prep: 10, cook: 22,
+      nutrition: { kcal: 780, protein: 56, carbs: 67, fat: 32 },
       ingredients: [
         ing(180, "g", "beef rump steak, cut into 2cm pieces", "meat"), ing(2, "tbsp", "smooth peanut butter", "store"),
         ing(200, "g", "chopped tomatoes", "store"), ing(0.5, "", "onion, diced", "produce"),
@@ -4620,6 +4891,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d270", title: "Danish-Style Pan-Fried Plaice with Parsley Butter", tags: ["quick", "fish"], cuisine: "Denmark", protein: "fish",
       prep: 7, cook: 15,
+      nutrition: { kcal: 590, protein: 34, carbs: 72, fat: 18 },
       ingredients: [
         ing(1, "", "plaice fillet, about 180g", "meat"), ing(2, "tbsp", "plain flour", "store"),
         ing(20, "g", "butter", "dairy"), ing(1, "handful", "fresh parsley, chopped", "produce"),
@@ -4637,6 +4909,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d271", title: "Danish-Style Chicken with Creamed Kale", tags: ["quick"], cuisine: "Denmark", protein: "chicken",
       prep: 8, cook: 15,
+      nutrition: { kcal: 520, protein: 47, carbs: 14, fat: 31 },
       ingredients: [
         ing(1, "", "chicken breast", "meat"), ing(100, "g", "curly kale, chopped", "produce"),
         ing(1, "tbsp", "butter", "dairy"), ing(1, "tbsp", "plain flour", "store"),
@@ -4654,6 +4927,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d272", title: "Puerto Rican-Style Pollo Guisado Chicken Stew", tags: [], cuisine: "Puerto Rico", protein: "chicken",
       prep: 11, cook: 29,
+      nutrition: { kcal: 840, protein: 42, carbs: 78, fat: 39 },
       ingredients: [
         ing(180, "g", "chicken thigh, diced", "meat"), ing(0.25, "", "onion, diced", "produce"),
         ing(0.25, "", "green pepper, diced", "produce"), ing(1, "", "garlic clove, minced", "produce"),
@@ -4674,6 +4948,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d273", title: "Puerto Rican-Style Codfish Fritters (Bacalaitos-Inspired)", tags: ["quick", "fish"], cuisine: "Puerto Rico", protein: "fish",
       prep: 9, cook: 10,
+      nutrition: { kcal: 500, protein: 35, carbs: 64, fat: 11 },
       ingredients: [
         ing(150, "g", "cod fillet, flaked", "meat"), ing(80, "g", "plain flour", "store"),
         ing(0.5, "tsp", "baking powder", "store"), ing(1, "", "garlic clove, minced", "produce"),
@@ -4692,6 +4967,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d274", title: "Goan Pork Vindaloo with Rice", tags: ["spicy"], cuisine: "India", protein: "pork",
       prep: 10, cook: 23,
+      nutrition: { kcal: 810, protein: 50, carbs: 79, fat: 32 },
       ingredients: [
         ing(180, "g", "pork loin steak, cut into 2cm cubes", "meat"), ing(2, "tbsp", "vindaloo curry paste", "store"),
         ing(1, "tbsp", "malt vinegar", "store"), ing(1, "", "onion, sliced", "produce"),
@@ -4712,6 +4988,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d275", title: "Bengali Mustard Fish (Shorshe Maach)", tags: ["quick", "fish"], cuisine: "India", protein: "fish",
       prep: 8, cook: 15,
+      nutrition: { kcal: 500, protein: 37, carbs: 78, fat: 4 },
       ingredients: [
         ing(150, "g", "white fish fillet (e.g. pollock or basa)", "meat"), ing(1, "tbsp", "black mustard seeds", "spice"),
         ing(1, "tsp", "yellow mustard powder", "spice"), ing(2, "", "green chillies, sliced", "produce"),
@@ -4731,6 +5008,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d276", title: "Chettinad Chicken with Curry Leaves", tags: ["spicy"], cuisine: "India", protein: "chicken",
       prep: 13, cook: 23,
+      nutrition: { kcal: 770, protein: 37, carbs: 74, fat: 35 },
       ingredients: [
         ing(160, "g", "chicken thigh, diced", "meat"), ing(2, "tbsp", "vegetable oil", "store"),
         ing(0.5, "tsp", "mustard seeds", "spice"), ing(10, "", "fresh curry leaves", "produce"),
@@ -4752,6 +5030,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d277", title: "Gujarati Chickpea Flour Kadhi with Rice", tags: ["vegetarian", "quick"], cuisine: "India", protein: "plant-based",
       prep: 7, cook: 15,
+      nutrition: { kcal: 600, protein: 16, carbs: 90, fat: 20 },
       ingredients: [
         ing(150, "g", "natural yoghurt", "dairy"), ing(2, "tbsp", "gram (chickpea) flour", "store"),
         ing(0.5, "tsp", "turmeric", "spice"), ing(1, "tsp", "fresh ginger, grated", "produce"),
@@ -4773,6 +5052,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d278", title: "Pork Carnitas Bowl with Pineapple Salsa", tags: ["quick"], cuisine: "Mexico", protein: "pork",
       prep: 8, cook: 12,
+      nutrition: { kcal: 700, protein: 45, carbs: 69, fat: 29 },
       ingredients: [
         ing(180, "g", "pork loin steak, cut into 1.5cm pieces", "meat"), ing(1, "tsp", "ground cumin", "spice"),
         ing(0.5, "tsp", "dried oregano", "spice"), ing(1, "", "orange, juiced", "produce"),
@@ -4792,6 +5072,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d279", title: "Chicken Mole Poblano-Style", tags: ["spicy"], cuisine: "Mexico", protein: "chicken",
       prep: 9, cook: 24,
+      nutrition: { kcal: 690, protein: 53, carbs: 68, fat: 23 },
       ingredients: [
         ing(180, "g", "chicken breast", "meat"), ing(1, "tbsp", "vegetable oil", "store"),
         ing(0.5, "", "onion, finely chopped", "produce"), ing(1, "", "garlic clove, crushed", "produce"),
@@ -4813,6 +5094,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d280", title: "Huevos Rancheros with Refried Beans", tags: ["vegetarian", "quick"], cuisine: "Mexico", protein: "plant-based",
       prep: 10, cook: 16,
+      nutrition: { kcal: 820, protein: 37, carbs: 66, fat: 43 },
       ingredients: [
         ing(2, "", "eggs", "dairy"), ing(2, "tbsp", "vegetable oil", "store"),
         ing(2, "", "small corn tortillas", "bakery"), ing(200, "g", "tinned chopped tomatoes", "store"),
@@ -4831,6 +5113,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d281", title: "Beef Birria Tacos with Consommé", tags: ["spicy"], cuisine: "Mexico", protein: "beef",
       prep: 13, cook: 25,
+      nutrition: { kcal: 970, protein: 62, carbs: 65, fat: 51 },
       ingredients: [
         ing(180, "g", "beef rump steak, thinly sliced", "meat"), ing(1, "tbsp", "chipotle paste", "store"),
         ing(1, "tsp", "ground cumin", "spice"), ing(0.5, "tsp", "dried oregano", "spice"),
@@ -4850,6 +5133,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d282", title: "Spanish Albóndigas in Almond-Tomato Sauce", tags: [], cuisine: "Spain", protein: "pork",
       prep: 9, cook: 24,
+      nutrition: { kcal: 800, protein: 41, carbs: 45, fat: 50 },
       ingredients: [
         ing(150, "g", "pork mince", "meat"), ing(2, "tbsp", "breadcrumbs", "bakery"),
         ing(1, "tbsp", "milk", "dairy"), ing(1, "", "egg yolk", "dairy"),
@@ -4869,6 +5153,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d283", title: "Catalan-Style Chicken with Almonds and Sherry", tags: [], cuisine: "Spain", protein: "chicken",
       prep: 8, cook: 26,
+      nutrition: { kcal: 670, protein: 42, carbs: 25, fat: 41 },
       ingredients: [
         ing(200, "g", "chicken thighs", "meat"), ing(1, "tbsp", "olive oil", "store"),
         ing(0.5, "", "onion, chopped", "produce"), ing(1, "", "garlic clove, crushed", "produce"),
@@ -4888,6 +5173,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d284", title: "Spanish White Bean & Spinach Stew (Potaje)", tags: ["vegetarian", "vegan", "quick"], cuisine: "Spain", protein: "plant-based",
       prep: 8, cook: 18,
+      nutrition: { kcal: 560, protein: 23, carbs: 71, fat: 19 },
       ingredients: [
         ing(1, "tbsp", "olive oil", "store"), ing(0.5, "", "onion, chopped", "produce"),
         ing(1, "", "garlic clove, crushed", "produce"), ing(0.5, "", "red pepper, chopped", "produce"),
@@ -4907,6 +5193,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d285", title: "Bacalhau à Brás-Style Salt Cod with Potato and Egg", tags: ["fish", "quick"], cuisine: "Portugal", protein: "fish",
       prep: 9, cook: 18,
+      nutrition: { kcal: 580, protein: 44, carbs: 34, fat: 29 },
       ingredients: [
         ing(150, "g", "skinless white fish fillet", "meat"), ing(150, "g", "potatoes, cut into thin matchsticks", "produce"),
         ing(2, "tbsp", "olive oil", "store"), ing(0.5, "", "onion, thinly sliced", "produce"),
@@ -4925,6 +5212,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d286", title: "Caldo Verde with Chorizo", tags: ["quick"], cuisine: "Portugal", protein: "pork",
       prep: 8, cook: 20,
+      nutrition: { kcal: 620, protein: 23, carbs: 48, fat: 38 },
       ingredients: [
         ing(1, "", "large potato, peeled and chopped", "produce"), ing(400, "ml", "vegetable stock", "store"),
         ing(60, "g", "chorizo, sliced", "meat"), ing(80, "g", "kale, finely shredded", "produce"),
@@ -4941,6 +5229,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d287", title: "Kuku Sabzi (Persian Herb Frittata)", tags: ["vegetarian", "quick"], cuisine: "Iran", protein: "plant-based",
       prep: 10, cook: 12,
+      nutrition: { kcal: 430, protein: 22, carbs: 11, fat: 32 },
       ingredients: [
         ing(3, "", "eggs", "dairy"), ing(1, "handful", "fresh parsley, chopped", "produce"),
         ing(1, "handful", "fresh coriander, chopped", "produce"), ing(1, "small handful", "fresh dill, chopped", "produce"),
@@ -4959,6 +5248,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d288", title: "Fesenjan-Style Chicken with Pomegranate and Walnut", tags: [], cuisine: "Iran", protein: "chicken",
       prep: 8, cook: 26,
+      nutrition: { kcal: 1110, protein: 49, carbs: 103, fat: 56 },
       ingredients: [
         ing(180, "g", "chicken thighs", "meat"), ing(40, "g", "walnuts, finely ground", "store"),
         ing(1, "tbsp", "vegetable oil", "store"), ing(0.5, "", "onion, chopped", "produce"),
@@ -4978,6 +5268,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d289", title: "Turkish Menemen with Feta and Crusty Bread", tags: ["vegetarian", "quick"], cuisine: "Turkey", protein: "plant-based",
       prep: 8, cook: 13,
+      nutrition: { kcal: 510, protein: 23, carbs: 34, fat: 31 },
       ingredients: [
         ing(2, "", "eggs", "dairy"), ing(1, "tbsp", "olive oil", "store"),
         ing(0.5, "", "green pepper, sliced", "produce"), ing(0.5, "", "onion, sliced", "produce"),
@@ -4996,6 +5287,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d290", title: "Turkish Beef Köfte with Garlic Yoghurt and Sumac", tags: ["quick"], cuisine: "Turkey", protein: "beef",
       prep: 9, cook: 12,
+      nutrition: { kcal: 790, protein: 42, carbs: 55, fat: 46 },
       ingredients: [
         ing(150, "g", "beef mince", "meat"), ing(0.5, "", "onion, grated", "produce"),
         ing(1, "", "garlic clove, crushed", "produce"), ing(1, "tsp", "ground cumin", "spice"),
@@ -5015,6 +5307,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d291", title: "Ethiopian Beef Tibs with Peppers and Rosemary", tags: ["spicy", "quick"], cuisine: "Ethiopia", protein: "beef",
       prep: 12, cook: 12,
+      nutrition: { kcal: 720, protein: 50, carbs: 60, fat: 32 },
       ingredients: [
         ing(180, "g", "beef sirloin, thinly sliced", "meat"), ing(1, "tbsp", "vegetable oil", "store"),
         ing(0.5, "", "onion, sliced", "produce"), ing(0.5, "", "red pepper, sliced", "produce"),
@@ -5034,6 +5327,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d292", title: "Ethiopian Shiro Wat (Spiced Chickpea Flour Stew)", tags: ["vegan", "vegetarian", "spicy"], cuisine: "Ethiopia", protein: "plant-based",
       prep: 8, cook: 19,
+      nutrition: { kcal: 490, protein: 13, carbs: 71, fat: 18 },
       ingredients: [
         ing(3, "tbsp", "gram (chickpea) flour", "store"), ing(1, "tbsp", "vegetable oil", "store"),
         ing(0.5, "", "onion, finely chopped", "produce"), ing(2, "", "garlic cloves, crushed", "produce"),
@@ -5053,6 +5347,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d293", title: "Israeli-Style Sabich Pitta with Potato, Egg and Amba", tags: ["vegetarian", "quick"], cuisine: "Israel", protein: "plant-based",
       prep: 9, cook: 12,
+      nutrition: { kcal: 750, protein: 23, carbs: 76, fat: 40 },
       ingredients: [
         ing(1, "", "potato, sliced", "produce"), ing(2, "tbsp", "vegetable oil", "store"),
         ing(1, "", "egg", "dairy"), ing(1, "", "pitta bread", "bakery"),
@@ -5071,6 +5366,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d294", title: "Israeli-Style Za'atar Baked Salmon with Tahini", tags: ["fish", "quick"], cuisine: "Israel", protein: "fish",
       prep: 6, cook: 14,
+      nutrition: { kcal: 760, protein: 42, carbs: 51, fat: 43 },
       ingredients: [
         ing(150, "g", "salmon fillet", "meat"), ing(1, "tbsp", "olive oil", "store"),
         ing(1, "tbsp", "za'atar", "spice"), ing(1, "tbsp", "tahini", "store"),
@@ -5089,6 +5385,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d295", title: "Sri Lankan-Style Devilled Chicken", tags: ["spicy", "quick"], cuisine: "Sri Lanka", protein: "chicken",
       prep: 13, cook: 15,
+      nutrition: { kcal: 720, protein: 53, carbs: 83, fat: 19 },
       ingredients: [
         ing(180, "g", "chicken breast, diced", "meat"), ing(0.5, "tsp", "curry powder", "spice"),
         ing(1, "tbsp", "vegetable oil", "store"), ing(0.5, "", "onion, sliced", "produce"),
@@ -5111,6 +5408,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d296", title: "Sri Lankan-Style Black Pepper Beef Curry", tags: ["spicy"], cuisine: "Sri Lanka", protein: "beef",
       prep: 10, cook: 21,
+      nutrition: { kcal: 990, protein: 48, carbs: 68, fat: 57 },
       ingredients: [
         ing(180, "g", "beef sirloin, thinly sliced", "meat"), ing(1, "tbsp", "vegetable oil", "store"),
         ing(0.5, "", "onion, sliced", "produce"), ing(2, "", "garlic cloves, crushed", "produce"),
@@ -5131,6 +5429,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d297", title: "Swedish Pytt i Panna with Fried Egg", tags: [], cuisine: "Sweden", protein: "pork",
       prep: 10, cook: 23,
+      nutrition: { kcal: 500, protein: 29, carbs: 36, fat: 26 },
       ingredients: [
         ing(150, "g", "potatoes, diced", "produce"), ing(100, "g", "cooked ham, diced", "meat"),
         ing(0.5, "", "onion, diced", "produce"), ing(1, "tbsp", "butter", "dairy"),
@@ -5149,6 +5448,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d298", title: "Swedish Kalops-Style Beef and Root Vegetable Stew", tags: [], cuisine: "Sweden", protein: "beef",
       prep: 9, cook: 25,
+      nutrition: { kcal: 600, protein: 46, carbs: 43, fat: 27 },
       ingredients: [
         ing(180, "g", "beef rump steak, cut into 2cm cubes", "meat"), ing(1, "tbsp", "butter", "dairy"),
         ing(0.5, "", "onion, chopped", "produce"), ing(1, "", "carrot, sliced", "produce"),
@@ -5168,6 +5468,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d299", title: "Australian-Style Chicken Parmigiana", tags: [], cuisine: "Australia", protein: "chicken",
       prep: 9, cook: 25,
+      nutrition: { kcal: 970, protein: 66, carbs: 83, fat: 40 },
       ingredients: [
         ing(180, "g", "chicken breast, butterflied", "meat"), ing(2, "tbsp", "plain flour", "store"),
         ing(1, "", "egg, beaten", "dairy"), ing(40, "g", "breadcrumbs", "bakery"),
@@ -5187,6 +5488,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d300", title: "Australian-Style Beef and Beetroot Burger", tags: [], cuisine: "Australia", protein: "beef",
       prep: 8, cook: 25,
+      nutrition: { kcal: 920, protein: 47, carbs: 66, fat: 51 },
       ingredients: [
         ing(150, "g", "beef mince", "meat"), ing(0.5, "tsp", "salt and pepper", "spice"),
         ing(1, "", "burger bun", "bakery"), ing(1, "", "slice cooked beetroot", "store"),
@@ -5206,6 +5508,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d301", title: "South African-Style Boerewors with Pap and Chakalaka", tags: ["spicy"], cuisine: "South Africa", protein: "beef",
       prep: 8, cook: 22,
+      nutrition: { kcal: 1120, protein: 46, carbs: 64, fat: 75 },
       ingredients: [
         ing(150, "g", "boerewors sausage (or good pork sausage)", "meat"), ing(60, "g", "quick-cook polenta or maize meal", "store"),
         ing(200, "ml", "water", "store"), ing(1, "tbsp", "butter", "dairy"),
@@ -5225,6 +5528,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d302", title: "South African-Style Cape Malay Fish Curry", tags: ["quick"], cuisine: "South Africa", protein: "fish",
       prep: 8, cook: 21,
+      nutrition: { kcal: 900, protein: 41, carbs: 81, fat: 45 },
       ingredients: [
         ing(180, "g", "white fish fillet, cut into chunks", "meat"), ing(1, "tbsp", "vegetable oil", "store"),
         ing(0.5, "", "onion, chopped", "produce"), ing(1, "", "garlic clove, crushed", "produce"),
@@ -5245,6 +5549,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d303", title: "Ukrainian-Style Chicken Kyiv", tags: [], cuisine: "Ukraine", protein: "chicken",
       prep: 9, cook: 22,
+      nutrition: { kcal: 1090, protein: 61, carbs: 79, fat: 60 },
       ingredients: [
         ing(180, "g", "chicken breast, butterflied and flattened", "meat"), ing(30, "g", "butter, softened", "dairy"),
         ing(1, "", "garlic clove, crushed", "produce"), ing(1, "tsp", "fresh parsley, chopped", "produce"),
@@ -5266,6 +5571,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d304", title: "Ukrainian-Style Varenyky (Potato and Cheese Dumplings)", tags: ["vegetarian"], cuisine: "Ukraine", protein: "plant-based",
       prep: 10, cook: 25,
+      nutrition: { kcal: 800, protein: 21, carbs: 132, fat: 20 },
       ingredients: [
         ing(8, "", "ready-made dumpling or wonton wrappers", "bakery"), ing(120, "g", "floury potato, peeled and chopped", "produce"),
         ing(30, "g", "curd cheese", "dairy"), ing(0.5, "", "small onion, finely diced", "produce"),
@@ -5284,6 +5590,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d305", title: "Trinidadian-Style Beef Pelau", tags: [], cuisine: "Trinidad", protein: "beef",
       prep: 9, cook: 35,
+      nutrition: { kcal: 1260, protein: 51, carbs: 112, fat: 67 },
       ingredients: [
         ing(150, "g", "beef rump steak, cut into 2cm cubes", "meat"), ing(1, "tbsp", "brown sugar", "store"),
         ing(1, "tbsp", "vegetable oil", "store"), ing(0.5, "", "onion, chopped", "produce"),
@@ -5304,6 +5611,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d306", title: "Trinidadian-Style Fried Fish Bake with Tamarind Sauce", tags: ["fish", "quick"], cuisine: "Trinidad", protein: "fish",
       prep: 9, cook: 12,
+      nutrition: { kcal: 450, protein: 34, carbs: 56, fat: 9 },
       ingredients: [
         ing(150, "g", "firm white fish fillet (e.g. pollock or coley)", "meat"), ing(60, "g", "self-raising flour", "store"),
         ing(0.25, "tsp", "baking powder", "store"), ing(null, "pinch", "salt", "spice"),
@@ -5322,6 +5630,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d307", title: "Belgian-Style Stoemp with Pork Sausage", tags: ["quick"], cuisine: "Belgium", protein: "pork",
       prep: 8, cook: 18,
+      nutrition: { kcal: 710, protein: 26, carbs: 52, fat: 44 },
       ingredients: [
         ing(150, "g", "pork sausages", "meat"), ing(200, "g", "potatoes, peeled and chopped", "produce"),
         ing(80, "g", "curly kale, shredded", "produce"), ing(1, "tbsp", "butter", "dairy"),
@@ -5339,6 +5648,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d308", title: "Belgian-Style Chicory and Cheese Gratin (Witloof)", tags: ["vegetarian", "quick"], cuisine: "Belgium", protein: "plant-based",
       prep: 8, cook: 20,
+      nutrition: { kcal: 450, protein: 22, carbs: 24, fat: 29 },
       ingredients: [
         ing(2, "", "heads chicory, halved", "produce"), ing(1, "tbsp", "butter", "dairy"),
         ing(1, "tbsp", "plain flour", "store"), ing(150, "ml", "milk", "dairy"),
@@ -5357,6 +5667,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d309", title: "Norwegian-Style Fish Cakes with Creamed Cabbage", tags: ["fish", "quick"], cuisine: "Norway", protein: "fish",
       prep: 9, cook: 18,
+      nutrition: { kcal: 740, protein: 45, carbs: 38, fat: 45 },
       ingredients: [
         ing(180, "g", "white fish fillet (e.g. haddock or cod), roughly chopped", "meat"), ing(2, "tbsp", "plain flour", "store"),
         ing(1, "", "egg", "dairy"), ing(null, "pinch", "nutmeg", "spice"),
@@ -5376,6 +5687,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d310", title: "Norwegian-Style Lapskaus (Beef and Cabbage Stew)", tags: [], cuisine: "Norway", protein: "beef",
       prep: 9, cook: 28,
+      nutrition: { kcal: 610, protein: 47, carbs: 45, fat: 27 },
       ingredients: [
         ing(180, "g", "beef rump steak, cut into 2cm cubes", "meat"), ing(1, "tbsp", "butter", "dairy"),
         ing(0.5, "", "onion, chopped", "produce"), ing(1, "", "carrot, sliced", "produce"),
@@ -5394,6 +5706,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d311", title: "Lancashire Hotpot with Lamb and Sliced Potatoes", tags: [], cuisine: "UK", protein: "lamb",
       prep: 10, cook: 35,
+      nutrition: { kcal: 760, protein: 49, carbs: 77, fat: 28 },
       ingredients: [
         ing(180, "g", "lamb leg steak, diced", "meat"), ing(1, "", "onion, sliced", "produce"),
         ing(1, "", "carrot, sliced", "produce"), ing(2, "", "potatoes, thinly sliced", "produce"),
@@ -5412,6 +5725,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d312", title: "Cullen Skink-Style Smoked Haddock Chowder", tags: ["quick", "fish"], cuisine: "UK", protein: "fish",
       prep: 8, cook: 19,
+      nutrition: { kcal: 490, protein: 43, carbs: 43, fat: 15 },
       ingredients: [
         ing(150, "g", "smoked haddock fillet", "meat"), ing(1, "", "potato, diced", "produce"),
         ing(1, "", "small onion, chopped", "produce"), ing(15, "g", "butter", "dairy"),
@@ -5430,6 +5744,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d313", title: "Welsh Rarebit with Grilled Tomatoes", tags: ["quick", "vegetarian"], cuisine: "UK", protein: "plant-based",
       prep: 7, cook: 6,
+      nutrition: { kcal: 540, protein: 27, carbs: 46, fat: 27 },
       ingredients: [
         ing(2, "slices", "bread", "bakery"), ing(70, "g", "mature cheddar, grated", "dairy"),
         ing(1, "tsp", "English mustard", "store"), ing(1, "tbsp", "brown ale or milk", "store"),
@@ -5448,6 +5763,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d314", title: "Coronation Chicken with Basmati Rice", tags: ["quick"], cuisine: "UK", protein: "chicken",
       prep: 8, cook: 15,
+      nutrition: { kcal: 700, protein: 44, carbs: 63, fat: 30 },
       ingredients: [
         ing(150, "g", "chicken breast", "meat"), ing(60, "g", "basmati rice", "store"),
         ing(2, "tbsp", "mayonnaise", "store"), ing(1, "tsp", "mild curry powder", "spice"),
@@ -5466,6 +5782,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d315", title: "Duck Confit-Style Duck Leg with Sautéed Potatoes", tags: [], cuisine: "France", protein: "duck",
       prep: 6, cook: 60,
+      nutrition: { kcal: 810, protein: 40, carbs: 60, fat: 45 },
       ingredients: [
         ing(1, "", "duck leg (about 200g)", "meat"), ing(2, "", "potatoes, diced", "produce"),
         ing(2, "", "garlic cloves, crushed", "produce"), ing(1, "tsp", "fresh thyme leaves", "produce"),
@@ -5483,6 +5800,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d316", title: "Beef Bourguignon-Style Beef with Mushrooms", tags: [], cuisine: "France", protein: "beef",
       prep: 10, cook: 29,
+      nutrition: { kcal: 890, protein: 52, carbs: 58, fat: 39 },
       ingredients: [
         ing(180, "g", "beef rump steak, cut into 2cm cubes", "meat"), ing(1, "", "rasher smoked bacon, chopped", "meat"),
         ing(1, "", "small onion, sliced", "produce"), ing(1, "", "carrot, sliced", "produce"),
@@ -5503,6 +5821,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d317", title: "Salmon en Papillote with Fennel and Lemon", tags: ["quick", "fish"], cuisine: "France", protein: "fish",
       prep: 8, cook: 15,
+      nutrition: { kcal: 400, protein: 33, carbs: 8, fat: 25 },
       ingredients: [
         ing(150, "g", "salmon fillet", "meat"), ing(0.5, "", "fennel bulb, thinly sliced", "produce"),
         ing(0.5, "", "lemon, thinly sliced", "produce"), ing(60, "g", "cherry tomatoes, halved", "produce"),
@@ -5520,6 +5839,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d318", title: "French Green Lentil Salad with Soft-Boiled Egg and Dijon Dressing", tags: ["quick", "vegetarian"], cuisine: "France", protein: "plant-based",
       prep: 7, cook: 8,
+      nutrition: { kcal: 1130, protein: 69, carbs: 138, fat: 25 },
       ingredients: [
         ing(250, "g", "ready-cooked puy lentils", "store"), ing(1, "", "egg", "dairy"),
         ing(20, "g", "rocket", "produce"), ing(60, "g", "cherry tomatoes, halved", "produce"),
@@ -5538,6 +5858,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d319", title: "Okonomiyaki-Style Cabbage Pancake with Bacon", tags: ["quick"], cuisine: "Japan", protein: "pork",
       prep: 9, cook: 10,
+      nutrition: { kcal: 900, protein: 26, carbs: 95, fat: 46 },
       ingredients: [
         ing(100, "g", "plain flour", "store"), ing(1, "", "egg", "dairy"),
         ing(80, "ml", "water", "store"), ing(150, "g", "white cabbage, shredded", "produce"),
@@ -5556,6 +5877,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d320", title: "Chicken Karaage with Sesame Slaw", tags: ["quick"], cuisine: "Japan", protein: "chicken",
       prep: 8, cook: 8,
+      nutrition: { kcal: 500, protein: 31, carbs: 21, fat: 33 },
       ingredients: [
         ing(150, "g", "chicken thigh fillets, diced", "meat"), ing(1, "tbsp", "soy sauce", "store"),
         ing(1, "tsp", "fresh ginger, grated", "produce"), ing(1, "", "garlic clove, grated", "produce"),
@@ -5574,6 +5896,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d321", title: "Chirashi-Style Salmon Rice Bowl", tags: ["quick", "fish"], cuisine: "Japan", protein: "fish",
       prep: 10, cook: 15,
+      nutrition: { kcal: 700, protein: 31, carbs: 74, fat: 29 },
       ingredients: [
         ing(75, "g", "sushi rice", "store"), ing(1, "tbsp", "rice vinegar", "store"),
         ing(1, "tsp", "sugar", "store"), ing(100, "g", "very fresh salmon fillet, thinly sliced", "meat"),
@@ -5593,6 +5916,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d322", title: "Cypriot Kleftiko-Style Lamb with Lemon and Oregano", tags: [], cuisine: "Cyprus", protein: "lamb",
       prep: 8, cook: 40,
+      nutrition: { kcal: 570, protein: 44, carbs: 35, fat: 28 },
       ingredients: [
         ing(180, "g", "lamb leg steak, cut into chunks", "meat"), ing(1, "", "potato, cut into wedges", "produce"),
         ing(2, "", "garlic cloves, sliced", "produce"), ing(1, "", "lemon, juiced", "produce"),
@@ -5609,6 +5933,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d323", title: "Cypriot Halloumi and Village Salad", tags: ["quick", "vegetarian"], cuisine: "Cyprus", protein: "plant-based",
       prep: 8, cook: 5,
+      nutrition: { kcal: 680, protein: 29, carbs: 39, fat: 45 },
       ingredients: [
         ing(100, "g", "halloumi, sliced", "dairy"), ing(0.5, "", "cucumber, chopped", "produce"),
         ing(2, "", "tomatoes, chopped", "produce"), ing(0.25, "", "red onion, sliced", "produce"),
@@ -5626,6 +5951,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d324", title: "Jamaican-Style Escovitch Fish with Pickled Peppers", tags: ["quick", "spicy", "fish"], cuisine: "Jamaica", protein: "fish",
       prep: 9, cook: 15,
+      nutrition: { kcal: 700, protein: 35, carbs: 102, fat: 20 },
       ingredients: [
         ing(150, "g", "white fish fillet", "meat"), ing(2, "tbsp", "plain flour", "store"),
         ing(2, "tbsp", "vegetable oil", "store"), ing(2, "tbsp", "white wine vinegar", "store"),
@@ -5645,6 +5971,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d325", title: "Jamaican-Style Brown Stew Chicken", tags: [], cuisine: "Jamaica", protein: "chicken",
       prep: 10, cook: 35,
+      nutrition: { kcal: 850, protein: 46, carbs: 81, fat: 36 },
       ingredients: [
         ing(2, "", "chicken thighs, bone-in", "meat"), ing(1, "tsp", "brown sugar", "store"),
         ing(1, "tbsp", "soy sauce", "store"), ing(1, "tsp", "ground allspice", "spice"),
@@ -5666,6 +5993,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d326", title: "Cuban-Style Ropa Vieja-Inspired Beef and Peppers", tags: [], cuisine: "Cuba", protein: "beef",
       prep: 10, cook: 22,
+      nutrition: { kcal: 660, protein: 49, carbs: 72, fat: 18 },
       ingredients: [
         ing(180, "g", "beef rump steak, thinly sliced", "meat"), ing(1, "", "onion, sliced", "produce"),
         ing(0.5, "", "each red and green pepper, sliced", "produce"), ing(1, "", "garlic clove, crushed", "produce"),
@@ -5684,6 +6012,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d327", title: "Cuban-Style Mojo Pork with Rice and Black Beans", tags: ["quick"], cuisine: "Cuba", protein: "pork",
       prep: 8, cook: 15,
+      nutrition: { kcal: 720, protein: 45, carbs: 70, fat: 28 },
       ingredients: [
         ing(150, "g", "pork loin steak", "meat"), ing(2, "", "garlic cloves, crushed", "produce"),
         ing(2, "tbsp", "orange juice", "produce"), ing(1, "tbsp", "lime juice", "produce"),
@@ -5702,6 +6031,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d328", title: "Indonesian-Style Chicken Satay with Peanut Sauce", tags: ["quick", "spicy"], cuisine: "Indonesia", protein: "chicken",
       prep: 9, cook: 15,
+      nutrition: { kcal: 760, protein: 42, carbs: 58, fat: 39 },
       ingredients: [
         ing(150, "g", "chicken thigh, cubed", "meat"), ing(1, "tbsp", "soy sauce", "store"),
         ing(0.5, "tsp", "ground turmeric", "spice"), ing(0.5, "tsp", "ground coriander", "spice"),
@@ -5721,6 +6051,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d329", title: "Indonesian-Style Grilled Fish with Sambal (Ikan Bakar)", tags: ["quick", "spicy", "fish"], cuisine: "Indonesia", protein: "fish",
       prep: 9, cook: 15,
+      nutrition: { kcal: 610, protein: 36, carbs: 77, fat: 17 },
       ingredients: [
         ing(150, "g", "sea bass or white fish fillet", "meat"), ing(1, "", "shallot, chopped", "produce"),
         ing(1, "", "garlic clove, chopped", "produce"), ing(1, "", "red chilli, chopped", "produce"),
@@ -5739,6 +6070,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d330", title: "Egyptian-Style Ful Medames with Warm Pitta", tags: ["quick", "vegan", "vegetarian"], cuisine: "Egypt", protein: "plant-based",
       prep: 7, cook: 8,
+      nutrition: { kcal: 820, protein: 36, carbs: 109, fat: 23 },
       ingredients: [
         ing(400, "g", "tinned fava beans", "store"), ing(1, "", "garlic clove, crushed", "produce"),
         ing(1, "tbsp", "lemon juice", "produce"), ing(0.5, "tsp", "ground cumin", "spice"),
@@ -5755,6 +6087,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d331", title: "Egyptian-Style Chicken Kofta with Rice", tags: ["quick"], cuisine: "Egypt", protein: "chicken",
       prep: 9, cook: 15,
+      nutrition: { kcal: 540, protein: 45, carbs: 61, fat: 13 },
       ingredients: [
         ing(150, "g", "chicken mince", "meat"), ing(0.5, "", "onion, grated", "produce"),
         ing(1, "", "garlic clove, crushed", "produce"), ing(0.5, "tsp", "ground cumin", "spice"),
@@ -5774,6 +6107,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d332", title: "Malaysian-Style Assam Fish Curry", tags: ["spicy", "fish"], cuisine: "Malaysia", protein: "fish",
       prep: 9, cook: 15,
+      nutrition: { kcal: 520, protein: 40, carbs: 76, fat: 4 },
       ingredients: [
         ing(150, "g", "white fish fillet", "meat"), ing(1, "tbsp", "tamarind paste", "store"),
         ing(1, "tsp", "sambal oelek or chilli paste", "store"), ing(1, "", "shallot, sliced", "produce"),
@@ -5792,6 +6126,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d333", title: "Malaysian-Style Char Kway Teow with Egg and Chinese Sausage", tags: ["quick", "spicy"], cuisine: "Malaysia", protein: "pork",
       prep: 9, cook: 8,
+      nutrition: { kcal: 1090, protein: 32, carbs: 134, fat: 45 },
       ingredients: [
         ing(150, "g", "flat rice noodles", "store"), ing(1, "", "Chinese sausage, sliced", "meat"),
         ing(1, "", "egg", "dairy"), ing(50, "g", "beansprouts", "produce"),
@@ -5810,6 +6145,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d334", title: "Brazilian-Style Moqueca Fish Stew", tags: ["fish"], cuisine: "Brazil", protein: "fish",
       prep: 11, cook: 21,
+      nutrition: { kcal: 870, protein: 37, carbs: 77, fat: 45 },
       ingredients: [
         ing(150, "g", "white fish fillet, cubed", "meat"), ing(150, "ml", "coconut milk", "store"),
         ing(1, "", "tomato, chopped", "produce"), ing(0.5, "", "red pepper, sliced", "produce"),
@@ -5830,6 +6166,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d335", title: "Brazilian-Style Picanha Steak with Farofa", tags: [], cuisine: "Brazil", protein: "beef",
       prep: 9, cook: 12,
+      nutrition: { kcal: 720, protein: 43, carbs: 71, fat: 30 },
       ingredients: [
         ing(150, "g", "beef rump or sirloin steak", "meat"), ing(1, "", "garlic clove, crushed", "produce"),
         ing(1, "tsp", "coarse sea salt", "spice"), ing(40, "g", "cassava flour or dried breadcrumbs", "store"),
@@ -5848,6 +6185,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d336", title: "Russian-Style Beef Stroganoff", tags: [], cuisine: "Russia", protein: "beef",
       prep: 8, cook: 15,
+      nutrition: { kcal: 640, protein: 48, carbs: 68, fat: 19 },
       ingredients: [
         ing(150, "g", "beef sirloin, cut into strips", "meat"), ing(80, "g", "mushrooms, sliced", "produce"),
         ing(0.5, "", "onion, sliced", "produce"), ing(1, "", "garlic clove, crushed", "produce"),
@@ -5867,6 +6205,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d337", title: "Russian-Style Salmon Kotleti with Soured Cream", tags: ["quick", "fish"], cuisine: "Russia", protein: "fish",
       prep: 9, cook: 15,
+      nutrition: { kcal: 730, protein: 43, carbs: 43, fat: 43 },
       ingredients: [
         ing(150, "g", "salmon fillet, finely chopped", "meat"), ing(20, "g", "breadcrumbs", "store"),
         ing(1, "", "egg", "dairy"), ing(0.25, "", "onion, finely grated", "produce"),
@@ -5885,6 +6224,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d338", title: "Hawaiian-Style Loco Moco", tags: ["quick"], cuisine: "Hawaii", protein: "beef",
       prep: 8, cook: 15,
+      nutrition: { kcal: 740, protein: 42, carbs: 52, fat: 40 },
       ingredients: [
         ing(150, "g", "beef mince", "meat"), ing(60, "g", "white rice", "store"),
         ing(1, "", "egg", "dairy"), ing(50, "g", "mushrooms, sliced", "produce"),
@@ -5904,6 +6244,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d339", title: "Hawaiian-Style Spam Musubi Bowl", tags: ["quick"], cuisine: "Hawaii", protein: "pork",
       prep: 8, cook: 15,
+      nutrition: { kcal: 470, protein: 25, carbs: 68, fat: 10 },
       ingredients: [
         ing(100, "g", "tinned spam, sliced", "meat"), ing(1, "tbsp", "soy sauce", "store"),
         ing(1, "tsp", "brown sugar", "store"), ing(75, "g", "sushi rice", "store"),
@@ -5921,6 +6262,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d340", title: "Uzbek-Style Lamb Shashlik Skewers", tags: ["quick"], cuisine: "Uzbekistan", protein: "lamb",
       prep: 9, cook: 12,
+      nutrition: { kcal: 630, protein: 42, carbs: 50, fat: 29 },
       ingredients: [
         ing(150, "g", "lamb leg steak, cut into 2.5cm cubes", "meat"), ing(0.5, "", "onion, grated", "produce"),
         ing(1, "tsp", "ground cumin", "spice"), ing(1, "tsp", "coriander seeds, crushed", "spice"),
@@ -5939,6 +6281,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d341", title: "Uzbek-Style Lagman Noodle Soup with Beef", tags: [], cuisine: "Uzbekistan", protein: "beef",
       prep: 11, cook: 21,
+      nutrition: { kcal: 480, protein: 41, carbs: 47, fat: 14 },
       ingredients: [
         ing(150, "g", "beef sirloin, cut into strips", "meat"), ing(100, "g", "udon noodles", "store"),
         ing(0.5, "", "onion, sliced", "produce"), ing(1, "", "carrot, sliced", "produce"),
@@ -5959,6 +6302,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d342", title: "Ghanaian-Style Red Red Bean Stew with Fried Plantain", tags: ["vegan", "vegetarian"], cuisine: "Ghana", protein: "plant-based",
       prep: 9, cook: 24,
+      nutrition: { kcal: 900, protein: 33, carbs: 138, fat: 23 },
       ingredients: [
         ing(400, "g", "tinned black-eyed beans", "store"), ing(1, "tbsp", "tomato purée", "store"),
         ing(0.5, "", "onion, chopped", "produce"), ing(1, "", "garlic clove, crushed", "produce"),
@@ -5977,6 +6321,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d343", title: "Ghanaian-Style Fried Fish with Kelewele Spiced Plantain", tags: ["spicy", "fish"], cuisine: "Ghana", protein: "fish",
       prep: 9, cook: 15,
+      nutrition: { kcal: 590, protein: 31, carbs: 81, fat: 19 },
       ingredients: [
         ing(150, "g", "white fish fillet", "meat"), ing(2, "tbsp", "plain flour", "store"),
         ing(2, "tbsp", "vegetable oil", "store"), ing(1, "", "ripe plantain, sliced", "produce"),
@@ -5995,6 +6340,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d344", title: "Swiss Cheese Fondue for One", tags: ["quick", "vegetarian"], cuisine: "Switzerland", protein: "plant-based",
       prep: 8, cook: 15,
+      nutrition: { kcal: 730, protein: 37, carbs: 52, fat: 42 },
       ingredients: [
         ing(80, "g", "Gruyère, grated", "dairy"), ing(40, "g", "Emmental, grated", "dairy"),
         ing(1, "tsp", "cornflour", "store"), ing(60, "ml", "white wine or apple juice", "store"),
@@ -6013,6 +6359,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d345", title: "Swiss-Style Pork Cordon Bleu with Green Beans", tags: [], cuisine: "Switzerland", protein: "pork",
       prep: 9, cook: 15,
+      nutrition: { kcal: 950, protein: 67, carbs: 49, fat: 53 },
       ingredients: [
         ing(150, "g", "pork loin steak, butterflied", "meat"), ing(1, "slice", "ham", "meat"),
         ing(1, "slice", "Emmental or Gruyère", "dairy"), ing(2, "tbsp", "plain flour", "store"),
@@ -6031,6 +6378,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d346", title: "Kiwi-Style Fish and Chips", tags: ["fish"], cuisine: "New Zealand", protein: "fish",
       prep: 9, cook: 30,
+      nutrition: { kcal: 820, protein: 36, carbs: 71, fat: 44 },
       ingredients: [
         ing(150, "g", "white fish fillet", "meat"), ing(50, "g", "plain flour", "store"),
         ing(80, "ml", "sparkling water", "store"), ing(1, "", "baking potato, cut into chips", "produce"),
@@ -6048,6 +6396,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d347", title: "New Zealand-Style Chicken and Kumara Hangi-Inspired Traybake", tags: [], cuisine: "New Zealand", protein: "chicken",
       prep: 9, cook: 40,
+      nutrition: { kcal: 680, protein: 40, carbs: 54, fat: 34 },
       ingredients: [
         ing(2, "", "chicken thighs, bone-in", "meat"), ing(1, "", "kumara or sweet potato, cubed", "produce"),
         ing(1, "", "carrot, chunked", "produce"), ing(1, "", "wedge cabbage", "produce"),
@@ -6064,6 +6413,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d348", title: "Cacio e Pepe", tags: ["quick", "vegetarian"], cuisine: "Italy", protein: "plant-based",
       prep: 5, cook: 10,
+      nutrition: { kcal: 630, protein: 26, carbs: 73, fat: 26 },
       ingredients: [
         ing(100, "g", "spaghetti", "store"), ing(40, "g", "pecorino, finely grated", "dairy"),
         ing(1, "tsp", "coarsely cracked black pepper", "spice"), ing(15, "g", "butter", "dairy")
@@ -6079,6 +6429,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d349", title: "Chicken Saltimbocca alla Romana", tags: ["quick"], cuisine: "Italy", protein: "chicken",
       prep: 8, cook: 15,
+      nutrition: { kcal: 680, protein: 51, carbs: 33, fat: 35 },
       ingredients: [
         ing(150, "g", "chicken breast, sliced thin and flattened", "meat"), ing(2, "", "slices prosciutto", "meat"),
         ing(4, "", "sage leaves", "produce"), ing(1, "tbsp", "plain flour", "store"),
@@ -6097,6 +6448,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d350", title: "Sicilian-Style Pan-Fried Cod with Capers and Raisins", tags: ["quick", "fish"], cuisine: "Italy", protein: "fish",
       prep: 8, cook: 12,
+      nutrition: { kcal: 400, protein: 33, carbs: 21, fat: 20 },
       ingredients: [
         ing(160, "g", "cod fillet", "meat"), ing(1, "tbsp", "plain flour", "store"),
         ing(1, "tbsp", "olive oil", "store"), ing(1, "tbsp", "capers", "store"),
@@ -6115,6 +6467,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d351", title: "Pork with Gremolata (Milanese Ossobuco-Style)", tags: [], cuisine: "Italy", protein: "pork",
       prep: 13, cook: 25,
+      nutrition: { kcal: 620, protein: 47, carbs: 34, fat: 30 },
       ingredients: [
         ing(180, "g", "pork loin steak", "meat"), ing(1, "tbsp", "plain flour", "store"),
         ing(1, "tbsp", "olive oil", "store"), ing(0.5, "", "onion, diced", "produce"),
@@ -6134,6 +6487,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d352", title: "Moroccan-Style Fish Tagine with Chermoula", tags: ["fish"], cuisine: "Morocco", protein: "fish",
       prep: 10, cook: 22,
+      nutrition: { kcal: 450, protein: 35, carbs: 36, fat: 18 },
       ingredients: [
         ing(160, "g", "white fish fillet (cod or haddock)", "meat"), ing(2, "", "garlic cloves, finely chopped", "produce"),
         ing(2, "tbsp", "coriander, chopped", "produce"), ing(1, "tsp", "ground cumin", "spice"),
@@ -6152,6 +6506,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d353", title: "Moroccan Harira-Style Lentil & Chickpea Soup", tags: ["vegan", "vegetarian"], cuisine: "Morocco", protein: "plant-based",
       prep: 10, cook: 25,
+      nutrition: { kcal: 540, protein: 26, carbs: 65, fat: 18 },
       ingredients: [
         ing(40, "g", "red lentils", "store"), ing(100, "g", "tinned chickpeas, drained", "store"),
         ing(200, "g", "tinned chopped tomatoes", "store"), ing(0.5, "", "onion, diced", "produce"),
@@ -6171,6 +6526,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d354", title: "Moroccan-Style Grilled Lamb Chops (Mechoui-Spiced)", tags: ["quick"], cuisine: "Morocco", protein: "lamb",
       prep: 10, cook: 10,
+      nutrition: { kcal: 870, protein: 42, carbs: 54, fat: 55 },
       ingredients: [
         ing(2, "", "lamb chops (about 200g)", "meat"), ing(1, "", "garlic clove, crushed", "produce"),
         ing(1, "tsp", "ground cumin", "spice"), ing(1, "tsp", "paprika", "spice"),
@@ -6189,6 +6545,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d355", title: "Thai-Style Tom Yum Soup with Chicken and Mushrooms", tags: ["quick", "spicy"], cuisine: "Thailand", protein: "chicken",
       prep: 10, cook: 12,
+      nutrition: { kcal: 250, protein: 36, carbs: 18, fat: 4 },
       ingredients: [
         ing(120, "g", "chicken breast, sliced", "meat"), ing(400, "ml", "chicken stock", "store"),
         ing(1, "", "lemongrass stalk, bruised", "produce"), ing(2, "", "kaffir lime leaves", "produce"),
@@ -6207,6 +6564,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d356", title: "Thai-Style Pork Larb Salad (Larb Moo)", tags: ["quick", "spicy"], cuisine: "Thailand", protein: "pork",
       prep: 8, cook: 8,
+      nutrition: { kcal: 590, protein: 42, carbs: 40, fat: 29 },
       ingredients: [
         ing(150, "g", "pork mince", "meat"), ing(1, "", "shallot, thinly sliced", "produce"),
         ing(1, "", "lime, juiced", "produce"), ing(1, "tbsp", "fish sauce", "store"),
@@ -6224,6 +6582,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d357", title: "Thai-Style Pad See Ew with Beef", tags: ["quick"], cuisine: "Thailand", protein: "beef",
       prep: 9, cook: 10,
+      nutrition: { kcal: 1030, protein: 51, carbs: 131, fat: 32 },
       ingredients: [
         ing(150, "g", "beef rump or sirloin, thinly sliced", "meat"), ing(150, "g", "flat rice noodles (fresh or soaked)", "store"),
         ing(1, "tbsp", "dark soy sauce", "store"), ing(1, "tbsp", "light soy sauce", "store"),
@@ -6241,6 +6600,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d358", title: "Lebanese-Style Chicken Shish Taouk with Garlic Sauce", tags: ["quick"], cuisine: "Lebanon", protein: "chicken",
       prep: 8, cook: 10,
+      nutrition: { kcal: 670, protein: 38, carbs: 50, fat: 36 },
       ingredients: [
         ing(150, "g", "chicken thigh fillets, cubed", "meat"), ing(2, "tbsp", "yoghurt", "dairy"),
         ing(1, "", "lemon, juiced", "produce"), ing(1, "tsp", "tomato puree", "store"),
@@ -6259,6 +6619,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d359", title: "Lebanese-Style Spiced Fish with Tahini (Samke Harra-Inspired)", tags: ["quick", "fish", "spicy"], cuisine: "Lebanon", protein: "fish",
       prep: 9, cook: 15,
+      nutrition: { kcal: 560, protein: 38, carbs: 19, fat: 36 },
       ingredients: [
         ing(160, "g", "white fish fillet", "meat"), ing(1, "tbsp", "olive oil", "store"),
         ing(2, "tbsp", "tahini", "store"), ing(1, "", "lemon, juiced", "produce"),
@@ -6277,6 +6638,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d360", title: "Lebanese-Style Fattoush Salad with Grilled Halloumi", tags: ["quick", "vegetarian"], cuisine: "Lebanon", protein: "plant-based",
       prep: 11, cook: 8,
+      nutrition: { kcal: 870, protein: 40, carbs: 79, fat: 44 },
       ingredients: [
         ing(100, "g", "halloumi, sliced", "dairy"), ing(1, "", "pitta bread", "bakery"),
         ing(2, "handfuls", "mixed salad leaves", "produce"), ing(1, "", "tomato, chopped", "produce"),
@@ -6296,6 +6658,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d361", title: "Filipino-Style Sinigang na Baboy (Sour Pork & Vegetable Soup)", tags: [], cuisine: "Philippines", protein: "pork",
       prep: 11, cook: 18,
+      nutrition: { kcal: 420, protein: 43, carbs: 33, fat: 11 },
       ingredients: [
         ing(150, "g", "pork tenderloin, thinly sliced", "meat"), ing(400, "ml", "water or light stock", "store"),
         ing(1, "tbsp", "tamarind paste", "store"), ing(0.5, "", "onion, sliced", "produce"),
@@ -6314,6 +6677,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d362", title: "Filipino-Style Beef Tapa with Garlic Rice and Fried Egg (Tapsilog)", tags: ["quick"], cuisine: "Philippines", protein: "beef",
       prep: 8, cook: 10,
+      nutrition: { kcal: 700, protein: 46, carbs: 59, fat: 31 },
       ingredients: [
         ing(150, "g", "beef sirloin, thinly sliced", "meat"), ing(1, "tbsp", "soy sauce", "store"),
         ing(1, "tbsp", "lime juice", "produce"), ing(1, "", "garlic clove, crushed", "produce"),
@@ -6332,6 +6696,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d363", title: "German-Style Chicken Jäger-Style with Creamy Mushroom Sauce", tags: ["quick"], cuisine: "Germany", protein: "chicken",
       prep: 9, cook: 18,
+      nutrition: { kcal: 730, protein: 52, carbs: 38, fat: 41 },
       ingredients: [
         ing(150, "g", "chicken breast, flattened", "meat"), ing(1, "tbsp", "plain flour", "store"),
         ing(1, "", "egg, beaten", "dairy"), ing(30, "g", "breadcrumbs", "store"),
@@ -6351,6 +6716,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d364", title: "German-Style Potato & Leek Soup (Kartoffelsuppe-Inspired)", tags: ["vegetarian"], cuisine: "Germany", protein: "plant-based",
       prep: 8, cook: 23,
+      nutrition: { kcal: 400, protein: 8, carbs: 49, fat: 19 },
       ingredients: [
         ing(200, "g", "potato, diced", "produce"), ing(1, "", "leek, sliced", "produce"),
         ing(15, "g", "butter", "dairy"), ing(400, "ml", "vegetable stock", "store"),
@@ -6368,6 +6734,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d365", title: "Polish-Style Bigos (Hunter's Stew) with Pork and Sausage", tags: [], cuisine: "Poland", protein: "pork",
       prep: 9, cook: 30,
+      nutrition: { kcal: 570, protein: 37, carbs: 19, fat: 39 },
       ingredients: [
         ing(100, "g", "pork loin steak, diced", "meat"), ing(60, "g", "smoked sausage, sliced", "meat"),
         ing(150, "g", "sauerkraut, drained", "store"), ing(80, "g", "white cabbage, shredded", "produce"),
@@ -6386,6 +6753,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d366", title: "Polish-Style Potato Pancakes (Placki Ziemniaczane) with Apple Sauce", tags: ["quick", "vegetarian"], cuisine: "Poland", protein: "plant-based",
       prep: 9, cook: 12,
+      nutrition: { kcal: 430, protein: 13, carbs: 62, fat: 14 },
       ingredients: [
         ing(200, "g", "potato, peeled and grated", "produce"), ing(0.5, "", "onion, grated", "produce"),
         ing(1, "", "egg", "dairy"), ing(2, "tbsp", "plain flour", "store"),
@@ -6402,6 +6770,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d367", title: "Tunisian-Style Ojja with Merguez and Eggs", tags: ["spicy"], cuisine: "Tunisia", protein: "lamb",
       prep: 10, cook: 21,
+      nutrition: { kcal: 990, protein: 54, carbs: 42, fat: 65 },
       ingredients: [
         ing(2, "", "merguez sausages (about 120g)", "meat"), ing(0.5, "", "red pepper, sliced", "produce"),
         ing(0.5, "", "onion, sliced", "produce"), ing(1, "", "garlic clove, chopped", "produce"),
@@ -6420,6 +6789,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d368", title: "Tunisian-Style Harissa-Grilled Fish with Tomato & Olive Salad", tags: ["quick", "fish", "spicy"], cuisine: "Tunisia", protein: "fish",
       prep: 8, cook: 10,
+      nutrition: { kcal: 360, protein: 32, carbs: 14, fat: 19 },
       ingredients: [
         ing(160, "g", "white fish fillet", "meat"), ing(1, "tbsp", "harissa paste", "store"),
         ing(1, "tbsp", "olive oil", "store"), ing(1, "", "lemon, juiced", "produce"),
@@ -6437,6 +6807,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d369", title: "Singapore-Style Bak Kut Teh (Peppery Pork Rib Soup)", tags: [], cuisine: "Singapore", protein: "pork",
       prep: 8, cook: 75,
+      nutrition: { kcal: 630, protein: 39, carbs: 10, fat: 47 },
       ingredients: [
         ing(200, "g", "pork ribs", "meat"), ing(3, "", "garlic cloves, whole", "produce"),
         ing(1, "tsp", "white peppercorns, lightly crushed", "spice"), ing(1, "", "star anise", "spice"),
@@ -6454,6 +6825,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d370", title: "Singapore-Style Char Kway Teow with Egg and Beansprouts", tags: ["quick", "vegetarian"], cuisine: "Singapore", protein: "plant-based",
       prep: 8, cook: 8,
+      nutrition: { kcal: 830, protein: 21, carbs: 135, fat: 21 },
       ingredients: [
         ing(150, "g", "flat rice noodles", "store"), ing(1, "", "egg", "dairy"),
         ing(60, "g", "beansprouts", "produce"), ing(1, "", "garlic clove, chopped", "produce"),
@@ -6472,6 +6844,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d371", title: "Peruvian-Style Fish Ceviche with Sweet Potato and Corn", tags: ["quick", "fish"], cuisine: "Peru", protein: "fish",
       prep: 10, cook: 12,
+      nutrition: { kcal: 410, protein: 34, carbs: 63, fat: 3 },
       ingredients: [
         ing(150, "g", "firm white fish fillet (sea bass, bream or cod), diced", "meat"), ing(4, "", "limes, juiced", "produce"),
         ing(0.25, "", "red onion, very thinly sliced", "produce"), ing(1, "", "red chilli, finely sliced", "produce"),
@@ -6489,6 +6862,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d372", title: "Peruvian-Style Beef Anticuchos with Aji Panca", tags: ["quick", "spicy"], cuisine: "Peru", protein: "beef",
       prep: 8, cook: 20,
+      nutrition: { kcal: 560, protein: 39, carbs: 37, fat: 28 },
       ingredients: [
         ing(150, "g", "beef rump or sirloin, cubed", "meat"), ing(1, "tbsp", "aji panca paste (or smoked paprika and chilli paste)", "store"),
         ing(1, "", "garlic clove, crushed", "produce"), ing(0.5, "tsp", "ground cumin", "spice"),
@@ -6506,6 +6880,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d373", title: "Austrian-Style Beef Goulash (Saftgulasch)", tags: [], cuisine: "Austria", protein: "beef",
       prep: 9, cook: 22,
+      nutrition: { kcal: 570, protein: 41, carbs: 38, fat: 28 },
       ingredients: [
         ing(150, "g", "beef rump steak, cut into strips", "meat"), ing(1, "", "onion, sliced", "produce"),
         ing(1, "tbsp", "sweet paprika", "spice"), ing(0.5, "tsp", "caraway seeds", "spice"),
@@ -6524,6 +6899,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d374", title: "Austrian-Style Mushroom & Herb Dumpling (Semmelknödel) in Mushroom Sauce", tags: ["vegetarian"], cuisine: "Austria", protein: "plant-based",
       prep: 10, cook: 21,
+      nutrition: { kcal: 580, protein: 23, carbs: 57, fat: 28 },
       ingredients: [
         ing(100, "g", "stale bread or bread roll, cubed", "bakery"), ing(80, "ml", "warm milk", "dairy"),
         ing(1, "", "egg", "dairy"), ing(0.25, "", "onion, finely chopped", "produce"),
@@ -6542,6 +6918,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d375", title: "Georgian-Style Kharcho Soup (Spiced Beef & Rice Soup)", tags: [], cuisine: "Georgia", protein: "beef",
       prep: 10, cook: 29,
+      nutrition: { kcal: 640, protein: 35, carbs: 49, fat: 33 },
       ingredients: [
         ing(120, "g", "beef mince", "meat"), ing(40, "g", "rice", "store"),
         ing(0.5, "", "onion, diced", "produce"), ing(1, "", "garlic clove, chopped", "produce"),
@@ -6561,6 +6938,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d376", title: "Georgian-Style Lobio (Spiced Bean Stew) with Cornbread", tags: ["vegan", "vegetarian"], cuisine: "Georgia", protein: "plant-based",
       prep: 8, cook: 18,
+      nutrition: { kcal: 600, protein: 23, carbs: 59, fat: 29 },
       ingredients: [
         ing(200, "g", "tinned red kidney beans, drained", "store"), ing(0.5, "", "onion, diced", "produce"),
         ing(1, "", "garlic clove, chopped", "produce"), ing(20, "g", "walnuts, crushed", "store"),
@@ -6580,6 +6958,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d377", title: "Colombian-Style Crispy Pork with Rice and Avocado (Chicharrón)", tags: [], cuisine: "Colombia", protein: "pork",
       prep: 10, cook: 15,
+      nutrition: { kcal: 1290, protein: 32, carbs: 56, fat: 103 },
       ingredients: [
         ing(180, "g", "pork belly slices", "meat"), ing(1, "pinch", "salt", "spice"),
         ing(0.5, "tsp", "ground cumin", "spice"), ing(1, "", "garlic clove, crushed", "produce"),
@@ -6597,6 +6976,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d378", title: "Colombian-Style Coconut Fish with Rice (Coastal-Style)", tags: ["fish"], cuisine: "Colombia", protein: "fish",
       prep: 8, cook: 21,
+      nutrition: { kcal: 820, protein: 38, carbs: 66, fat: 45 },
       ingredients: [
         ing(160, "g", "white fish fillet", "meat"), ing(150, "ml", "coconut milk", "store"),
         ing(0.5, "", "onion, sliced", "produce"), ing(1, "", "garlic clove, chopped", "produce"),
@@ -6616,6 +6996,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d379", title: "Kenyan-Style Grilled Spiced Lamb (Nyama Choma-Inspired)", tags: ["quick"], cuisine: "Kenya", protein: "lamb",
       prep: 11, cook: 10,
+      nutrition: { kcal: 510, protein: 43, carbs: 21, fat: 29 },
       ingredients: [
         ing(180, "g", "lamb leg steak or chops", "meat"), ing(1, "", "garlic clove, crushed", "produce"),
         ing(1, "tsp", "fresh ginger, grated", "produce"), ing(1, "tsp", "ground coriander", "spice"),
@@ -6634,6 +7015,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d380", title: "Kenyan-Style Coastal Coconut Fish Curry (Swahili-Style)", tags: ["fish"], cuisine: "Kenya", protein: "fish",
       prep: 11, cook: 19,
+      nutrition: { kcal: 860, protein: 39, carbs: 72, fat: 45 },
       ingredients: [
         ing(160, "g", "white fish fillet", "meat"), ing(150, "ml", "coconut milk", "store"),
         ing(0.5, "", "onion, sliced", "produce"), ing(1, "", "garlic clove, chopped", "produce"),
@@ -6654,6 +7036,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d381", title: "Finnish-Style Creamy Mushroom & Barley Stew (Sienimuhennos-Inspired)", tags: ["quick", "vegetarian"], cuisine: "Finland", protein: "plant-based",
       prep: 8, cook: 14,
+      nutrition: { kcal: 450, protein: 11, carbs: 56, fat: 19 },
       ingredients: [
         ing(150, "g", "cooked pearl barley (pouch)", "store"), ing(150, "g", "chestnut mushrooms, sliced", "produce"),
         ing(0.5, "", "onion, diced", "produce"), ing(15, "g", "butter", "dairy"),
@@ -6670,6 +7053,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d382", title: "Finnish-Style Pork & Swede Bake (Lanttulaatikko-Inspired)", tags: [], cuisine: "Finland", protein: "pork",
       prep: 9, cook: 35,
+      nutrition: { kcal: 620, protein: 34, carbs: 32, fat: 39 },
       ingredients: [
         ing(250, "g", "swede, peeled and cubed", "produce"), ing(120, "g", "pork mince", "meat"),
         ing(0.5, "", "onion, diced", "produce"), ing(1, "", "egg", "dairy"),
@@ -6686,6 +7070,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d383", title: "Canadian-Style Chicken Poutine with Cheese Curds", tags: ["quick"], cuisine: "Canada", protein: "chicken",
       prep: 8, cook: 20,
+      nutrition: { kcal: 830, protein: 41, carbs: 54, fat: 50 },
       ingredients: [
         ing(200, "g", "frozen chips", "frozen"), ing(100, "g", "chicken breast, diced", "meat"),
         ing(200, "ml", "chicken stock", "store"), ing(1, "tsp", "cornflour", "store"),
@@ -6702,6 +7087,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d384", title: "Canadian-Style Maple Salmon with Wild Rice", tags: ["quick", "fish"], cuisine: "Canada", protein: "fish",
       prep: 7, cook: 15,
+      nutrition: { kcal: 690, protein: 41, carbs: 81, fat: 22 },
       ingredients: [
         ing(150, "g", "salmon fillet", "meat"), ing(1, "tbsp", "maple syrup", "store"),
         ing(1, "tbsp", "soy sauce", "store"), ing(1, "", "garlic clove, crushed", "produce"),
@@ -6719,6 +7105,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d385", title: "Norwegian-Style Fårikål (Lamb and Cabbage Stew)", tags: [], cuisine: "Norway", protein: "lamb",
       prep: 9, cook: 22,
+      nutrition: { kcal: 630, protein: 50, carbs: 45, fat: 29 },
       ingredients: [
         ing(180, "g", "lamb leg steak, cut into 2cm cubes", "meat"), ing(200, "g", "white cabbage, cut into wedges", "produce"),
         ing(1, "tsp", "whole black peppercorns", "spice"), ing(1, "", "bay leaf", "spice"),
@@ -6737,6 +7124,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d386", title: "Norwegian-Style Creamy Fish Soup (Fiskesuppe)", tags: ["fish"], cuisine: "Norway", protein: "fish",
       prep: 10, cook: 23,
+      nutrition: { kcal: 860, protein: 34, carbs: 38, fat: 63 },
       ingredients: [
         ing(150, "g", "skinless cod or haddock fillet, cut into chunks", "meat"), ing(1, "", "small carrot, diced", "produce"),
         ing(0.5, "", "leek, sliced", "produce"), ing(1, "", "small potato, diced", "produce"),
@@ -6755,6 +7143,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d387", title: "Canadian-Style Tourtière-Inspired Spiced Pork Mince with Mash", tags: [], cuisine: "Canada", protein: "pork",
       prep: 8, cook: 20,
+      nutrition: { kcal: 940, protein: 37, carbs: 68, fat: 57 },
       ingredients: [
         ing(150, "g", "pork mince", "meat"), ing(1, "", "small onion, finely diced", "produce"),
         ing(1, "", "garlic clove, crushed", "produce"), ing(0.25, "tsp", "ground cinnamon", "spice"),
@@ -6776,6 +7165,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d388", title: "Canadian-Style Montreal Smoked Meat Sandwich with Mustard", tags: ["quick"], cuisine: "Canada", protein: "beef",
       prep: 7, cook: 8,
+      nutrition: { kcal: 360, protein: 33, carbs: 30, fat: 12 },
       ingredients: [
         ing(120, "g", "smoked beef brisket or pastrami-style deli meat, sliced", "meat"), ing(2, "", "slices rye bread", "bakery"),
         ing(1, "tbsp", "deli mustard", "store"), ing(1, "", "gherkin", "store")
@@ -6791,6 +7181,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d389", title: "Singapore-Style Hainanese Chicken Rice with Ginger-Chilli Sauce", tags: [], cuisine: "Singapore", protein: "chicken",
       prep: 10, cook: 32,
+      nutrition: { kcal: 740, protein: 43, carbs: 80, fat: 27 },
       ingredients: [
         ing(180, "g", "chicken thigh fillets", "meat"), ing(1, "", "garlic clove, finely chopped", "produce"),
         ing(20, "g", "fresh ginger, finely grated", "produce"), ing(1, "", "spring onion, sliced", "produce"),
@@ -6809,6 +7200,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d390", title: "Peruvian-Style Aji de Gallina (Creamy Spiced Chicken)", tags: [], cuisine: "Peru", protein: "chicken",
       prep: 9, cook: 33,
+      nutrition: { kcal: 950, protein: 61, carbs: 89, fat: 38 },
       ingredients: [
         ing(150, "g", "chicken breast", "meat"), ing(0.5, "", "onion, diced", "produce"),
         ing(1, "", "garlic clove, crushed", "produce"), ing(1, "tbsp", "aji amarillo paste", "store"),
@@ -6831,6 +7223,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d391", title: "Australian-Style Beef & Gravy Pie with Mash and Peas", tags: [], cuisine: "Australia", protein: "beef",
       prep: 9, cook: 30,
+      nutrition: { kcal: 940, protein: 49, carbs: 81, fat: 46 },
       ingredients: [
         ing(150, "g", "beef rump steak, diced", "meat"), ing(0.5, "", "onion, diced", "produce"),
         ing(200, "ml", "beef stock", "store"), ing(1, "tsp", "Worcestershire sauce", "store"),
@@ -6851,6 +7244,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d392", title: "Austrian-Style Zwiebelrostbraten (Onion-Smothered Beef Steak)", tags: ["quick"], cuisine: "Austria", protein: "beef",
       prep: 8, cook: 22,
+      nutrition: { kcal: 760, protein: 41, carbs: 58, fat: 41 },
       ingredients: [
         ing(150, "g", "beef sirloin or rump steak", "meat"), ing(1, "", "large onion, thinly sliced", "produce"),
         ing(1, "tbsp", "plain flour", "store"), ing(15, "g", "butter", "dairy"),
@@ -6868,6 +7262,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d393", title: "South African-Style Bunny Chow with Spiced Lamb Curry", tags: ["spicy"], cuisine: "South Africa", protein: "lamb",
       prep: 10, cook: 29,
+      nutrition: { kcal: 760, protein: 34, carbs: 49, fat: 48 },
       ingredients: [
         ing(150, "g", "lamb mince", "meat"), ing(0.5, "", "onion, diced", "produce"),
         ing(1, "", "garlic clove, crushed", "produce"), ing(1, "tsp", "fresh ginger, grated", "produce"),
@@ -6888,6 +7283,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d394", title: "Georgian-Style Chakapuli (Lamb and Herb Stew)", tags: [], cuisine: "Georgia", protein: "lamb",
       prep: 11, cook: 16,
+      nutrition: { kcal: 620, protein: 48, carbs: 39, fat: 31 },
       ingredients: [
         ing(180, "g", "lamb leg steak, cut into 2cm cubes", "meat"), ing(3, "", "spring onions, chopped", "produce"),
         ing(2, "", "garlic cloves, sliced", "produce"), ing(1, "tbsp", "fresh tarragon, chopped", "produce"),
@@ -6908,6 +7304,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d395", title: "Ukrainian-Style Deruny (Potato Pancakes) with Bacon and Soured Cream", tags: ["quick"], cuisine: "Ukraine", protein: "pork",
       prep: 10, cook: 12,
+      nutrition: { kcal: 680, protein: 21, carbs: 59, fat: 39 },
       ingredients: [
         ing(250, "g", "potatoes, peeled and grated", "produce"), ing(0.25, "", "onion, grated", "produce"),
         ing(1, "", "egg", "dairy"), ing(2, "tbsp", "plain flour", "store"),
@@ -6926,6 +7323,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d396", title: "Colombian-Style Ajiaco Chicken and Potato Soup with Corn", tags: [], cuisine: "Colombia", protein: "chicken",
       prep: 10, cook: 25,
+      nutrition: { kcal: 800, protein: 53, carbs: 111, fat: 16 },
       ingredients: [
         ing(150, "g", "chicken breast", "meat"), ing(100, "g", "waxy potato, diced", "produce"),
         ing(100, "g", "floury potato, diced", "produce"), ing(80, "g", "sweetcorn kernels", "frozen"),
@@ -6945,6 +7343,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d397", title: "Trinidadian-Style Buljol Saltfish Salad with Fried Bake", tags: ["fish"], cuisine: "Trinidad", protein: "fish",
       prep: 9, cook: 12,
+      nutrition: { kcal: 700, protein: 33, carbs: 90, fat: 23 },
       ingredients: [
         ing(120, "g", "skinless cod fillet", "meat"), ing(1, "", "small tomato, diced", "produce"),
         ing(0.5, "", "small onion, finely diced", "produce"), ing(0.5, "", "red pepper, finely diced", "produce"),
@@ -6964,6 +7363,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d398", title: "Kenyan-Style Chicken Pilau Rice with Whole Spices", tags: [], cuisine: "Kenya", protein: "chicken",
       prep: 10, cook: 34,
+      nutrition: { kcal: 730, protein: 35, carbs: 74, fat: 31 },
       ingredients: [
         ing(150, "g", "chicken thigh fillets, diced", "meat"), ing(75, "g", "basmati rice", "store"),
         ing(1, "", "onion, sliced", "produce"), ing(1, "", "garlic clove, crushed", "produce"),
@@ -6983,6 +7383,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d399", title: "Belgian-Style Flemish Meatballs in Spiced Beer Gravy (Vlaamse Balletjes)", tags: [], cuisine: "Belgium", protein: "beef",
       prep: 9, cook: 30,
+      nutrition: { kcal: 910, protein: 44, carbs: 67, fat: 44 },
       ingredients: [
         ing(150, "g", "beef mince", "meat"), ing(20, "g", "breadcrumbs", "store"),
         ing(1, "", "egg", "dairy"), ing(0.5, "", "onion, finely diced", "produce"),
@@ -7004,6 +7405,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d400", title: "Finnish-Style Karjalanpaisti (Beef and Pork Stew)", tags: [], cuisine: "Finland", protein: "beef",
       prep: 9, cook: 27,
+      nutrition: { kcal: 620, protein: 46, carbs: 46, fat: 28 },
       ingredients: [
         ing(90, "g", "beef rump steak, cut into 2cm cubes", "meat"), ing(90, "g", "pork loin steak, cut into 2cm cubes", "meat"),
         ing(1, "", "onion, sliced", "produce"), ing(1, "", "carrot, sliced", "produce"),
@@ -7022,6 +7424,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d401", title: "Puerto Rican-Style Mofongo with Garlic Pork Crackling", tags: [], cuisine: "Puerto Rico", protein: "pork",
       prep: 9, cook: 20,
+      nutrition: { kcal: 1000, protein: 18, carbs: 95, fat: 67 },
       ingredients: [
         ing(1, "", "large green (unripe) plantain, peeled and sliced", "produce"), ing(2, "", "garlic cloves, crushed", "produce"),
         ing(2, "tbsp", "olive oil", "store"), ing(100, "g", "pork belly slices or lardons", "meat"),
@@ -7039,6 +7442,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d402", title: "Moroccan-Style Kefta Mkaouara (Spiced Meatball and Egg Tagine)", tags: ["spicy"], cuisine: "Morocco", protein: "beef",
       prep: 10, cook: 20,
+      nutrition: { kcal: 710, protein: 42, carbs: 32, fat: 46 },
       ingredients: [
         ing(150, "g", "beef mince", "meat"), ing(0.25, "", "onion, grated", "produce"),
         ing(1, "", "garlic clove, crushed", "produce"), ing(1, "tsp", "ground cumin", "spice"),
@@ -7058,6 +7462,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d403", title: "Thai-Style Chicken Pad Thai with Beansprouts and Lime", tags: ["quick"], cuisine: "Thailand", protein: "chicken",
       prep: 9, cook: 10,
+      nutrition: { kcal: 900, protein: 51, carbs: 102, fat: 30 },
       ingredients: [
         ing(100, "g", "flat rice noodles", "store"), ing(130, "g", "chicken breast, sliced", "meat"),
         ing(1, "", "egg", "dairy"), ing(60, "g", "beansprouts", "produce"),
@@ -7079,6 +7484,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d404", title: "Japanese-Style Gyudon Beef and Onion Rice Bowl", tags: ["quick"], cuisine: "Japan", protein: "beef",
       prep: 8, cook: 12,
+      nutrition: { kcal: 570, protein: 41, carbs: 64, fat: 13 },
       ingredients: [
         ing(150, "g", "beef sirloin, thinly sliced", "meat"), ing(0.5, "", "onion, thinly sliced", "produce"),
         ing(2, "tbsp", "soy sauce", "store"), ing(2, "tbsp", "mirin", "store"),
@@ -7097,6 +7503,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d405", title: "Vietnamese-Style Bún Chả (Grilled Pork Patties with Noodles and Herbs)", tags: ["quick"], cuisine: "Vietnam", protein: "pork",
       prep: 10, cook: 12,
+      nutrition: { kcal: 1010, protein: 43, carbs: 111, fat: 42 },
       ingredients: [
         ing(150, "g", "pork mince", "meat"), ing(1, "", "garlic clove, crushed", "produce"),
         ing(1, "", "shallot, finely chopped", "produce"), ing(2, "tbsp", "fish sauce", "store"),
@@ -7117,6 +7524,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d406", title: "Sri Lankan-Style Chicken Kottu Roti with Vegetables", tags: ["spicy", "quick"], cuisine: "Sri Lanka", protein: "chicken",
       prep: 13, cook: 12,
+      nutrition: { kcal: 910, protein: 55, carbs: 105, fat: 31 },
       ingredients: [
         ing(2, "", "shop-bought roti or paratha, sliced into strips", "bakery"), ing(130, "g", "chicken breast, diced", "meat"),
         ing(0.5, "", "onion, sliced", "produce"), ing(0.5, "", "red pepper, sliced", "produce"),
@@ -7136,6 +7544,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d407", title: "Israeli-Style Chicken Schnitzel with Israeli Salad", tags: [], cuisine: "Israel", protein: "chicken",
       prep: 9, cook: 10,
+      nutrition: { kcal: 690, protein: 52, carbs: 54, fat: 30 },
       ingredients: [
         ing(150, "g", "chicken breast", "meat"), ing(2, "tbsp", "plain flour", "store"),
         ing(1, "", "egg, beaten", "dairy"), ing(40, "g", "breadcrumbs", "store"),
@@ -7155,6 +7564,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d408", title: "Nigerian-Style Pepper Soup with Chicken and Yam", tags: ["spicy"], cuisine: "Nigeria", protein: "chicken",
       prep: 13, cook: 25,
+      nutrition: { kcal: 530, protein: 39, carbs: 46, fat: 21 },
       ingredients: [
         ing(180, "g", "chicken thighs, skin removed", "meat"), ing(150, "g", "sweet potato (or yam), peeled and cubed", "produce"),
         ing(0.5, "", "onion, sliced", "produce"), ing(1, "", "garlic clove, crushed", "produce"),
@@ -7174,6 +7584,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d409", title: "Filipino-Style Pancit Bihon (Stir-Fried Rice Noodles with Chicken and Vegetables)", tags: ["quick"], cuisine: "Philippines", protein: "chicken",
       prep: 11, cook: 12,
+      nutrition: { kcal: 770, protein: 42, carbs: 100, fat: 21 },
       ingredients: [
         ing(100, "g", "thin rice vermicelli noodles", "store"), ing(120, "g", "chicken breast, thinly sliced", "meat"),
         ing(0.5, "", "carrot, julienned", "produce"), ing(80, "g", "cabbage, shredded", "produce"),
@@ -7193,6 +7604,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d410", title: "Portuguese-Style Alentejana Pork with Potatoes and Coriander", tags: [], cuisine: "Portugal", protein: "pork",
       prep: 9, cook: 20,
+      nutrition: { kcal: 600, protein: 39, carbs: 44, fat: 26 },
       ingredients: [
         ing(150, "g", "pork loin, diced", "meat"), ing(200, "g", "potatoes, diced", "produce"),
         ing(2, "", "garlic cloves, crushed", "produce"), ing(1, "tsp", "paprika", "spice"),
@@ -7212,6 +7624,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d411", title: "Indonesian-Style Soto Ayam (Turmeric Chicken Soup with Noodles and Egg)", tags: [], cuisine: "Indonesia", protein: "chicken",
       prep: 9, cook: 20,
+      nutrition: { kcal: 610, protein: 42, carbs: 55, fat: 24 },
       ingredients: [
         ing(150, "g", "chicken thigh fillets", "meat"), ing(400, "ml", "chicken stock", "store"),
         ing(1, "tsp", "ground turmeric", "spice"), ing(1, "", "garlic clove, crushed", "produce"),
@@ -7231,6 +7644,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d412", title: "Kiwi-Style Mince and Cheese Pie", tags: [], cuisine: "New Zealand", protein: "beef",
       prep: 8, cook: 27,
+      nutrition: { kcal: 790, protein: 48, carbs: 16, fat: 60 },
       ingredients: [
         ing(150, "g", "beef mince", "meat"), ing(0.5, "", "onion, finely chopped", "produce"),
         ing(1, "", "garlic clove, crushed", "produce"), ing(1, "tbsp", "tomato puree", "store"),
@@ -7251,6 +7665,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d413", title: "New Zealand-Style Pan-Fried Snapper with Kumara Wedges", tags: ["fish"], cuisine: "New Zealand", protein: "fish",
       prep: 8, cook: 20,
+      nutrition: { kcal: 570, protein: 31, carbs: 43, fat: 30 },
       ingredients: [
         ing(200, "g", "kumara (sweet potato), cut into wedges", "produce"), ing(2, "tbsp", "olive oil", "store"),
         ing(150, "g", "snapper or sea bream fillet", "meat"), ing(15, "g", "butter", "dairy"),
@@ -7267,6 +7682,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d414", title: "Egyptian-Style Ta'ameya Fava Bean Falafel with Tahini", tags: ["vegan"], cuisine: "Egypt", protein: "plant-based",
       prep: 9, cook: 8,
+      nutrition: { kcal: 780, protein: 30, carbs: 97, fat: 30 },
       ingredients: [
         ing(200, "g", "tinned broad beans, drained and skins removed", "store"), ing(0.5, "", "small onion, roughly chopped", "produce"),
         ing(2, "", "garlic cloves, finely chopped", "produce"), ing(15, "g", "fresh coriander, chopped", "produce"),
@@ -7287,6 +7703,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d415", title: "Tunisian-Style Brik Pastry with Tuna and Egg", tags: ["fish"], cuisine: "Tunisia", protein: "fish",
       prep: 9, cook: 6,
+      nutrition: { kcal: 480, protein: 48, carbs: 38, fat: 15 },
       ingredients: [
         ing(2, "sheets", "filo pastry", "bakery"), ing(1, "small tin", "tuna, drained", "store"),
         ing(1, "", "egg", "dairy"), ing(1, "tbsp", "capers, chopped", "store"),
@@ -7305,6 +7722,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d416", title: "Swedish-Style Jansson's Frestelse Potato & Anchovy Gratin", tags: ["fish"], cuisine: "Sweden", protein: "fish",
       prep: 8, cook: 38,
+      nutrition: { kcal: 890, protein: 18, carbs: 60, fat: 64 },
       ingredients: [
         ing(250, "g", "potatoes, peeled and cut into matchsticks", "produce"), ing(0.5, "", "onion, thinly sliced", "produce"),
         ing(8, "", "anchovy fillets, chopped", "store"), ing(100, "ml", "double cream", "dairy"),
@@ -7321,6 +7739,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d417", title: "Argentinian-Style Locro Corn, Bean and Pork Stew", tags: [], cuisine: "Argentina", protein: "pork",
       prep: 11, cook: 31,
+      nutrition: { kcal: 630, protein: 46, carbs: 48, fat: 27 },
       ingredients: [
         ing(100, "g", "pork loin steak, diced small", "meat"), ing(40, "g", "chorizo, sliced", "meat"),
         ing(0.5, "", "onion, chopped", "produce"), ing(1, "", "garlic clove, crushed", "produce"),
@@ -7339,6 +7758,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d418", title: "Russian-Style Beef and Cabbage Solyanka Soup", tags: [], cuisine: "Russia", protein: "beef",
       prep: 10, cook: 20,
+      nutrition: { kcal: 490, protein: 38, carbs: 18, fat: 30 },
       ingredients: [
         ing(120, "g", "beef sirloin, thinly sliced", "meat"), ing(40, "g", "salami, chopped", "meat"),
         ing(0.5, "", "onion, sliced", "produce"), ing(1, "", "gherkin, chopped", "store"),
@@ -7359,6 +7779,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d419", title: "Dutch-Style Beef Croquettes (Bitterballen-Inspired) with Mustard", tags: [], cuisine: "Netherlands", protein: "beef",
       prep: 25, cook: 10,
+      nutrition: { kcal: 680, protein: 33, carbs: 43, fat: 42 },
       ingredients: [
         ing(100, "g", "cooked roast beef or beef mince, finely chopped", "meat"), ing(15, "g", "butter", "dairy"),
         ing(15, "g", "plain flour", "store"), ing(150, "ml", "beef stock", "store"),
@@ -7378,6 +7799,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d420", title: "Hawaiian-Style Huli Huli Chicken Thighs with Pineapple Rice", tags: ["quick"], cuisine: "Hawaii", protein: "chicken",
       prep: 8, cook: 14,
+      nutrition: { kcal: 670, protein: 39, carbs: 80, fat: 21 },
       ingredients: [
         ing(2, "", "boneless chicken thighs", "meat"), ing(1, "tbsp", "soy sauce", "store"),
         ing(1, "tbsp", "ketchup", "store"), ing(1, "tbsp", "brown sugar", "store"),
@@ -7397,6 +7819,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d421", title: "Armenian-Style Lahmacun Flatbread with Spiced Beef Mince", tags: ["quick"], cuisine: "Armenia", protein: "beef",
       prep: 9, cook: 9,
+      nutrition: { kcal: 610, protein: 31, carbs: 72, fat: 22 },
       ingredients: [
         ing(1, "", "large flatbread or pitta", "bakery"), ing(100, "g", "beef mince", "meat"),
         ing(0.5, "", "onion, finely chopped", "produce"), ing(0.5, "", "red pepper, finely chopped", "produce"),
@@ -7416,6 +7839,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d422", title: "Uzbek-Style Manti Dumplings with Soured Cream", tags: [], cuisine: "Uzbekistan", protein: "lamb",
       prep: 10, cook: 14,
+      nutrition: { kcal: 680, protein: 26, carbs: 53, fat: 39 },
       ingredients: [
         ing(100, "g", "lamb mince", "meat"), ing(0.5, "", "onion, very finely chopped", "produce"),
         ing(1, "tsp", "ground cumin", "spice"), ing(null, "pinch", "black pepper", "spice"),
@@ -7433,6 +7857,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d423", title: "Chilean-Style Chorrillana Loaded Fries with Beef and Fried Egg", tags: [], cuisine: "Chile", protein: "beef",
       prep: 8, cook: 24,
+      nutrition: { kcal: 900, protein: 49, carbs: 57, fat: 52 },
       ingredients: [
         ing(200, "g", "frozen chips", "frozen"), ing(120, "g", "beef sirloin, thinly sliced", "meat"),
         ing(0.5, "", "onion, sliced", "produce"), ing(1, "", "egg", "dairy"),
@@ -7450,6 +7875,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d424", title: "Ghanaian-Style Kontomire Stew with Smoked Mackerel", tags: ["fish"], cuisine: "Ghana", protein: "fish",
       prep: 8, cook: 17,
+      nutrition: { kcal: 510, protein: 24, carbs: 16, fat: 39 },
       ingredients: [
         ing(150, "g", "spinach, chopped", "produce"), ing(100, "g", "smoked mackerel fillet, flaked", "meat"),
         ing(0.5, "", "onion, chopped", "produce"), ing(1, "", "tomato, chopped", "produce"),
@@ -7466,6 +7892,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d425", title: "Senegalese-Style Ndambe Black-Eyed Bean Stew", tags: ["vegan"], cuisine: "Senegal", protein: "plant-based",
       prep: 8, cook: 21,
+      nutrition: { kcal: 610, protein: 23, carbs: 85, fat: 18 },
       ingredients: [
         ing(240, "g", "tinned black-eyed beans, drained", "store"), ing(0.5, "", "onion, chopped", "produce"),
         ing(1, "", "tomato, chopped", "produce"), ing(1, "tbsp", "tomato puree", "store"),
@@ -7484,6 +7911,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d426", title: "Swiss-Style Älplermagronen (Alpine Macaroni Bake with Bacon and Cheese)", tags: [], cuisine: "Switzerland", protein: "pork",
       prep: 8, cook: 14,
+      nutrition: { kcal: 1190, protein: 36, carbs: 100, fat: 70 },
       ingredients: [
         ing(100, "g", "macaroni", "store"), ing(100, "g", "potato, peeled and diced small", "produce"),
         ing(40, "g", "smoked bacon lardons", "meat"), ing(0.5, "", "onion, sliced", "produce"),
@@ -7500,6 +7928,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d427", title: "Danish-Style Stegt Flæsk (Crispy Pork Belly) with Parsley Potatoes", tags: [], cuisine: "Denmark", protein: "pork",
       prep: 8, cook: 20,
+      nutrition: { kcal: 1160, protein: 32, carbs: 56, fat: 89 },
       ingredients: [
         ing(150, "g", "pork belly slices", "meat"), ing(250, "g", "new potatoes", "produce"),
         ing(15, "g", "butter", "dairy"), ing(1, "tbsp", "plain flour", "store"),
@@ -7516,6 +7945,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d428", title: "Lebanese-Style Freekeh Pilaf with Spiced Chicken", tags: [], cuisine: "Lebanon", protein: "chicken",
       prep: 8, cook: 30,
+      nutrition: { kcal: 740, protein: 40, carbs: 72, fat: 32 },
       ingredients: [
         ing(150, "g", "chicken thigh fillets, diced", "meat"), ing(75, "g", "cracked freekeh", "store"),
         ing(0.5, "", "onion, chopped", "produce"), ing(1, "tbsp", "toasted flaked almonds", "store"),
@@ -7533,6 +7963,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d429", title: "Korean-Style Spicy Squid Stir-Fry (Ojingeo Bokkeum)", tags: ["spicy", "fish"], cuisine: "Korea", protein: "fish",
       prep: 10, cook: 8,
+      nutrition: { kcal: 510, protein: 33, carbs: 73, fat: 9 },
       ingredients: [
         ing(150, "g", "squid rings, defrosted if frozen", "frozen"), ing(1, "tbsp", "gochujang", "store"),
         ing(1, "tsp", "gochugaru or chilli flakes", "spice"), ing(1, "tsp", "soy sauce", "store"),
@@ -7553,6 +7984,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d430", title: "Spanish-Style Pisto Manchego with Fried Egg", tags: ["vegetarian"], cuisine: "Spain", protein: "plant-based",
       prep: 11, cook: 21,
+      nutrition: { kcal: 480, protein: 19, carbs: 52, fat: 21 },
       ingredients: [
         ing(1, "", "courgette, diced", "produce"), ing(0.5, "", "red pepper, diced", "produce"),
         ing(0.5, "", "green pepper, diced", "produce"), ing(0.5, "", "onion, diced", "produce"),
@@ -7571,6 +8003,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d431", title: "Nashville-Style Hot Chicken Sandwich", tags: ["spicy"], cuisine: "USA", protein: "chicken",
       prep: 9, cook: 12,
+      nutrition: { kcal: 830, protein: 55, carbs: 68, fat: 37 },
       ingredients: [
         ing(1, "", "chicken breast, flattened", "meat"), ing(100, "ml", "buttermilk", "dairy"),
         ing(40, "g", "plain flour", "store"), ing(0.5, "tsp", "cayenne pepper", "spice"),
@@ -7591,6 +8024,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d432", title: "Malaysian-Style Nasi Lemak with Sambal Chicken", tags: ["spicy"], cuisine: "Malaysia", protein: "chicken",
       prep: 9, cook: 30,
+      nutrition: { kcal: 990, protein: 59, carbs: 76, fat: 50 },
       ingredients: [
         ing(70, "g", "basmati rice", "store"), ing(100, "ml", "coconut milk", "store"),
         ing(1, "", "chicken breast, sliced", "meat"), ing(0.5, "", "onion, sliced", "produce"),
@@ -7611,6 +8045,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d433", title: "Persian-Style Ghormeh Sabzi Herb & Lamb Stew", tags: [], cuisine: "Iran", protein: "lamb",
       prep: 10, cook: 20,
+      nutrition: { kcal: 750, protein: 43, carbs: 83, fat: 26 },
       ingredients: [
         ing(120, "g", "lamb leg steak, cut into 2cm cubes", "meat"), ing(20, "g", "parsley, chopped", "produce"),
         ing(20, "g", "coriander, chopped", "produce"), ing(1, "", "spring onion, chopped", "produce"),
@@ -7631,6 +8066,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d434", title: "Dublin Coddle-Style Sausage & Potato Stew", tags: [], cuisine: "Ireland", protein: "pork",
       prep: 10, cook: 30,
+      nutrition: { kcal: 850, protein: 30, carbs: 54, fat: 57 },
       ingredients: [
         ing(2, "", "pork sausages, thickly sliced", "meat"), ing(2, "", "smoked bacon rashers, chopped", "meat"),
         ing(200, "g", "potatoes, sliced", "produce"), ing(0.5, "", "onion, sliced", "produce"),
@@ -7648,6 +8084,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d435", title: "Pakistani-Style Chicken Biryani", tags: ["spicy"], cuisine: "Pakistan", protein: "chicken",
       prep: 9, cook: 34,
+      nutrition: { kcal: 590, protein: 24, carbs: 68, fat: 23 },
       ingredients: [
         ing(1, "", "chicken thigh, diced", "meat"), ing(75, "g", "basmati rice, rinsed", "store"),
         ing(0.5, "", "onion, sliced", "produce"), ing(1, "tbsp", "plain yoghurt", "dairy"),
@@ -7667,6 +8104,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d436", title: "Polish-Style Pierogi Ruskie with Soured Cream and Bacon", tags: [], cuisine: "Poland", protein: "pork",
       prep: 10, cook: 28,
+      nutrition: { kcal: 770, protein: 24, carbs: 77, fat: 40 },
       ingredients: [
         ing(10, "", "fresh dumpling or wonton wrappers", "store"), ing(150, "g", "potato, peeled and chopped", "produce"),
         ing(50, "g", "curd cheese or cream cheese", "dairy"), ing(0.25, "", "onion, finely chopped", "produce"),
@@ -7685,6 +8123,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d437", title: "Turkish-Style Mantı Dumplings with Garlic Yoghurt and Chilli Butter", tags: [], cuisine: "Turkey", protein: "beef",
       prep: 10, cook: 12,
+      nutrition: { kcal: 720, protein: 35, carbs: 67, fat: 35 },
       ingredients: [
         ing(100, "g", "beef mince", "meat"), ing(0.25, "", "onion, grated", "produce"),
         ing(0.5, "tsp", "ground cumin", "spice"), ing(null, "pinch", "black pepper", "spice"),
@@ -7704,6 +8143,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d438", title: "Romanian Mici with Mustard and Crispy Potatoes", tags: [], cuisine: "Romania", protein: "beef",
       prep: 10, cook: 15,
+      nutrition: { kcal: 610, protein: 32, carbs: 30, fat: 40 },
       ingredients: [
         ing(75, "g", "beef mince", "meat"), ing(75, "g", "pork mince", "meat"),
         ing(1, "", "garlic clove, crushed", "produce"), ing(0.5, "tsp", "dried thyme", "spice"),
@@ -7723,6 +8163,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d439", title: "Tochitură with Polenta and a Fried Egg", tags: [], cuisine: "Romania", protein: "pork",
       prep: 8, cook: 15,
+      nutrition: { kcal: 990, protein: 51, carbs: 41, fat: 69 },
       ingredients: [
         ing(150, "g", "pork shoulder or loin, diced", "meat"), ing(50, "g", "smoked sausage, sliced", "meat"),
         ing(1, "", "garlic clove, sliced", "produce"), ing(0.5, "tsp", "sweet paprika", "spice"),
@@ -7743,6 +8184,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d440", title: "Ciorbă de Perișoare (Sour Meatball Soup)", tags: [], cuisine: "Romania", protein: "pork",
       prep: 10, cook: 23,
+      nutrition: { kcal: 500, protein: 28, carbs: 31, fat: 29 },
       ingredients: [
         ing(120, "g", "pork mince", "meat"), ing(1, "tbsp", "long-grain rice", "store"),
         ing(0.5, "", "onion, finely chopped", "produce"), ing(1, "", "small carrot, diced", "produce"),
@@ -7762,6 +8204,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d441", title: "Mămăligă with Cheese, Soured Cream and a Fried Egg", tags: ["vegetarian", "quick"], cuisine: "Romania", protein: "plant-based",
       prep: 5, cook: 10,
+      nutrition: { kcal: 660, protein: 24, carbs: 46, fat: 41 },
       ingredients: [
         ing(60, "g", "quick-cook polenta", "store"), ing(250, "ml", "water", "store"),
         ing(15, "g", "butter", "dairy"), ing(60, "g", "feta, crumbled", "dairy"),
@@ -7779,6 +8222,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d442", title: "Tocăniță de Ciuperci (Mushroom Stew) with Polenta", tags: ["vegetarian", "vegan"], cuisine: "Romania", protein: "plant-based",
       prep: 8, cook: 20,
+      nutrition: { kcal: 460, protein: 15, carbs: 49, fat: 23 },
       ingredients: [
         ing(200, "g", "chestnut mushrooms, quartered", "produce"), ing(0.5, "", "onion, sliced", "produce"),
         ing(1, "", "garlic clove, crushed", "produce"), ing(1, "tbsp", "tomato purée", "store"),

@@ -2427,6 +2427,7 @@
       (tagMarks(r) ? '<div class="marks">' + tagMarks(r) + "</div>" : "") +
       '<dl class="meta4"><div><dt>Prep</dt><dd>' + r.prep + ' min</dd></div><div><dt>Cook</dt><dd>' + r.cook + ' min</dd></div>' +
       '<div><dt>Total</dt><dd>' + (r.prep + r.cook) + ' min</dd></div><div><dt>Serves</dt><dd>' + serves + "</dd></div></dl>" +
+      (r.nutrition ? '<p class="nutri-line">About <strong>' + r.nutrition.kcal + " kcal</strong> and <strong>" + r.nutrition.protein + " g protein</strong> a serving (" + r.nutrition.carbs + " g carbs, " + r.nutrition.fat + " g fat). Worked out from the ingredients, so a guide only.</p>" : "") +
       '<p class="modal-note">' + servingsNote + (kcal ? " About " + kcal + " kcal per serving (a rough estimate from the ingredients)." : "") + "</p>" +
       (locked ? "" : '<div class="modal-actions modal-actions-top"><button type="button" class="btn btn-ink" id="modal-cook-btn">' + ico("flame") + "Start cooking</button>" + pageLink + "</div>") +
       "</div>" +

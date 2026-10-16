@@ -147,6 +147,8 @@ CUISINES.forEach(function (c) { CUISINE_SLUG[c] = slugify(c); });
 var PASTA_RE = /\b(pasta|spaghetti|tagliatelle|linguine|penne|fusilli|rigatoni|orzo|gnocchi|noodles?|udon|soba|ramen|macaroni|pappardelle|orecchiette|conchiglie|farfalle|vermicelli)\b/i;
 var CURRY_RE = /\b(curry|curried|dahl|dal|korma|tikka|masala|massaman|rendang|vindaloo|jalfrezi|balti|biryani|madras|katsu)\b/i;
 
+// Nutrition is worked out from the ingredients by scripts/nutrition.js.
+var HIGH_PROTEIN = 40, LOW_KCAL = 600;
 var COLLECTIONS = [
   { slug: "quick-dinners-for-one", name: "Under 20 minutes", h1: "Quick dinners for one", short: "Stir-fries, tacos and fast curries",
     intro: "Every one of these is on the plate within twenty minutes of walking into the kitchen, prep included. Stir-fries, tacos, noodles and quick curries, each written for a single portion.",
@@ -180,7 +182,13 @@ var COLLECTIONS = [
     test: function (r) { return PASTA_RE.test(r.title) || r.ingredients.some(function (i) { return PASTA_RE.test(i.item); }); }, hero: "d30" },
   { slug: "curries-for-one", name: "Curries", h1: "Curries for one", short: "Dahls, tikka, katsu and Thai curries",
     intro: "Curry is the dish most people think they cannot make for one. These are written for a single portion, from Indian dahls to Thai and Japanese curries.",
-    test: function (r) { return CURRY_RE.test(r.title); }, hero: "d25" }
+    test: function (r) { return CURRY_RE.test(r.title); }, hero: "d25" },
+  { slug: "high-protein-dinners-for-one", name: "High protein", h1: "High-protein dinners for one", short: "40 g of protein or more",
+    intro: "Dinners with 40 g of protein or more in the single portion, worked out from the ingredients. Good after training, and still sized for one.",
+    test: function (r) { return r.nutrition && r.nutrition.protein >= HIGH_PROTEIN; }, hero: "d13" },
+  { slug: "dinners-for-one-under-600-calories", name: "Under 600 calories", h1: "Dinners for one under 600 calories", short: "Lighter plates that still fill you up",
+    intro: "Proper dinners for one at 600 calories or less, counted from the ingredients as written. Treat the numbers as a guide: brands and portions vary.",
+    test: function (r) { return r.nutrition && r.nutrition.kcal <= LOW_KCAL; }, hero: "d24" }
 ];
 // The two seasonal collections: always built, and the one in season is
 // shown first on the home page.
@@ -847,7 +855,7 @@ function collCard(c, rel) {
 /* --------------------------------------------------------- recipes index */
 (function buildIndex() {
   var rel = "../";
-  var chips = [["all", "All"], ["t20", "Under 20 minutes"], ["vegetarian", "Vegetarian"], ["vegan", "Vegan"], ["fish", "Fish"], ["spicy", "Spicy"]];
+  var chips = [["all", "All"], ["t20", "Under 20 minutes"], ["vegetarian", "Vegetarian"], ["vegan", "Vegan"], ["fish", "Fish"], ["spicy", "Spicy"], ["hp", "High protein"], ["u600", "Under 600 kcal"]];
   var body =
     '<section class="wrap page-head">' +
     '<div class="page-head-text"><span class="eyebrow">' + RECIPES.length + " recipes &middot; all written for one</span>" +
@@ -875,6 +883,8 @@ function collCard(c, rel) {
     '<div class="rgrid" id="rx-grid" data-page="24">' + RECIPES.map(function (r, i) {
       var tags = r.tags.slice();
       if (total(r) <= 20) tags.push("t20");
+      if (r.nutrition && r.nutrition.protein >= HIGH_PROTEIN) tags.push("hp");
+      if (r.nutrition && r.nutrition.kcal <= LOW_KCAL) tags.push("u600");
       return card(r, rel, ' data-i="' + i + '" data-t="' + total(r) + '" data-tags="' + esc(tags.join(" ")) + '" data-s="' + esc(r.searchText) + '" data-n="' + esc(r.title.toLowerCase()) + '"');
     }).join("") + "</div>" +
     '<p class="empty" id="rx-empty" hidden>Nothing matches that. Try fewer filters or a different ingredient.</p>' +
@@ -963,6 +973,7 @@ RECIPES.forEach(function (r) {
     '<h1 class="display-l p-name">' + esc(r.title) + "</h1>" +
     '<p class="lead p-summary">' + esc(dek(r)) + "</p>" +
     '<dl class="meta4"><div><dt>Prep</dt><dd>' + r.prep + ' min</dd></div><div><dt>Cook</dt><dd>' + r.cook + ' min</dd></div><div><dt>Total</dt><dd><time class="dt-duration" datetime="' + isoMin(total(r)) + '">' + total(r) + ' min</time></dd></div><div><dt>Serves</dt><dd class="p-yield" data-serves>1</dd></div></dl>' +
+    (r.nutrition ? '<p class="nutri-line">About <strong>' + r.nutrition.kcal + " kcal</strong> and <strong>" + r.nutrition.protein + " g protein</strong> a serving (" + r.nutrition.carbs + " g carbs, " + r.nutrition.fat + " g fat). Worked out from the ingredients, so a guide only.</p>" : "") +
     '<div class="btn-row">' +
     '<a class="btn btn-primary btn-lg" href="' + rel + "plan/?add=" + r.id + '">' + ICON.cal + "Add to my week</a>" +
     '<a class="btn btn-ink btn-lg" href="' + rel + "plan/?cook=" + r.id + '">Start cooking</a>' +
@@ -1026,6 +1037,8 @@ RECIPES.forEach(function (r) {
       return { "@type": "HowToStep", position: k + 1, name: stepName(s), text: s, url: SITE_URL + "/recipes/" + r.slug + "/#step-" + (k + 1) };
     })
   };
+  if (r.nutrition) ld.nutrition = { "@type": "NutritionInformation", servingSize: "1 serving", calories: r.nutrition.kcal + " calories",
+    proteinContent: r.nutrition.protein + " g", carbohydrateContent: r.nutrition.carbs + " g", fatContent: r.nutrition.fat + " g" };
   if (r.tags.indexOf("vegan") !== -1) ld.suitableForDiet = "https://schema.org/VeganDiet";
   else if (r.tags.indexOf("vegetarian") !== -1) ld.suitableForDiet = "https://schema.org/VegetarianDiet";
   if (r.photo) ld.image = [SITE_URL + "/img/recipes/" + r.id + ".webp"];

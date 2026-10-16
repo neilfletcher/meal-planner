@@ -606,6 +606,30 @@
       </div>
     </section>
 
+    <section class="block block-wide">
+      <div class="block-head">
+        <div>
+          <div class="eyebrow">From Google search</div>
+          <h2>Is Google finding the site</h2><span class="asof" data-asof="hourly"></span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="kpi-row">
+          <div class="kpi"><div class="label">Times shown in Google, 28d</div><div class="value num" id="gs-impr">&ndash;</div><div class="delta" id="gs-impr-prev">&nbsp;</div></div>
+          <div class="kpi"><div class="label">Clicks from Google, 28d</div><div class="value num" id="gs-clicks">&ndash;</div><div class="delta" id="gs-ctr">&nbsp;</div></div>
+          <div class="kpi"><div class="label">Average position</div><div class="value num" id="gs-pos">&ndash;</div><div class="delta" id="gs-pos-prev">&nbsp;</div></div>
+          <div class="kpi"><div class="label">Pages shown in Google, 28d</div><div class="value num" id="gs-pages">&ndash;</div><div class="delta" id="gs-sitemap">&nbsp;</div></div>
+        </div>
+        <div class="sub-eyebrow">Times shown in Google per day, last 90 days</div>
+        <div class="chart-wrap" id="gsChartWrap"><div class="empty-state">No Search Console data yet</div></div>
+        <div class="sub-eyebrow">What people searched for, last 28 days</div>
+        <div class="src-scroll"><table class="src-table" id="gsQueries"></table></div>
+        <div class="sub-eyebrow" style="margin-top:18px">Pages Google shows most, last 28 days</div>
+        <ul class="top-pages" id="gsPages"></ul>
+        <p class="fine" id="gsNote">Google's search numbers arrive two or three days late. A new site is usually shown for a while before it gets clicks, so watch the first number rise first. Position 1 is the top of the page; 10 is the bottom of page one.</p>
+      </div>
+    </section>
+
     <section class="block">
       <div class="block-head">
         <div>
@@ -972,7 +996,8 @@
    "st-dau","st-wau","st-mau","st-ratio","healthDot","healthValue","healthLabel",
    "retentionBars","retentionPct","tooltip",
    "ov-now","ov-now-sub","ot-now","ot-users7","ot-users30","ot-views","otherNowPages","otherUsersChart","otherSources","soloNowPages",
-   "so-pin","so-pin-7","so-ig","so-ig-7","so-new","so-new-share","so-signups","so-pro","socialChartWrap","sourceTable","socialLanding"].forEach(function (id) {
+   "so-pin","so-pin-7","so-ig","so-ig-7","so-new","so-new-share","so-signups","so-pro","socialChartWrap","sourceTable","socialLanding",
+   "gs-impr","gs-impr-prev","gs-clicks","gs-ctr","gs-pos","gs-pos-prev","gs-pages","gs-sitemap","gsChartWrap","gsQueries","gsPages","gsNote"].forEach(function (id) {
     els[id] = document.getElementById(id);
   });
 
@@ -1186,6 +1211,37 @@
           "</td><td>" + fmtNum(c.signUps30) + "</td><td>" + fmtNum(c.checkouts30) + "</td><td>" + fmtNum(c.proStarts30) + "</td></tr>";
       }).join("") + "</tbody>";
     renderRankedList(els["socialLanding"], (so.topLanding || []).map(function (p) { return { title: p.path, count: p.sessions }; }), "No social visits yet");
+  }
+
+  function renderSearch(gs) {
+    if (!gs || !gs.configured) {
+      ["gs-impr","gs-clicks","gs-pos","gs-pages"].forEach(function (id) { els[id].textContent = "\u2013"; });
+      ["gs-impr-prev","gs-ctr","gs-pos-prev","gs-sitemap"].forEach(function (id) { els[id].textContent = " "; });
+      els["gsChartWrap"].innerHTML = '<div class="empty-state">' + (gs ? "Not connected yet" : "Waits for the next sync") + "</div>";
+      els["gsQueries"].innerHTML = "";
+      renderRankedList(els["gsPages"], [], "No Search Console data yet");
+      if (gs && gs.error) {
+        els["gsNote"].innerHTML = "<strong>Not connected yet:</strong> " + escapeHtml(gs.error) + (gs.serviceAccount ? " In Search Console, go to Settings &gt; Users and permissions &gt; Add user, and add <strong>" + escapeHtml(gs.serviceAccount) + "</strong> with Restricted access." : "");
+      }
+      return;
+    }
+    var a = gs.last28, b = gs.prev28 || { impressions: 0, clicks: 0, position: 0 };
+    els["gs-impr"].textContent = fmtNum(a.impressions);
+    els["gs-impr-prev"].textContent = fmtNum(b.impressions) + " the 28 days before";
+    els["gs-clicks"].textContent = fmtNum(a.clicks);
+    els["gs-ctr"].textContent = a.impressions ? (a.ctr * 100).toFixed(1) + "% of times shown" : " ";
+    els["gs-pos"].textContent = a.impressions ? a.position.toFixed(1) : "\u2013";
+    els["gs-pos-prev"].textContent = b.impressions ? b.position.toFixed(1) + " the 28 days before" : " ";
+    els["gs-pages"].textContent = fmtNum(gs.pagesWithImpressions);
+    var sm = (gs.sitemaps || [])[0];
+    els["gs-sitemap"].textContent = sm ? fmtNum(sm.submitted) + " in the sitemap" + (sm.errors ? ", " + sm.errors + " errors" : "") : "No sitemap submitted";
+    lineChart(els["gsChartWrap"], (gs.daily || []).map(function (d) { return { label: d.date, value: d.impressions }; }), { color: "var(--accent)" });
+    var q = gs.topQueries || [];
+    els["gsQueries"].innerHTML = q.length ? "<thead><tr><th>Search</th><th>Shown</th><th>Clicks</th><th>Position</th></tr></thead><tbody>" +
+      q.map(function (r) { return "<tr><td>" + escapeHtml(r.query) + "</td><td>" + fmtNum(r.impressions) + "</td><td>" + fmtNum(r.clicks) + "</td><td>" + r.position.toFixed(1) + "</td></tr>"; }).join("") + "</tbody>"
+      : '<tbody><tr><td class="empty-state" style="height:auto;padding:12px 0">No searches yet</td></tr></tbody>';
+    renderRankedList(els["gsPages"], (gs.topPages || []).map(function (p) { return { title: p.path, count: p.impressions }; }), "No pages shown yet");
+    els["gsNote"].textContent = "Data to " + shortDate(gs.dataTo) + " (Google's search numbers arrive two or three days late). A new site is usually shown for a while before it gets clicks, so watch the first number rise first. Position 1 is the top of the page; 10 is the bottom of page one.";
   }
 
   // ---------------------------------------------------------- Other sites tab
@@ -1471,6 +1527,7 @@
     renderTopPages(data.traffic.topPages);
     renderPlatformSplit(data.platform);
     renderSocial(data.social);
+    renderSearch(data.search);
     renderOtherSites(data.otherSites);
 
     var su = data.signups;

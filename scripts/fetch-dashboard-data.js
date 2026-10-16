@@ -20,6 +20,7 @@
 const fs = require('fs');
 const path = require('path');
 const { BetaAnalyticsDataClient } = require('@google-analytics/data');
+const { JWT } = require('google-auth-library');
 const admin = require('firebase-admin');
 
 const DAY_MS = 24 * 60 * 60 * 1000;
@@ -701,6 +702,62 @@ async function fetchEngagement(titles, totalSignups) {
   };
 }
 
+// ------------------------------------------------------------ Search Console
+// Uses the same service account as GA4. It needs adding as a user on the
+// Search Console property (Settings > Users and permissions, "Restricted" is
+// enough), and the Google Search Console API enabled in that account's Google
+// Cloud project. GSC_SITE can name the property; otherwise the one for
+// solosupper.co.uk is found. Google's numbers lag by two or three days.
+async function fetchSearchConsole(keyJson) {
+  const key = JSON.parse(keyJson);
+  const out = { configured: false, serviceAccount: key.client_email };
+  const client = new JWT({ email: key.client_email, key: key.private_key, scopes: ['https://www.googleapis.com/auth/webmasters.readonly'] });
+  const api = 'https://www.googleapis.com/webmasters/v3';
+  const day = (n) => new Date(Date.now() - n * DAY_MS).toISOString().slice(0, 10);
+  try {
+    let site = process.env.GSC_SITE;
+    if (!site) {
+      const { data } = await client.request({ url: `${api}/sites` });
+      const mine = (data.siteEntry || []).filter((x) => /solosupper\.co\.uk/.test(x.siteUrl) && x.permissionLevel !== 'siteUnverifiedUser');
+      site = (mine.find((x) => x.siteUrl.startsWith('sc-domain:')) || mine[0] || {}).siteUrl;
+      if (!site) { out.error = 'This service account has not been added to the solosupper.co.uk property in Search Console yet.'; return out; }
+    }
+    out.site = site;
+    const query = async (body) => {
+      const { data } = await client.request({ url: `${api}/sites/${encodeURIComponent(site)}/searchAnalytics/query`, method: 'POST', data: body });
+      return data.rows || [];
+    };
+    const sum = (rows) => {
+      const t = rows.reduce((a, r) => ({ clicks: a.clicks + r.clicks, impressions: a.impressions + r.impressions, pos: a.pos + r.position * r.impressions }), { clicks: 0, impressions: 0, pos: 0 });
+      return { clicks: t.clicks, impressions: t.impressions, ctr: t.impressions ? t.clicks / t.impressions : 0, position: t.impressions ? t.pos / t.impressions : 0 };
+    };
+    const daily = await query({ startDate: day(90), endDate: day(0), dimensions: ['date'], rowLimit: 1000 });
+    out.daily = daily.map((r) => ({ date: r.keys[0], clicks: r.clicks, impressions: r.impressions, position: r.position }));
+    const last = out.daily.length ? out.daily[out.daily.length - 1].date : day(3);
+    const lastMs = Date.parse(last + 'T00:00:00Z');
+    const inRange = (from, to) => daily.filter((r) => { const t = Date.parse(r.keys[0] + 'T00:00:00Z'); return t > lastMs - to * DAY_MS && t <= lastMs - from * DAY_MS; });
+    out.dataTo = last;
+    out.last28 = sum(inRange(0, 28));
+    out.prev28 = sum(inRange(28, 56));
+    const range28 = { startDate: new Date(lastMs - 27 * DAY_MS).toISOString().slice(0, 10), endDate: last };
+    out.topQueries = (await query({ ...range28, dimensions: ['query'], rowLimit: 15 }))
+      .map((r) => ({ query: r.keys[0], clicks: r.clicks, impressions: r.impressions, position: r.position }));
+    out.topPages = (await query({ ...range28, dimensions: ['page'], rowLimit: 10 }))
+      .map((r) => ({ path: r.keys[0].replace(/^https?:\/\/[^/]+/, '') || '/', clicks: r.clicks, impressions: r.impressions, position: r.position }));
+    out.pagesWithImpressions = (await query({ ...range28, dimensions: ['page'], rowLimit: 5000 })).length;
+    try {
+      const { data } = await client.request({ url: `${api}/sites/${encodeURIComponent(site)}/sitemaps` });
+      out.sitemaps = (data.sitemap || []).map((m) => ({ path: m.path, lastDownloaded: m.lastDownloaded || null, errors: Number(m.errors) || 0, warnings: Number(m.warnings) || 0,
+        submitted: (m.contents || []).reduce((t, c) => t + (Number(c.submitted) || 0), 0) }));
+    } catch (e) { out.sitemaps = []; }
+    out.configured = true;
+  } catch (err) {
+    const msg = (err.response && err.response.data && err.response.data.error && err.response.data.error.message) || err.message;
+    out.error = /has not been used|is disabled/i.test(msg) ? 'The Google Search Console API is not switched on for this service account\'s Google Cloud project yet.' : msg;
+  }
+  return out;
+}
+
 async function main() {
   const propertyId = requireEnv('GA4_PROPERTY_ID');
   const ga4Key = requireEnv('GA4_SERVICE_ACCOUNT_KEY');
@@ -720,6 +777,10 @@ async function main() {
   console.log('Fetching traffic for the other websites...');
   const otherSites = await fetchOtherSites(analyticsClient, propertyId);
 
+  console.log('Fetching Search Console data...');
+  const search = await fetchSearchConsole(ga4Key);
+  console.log(search.configured ? `Search Console: ${search.site}, data to ${search.dataTo}` : `Search Console not ready: ${search.error}`);
+
   console.log('Fetching Firebase sign-up data...');
   const signups = await fetchFirebaseSignups();
 
@@ -736,6 +797,7 @@ async function main() {
     platform: ga4Data.platform,
     siteHealth: ga4Data.siteHealth,
     social,
+    search,
     otherSites,
     engagement,
   };

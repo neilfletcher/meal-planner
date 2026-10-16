@@ -205,7 +205,7 @@
       // Already on the list (this browser, or checked in the planner): say so instead of asking.
       f.classList.add("is-joined");
       f.querySelector(".nl-label").textContent = "You\u2019re on the weekly email list. Thanks for reading.";
-      f.querySelector(".nl-msg").innerHTML = 'To stop, use the unsubscribe link in any email, or the switch in the planner\u2019s <a href="' + BASE + 'plan/">settings</a>.';
+      f.querySelector(".nl-msg").innerHTML = 'Your free <a href="' + BASE + 'free/low-waste-week.pdf" download data-free-week>low-waste week (PDF)</a>. To stop the emails, use the unsubscribe link in any of them, or the switch in the planner\u2019s <a href="' + BASE + 'plan/">settings</a>.';
     }
     f.addEventListener("submit", function (ev) {
       ev.preventDefault();
@@ -219,11 +219,17 @@
           lsSet("soloSupper.newsletter", "yes");
           document.querySelectorAll(".nl-tick").forEach(function (t) { t.hidden = true; });
           f.classList.add("is-done");
-          msg.textContent = "You're on the list. The first one arrives on Saturday.";
+          msg.innerHTML = 'You\u2019re on the list. Here\u2019s your free week: <a href="' + BASE + 'free/low-waste-week.pdf" download data-free-week><strong>download the low-waste week (PDF)</strong></a>. The first email arrives on Saturday.';
           if (window.gtag) window.gtag("event", "sign_up", { method: "newsletter", source: f.getAttribute("data-newsletter") });
         })
         .catch(function (e) { msg.textContent = e.message; btn.disabled = false; btn.textContent = "Sign me up"; });
     });
+  });
+
+  // Count downloads of the free week.
+  document.addEventListener("click", function (ev) {
+    var a = ev.target.closest && ev.target.closest("[data-free-week]");
+    if (a && window.gtag) window.gtag("event", "file_download", { file_name: "low-waste-week.pdf", link_url: a.href });
   });
 
   // The copyright year keeps up without a rebuild.

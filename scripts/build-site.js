@@ -519,7 +519,7 @@ function footer(rel) {
     '<div class="footer-grid">' +
     '<div class="footer-brand"><a class="brand brand-light" href="' + rel + '">' + LOGO + "<span>Solo Supper</span></a>" +
     '<p class="footer-line">Good dinners, sized for <em>one</em>.</p>' +
-    nlForm(rel, "footer", "The weekly email: two dinners for one that share a pack, so nothing goes off, and a tip for the planner.", "nl-dark") + "</div>" +
+    nlForm(rel, "footer", "The weekly email: two dinners for one that share a pack, so nothing goes off. Join and get a free printable low-waste week.", "nl-dark") + "</div>" +
     col("Recipes", [["Quick dinners for one", rel + "collections/quick-dinners-for-one/"], ["Vegetarian for one", rel + "collections/vegetarian-dinners-for-one/"], ["Fish for one", rel + "collections/fish-dinners-for-one/"], ["All recipes", rel + "recipes/"]]) +
     col("Planner", [["Plan your week", rel + "plan/"], ["The cookbooks", rel + "books/"]].concat(WEEKLY.length ? [["The weekly email", rel + "weekly/"]] : []).concat([ ["Get the app", rel + "app/"], ["Use it up", rel + "use-up/"], ["Cuisines", rel + "cuisines/"], ["Collections", rel + "collections/"]])) +
     col("About", [["Why I built this", rel + "about/"], ["Contact", "mailto:" + CONTACT_EMAIL], ["Privacy", rel + "privacy/"], ["Terms", rel + "terms/"], ["Refunds", rel + "refunds/"], ["Cookies", rel + "cookies/"], ["Cookie settings", "#cookie-settings"]]) +
@@ -1053,7 +1053,7 @@ RECIPES.forEach(function (r) {
       '<a class="chip" href="' + cuisineHref + '">' + esc(demonym(r.cuisine)) + " dinners for one</a></div></div>" : "") +
     "</section></div>" +
     "</article>" +
-    '<section class="wrap nl-band">' + nlForm(rel, "recipe", "<strong>Like this?</strong> Every Saturday: two dinners for one, paired so the second finishes what the first opens, and one handy tip.") + "</section>" +
+    '<section class="wrap nl-band">' + nlForm(rel, "recipe", "<strong>Like this?</strong> Every Saturday: two dinners for one, paired so the second finishes what the first opens. Join and get a free printable week of five low-waste dinners, with the shopping list.") + "</section>" +
     (uu.picks.length
       ? '<section class="section useup" aria-labelledby="useup-h"><div class="useup-head"><h2 id="useup-h">Use up the rest</h2>' +
         '<p>Cooking this for one leaves ' + listAnd(uu.left.slice(0, 3).map(function (x) { return "<strong>" + esc(fmtLeft(x)) + "</strong>"; })) +
@@ -1502,7 +1502,7 @@ out("assets/search-index.json", JSON.stringify(RECIPES.map(function (r) {
       '<p class="small muted">They go into your next empty days, and the shopping list adds up the ' + esc(packName(w.pack)) + " for you.</p></div></section>" +
       '<section class="wrap section-tight"><aside class="wk-tip"><span class="eyebrow">Did you know?' + (tip[4] ? ' <span class="wk-pro">Pro</span>' : "") + "</span>" +
         "<h2>" + esc(tip[0]) + "</h2><p>" + esc(tip[1]) + '</p><a class="text-link" href="' + rel + tip[2].replace(/^\//, "") + '">' + esc(tip[3]) + "</a></aside></section>" +
-      signUp(rel, "<strong>Get the next one.</strong> Every Saturday: two dinners for one that share a pack, so nothing goes off, and one handy tip.") +
+      signUp(rel, "<strong>Get the next one.</strong> Every Saturday: two dinners for one that share a pack, so nothing goes off. Join and get a free printable low-waste week too.") +
       (newer || older ? '<nav class="wrap wk-pager" aria-label="More weeks">' +
         (older ? '<a href="../' + older.slug + '/" rel="prev"><span class="eyebrow">Week before</span><span>' + esc(older.subject) + "</span></a>" : "<span></span>") +
         (newer ? '<a href="../' + newer.slug + '/" rel="next" class="wk-next"><span class="eyebrow">Week after</span><span>' + esc(newer.subject) + "</span></a>" : "") + "</nav>" : "") +
@@ -1539,7 +1539,7 @@ out("assets/search-index.json", JSON.stringify(RECIPES.map(function (r) {
     '<h1 class="display">The weekly email</h1>' +
     '<p class="lead">Supermarket packs are sized for families. Each week we pick two dinners for one where the second finishes what the first opens, so the salmon, spinach or coriander gets used up instead of binned. Here is every one so far.</p></div></section>' +
     '<section class="wrap section-tight"><div class="wk-list">' + WEEKLY.map(function (w) { return item(w, rel, "h2"); }).join("") + "</div></section>" +
-    signUp(rel, "<strong>Get it every Saturday.</strong> Free, short, and one email a week.")));
+    signUp(rel, "<strong>Get it every Saturday.</strong> Free, short, one email a week, and a free printable low-waste week when you join.")));
   sitemap.push({ loc: "weekly/", pri: "0.7" });
 })();
 

@@ -343,6 +343,32 @@ async function admin(request, env) {
     var fdoc = await getDoc(env, "settings/forecast");
     return json({ settings: (fdoc && fdoc.data) || {}, at: now });
   }
+  // KDP royalties, saved each evening by a scheduled Claude task that reads the
+  // Royalties Estimator (month-to-date royalties per title, GBP) in the owner's browser.
+  // kdpDays/YYYY-MM-DD keeps each day's reading; kdp/catalogue every title ever
+  // seen, so new books join the forecast the first time they appear.
+  if (body.action === "kdpSave") {
+    var kday = String(body.day || "").slice(0, 10), kmonth = String(body.month || kday.slice(0, 7)).slice(0, 7);
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(kday) || !Array.isArray(body.books) || !body.books.length) throw httpError(400, "Send day (YYYY-MM-DD), month and books: [{ title, mtd }]");
+    var cat = (await getDoc(env, "kdp/catalogue")) || { data: {} };
+    var known = cat.data.books || {}, added = [], books = {};
+    body.books.slice(0, 200).forEach(function (b) {
+      var title = String(b.title || "").trim().slice(0, 300), mtd = Number(b.mtd);
+      if (!title || !isFinite(mtd)) return;
+      var key = hitKey(title, 60);
+      books[key] = { title: title, mtd: Math.round(mtd * 100) / 100 };
+      if (!known[key]) { known[key] = { title: title, firstSeen: kday, group: /^solo supper/i.test(title) ? "solo" : "other" }; added.push(title); }
+    });
+    await mergeDoc(env, "kdpDays/" + kday, { day: kday, month: kmonth, at: now, books: books });
+    await mergeDoc(env, "kdp/catalogue", { books: known, lastRead: now, lastDay: kday });
+    return json({ ok: true, saved: Object.keys(books).length, newBooks: added });
+  }
+  if (body.action === "kdp") {
+    var kc = await getDoc(env, "kdp/catalogue");
+    var kd = await listCollection(env, "kdpDays", null, 800);
+    kd.sort(function (a, b) { return a.id < b.id ? -1 : 1; });
+    return json({ catalogue: (kc && kc.data) || {}, days: kd.slice(-120).map(function (r) { return r.data; }), at: now });
+  }
   if (body.action === "pageviews") {
     var rows = await listCollection(env, "pageviews", null, 400);
     rows.sort(function (a, b) { return a.id < b.id ? 1 : -1; });

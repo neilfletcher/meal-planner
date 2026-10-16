@@ -1008,6 +1008,14 @@
         </div>
       </section>
       <section class="block block-wide">
+        <div class="block-head"><div><div class="eyebrow">Your other books</div><h2>Royalties from KDP</h2></div></div>
+        <div class="card"><div class="src-scroll"><table class="src-table fc-table" id="fcBooks"></table></div><p class="fine" id="fcBooksNote"></p></div>
+      </section>
+      <section class="block block-wide">
+        <div class="block-head"><div><div class="eyebrow">Everything together</div><h2>Solo Supper and all the books</h2></div></div>
+        <div class="card"><div class="src-scroll"><table class="src-table fc-table" id="fcTotal"></table></div><p class="fine" id="fcTotalNote"></p></div>
+      </section>
+      <section class="block block-wide">
         <div class="block-head"><div><div class="eyebrow">What it's built on</div><h2>Today's numbers</h2></div></div>
         <div class="card"><div class="src-scroll"><table class="src-table fc-table" id="fcNow"></table></div>
           <p class="fine">Everything here is read live each time you open this tab, so the forecast moves as real numbers arrive. Once there are 20 finished free trials, the real trial-to-paid rate replaces the assumed one; once people have bought PDFs, the real rate replaces the guess.</p></div>
@@ -1016,7 +1024,7 @@
         <div class="block-head"><div><div class="eyebrow">Your inputs</div><h2>Things the site can't see</h2></div></div>
         <div class="card">
           <div class="fc-form">
-            <label>Amazon royalties, £ a month<input type="number" min="0" step="1" id="fc-amazon"></label>
+            <label>Solo Supper on Amazon, £ a month (used until KDP has been read)<input type="number" min="0" step="1" id="fc-amazon"></label>
             <label>Running costs, £ a year (domain, ICO fee)<input type="number" min="0" step="1" id="fc-costs"></label>
             <label>Buffer or other tools, £ a month<input type="number" min="0" step="1" id="fc-buffer"></label>
             <label>Trial to paid, low (%)<input type="number" min="0" step="0.5" id="fc-cl"></label>
@@ -1977,15 +1985,49 @@
     return { amazonPerMonth: s.amazonPerMonth != null ? s.amazonPerMonth : 10, costsPerYear: s.costsPerYear != null ? s.costsPerYear : 65,
       bufferPerMonth: s.bufferPerMonth || 0, conv: [s.convLow != null ? s.convLow : 2, s.convMid != null ? s.convMid : 4, s.convHigh != null ? s.convHigh : 5] };
   }
+
+  // KDP: the last 30 days of royalties for each book, worked out from the
+  // month-to-date figures saved each evening (each day's rise is that day's
+  // royalties; on the 1st the month starts again). Until there are 30 days of
+  // readings, the month so far is scaled up to 30 days.
+  function kdpLast30(k, now) {
+    var days = k.days || [], cat = (k.catalogue && k.catalogue.books) || {}, out = {};
+    var from = new Date(now - 30 * 86400000).toISOString().slice(0, 10);
+    var span = days.length ? (Date.parse(days[days.length - 1].day) - Date.parse(days[0].day)) / 86400000 : 0;
+    Object.keys(cat).forEach(function (key) {
+      var sum = 0, prev = null, last = days.length ? days[days.length - 1] : null;
+      days.forEach(function (d) {
+        var b = d.books && d.books[key], v = b ? b.mtd : 0;
+        var inc = prev && prev.month === d.month ? Math.max(0, v - prev.v) : v;
+        if (d.day > from && prev) sum += inc;
+        prev = { month: d.month, v: v };
+      });
+      if (span < 29 && last) {
+        var dom = Number(last.day.slice(8, 10)), mtd = last.books && last.books[key] ? last.books[key].mtd : 0;
+        sum = dom ? mtd / dom * 30 : 0;
+      }
+      out[key] = { title: cat[key].title, group: cat[key].group, firstSeen: cat[key].firstSeen, last30: sum,
+        mtd: last && last.books && last.books[key] ? last.books[key].mtd : 0 };
+    });
+    return { books: out, lastDay: k.catalogue && k.catalogue.lastDay, estimated: span < 29 };
+  }
+  // For the scheduled evening task: window.SoloAdmin.saveKdp({ day, month, books: [{ title, mtd }] }).
+  window.SoloAdmin = { saveKdp: function (o) { return adminApi(Object.assign({ action: "kdpSave" }, o)); }, ready: function () { return !!window.__adminReady; } };
+
   function loadForecast() {
     var lead = document.getElementById("fcLead");
     lead.textContent = "Working it out from the live numbers…";
     Promise.all([
       adminApi({ action: "liveCounts" }), adminApi({ action: "sources" }), adminApi({ action: "listCodes" }),
       adminApi({ action: "lifetime" }), adminApi({ action: "books" }), adminApi({ action: "newsletter" }),
-      adminApi({ action: "pageviews" }).catch(function () { return { days: [] }; }), adminApi({ action: "forecast" })
+      adminApi({ action: "pageviews" }).catch(function () { return { days: [] }; }), adminApi({ action: "forecast" }),
+      adminApi({ action: "kdp" }).catch(function () { return { days: [] }; })
     ]).then(function (r) {
       var live = r[0], src = r[1], codes = r[2].codes || [], lt = r[3], bk = r[4], nl = r[5], pv = r[6], st = fcSettings(r[7].settings || {});
+      var kdp = kdpLast30(r[8], live.at), kb = Object.keys(kdp.books).map(function (k) { return kdp.books[k]; });
+      var ssAmazon30 = kb.filter(function (b) { return b.group === "solo"; }).reduce(function (t, b) { return t + b.last30; }, 0);
+      var others = kb.filter(function (b) { return b.group !== "solo"; }).sort(function (a, b) { return b.last30 - a.last30; });
+      var haveKdp = kb.length > 0;
       var now = live.at, c = live.counts, m = live.money, D = 86400000;
       document.getElementById("fc-amazon").value = st.amazonPerMonth; document.getElementById("fc-costs").value = st.costsPerYear;
       document.getElementById("fc-buffer").value = st.bufferPerMonth;
@@ -2016,7 +2058,7 @@
         var life = FC.lifetime[i] * LIFETIME_NET;
         var pdfYear = bk.totals && bk.totals.sales30 > 0 ? bk.totals.sales30 * 12 * (i === 0 ? 0.6 : i === 1 ? 1 : 2) : FC.pdfs[i];
         var pdf = pdfYear * PDF_NET;
-        var amazon = st.amazonPerMonth * 12 * FC.amazonX[i];
+        var amazon = (haveKdp ? ssAmazon30 : st.amazonPerMonth) * 12 * FC.amazonX[i];
         var income = subs + life + pdf + amazon;
         var costs = st.costsPerYear + st.bufferPerMonth * 12;
         var listRate = nl.listSize != null && c.accounts >= 20 ? Math.max(0.15, Math.min(0.8, nl.listSize / c.accounts)) : 0.35;
@@ -2036,10 +2078,28 @@
         line("Subscriptions", function (x) { return money(x.subs); }) +
         line("Lifetime Pro", function (x) { return money(x.life); }) +
         line("PDFs on the site", function (x) { return money(x.pdf); }) +
-        line("Amazon (your figure)", function (x) { return money(x.amazon); }) +
+        line(haveKdp ? "Amazon (from KDP)" : "Amazon (your figure)", function (x) { return money(x.amazon); }) +
         line("Income after Stripe fees", function (x) { return money(x.income); }, "fc-total") +
         line("Running costs", function (x) { return money(x.costs); }) +
         line("Profit before tax", function (x) { return money(x.profit); }, "fc-total") + "</tbody>";
+      // Your other books: the last 30 days of royalties, a year of it, and
+      // x0.7 / x1 / x1.5 for books fading, holding or picking up. Each new title
+      // KDP shows joins this table automatically.
+      var OB = [0.7, 1, 1.5];
+      var obYear = OB.map(function (f) { return others.reduce(function (t, b) { return t + b.last30 * 12 * f; }, 0); });
+      document.getElementById("fcBooks").innerHTML = haveKdp ? "<thead><tr><th>Book</th><th>Last 30 days</th><th>2027, low</th><th>2027, middle</th><th>2027, high</th><th>First seen</th></tr></thead><tbody>" +
+        others.map(function (b) { return "<tr><td>" + escapeHtml(b.title.split(":")[0]) + "</td><td>£" + b.last30.toFixed(2) + "</td>" + OB.map(function (f) { return "<td>" + money(b.last30 * 12 * f) + "</td>"; }).join("") + "<td>" + (b.firstSeen || "") + "</td></tr>"; }).join("") +
+        '<tr class="fc-total"><td>All other books</td><td>£' + others.reduce(function (t, b) { return t + b.last30; }, 0).toFixed(2) + "</td>" + obYear.map(function (v) { return "<td>" + money(v) + "</td>"; }).join("") + "<td></td></tr></tbody>"
+        : "<tbody><tr><td>No KDP readings yet: the evening task fills this in.</td></tr></tbody>";
+      document.getElementById("fcBooksNote").textContent = haveKdp ? "From KDP's Royalties Estimator, read each evening (last read " + (kdp.lastDay || "?") + ")" + (kdp.estimated ? "; until there are 30 days of readings, the 30-day figure is this month so far scaled up to 30 days, so it jumps about early in the month" : "") + ". Royalties include Kindle Unlimited page reads, which KDP estimates until the month is finalised. Solo Supper's cookbooks are counted in the Solo Supper forecast above." : "";
+      var tot = rows.map(function (x, i) { return { income: x.income + obYear[i], profit: x.profit + obYear[i] }; });
+      document.getElementById("fcTotal").innerHTML = "<thead><tr><th>2027</th>" + rows.map(function (x, i) { return th(x.name, i); }).join("") + "</tr></thead><tbody>" +
+        "<tr><td>Solo Supper profit</td>" + rows.map(function (x) { return "<td>" + money(x.profit) + "</td>"; }).join("") + "</tr>" +
+        "<tr><td>Other books' royalties</td>" + obYear.map(function (v) { return "<td>" + money(v) + "</td>"; }).join("") + "</tr>" +
+        '<tr class="fc-total"><td>Total income (Solo Supper and all books)</td>' + tot.map(function (x) { return "<td>" + money(x.income) + "</td>"; }).join("") + "</tr>" +
+        '<tr class="fc-total"><td>Total profit before tax</td>' + tot.map(function (x) { return "<td>" + money(x.profit) + "</td>"; }).join("") + "</tr></tbody>";
+      document.getElementById("fcTotalNote").textContent = "For the £1,000 trading allowance, what counts is total income before costs: " +
+        tot.map(function (x, i) { return rows[i].name.toLowerCase() + " " + money(x.income); }).join(", ") + (tot[0].income >= 1000 ? ". Even the low column is over £1,000." : tot[1].income >= 1000 ? ". The middle column is over £1,000." : tot[2].income >= 1000 ? ". Only the high column goes over £1,000." : ". All three are under £1,000.") + " Not tax advice.";
       lead.innerHTML = "Based on today's numbers, 2027 looks like <strong>" + rows[on].name.toLowerCase() + "</strong>: about <strong>" + money(rows[on].profit) + " profit</strong> and " +
         fmtNum(Math.round(rows[on].accounts / 10) * 10) + " accounts by the end of the year. " +
         (on === 0 ? "Search and social sign-ups are still too few to lift it; one press mention or a Pinterest Pin that takes off would move it up a column." :
@@ -2054,6 +2114,7 @@
         nrow("Paying now", fmtNum(c.paying) + " subscribers, " + fmtNum(c.lifetime) + " lifetime; " + money(m.mrr / 100) + " a month coming in") +
         nrow("Trial to paid", m.trialsDone ? m.trialsPaid + " of " + m.trialsDone + " finished trials (" + Math.round(m.trialsPaid / m.trialsDone * 100) + "%)" + (m.trialsDone < 20 ? ", too few to use yet" : ", used in the forecast") : "no trials finished yet, so the assumed rates are used") +
         nrow("Lifetime Pro sold so far", fmtNum(lt.sold || 0)) +
+        nrow("Solo Supper cookbooks on Amazon, last 30 days", haveKdp ? "£" + ssAmazon30.toFixed(2) + " (from KDP)" : "no KDP reading yet; using your figure") +
         nrow("PDFs sold, last 30 days", fmtNum(bk.totals ? bk.totals.sales30 : 0)) +
         nrow("Email list", nl.listSize == null ? "–" : fmtNum(nl.listSize)) +
         nrow("Visits, last 30 days (site's own count)", pvDays.length ? fmtNum(v30) + " (counting since 16 October 2026)" : "not counted yet") + "</tbody>";

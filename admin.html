@@ -1028,7 +1028,7 @@
       </section>
       <section class="block block-wide">
         <div class="block-head"><div><div class="eyebrow">Your other books</div><h2>Royalties in 2027</h2></div></div>
-        <div class="card"><div class="src-scroll"><table class="src-table fc-table" id="fcBooks"></table></div><p class="fine">Each book's last 30 days, made into a year, then x0.7, x1 or x1.5 for a book fading, holding or picking up. New titles join automatically.</p></div>
+        <div class="card"><div class="src-scroll"><table class="src-table fc-table" id="fcBooks"></table></div><p class="fine" id="fcBooksHow"></p></div>
       </section>
       <section class="block block-wide">
         <div class="block-head"><div><div class="eyebrow">Everything together</div><h2>Solo Supper and all the books</h2></div></div>
@@ -2024,7 +2024,14 @@
       out[key] = { title: cat[key].title, group: cat[key].group, firstSeen: cat[key].firstSeen, last30: sum,
         mtd: last && last.books && last.books[key] ? last.books[key].mtd : 0 };
     });
-    return { books: out, lastDay: k.catalogue && k.catalogue.lastDay, estimated: span < 29 };
+    // For the projections: the average of the last three finished months
+    // (fewer if there aren't three yet); this month scaled up if there are none.
+    var thisMonth = new Date(now).toISOString().slice(0, 7), km = k.months || {};
+    var done = Object.keys(km).filter(function (m) { return m < thisMonth; }).sort().slice(-3);
+    Object.keys(out).forEach(function (key) {
+      out[key].perMonth = done.length ? done.reduce(function (t, m) { var b = km[m].books[key]; return t + (b ? b.mtd || 0 : 0); }, 0) / done.length : out[key].last30;
+    });
+    return { books: out, lastDay: k.catalogue && k.catalogue.lastDay, estimated: span < 29, basis: done };
   }
   // For the scheduled evening task: window.SoloAdmin.saveKdp({ day, month, books: [{ title, mtd }] }).
   window.SoloAdmin = { saveKdp: function (o) { return adminApi(Object.assign({ action: "kdpSave" }, o)); },
@@ -2073,8 +2080,9 @@
       renderActuals(r[9], r[8], r[0].at);
       var live = r[0], src = r[1], codes = r[2].codes || [], lt = r[3], bk = r[4], nl = r[5], pv = r[6], st = fcSettings(r[7].settings || {});
       var kdp = kdpLast30(r[8], live.at), kb = Object.keys(kdp.books).map(function (k) { return kdp.books[k]; });
-      var ssAmazon30 = kb.filter(function (b) { return b.group === "solo"; }).reduce(function (t, b) { return t + b.last30; }, 0);
-      var others = kb.filter(function (b) { return b.group !== "solo"; }).sort(function (a, b) { return b.last30 - a.last30; });
+      var ssAmazon30 = kb.filter(function (b) { return b.group === "solo"; }).reduce(function (t, b) { return t + b.perMonth; }, 0);
+      var ssAmazonNow = kb.filter(function (b) { return b.group === "solo"; }).reduce(function (t, b) { return t + b.last30; }, 0);
+      var others = kb.filter(function (b) { return b.group !== "solo"; }).sort(function (a, b) { return b.perMonth - a.perMonth; });
       var haveKdp = kb.length > 0;
       var now = live.at, c = live.counts, m = live.money, D = 86400000;
       document.getElementById("fc-amazon").value = st.amazonPerMonth; document.getElementById("fc-costs").value = st.costsPerYear;
@@ -2134,11 +2142,14 @@
       // x0.7 / x1 / x1.5 for books fading, holding or picking up. Each new title
       // KDP shows joins this table automatically.
       var OB = [0.7, 1, 1.5];
-      var obYear = OB.map(function (f) { return others.reduce(function (t, b) { return t + b.last30 * 12 * f; }, 0); });
+      var obYear = OB.map(function (f) { return others.reduce(function (t, b) { return t + b.perMonth * 12 * f; }, 0); });
       document.getElementById("fcBooks").innerHTML = haveKdp ? "<thead><tr><th>Book</th><th>Low</th><th>Middle</th><th>High</th></tr></thead><tbody>" +
-        others.map(function (b) { return "<tr><td>" + escapeHtml(b.title.split(":")[0]) + "</td>" + OB.map(function (f) { return "<td>" + money(b.last30 * 12 * f) + "</td>"; }).join("") + "</tr>"; }).join("") +
+        others.map(function (b) { return "<tr><td>" + escapeHtml(b.title.split(":")[0]) + "</td>" + OB.map(function (f) { return "<td>" + money(b.perMonth * 12 * f) + "</td>"; }).join("") + "</tr>"; }).join("") +
         '<tr class="fc-total"><td>All other books</td>' + obYear.map(function (v) { return "<td>" + money(v) + "</td>"; }).join("") + "</tr></tbody>"
         : "<tbody><tr><td>No KDP readings yet: the evening task fills this in.</td></tr></tbody>";
+      var mName = function (m) { return new Date(m + "-01T00:00:00Z").toLocaleDateString("en-GB", { month: "long", timeZone: "UTC" }); };
+      var basisText = kdp.basis.length ? "the average month from " + (kdp.basis.length > 1 ? mName(kdp.basis[0]) + " to " + mName(kdp.basis[kdp.basis.length - 1]) : mName(kdp.basis[0])) : "this month so far, scaled up to a month";
+      document.getElementById("fcBooksHow").textContent = "Each book's " + basisText + ", made into a year, then x0.7, x1 or x1.5 for a book fading, holding or picking up. It moves on a month as each month finishes. New titles join automatically.";
       document.getElementById("fcBooksNow").innerHTML = haveKdp ? "<thead><tr><th>Book</th><th>This month so far</th><th>Last 30 days</th><th>First seen</th></tr></thead><tbody>" +
         kb.slice().sort(function (a, b) { return (a.group === "solo") - (b.group === "solo") || b.last30 - a.last30; }).map(function (b) {
           return "<tr><td>" + escapeHtml(b.title.split(":")[0]) + (b.group === "solo" ? " (Solo Supper)" : "") + "</td><td>£" + b.mtd.toFixed(2) + "</td><td>£" + b.last30.toFixed(2) + (kdp.estimated ? "*" : "") + "</td><td>" + (b.firstSeen || "") + "</td></tr>"; }).join("") + "</tbody>"
@@ -2166,7 +2177,7 @@
         nrow("Paying now", fmtNum(c.paying) + " subscribers, " + fmtNum(c.lifetime) + " lifetime; " + money(m.mrr / 100) + " a month coming in") +
         nrow("Trial to paid", m.trialsDone ? m.trialsPaid + " of " + m.trialsDone + " finished trials (" + Math.round(m.trialsPaid / m.trialsDone * 100) + "%)" + (m.trialsDone < 20 ? ", too few to use yet" : ", used in the forecast") : "no trials finished yet, so the assumed rates are used") +
         nrow("Lifetime Pro sold so far", fmtNum(lt.sold || 0)) +
-        nrow("Solo Supper cookbooks on Amazon, last 30 days", haveKdp ? "£" + ssAmazon30.toFixed(2) + " (from KDP)" : "no KDP reading yet; using your figure") +
+        nrow("Solo Supper cookbooks on Amazon, last 30 days", haveKdp ? "£" + ssAmazonNow.toFixed(2) + " (from KDP)" : "no KDP reading yet; using your figure") +
         nrow("PDFs sold, last 30 days", fmtNum(bk.totals ? bk.totals.sales30 : 0)) +
         nrow("Email list", nl.listSize == null ? "–" : fmtNum(nl.listSize)) +
         nrow("Visits, last 30 days (site's own count)", pvDays.length ? fmtNum(v30) + " (counting since 16 October 2026)" : "not counted yet") + "</tbody>";

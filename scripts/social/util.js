@@ -39,6 +39,13 @@ function londonTime(day, hh, mm) {
   var asUtc = Date.UTC(+parts.year, +parts.month - 1, +parts.day, +parts.hour % 24, +parts.minute);
   return new Date(guess - (asUtc - guess)).toISOString();
 }
+// Christmas dinners only from mid-November to Twelfth Night (as
+// window.SOLO_IN_SEASON in recipes-data.js). day: "YYYY-MM-DD".
+function inSeason(r, day) {
+  if (!r || !r.tags || r.tags.indexOf("christmas") === -1) return true;
+  var m = Number(String(day).slice(5, 7)), d = Number(String(day).slice(8, 10));
+  return (m === 11 && d >= 15) || m === 12 || (m === 1 && d <= 6);
+}
 function dayName(day) {
   return ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][new Date(day + "T00:00:00Z").getUTCDay()];
 }
@@ -75,5 +82,5 @@ function useUpUrl(data, u, source, content) {
 }
 function minutes(r) { return r.prep + r.cook; }
 
-module.exports = { ROOT: ROOT, loadSiteData: loadSiteData, nextMonday: nextMonday, addDays: addDays, londonTime: londonTime, dayName: dayName,
+module.exports = { ROOT: ROOT, loadSiteData: loadSiteData, nextMonday: nextMonday, addDays: addDays, londonTime: londonTime, dayName: dayName, inSeason: inSeason,
   rng: rng, shuffle: shuffle, esc: esc, readJson: readJson, writeJson: writeJson, recipeUrl: recipeUrl, useUpUrl: useUpUrl, minutes: minutes };

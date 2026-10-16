@@ -46,6 +46,9 @@ vm.runInContext(fs.readFileSync(path.join(ROOT, "recipes-data.js"), "utf8"), san
 var RECIPES = sandbox.window.SOLO_RECIPES;
 var SEASON = sandbox.window.SOLO_SEASON || {};
 var SEASON_NOW = sandbox.window.SOLO_SEASON_NOW || function () { return ""; };
+// Christmas dinners stay out of picks on other pages outside the season
+// (the site rebuilds at least weekly, so this keeps up).
+var IN_SEASON = sandbox.window.SOLO_IN_SEASON || function () { return true; };
 // Swaps for hard-to-find ingredients (also used by the planner): shown under the ingredient.
 var SWAP_BY_ITEM = {};
 (sandbox.window.SOLO_SWAPS || []).forEach(function (sw) { sw.match.forEach(function (m) { SWAP_BY_ITEM[m] = sw; }); });
@@ -184,6 +187,12 @@ var COLLECTIONS = [
   { slug: "curries-for-one", name: "Curries", h1: "Curries for one", short: "Dahls, tikka, katsu and Thai curries",
     intro: "Curry is the dish most people think they cannot make for one. These are written for a single portion, from Indian dahls to Thai and Japanese curries.",
     test: function (r) { return CURRY_RE.test(r.title); }, hero: "d25" },
+  { slug: "christmas-dinner-for-one", name: "Christmas dinner", h1: "Christmas dinner for one", short: "Turkey, pigs in blankets and all the trimmings",
+    intro: "Christmas on your own shouldn't mean a ready meal, or a whole turkey you're still eating at New Year. A turkey breast steak, three pigs in blankets and a handful of sprouts make a proper Christmas dinner on one plate, in about an hour, from one small shop. There's a vegetarian Wellington, duck and gammon too.",
+    test: function (r) { return r.tags.indexOf("christmas") !== -1 && ["d443", "d444", "d445", "d446"].indexOf(r.id) !== -1; }, hero: "d443" },
+  { slug: "christmas-leftovers-for-one", name: "Christmas leftovers", h1: "Christmas leftovers recipes for one", short: "Boxing Day dinners from what's left",
+    intro: "Dinners for one that use up what Christmas leaves behind: the last of the turkey, half a bag of sprouts, the rest of the puff pastry and that jar of cranberry sauce. No turkey left? A cooked chicken breast works in all of them. Eat cooked turkey within two days, and only reheat it once, until piping hot.",
+    test: function (r) { return r.tags.indexOf("christmas") !== -1 && ["d447", "d448", "d449", "d450", "d451"].indexOf(r.id) !== -1; }, hero: "d447" },
   { slug: "high-protein-dinners-for-one", name: "High protein", h1: "High-protein dinners for one", short: "40 g of protein or more",
     intro: "Dinners with 40 g of protein or more in the single portion, worked out from the ingredients. Good after training, and still sized for one.",
     test: function (r) { return r.nutrition && r.nutrition.protein >= HIGH_PROTEIN; }, hero: "d13" },
@@ -231,7 +240,7 @@ function sumNeeds(ids) {
   return t;
 }
 function packName(k) {
-  return /(fillet|thigh|breast|tomato|sausage|onion|chop|steak|pepper|egg|bun|roll|flatbread|tortilla|chilli|courgette|avocado|lemon|lime)$/.test(k) ? PK.shopPlural(k) : k;
+  return /(fillet|thigh|breast|tomato|sausage|onion|chop|steak|pepper|egg|bun|roll|flatbread|tortilla|chilli|courgette|avocado|lemon|lime)$/.test(k) ? PK.shopPlural(k) : k.replace(/^brussels/, "Brussels");
 }
 // The number fmtQty shows, so sums made from it add up (used + left = the pack).
 function roundQty(k, v) {
@@ -276,7 +285,7 @@ function useUpFor(r) {
   var w0 = PK.wasteOf(sumNeeds([r.id]));
   var scored = [];
   RECIPES.forEach(function (c) {
-    if (c === r) return;
+    if (c === r || !(IN_SEASON(c) || r.tags.indexOf("christmas") !== -1)) return;
     var shared = leftKeys.filter(function (k) { return NEEDS[c.id][k]; });
     if (!shared.length) return;
     var saving = w0 + PK.wasteOf(sumNeeds([c.id])) - PK.wasteOf(sumNeeds([r.id, c.id]));
@@ -571,10 +580,10 @@ var FRIDGE_KEYS = ["chicken thigh", "chicken breast", "beef mince", "pork mince"
 function fridgeSets() {
   var cache = fridgeSets.cache;
   if (cache) return cache;
-  var photo = RECIPES.filter(function (r) { return r.photo; }), byKey = {};
+  var photo = RECIPES.filter(function (r) { return r.photo && IN_SEASON(r); }), byKey = {};
   photo.forEach(function (r) { Object.keys(NEEDS[r.id]).forEach(function (k) { (byKey[k] = byKey[k] || []).push(r); }); });
   cache = FRIDGE_KEYS.map(function (k) { return USEUP.filter(function (u) { return u.key === k; })[0]; }).filter(Boolean).map(function (u) {
-    var cands = u.users.filter(function (r) { return r.photo; }).slice(0, 20), best = null, pk = PK.PACKS[u.key];
+    var cands = u.users.filter(function (r) { return r.photo && IN_SEASON(r); }).slice(0, 20), best = null, pk = PK.PACKS[u.key];
     var score = function (set) {
       var ids = set.map(function (r) { return r.id; }), need = sumNeeds(ids), sc = PK.wasteOf(need);
       var keySpare = Math.ceil(need[u.key] / pk.size - 0.08) * pk.size - need[u.key];
@@ -641,7 +650,7 @@ function fridgeDemoHtml(rel) {
 var HERO_POOL = (function () {
   var byCuisine = {}, order = [];
   RECIPES.forEach(function (r) {
-    if (!r.photo) return;
+    if (!r.photo || !IN_SEASON(r)) return;
     if (!byCuisine[r.cuisine]) { byCuisine[r.cuisine] = []; order.push(r.cuisine); }
     byCuisine[r.cuisine].push(r);
   });
@@ -942,7 +951,7 @@ function collCard(c, rel) {
 
 /* ------------------------------------------------------------ recipe pages */
 function related(r) {
-  var pool = RECIPES.filter(function (x) { return x !== r; });
+  var pool = RECIPES.filter(function (x) { return x !== r && (IN_SEASON(x) || r.tags.indexOf("christmas") !== -1); });
   var score = function (x) {
     return (x.cuisine === r.cuisine ? 3 : 0) + (x.protein === r.protein ? 2 : 0) + (x.photo ? 1.5 : 0) +
       (x.tags.some(function (t) { return t !== "quick" && r.tags.indexOf(t) !== -1; }) ? 1 : 0);
@@ -967,6 +976,7 @@ function dek(r) {
 // Google shows: drop the brand on long titles, and on very long ones put
 // "for one" before the "(...)" or "with ..." part of the name.
 function recipeTitle(name) {
+  if (/\bfor one\b/i.test(name)) return (name + " | Solo Supper").length <= 60 ? name + " | Solo Supper" : name;
   var t = name + " for one | Solo Supper";
   if (t.length <= 60) return t;
   if ((name + " for one").length <= 60) return name + " for one";
@@ -1064,7 +1074,7 @@ RECIPES.forEach(function (r) {
     author: { "@type": "Organization", name: "Solo Supper", url: SITE_URL + "/" },
     recipeCuisine: demonym(r.cuisine),
     recipeCategory: "Dinner",
-    keywords: [demonym(r.cuisine) + " dinner for one", r.title.toLowerCase() + " for one", "single portion", "dinner for one"]
+    keywords: [demonym(r.cuisine) + " dinner for one", r.title.toLowerCase() + (/\bfor one\b/i.test(r.title) ? "" : " for one"), "single portion", "dinner for one"]
       .concat(r.tags.filter(function (t) { return t !== "quick"; })).join(", "),
     recipeYield: "1 serving",
     prepTime: isoMin(r.prep), cookTime: isoMin(r.cook), totalTime: isoMin(total(r)),

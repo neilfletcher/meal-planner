@@ -245,6 +245,7 @@
   }
   function suggestPool(base) {
     var src = base || RECIPES;
+    if (window.SOLO_IN_SEASON) src = src.filter(function (r) { return r.custom || window.SOLO_IN_SEASON(r); });
     if (state.newOnly) {
       // "New dishes only": leave out anything already cooked, unless that
       // leaves too few to fill a week.
@@ -1575,6 +1576,8 @@
     "beansprouts": { unit: "g", size: 300, perish: 2.5, sold: "300 g bag" },
     "green beans": { unit: "g", size: 200, perish: 1.5, sold: "200 g pack" },
     "tenderstem broccoli": { unit: "g", size: 200, perish: 1.5, sold: "200 g pack" },
+    "brussels sprouts": { unit: "g", size: 500, perish: 1, sold: "500 g bag" },
+    "ready-rolled puff pastry": { unit: "g", size: 320, perish: 1.5, sold: "320 g sheet" },
     "kale": { unit: "g", size: 200, perish: 1.5, sold: "200 g bag" },
     "pak choi": { unit: "g", size: 200, perish: 1.5, sold: "pack of 2" },
     "chestnut mushroom": { unit: "g", size: 250, perish: 1.5, sold: "250 g punnet" },
@@ -4833,7 +4836,7 @@
     "paneer": 2.50, "mozzarella": 0.85, "cheddar": 2.50, "egg": 1.80,
     "coriander": 0.80, "parsley": 0.80, "dill": 0.80, "mint": 0.80, "basil": 0.80, "chives": 0.80, "spring onion": 0.55,
     "spinach": 1.20, "baby spinach": 1.20, "mixed salad leaves": 1.00, "beansprouts": 0.90, "green beans": 1.10,
-    "tenderstem broccoli": 1.80, "kale": 1.00, "pak choi": 1.20, "chestnut mushroom": 1.20, "cherry tomato": 1.20,
+    "tenderstem broccoli": 1.80, "brussels sprouts": 1.00, "ready-rolled puff pastry": 1.30, "kale": 1.00, "pak choi": 1.20, "chestnut mushroom": 1.20, "cherry tomato": 1.20,
     "new potato": 1.20, "cooked beetroot": 0.90, "cucumber": 0.75, "red pepper": 0.60, "green pepper": 0.55, "pepper": 0.60,
     "courgette": 0.50, "avocado": 0.90, "lemon": 0.40, "lime": 0.30, "tomato": 0.25, "onion": 0.15, "red onion": 0.20,
     "leek": 0.60, "sweet potato": 0.40, "white cabbage": 0.80, "butternut squash": 1.20,

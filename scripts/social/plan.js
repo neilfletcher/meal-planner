@@ -23,7 +23,7 @@ function planWeek(data, history, week, layout) {
   var recent = recentIds(history, week, REPEAT_WEEKS);
   var recentUse = recentIds(history, week, USEUP_WEEKS).useups;
   var used = {};
-  var ok = function (r) { return r && r.photo && !recent.ids[r.id] && !used[r.id]; };
+  var ok = function (r) { return r && r.photo && !recent.ids[r.id] && !used[r.id] && U.inSeason(r, week); };
   var pool = U.shuffle(data.recipes.filter(ok), rand);
   // Weeknight-friendly first: most posts should be quick dinners.
   pool.sort(function (a, b) { return (U.minutes(a) > 30) - (U.minutes(b) > 30); });

@@ -73,7 +73,7 @@ function choosePair(data, history, week) {
   (history.weeks || []).forEach(function (w) {
     if (w.week >= cutoff && w.week !== week) { (w.recipes || []).forEach(function (id) { recent[id] = 1; }); if (w.pack) recentPacks[w.pack] = 1; }
   });
-  var ok = function (r) { return r && r.photo && !recent[r.id] && U.minutes(r) <= 45; };
+  var ok = function (r) { return r && r.photo && !recent[r.id] && U.minutes(r) <= 45 && U.inSeason(r, week); };
   var pairs = [];
   data.recipes.forEach(function (r) {
     if (!ok(r)) return;

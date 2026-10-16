@@ -5571,7 +5571,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d304", title: "Ukrainian-Style Varenyky (Potato and Cheese Dumplings)", tags: ["vegetarian"], cuisine: "Ukraine", protein: "plant-based",
       prep: 10, cook: 25,
-      nutrition: { kcal: 800, protein: 21, carbs: 132, fat: 20 },
+      nutrition: { kcal: 470, protein: 13, carbs: 62, fat: 19 },
       ingredients: [
         ing(8, "", "ready-made dumpling or wonton wrappers", "bakery"), ing(120, "g", "floury potato, peeled and chopped", "produce"),
         ing(30, "g", "curd cheese", "dairy"), ing(0.5, "", "small onion, finely diced", "produce"),
@@ -7323,7 +7323,7 @@ window.SOLO_RECIPES = (function () {
     {
       id: "d396", title: "Colombian-Style Ajiaco Chicken and Potato Soup with Corn", tags: [], cuisine: "Colombia", protein: "chicken",
       prep: 10, cook: 25,
-      nutrition: { kcal: 800, protein: 53, carbs: 111, fat: 16 },
+      nutrition: { kcal: 530, protein: 46, carbs: 53, fat: 15 },
       ingredients: [
         ing(150, "g", "chicken breast", "meat"), ing(100, "g", "waxy potato, diced", "produce"),
         ing(100, "g", "floury potato, diced", "produce"), ing(80, "g", "sweetcorn kernels", "frozen"),
@@ -8238,10 +8238,177 @@ window.SOLO_RECIPES = (function () {
         "Taste the stew and adjust the seasoning.",
         "Spoon the polenta onto a plate, top with the mushroom stew and scatter with the herbs."
       ]
+    },
+
+    // Christmas for one (tag "christmas"): four Christmas dinners and five
+    // Boxing Day dinners that use up the leftovers. Not in the cookbooks.
+    {
+      id: "d443", title: "Christmas Dinner for One: Turkey, Pigs in Blankets and Roast Potatoes", tags: ["christmas"], cuisine: "UK", protein: "turkey", prep: 15, cook: 55,
+      nutrition: { kcal: 1270, protein: 71, carbs: 107, fat: 63 },
+      ingredients: [
+        ing(1, "", "turkey breast steak (about 150 g)", "meat"), ing(3, "", "chipolata sausages", "meat"),
+        ing(2, "rashers", "streaky bacon, halved", "meat"), ing(250, "g", "floury potato, peeled and cut into chunks", "produce"),
+        ing(1, "", "carrot, cut into batons", "produce"), ing(1, "", "parsnip, quartered lengthways", "produce"),
+        ing(100, "g", "Brussels sprouts, halved", "produce"), ing(2, "tbsp", "vegetable oil", "store"),
+        ing(1, "tsp", "fresh thyme leaves", "produce"), ing(150, "ml", "chicken stock", "store"),
+        ing(1, "tsp", "cornflour", "store"), ing(1, "tbsp", "cranberry sauce", "store"),
+        ing(10, "g", "butter", "dairy"), ing(null, "pinch", "salt and pepper", "spice")
+      ],
+      steps: [
+        "Heat the oven to 220°C (200°C fan). Boil the potato chunks in salted water for 8 minutes, drain, then shake them in the pan to rough up the edges.",
+        "Put 1½ tbsp of the oil in a roasting tin and heat it in the oven for 5 minutes. Carefully add the potatoes, turn them in the hot oil and roast for 20 minutes.",
+        "Meanwhile, wrap each chipolata in half a rasher of bacon. Toss the carrot and parsnip with the thyme and a pinch of salt. Turn the potatoes, add the carrot, parsnip and pigs in blankets to the tin and roast for 25 minutes more, until everything is golden and the sausages are cooked through.",
+        "When the roast has 10 minutes to go, boil the sprouts for 4–5 minutes until just tender, then drain and toss with the butter.",
+        "Season the turkey steak and fry it in the rest of the oil over a medium-high heat for 3–4 minutes each side, until golden and cooked through with no pink in the middle. Rest it on a warm plate.",
+        "Pour the stock into the turkey pan and scrape up the brown bits. Mix the cornflour with 1 tbsp cold water, stir it in with the cranberry sauce and bubble for 1–2 minutes until it thickens into a gravy. Season, then serve everything with the gravy poured over."
+      ]
+    },
+    {
+      id: "d444", title: "Mushroom, Chestnut & Cranberry Wellington for One", tags: ["vegetarian", "christmas"], cuisine: "UK", protein: "plant-based", prep: 20, cook: 40,
+      nutrition: { kcal: 1080, protein: 28, carbs: 108, fat: 59 },
+      ingredients: [
+        ing(200, "g", "chestnut mushrooms, finely chopped", "produce"), ing(0.5, "", "onion, finely chopped", "produce"),
+        ing(1, "", "garlic clove, crushed", "produce"), ing(50, "g", "cooked chestnuts, chopped", "store"),
+        ing(1, "tsp", "fresh thyme leaves", "produce"), ing(20, "g", "breadcrumbs", "store"),
+        ing(1, "tbsp", "cranberry sauce", "store"), ing(120, "g", "ready-rolled puff pastry", "bakery"),
+        ing(1, "", "egg, beaten", "dairy"), ing(100, "g", "Brussels sprouts, halved", "produce"),
+        ing(10, "g", "butter", "dairy"), ing(1, "tbsp", "olive oil", "store"),
+        ing(null, "pinch", "salt and pepper", "spice")
+      ],
+      steps: [
+        "Heat the oven to 200°C (180°C fan). Heat the oil in a frying pan and fry the onion over a medium heat for 5 minutes until soft. Add the mushrooms and garlic, turn up the heat and fry for 8–10 minutes until all their liquid has cooked off and they are dark and dry.",
+        "Take the pan off the heat and stir in the chestnuts, thyme, breadcrumbs and plenty of seasoning. Leave to cool for 10 minutes.",
+        "Lay the pastry on a lined baking tray. Spread the cranberry sauce down the middle, pile the mushroom mixture on top and press it into a log. Brush the edges with egg, fold the pastry over and press to seal, then turn it seam-side down. Brush with more egg and score the top.",
+        "Bake for 25–30 minutes until puffed and deep golden.",
+        "When the Wellington has 10 minutes to go, boil the sprouts for 4–5 minutes, drain and toss with the butter and some pepper. Slice the Wellington and serve with the sprouts."
+      ]
+    },
+    {
+      id: "d445", title: "Duck Breast with Orange & Port Sauce and Spiced Red Cabbage", tags: ["christmas"], cuisine: "UK", protein: "duck", prep: 10, cook: 30,
+      nutrition: { kcal: 800, protein: 39, carbs: 83, fat: 29 },
+      ingredients: [
+        ing(1, "", "duck breast", "meat"), ing(200, "g", "new potatoes, halved", "produce"),
+        ing(150, "g", "red cabbage, shredded", "produce"), ing(0.5, "", "apple, grated", "produce"),
+        ing(1, "tbsp", "red wine vinegar", "store"), ing(1, "tsp", "sugar", "store"),
+        ing(null, "pinch", "ground cinnamon", "spice"), ing(1, "", "orange, zested and juiced", "produce"),
+        ing(50, "ml", "port (or red wine)", "store"), ing(75, "ml", "chicken stock", "store"),
+        ing(1, "tsp", "honey", "store"), ing(10, "g", "butter", "dairy"),
+        ing(null, "pinch", "salt and pepper", "spice")
+      ],
+      steps: [
+        "Put the cabbage, apple, vinegar, sugar, cinnamon and 4 tbsp water in a small pan with a pinch of salt. Cover and cook gently for 25 minutes, stirring now and then, until soft and glossy.",
+        "Boil the potatoes for 15–18 minutes until tender, then drain.",
+        "Meanwhile, score the duck skin in a criss-cross, season well and put it skin-side down in a cold frying pan. Turn the heat to medium and cook for 8–10 minutes until the fat has run and the skin is crisp. Pour most of the fat into a cup, turn the duck and cook for 4–5 minutes more for pink, longer if you like it cooked through. Rest it on a board for 5 minutes.",
+        "Fry the potatoes in 1 tbsp of the saved duck fat in a second pan for 5 minutes, crushing them lightly, until crisp at the edges.",
+        "Pour any remaining fat out of the duck pan, add the port and bubble for 1 minute, then add the orange juice, stock and honey and boil for 3–4 minutes until syrupy. Stir in the butter and half the zest.",
+        "Slice the duck and serve with the potatoes and cabbage, with the sauce spooned over and the rest of the zest on top."
+      ]
+    },
+    {
+      id: "d446", title: "Honey & Mustard Glazed Gammon with Roast Parsnips and Sprouts", tags: ["christmas"], cuisine: "UK", protein: "pork", prep: 10, cook: 30,
+      nutrition: { kcal: 810, protein: 47, carbs: 87, fat: 33 },
+      ingredients: [
+        ing(1, "", "gammon steak (about 170 g)", "meat"), ing(1, "tbsp", "honey", "store"),
+        ing(1, "tsp", "wholegrain mustard", "store"), ing(1, "", "parsnip, quartered lengthways", "produce"),
+        ing(200, "g", "new potatoes, halved", "produce"), ing(100, "g", "Brussels sprouts, halved", "produce"),
+        ing(1.5, "tbsp", "vegetable oil", "store"), ing(1, "tsp", "fresh thyme leaves", "produce"),
+        ing(null, "pinch", "salt and pepper", "spice")
+      ],
+      steps: [
+        "Heat the oven to 220°C (200°C fan). Toss the parsnip and potatoes with 1 tbsp of the oil, the thyme and some salt and pepper in a roasting tin, and roast for 15 minutes.",
+        "Add the sprouts, turn everything and roast for 15 minutes more until golden.",
+        "Mix the honey and mustard. Snip the fat on the gammon every few centimetres so it doesn't curl, then fry it in the rest of the oil over a medium-high heat for 3–4 minutes each side until cooked through.",
+        "Brush the honey mustard over the gammon and cook for 30 seconds each side until sticky and glazed. Serve with the roast vegetables, with any pan juices poured over."
+      ]
+    },
+    {
+      id: "d447", title: "Boxing Day Turkey Curry", tags: ["christmas"], cuisine: "UK", protein: "turkey", prep: 10, cook: 25,
+      nutrition: { kcal: 730, protein: 47, carbs: 80, fat: 24 },
+      ingredients: [
+        ing(120, "g", "cooked turkey, shredded (or a cooked chicken breast)", "meat"), ing(0.5, "", "onion, sliced", "produce"),
+        ing(1, "", "garlic clove, crushed", "produce"), ing(1, "tsp", "fresh ginger, grated", "produce"),
+        ing(1.5, "tbsp", "tikka curry paste", "store"), ing(200, "g", "chopped tomatoes", "store"),
+        ing(100, "ml", "chicken stock", "store"), ing(2, "tbsp", "natural yoghurt", "dairy"),
+        ing(40, "g", "baby spinach", "produce"), ing(75, "g", "basmati rice", "store"),
+        ing(1, "tbsp", "vegetable oil", "store"), ing(null, "small handful", "fresh coriander, chopped", "produce")
+      ],
+      steps: [
+        "Rinse the rice and cook it in plenty of boiling water for 10–12 minutes until tender, then drain.",
+        "Meanwhile, fry the onion in the oil over a medium heat for 8 minutes until soft and golden. Add the garlic, ginger and curry paste and fry for 1 minute.",
+        "Add the tomatoes and stock and simmer for 8 minutes until thickened. Stir in the turkey and spinach and simmer for 3–4 minutes, until the turkey is piping hot all the way through.",
+        "Take the pan off the heat, stir in the yoghurt and season. Serve over the rice, scattered with the coriander."
+      ]
+    },
+    {
+      id: "d448", title: "Bubble and Squeak with Crispy Bacon and a Fried Egg", tags: ["christmas"], cuisine: "UK", protein: "pork", prep: 10, cook: 20,
+      nutrition: { kcal: 650, protein: 23, carbs: 58, fat: 37 },
+      ingredients: [
+        ing(250, "g", "floury potato, peeled and chopped (or leftover cooked potatoes)", "produce"),
+        ing(100, "g", "Brussels sprouts, shredded (or leftover cooked sprouts or cabbage)", "produce"),
+        ing(0.5, "", "onion, finely chopped", "produce"), ing(2, "rashers", "streaky bacon", "meat"),
+        ing(1, "", "egg", "dairy"), ing(15, "g", "butter", "dairy"),
+        ing(1, "tsp", "vegetable oil", "store"), ing(null, "pinch", "salt and pepper", "spice")
+      ],
+      steps: [
+        "If you're starting from raw, boil the potatoes for 12–15 minutes until tender, then drain and leave them to steam dry for a few minutes.",
+        "Fry the bacon in a non-stick frying pan until crisp, then lift it out and keep it warm. Add half the butter, the onion and the sprouts to the bacon fat and fry for 5 minutes until softened and catching at the edges.",
+        "Add the potatoes, crush them roughly into the greens with a fork, season well and press into a flat cake. Fry for 5 minutes without moving it until a crust forms, then turn it over in sections and cook for 5 minutes more.",
+        "Meanwhile, fry the egg in the rest of the butter and the oil in a small pan. Serve the bubble and squeak with the bacon and egg on top."
+      ]
+    },
+    {
+      id: "d449", title: "Turkey, Brie & Cranberry Toastie with Rocket", tags: ["quick", "christmas"], cuisine: "UK", protein: "turkey", prep: 5, cook: 8,
+      nutrition: { kcal: 650, protein: 36, carbs: 51, fat: 34 },
+      ingredients: [
+        ing(2, "slices", "sourdough or bloomer bread", "bakery"), ing(70, "g", "cooked turkey, sliced", "meat"),
+        ing(40, "g", "brie, sliced", "dairy"), ing(1, "tbsp", "cranberry sauce", "store"),
+        ing(15, "g", "butter, softened", "dairy"), ing(20, "g", "rocket", "produce"),
+        ing(1, "tsp", "olive oil", "store"), ing(null, "pinch", "salt and pepper", "spice")
+      ],
+      steps: [
+        "Butter the outside of both slices of bread. Spread the cranberry sauce on the inside of one, layer on the turkey and brie, and top with the other slice, buttered side out.",
+        "Cook in a frying pan over a medium-low heat for 3–4 minutes each side, pressing down with a spatula, until golden, the brie has melted and the turkey is hot through.",
+        "Toss the rocket with the oil and a pinch of salt and serve it alongside."
+      ]
+    },
+    {
+      id: "d450", title: "Leftover Turkey & Ham Pie for One", tags: ["christmas"], cuisine: "UK", protein: "turkey", prep: 15, cook: 30,
+      nutrition: { kcal: 1020, protein: 61, carbs: 57, fat: 60 },
+      ingredients: [
+        ing(100, "g", "cooked turkey, chopped", "meat"), ing(2, "slice", "ham, chopped", "meat"),
+        ing(0.5, "", "leek, sliced", "produce"), ing(15, "g", "butter", "dairy"),
+        ing(1, "tbsp", "plain flour", "store"), ing(150, "ml", "chicken stock", "store"),
+        ing(2, "tbsp", "crème fraîche", "dairy"), ing(1, "tsp", "wholegrain mustard", "store"),
+        ing(40, "g", "frozen peas", "frozen"), ing(100, "g", "ready-rolled puff pastry", "bakery"),
+        ing(1, "", "egg, beaten", "dairy"), ing(null, "pinch", "salt and pepper", "spice")
+      ],
+      steps: [
+        "Heat the oven to 200°C (180°C fan). Melt the butter in a pan and cook the leek for 5 minutes until soft. Stir in the flour for 1 minute, then gradually stir in the stock until smooth and thick.",
+        "Stir in the crème fraîche, mustard, turkey, ham and peas, season and simmer for 2 minutes. Spoon into a small pie dish or large ramekin (about 500 ml) and leave to cool for 5 minutes.",
+        "Cut the pastry to fit the top of the dish with a little overhang, lay it over the filling and press the edges down. Brush with egg and cut a small slit in the top.",
+        "Bake for 20–25 minutes until the pastry is puffed and golden and the filling is bubbling."
+      ]
+    },
+    {
+      id: "d451", title: "Brussels Sprout, Bacon & Chestnut Spaghetti", tags: ["quick", "christmas"], cuisine: "UK", protein: "pork", prep: 10, cook: 12,
+      nutrition: { kcal: 810, protein: 30, carbs: 93, fat: 37 },
+      ingredients: [
+        ing(90, "g", "spaghetti", "store"), ing(2, "rashers", "streaky bacon, chopped", "meat"),
+        ing(120, "g", "Brussels sprouts, finely shredded", "produce"), ing(40, "g", "cooked chestnuts, roughly chopped", "store"),
+        ing(1, "", "garlic clove, sliced", "produce"), ing(20, "g", "parmesan, grated", "dairy"),
+        ing(0.5, "", "lemon, zested and juiced", "produce"), ing(1, "tbsp", "olive oil", "store"),
+        ing(null, "pinch", "chilli flakes", "spice"), ing(null, "pinch", "salt and pepper", "spice")
+      ],
+      steps: [
+        "Cook the spaghetti in a large pan of salted boiling water for 10–12 minutes until just tender. Save a mugful of the water before draining.",
+        "Meanwhile, fry the bacon in the oil over a medium-high heat for 4 minutes until crisp. Add the sprouts and fry for 4–5 minutes until bright green and catching at the edges, then add the garlic, chestnuts and chilli flakes for 1 minute.",
+        "Toss in the drained spaghetti with the lemon zest, a squeeze of the juice, most of the parmesan and a splash of the pasta water until glossy. Season and serve with the rest of the parmesan."
+      ]
     }
 
   ];
 })();
+
 
 // Swaps for ingredients that aren't in every supermarket. Each entry matches
 // ingredient lines exactly (lower case). "use" lists what goes on the shopping
@@ -8363,10 +8530,19 @@ window.SOLO_COOK_NOTES = [
 // season's dishes a little (see seasonWeight in app.js); nothing is excluded.
 window.SOLO_SEASON = (function () {
   var s = {};
-  "d3 d5 d8 d10 d15 d19 d23 d25 d30 d34 d39 d41 d44 d48 d50 d73 d80 d81 d88 d95 d96 d101 d104 d107 d114 d117 d119 d120 d124 d128 d130 d141 d145 d146 d147 d153 d155 d157 d164 d169 d172 d174 d176 d182 d184 d189 d192 d194 d195 d197 d198 d199 d201 d207 d212 d215 d217 d219 d223 d224 d225 d227 d228 d230 d238 d240 d248 d251 d252 d253 d254 d257 d263 d267 d269 d272 d276 d284 d292 d296 d298 d302 d304 d307 d308 d310 d311 d312 d316 d325 d332 d334 d336 d341 d342 d344 d352 d353 d355 d361 d364 d365 d366 d369 d373 d374 d375 d376 d380 d381 d382 d383 d385 d386 d387 d391 d393 d394 d395 d396 d399 d400 d401 d402 d408 d411 d412 d416 d417 d418 d422 d423 d424 d425 d426 d433 d434 d435 d436 d437 d440 d442".split(" ").forEach(function (id) { s[id] = "warm"; });
+  "d3 d5 d8 d10 d15 d19 d23 d25 d30 d34 d39 d41 d44 d48 d50 d73 d80 d81 d88 d95 d96 d101 d104 d107 d114 d117 d119 d120 d124 d128 d130 d141 d145 d146 d147 d153 d155 d157 d164 d169 d172 d174 d176 d182 d184 d189 d192 d194 d195 d197 d198 d199 d201 d207 d212 d215 d217 d219 d223 d224 d225 d227 d228 d230 d238 d240 d248 d251 d252 d253 d254 d257 d263 d267 d269 d272 d276 d284 d292 d296 d298 d302 d304 d307 d308 d310 d311 d312 d316 d325 d332 d334 d336 d341 d342 d344 d352 d353 d355 d361 d364 d365 d366 d369 d373 d374 d375 d376 d380 d381 d382 d383 d385 d386 d387 d391 d393 d394 d395 d396 d399 d400 d401 d402 d408 d411 d412 d416 d417 d418 d422 d423 d424 d425 d426 d433 d434 d435 d436 d437 d440 d442 d443 d444 d445 d446 d447 d448 d449 d450 d451".split(" ").forEach(function (id) { s[id] = "warm"; });
   "d24 d32 d35 d37 d42 d45 d110 d111 d118 d129 d134 d139 d149 d171 d173 d175 d177 d229 d256 d259 d260 d262 d264 d318 d323 d329 d340 d354 d356 d360 d368 d371 d379 d397 d405".split(" ").forEach(function (id) { s[id] = "light"; });
   return s;
 })();
+// Christmas dinners (tag "christmas") are only picked automatically (planner
+// fills, weekly email, social posts, home page) from mid-November to
+// Twelfth Night. They can always be found and added by hand.
+window.SOLO_IN_SEASON = function (r, d) {
+  if (!r || !r.tags || r.tags.indexOf("christmas") === -1) return true;
+  d = d || new Date();
+  var m = d.getMonth() + 1, day = d.getDate();
+  return (m === 11 && day >= 15) || m === 12 || (m === 1 && day <= 6);
+};
 // Which way the year leans today: "warm" in late autumn and winter, "light"
 // in late spring and summer, "" in between. UK months.
 window.SOLO_SEASON_NOW = function (d) {

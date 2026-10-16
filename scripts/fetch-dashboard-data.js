@@ -771,7 +771,7 @@ async function fetchCloudflare() {
     let account = process.env.CF_ACCOUNT_ID;
     if (!account) {
       const a = await (await fetch('https://api.cloudflare.com/client/v4/accounts', { headers })).json();
-      if (!a.success || !a.result || !a.result.length) throw new Error('The token can\'t see a Cloudflare account: ' + JSON.stringify(a.errors || []));
+      if (!a.success || !a.result || !a.result.length) throw new Error('Add your Cloudflare account ID as the GitHub secret CF_ACCOUNT_ID (this token can\'t look it up).');
       account = a.result[0].id;
     }
     const day = (n) => new Date(Date.now() - n * DAY_MS).toISOString().slice(0, 10);

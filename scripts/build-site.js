@@ -770,11 +770,30 @@ function demoHtml(rel) {
   // All three sets are in the page; a tiny script shows the one for today's
   // date (warming from October to March, light from May to September), so it
   // keeps up with the seasons without the site being rebuilt.
-  var TONIGHT = {
-    warm: pick(["d25", "d39", "d34", "d48"]),
-    light: pick(["d24", "d149", "d35", "d45"]),
-    any: pick(["d1", "d17", "d5", "d12"])
+  // Each set is a pool of weeknight dinners (with photos, 35 minutes or less),
+  // spread across cuisines. A tiny script shows four of them, moving on by
+  // four each day, so the section changes daily without a rebuild. 32 in a
+  // pool means an eight-day cycle, so the same weekday doesn't repeat.
+  var tonightPool = function (season) {
+    var byC = {}, order = [];
+    RECIPES.forEach(function (r) {
+      if (!r.photo || !IN_SEASON(r) || total(r) > 35) return;
+      if (season !== "any" && SEASON[r.id] !== season) return;
+      if (!byC[r.cuisine]) { byC[r.cuisine] = []; order.push(r.cuisine); }
+      byC[r.cuisine].push(r);
+    });
+    var out = [], round = 0, added = true;
+    while (out.length < 32 && added) {
+      added = false;
+      order.forEach(function (c) { if (out.length < 32 && byC[c][round]) { out.push(byC[c][round]); added = true; } });
+      round++;
+    }
+    return out;
   };
+  var TONIGHT = { warm: tonightPool("warm"), light: tonightPool("light"), any: tonightPool("any") };
+  var TONIGHT_SCRIPT = "<script>(function(){var d=new Date(),day=Math.floor(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate())/864e5);" +
+    "document.querySelectorAll(\"[data-tonight]\").forEach(function(g){var c=g.children,n=c.length,s=(day*4)%n,i;" +
+    "for(i=0;i<n;i++){var k=(i-s+n)%n;c[i].hidden=k>=4;}});})();</script>";
   var SEASON_PICK = "(function(){var m=new Date().getMonth()+1;return m>=10||m<=3?\"warm\":m>=5&&m<=9?\"light\":\"any\";})()";
   var seasonScript = "<script>(function(){var s=" + SEASON_PICK + ";document.querySelectorAll(\"[data-season-set]\").forEach(function(e){e.hidden=e.getAttribute(\"data-season-set\")!==s;});})();</script>";
   var week = pick(["d6", "d25", "d11", "d2", "d15", "d27", "d19"]);
@@ -832,8 +851,8 @@ function demoHtml(rel) {
     '<section class="wrap section home-tonight">' +
     sectionHead("", "Cook something tonight", "recipes/", "All " + RECIPES.length + " recipes") +
     ["any", "warm", "light"].map(function (k) {
-      return '<div class="rgrid rgrid-big" data-season-set="' + k + '"' + (k === "any" ? "" : " hidden") + ">" + TONIGHT[k].map(function (r) { return card(r, rel); }).join("") + "</div>";
-    }).join("") +
+      return '<div class="rgrid rgrid-big" data-tonight data-season-set="' + k + '"' + (k === "any" ? "" : " hidden") + ">" + TONIGHT[k].map(function (r, i) { return card(r, rel, i >= 4 ? " hidden" : ""); }).join("") + "</div>";
+    }).join("") + TONIGHT_SCRIPT +
     '<nav class="mood" aria-label="Browse by mood"><span class="eyebrow">Or in the mood for</span><ul>' +
     ["warming-dinners-for-one", "light-dinners-for-one"].map(function (slug) {
       var c = COLLECTIONS.filter(function (x) { return x.slug === slug; })[0];

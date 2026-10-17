@@ -101,7 +101,7 @@
     top: env(safe-area-inset-top, 0px);
     z-index: 5;
     background: var(--bg);
-    padding-block: 10px 18px;
+    padding-block: 10px 0;
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
@@ -172,7 +172,7 @@
   }
   .overview.cols-3 { grid-template-columns: repeat(3, 1fr); }
   @media (max-width: 960px) { .overview { grid-template-columns: repeat(2, 1fr); } }
-  .tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--border); margin: 0 0 22px; }
+  .tabs { display: flex; gap: 4px; flex-basis: 100%; margin: 4px 0 0; }
   .tabs a { padding: 10px 14px; color: var(--ink-muted); text-decoration: none; font-weight: 600; font-size: 14px; border-bottom: 2px solid transparent; margin-bottom: -1px; }
   .tabs a[aria-current="page"] { color: var(--ink); border-bottom-color: var(--accent); }
   .live-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--good); margin-right: 6px; vertical-align: 1px; animation: livepulse 2s ease-in-out infinite; }
@@ -372,7 +372,12 @@
   .jump[hidden] { display: none; }
   .jump a { padding: 6px 12px; border-radius: 999px; text-decoration: none; color: var(--ink); background: var(--surface); font-size: 14px; border: 1px solid var(--border); }
   .jump a:hover { border-color: currentColor; }
-  .group { margin-bottom: 28px; scroll-margin-top: 150px; }
+  /* On phones the sticky header stays short: section chips and tabs scroll sideways on one line. */
+  @media (max-width: 640px) {
+    .jump, .tabs { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
+    .jump a, .tabs a { white-space: nowrap; flex: none; }
+  }
+  .group { margin-bottom: 28px; scroll-margin-top: 200px; }
   .group-head { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; padding-bottom: 10px; margin-bottom: 18px; border-bottom: 2px solid currentColor; }
   .group-title { font-size: 26px; font-weight: 600; margin: 0; }
   .group-sub { color: var(--ink-muted); font-size: 14px; }
@@ -413,13 +418,13 @@
         <button class="ghost" id="signOutBtn" type="button">Sign out</button>
       </div>
       <nav class="jump" aria-label="Sections"><a href="#g-money">Money</a><a href="#g-visitors">Visitors</a><a href="#g-people">People</a><a href="#g-quality">Recipes, email and health</a><a href="#g-tools">Tools</a></nav>
+      <!-- Inside the sticky header, so the tabs stay at the top while scrolling. -->
+      <nav class="tabs" aria-label="Dashboard">
+        <a href="#solo" id="tabSolo" aria-current="page">Solo Supper</a>
+        <a href="#sites" id="tabSites">Other sites</a>
+        <a href="#forecast" id="tabForecast">Forecast</a>
+      </nav>
     </header>
-
-    <nav class="tabs" aria-label="Dashboard">
-      <a href="#solo" id="tabSolo" aria-current="page">Solo Supper</a>
-      <a href="#sites" id="tabSites">Other sites</a>
-      <a href="#forecast" id="tabForecast">Forecast</a>
-    </nav>
 
     <div id="viewSolo">
     <div class="banner" id="waitingBanner">

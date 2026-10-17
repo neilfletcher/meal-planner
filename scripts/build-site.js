@@ -910,7 +910,7 @@ function demoHtml(rel) {
     '<ul class="kc-badges" aria-hidden="true">' + [1, 10, 25, 50, 100].map(function (m, i) { return '<li class="' + (i < 2 ? "is-got" : m === 25 ? "is-gift" : "") + '"><span>' + m + "</span></li>"; }).join("") + "</ul>" +
     '<a class="text-link" href="plan/">Start your collection</a></div>' +
     '<div class="more-card books-card"><div><span class="eyebrow">The cookbooks</span><h2 class="display-s">Four books of dinners for one</h2>' +
-    "<p>Every recipe planned into weeks that share their shopping, with a photo of every dish. PDF or paperback.</p>" +
+    "<p>Every recipe planned into weeks that share their shopping, so nothing goes to waste. PDF or paperback.</p>" +
     '<a class="text-link" href="books/">See inside the books</a></div>' +
     '<div class="bc-pages"><img src="img/books/asia-cover.webp" alt="Solo Supper: Asia cover" width="600" height="960" loading="lazy">' +
     '<img src="img/books/asia-p2.webp" alt="A week of dinners, from Solo Supper: Asia" width="880" height="1100" loading="lazy"></div></div>' +
@@ -1355,7 +1355,7 @@ function amazonButtons(b) {
 }
 (function () {
   var rel = "../";
-  var samples = ["Contents", "A week of dinners", "Every dish photographed", "Measured for one"];
+  var samples = ["Contents", "A week of dinners", "Sample recipe pages", "Measured for one"];
   var bookCard = function (b, i) {
     return '<article class="book" id="' + b.id + '">' +
       '<div class="book-cover"><img src="' + rel + "img/books/" + b.id + '-cover.webp" alt="Solo Supper: ' + esc(b.name) + ' book cover" width="600" height="960" loading="' + (i ? "lazy" : "eager") + '"></div>' +
@@ -1374,7 +1374,7 @@ function amazonButtons(b) {
   var body =
     '<section class="wrap page-head"><div class="page-head-text"><span class="eyebrow">The Solo Supper cookbooks</span>' +
     '<h1 class="display-m">Four books of <em>dinners for one</em>.</h1>' +
-    '<p class="lead">Every recipe measured for one, and planned into weeks that share their ingredients, so the coconut milk you open on Monday gets finished on Thursday. Each week has its shopping list, what will be left over and what to do with it, and a photo of every dish.</p>' +
+    '<p class="lead">Every recipe measured for one, and planned into weeks that share their ingredients, so the coconut milk you open on Monday gets finished on Thursday. Each week has its shopping list, what will be left over and what to do with it.</p>' +
     '<div class="btn-row"><button type="button" class="btn btn-ink btn-lg" data-buy="all">All four PDFs &pound;' + BOOK_BUNDLE_PRICE + '</button><a class="btn btn-outline btn-lg" href="#pro-books">Free with Pro</a></div>' +
     '<label class="nl-tick"><input type="checkbox" data-nl-tick> Also send me the free weekly email (two dinners for one that share a pack, every Saturday)</label>' +
     '<p class="small muted" data-buy-msg="all"></p></div></section>' +

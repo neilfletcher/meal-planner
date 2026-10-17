@@ -177,7 +177,7 @@ async function open() {
           BRAND + '<div class="count">' + i + "/" + n + "</div>", 1080, 1350, path.join(dir, prefix + "-" + i + ".jpg"));
       };
       files.push(await page(2, "Inside", "Planned in weeks", "Each week has its shopping list and what's left over, so the other half of the pack gets used.", 2));
-      files.push(await page(4, "Inside", "Every recipe measured for one", "No dividing by four. Every dish photographed.", 3));
+      files.push(await page(4, "Inside", "Every recipe measured for one", "No dividing by four, and no half a pack left over.", 3));
       files.push(await shot('<div class="pad night" style="height:100%;padding-top:200px"><div class="eyebrow" style="color:#F2B661">' + (v.amazon ? "On Amazon" : "Download today") + '</div>' +
         '<h1 style="font-size:84px">' + esc(v.cta) + '.</h1><div class="sub" style="color:#CDD2CB">' + esc(v.amazon ? "Search Solo Supper on Amazon, or follow the link in our bio." : "Read on your phone or tablet, or print the pages you want. The recipes stay free on the site.") + '</div><div class="cta">' + (v.amazon ? "Link in bio" : "solosupper.co.uk/books") + "</div></div>" +
         '<div class="brand" style="color:#F7F5F0">' + logo("#F7F5F0") + "Solo Supper</div>", 1080, 1350, path.join(dir, prefix + "-4.jpg")));

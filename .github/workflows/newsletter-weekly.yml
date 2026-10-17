@@ -69,9 +69,15 @@ jobs:
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
 
+      # The live site serves the committed pages, so build them here and
+      # commit them (an empty commit alone doesn't make the /weekly/ pages).
       - name: Rebuild the site so this week's email shows at /weekly/
         run: |
+          node scripts/build-site.js
           git config user.name "Solo Supper autopilot"; git config user.email "hello@solosupper.co.uk"
-          git commit -q --allow-empty -m "Weekly email: on the site"
-          git pull -q --rebase && git push -q
+          git add -A
+          git diff --cached --quiet || (git commit -q -m "Weekly email: on the site" && git pull -q --rebase && git push -q)

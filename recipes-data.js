@@ -611,8 +611,8 @@ window.SOLO_RECIPES = (function () {
       steps: [
         "Heat a frying pan over medium-high heat and cook the beef mince for 5–6 minutes, breaking it up, until browned.",
         "Stir in the taco seasoning with a splash of water and simmer for 2 minutes.",
-        "Warm the taco shells according to the packet instructions.",
-        "Fill with the spiced beef, pico de gallo and grated cheese."
+        "Warm the taco shells according to the packet instructions, or use soft flour tortillas instead, warmed in a dry pan for 30 seconds a side.",
+        "Fill with the spiced beef, pico de gallo and grated cheese. With soft tortillas, fold them in half around the filling."
       ]
     },
     {

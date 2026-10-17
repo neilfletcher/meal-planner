@@ -4137,9 +4137,13 @@
       if (!isNativeApp() && paywallBackdrop && !paywallBackdrop.hidden) renderProPaywall(lastProReason);
     }
   }
+  // Keeps this browser's "on the list" flag in step with Kit, so the website
+  // stops offering the sign-up to subscribers. A "yes" is rechecked once a
+  // day; anything else on every planner visit, so joining on another device
+  // or from an email shows up straight away.
   function syncNewsletterFlag() {
     var last = +lsGet("soloSupper.newsletterChecked") || 0;
-    if (isNativeApp() || Date.now() - last < 864e5) return;
+    if (isNativeApp() || (lsGet("soloSupper.newsletter") === "yes" && Date.now() - last < 864e5)) return;
     lsSet("soloSupper.newsletterChecked", String(Date.now()));
     api("newsletter", {}).then(function (j) { nlRemember(nlRecent() || j.state); }).catch(function () { /* try again tomorrow */ });
   }

@@ -16,7 +16,12 @@
       ],
       "cover": null,
       "recipe": "d32",
-      "recipes": null
+      "recipes": null,
+      "buffer": {
+        "id": "6ad3827ddd83363c4dd5fbba",
+        "dueAt": "2026-10-18T11:30:00.000Z",
+        "queuedAt": "2026-10-17T14:13:17.639Z"
+      }
     },
     {
       "key": "real-tacos-ig",
@@ -34,7 +39,12 @@
       ],
       "cover": null,
       "recipe": "d32",
-      "recipes": null
+      "recipes": null,
+      "buffer": {
+        "id": "6ad3827edd83363c4dd5fbe6",
+        "dueAt": "2026-10-18T17:30:00.000Z",
+        "queuedAt": "2026-10-17T14:13:18.347Z"
+      }
     },
     {
       "key": "real-chicken-pin",
@@ -50,7 +60,12 @@
       ],
       "cover": null,
       "recipe": "d6",
-      "recipes": null
+      "recipes": null,
+      "buffer": {
+        "id": "6ad3827e0b0d72757adde66b",
+        "dueAt": "2026-10-21T11:30:00.000Z",
+        "queuedAt": "2026-10-17T14:13:18.822Z"
+      }
     },
     {
       "key": "real-chicken-ig",
@@ -68,7 +83,12 @@
       ],
       "cover": null,
       "recipe": "d6",
-      "recipes": null
+      "recipes": null,
+      "buffer": {
+        "id": "6ad3827f0b0d72757adde6b6",
+        "dueAt": "2026-10-21T17:30:00.000Z",
+        "queuedAt": "2026-10-17T14:13:19.548Z"
+      }
     },
     {
       "key": "real-salmon-pin",
@@ -84,7 +104,12 @@
       ],
       "cover": null,
       "recipe": "d2",
-      "recipes": null
+      "recipes": null,
+      "buffer": {
+        "id": "6ad3827f0b0d72757adde6f5",
+        "dueAt": "2026-10-25T12:30:00.000Z",
+        "queuedAt": "2026-10-17T14:13:20.003Z"
+      }
     },
     {
       "key": "real-salmon-ig",
@@ -102,7 +127,12 @@
       ],
       "cover": null,
       "recipe": "d2",
-      "recipes": null
+      "recipes": null,
+      "buffer": {
+        "id": "6ad38280938409f1d08bfba2",
+        "dueAt": "2026-10-25T18:30:00.000Z",
+        "queuedAt": "2026-10-17T14:13:20.689Z"
+      }
     }
   ]
 }

@@ -198,15 +198,48 @@
   });
 
   /* ---------- the weekly email sign-up (footer, recipe pages) ---------- */
+  // Already on the list (this browser, or checked with Kit): say so instead of asking.
+  function showJoined(f) {
+    f.classList.add("is-joined");
+    f.querySelector(".nl-label").textContent = "You\u2019re on the weekly email list. Thanks for reading.";
+    f.querySelector(".nl-msg").innerHTML = 'Your free <a href="' + BASE + 'free/low-waste-week.pdf" download data-free-week>low-waste week (PDF)</a>. To stop the emails, use the unsubscribe link in any of them, or the switch in the planner\u2019s <a href="' + BASE + 'plan/">settings</a>.';
+  }
+  // Signed in but not marked as on the list in this browser: ask Kit once per
+  // visit (it may have joined on another device or from an email), then
+  // update the forms on this page. Only runs for signed-in people.
+  (function checkSignedInSubscriber() {
+    var forms = document.querySelectorAll("form[data-newsletter]");
+    if (!forms.length || !lsGet("soloSupper.stateOwner") || lsGet("soloSupper.newsletter") === "yes") return;
+    try { if (sessionStorage.getItem("soloSupper.nlAsked")) return; sessionStorage.setItem("soloSupper.nlAsked", "1"); } catch (e) { return; }
+    var load = function (src) { return new Promise(function (ok, no) { var sc = document.createElement("script"); sc.src = src; sc.onload = ok; sc.onerror = no; document.head.appendChild(sc); }); };
+    var fb = "https://www.gstatic.com/firebasejs/10.13.2/";
+    var go = function () {
+      (window.firebase ? Promise.resolve() : load(fb + "firebase-app-compat.js").then(function () { return load(fb + "firebase-auth-compat.js"); }).then(function () { return load(fb + "firebase-firestore-compat.js"); }).then(function () { return load(BASE + "firebase-config.js"); }))
+        .then(function () {
+          if (!window.firebaseAuth) return;
+          var stop = window.firebaseAuth.onAuthStateChanged(function (user) {
+            stop();
+            if (!user) return;
+            user.getIdToken().then(function (tok) {
+              return fetch(BASE + "api/newsletter", { method: "POST", headers: { "content-type": "application/json", authorization: "Bearer " + tok }, body: "{}" });
+            }).then(function (r) { return r.ok ? r.json() : null; }).then(function (j) {
+              if (!j) return;
+              lsSet("soloSupper.newsletter", j.state === "active" ? "yes" : "no");
+              lsSet("soloSupper.newsletterChecked", String(Date.now()));
+              if (j.state === "active") {
+                document.querySelectorAll("form[data-newsletter]").forEach(function (f) { if (!f.classList.contains("is-done")) showJoined(f); });
+                document.querySelectorAll(".nl-tick").forEach(function (t) { t.hidden = true; t.querySelector("input").checked = false; });
+              }
+            }).catch(function () { /* try again next visit */ });
+          });
+        }).catch(function () { /* scripts blocked: the planner still checks */ });
+    };
+    if ("requestIdleCallback" in window) window.requestIdleCallback(go, { timeout: 3000 }); else setTimeout(go, 1500);
+  })();
   if (lsGet("soloSupper.newsletter") === "yes") document.querySelectorAll(".nl-tick").forEach(function (t) { t.hidden = true; t.querySelector("input").checked = false; });
   document.querySelectorAll("form[data-newsletter]").forEach(function (f) {
     var input = f.querySelector('input[type="email"]'), btn = f.querySelector("button"), msg = f.querySelector(".nl-msg");
-    if (lsGet("soloSupper.newsletter") === "yes") {
-      // Already on the list (this browser, or checked in the planner): say so instead of asking.
-      f.classList.add("is-joined");
-      f.querySelector(".nl-label").textContent = "You\u2019re on the weekly email list. Thanks for reading.";
-      f.querySelector(".nl-msg").innerHTML = 'Your free <a href="' + BASE + 'free/low-waste-week.pdf" download data-free-week>low-waste week (PDF)</a>. To stop the emails, use the unsubscribe link in any of them, or the switch in the planner\u2019s <a href="' + BASE + 'plan/">settings</a>.';
-    }
+    if (lsGet("soloSupper.newsletter") === "yes") showJoined(f);
     f.addEventListener("submit", function (ev) {
       ev.preventDefault();
       var email = input.value.trim();

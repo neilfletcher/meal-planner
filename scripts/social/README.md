@@ -11,6 +11,19 @@ them in Buffer. The plan behind it is the "Solo Supper social autopilot" doc.
 | Tuesday, 18:30 | Instagram | A 5-slide carousel: the dish, ingredients, method, the pack it shares with another recipe, and a call to action |
 | Friday, 18:30 | Instagram, and Pinterest at 20:00 | An 8-second vertical video: a slow push-in on the recipe photo, then the title and link are added (Veo animation only if the SOCIAL_USE_VEO variable is true) |
 
+## Extra dated posts (cookbooks and Christmas)
+
+`campaigns.js` lists one-off posts with their date and UK time: the cookbook
+PDFs, the cookbooks on Amazon (only books with an Amazon link in
+`scripts/books-data.js` are shown) and Christmas. They go on Instagram on
+Sunday or Wednesday at 18:30 and on Pinterest at 12:30, clear of the weekly
+slots. The `extras` job in the workflow makes each one (`make-extras.js`) and
+queues it in Buffer during the 10 days before it is due, on the Saturday run
+and again on Wednesday, so a failed run is picked up. Each post gets its own
+folder on the `social-media` branch (`<date>-<id>/`), pruned with the weeks.
+To preview them all locally:
+`CHROMIUM_PATH=... node make-extras.js --out ../../extras-preview --all`.
+
 Recipes are not repeated within 12 weeks (`social/history.json`). The links
 page for the Instagram bio, `/links/`, is rewritten each week.
 

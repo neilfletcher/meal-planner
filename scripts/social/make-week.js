@@ -156,7 +156,10 @@ function writeLinksPage(data, history) {
     "background:#fff;border:1px solid #E2DED4;border-radius:16px;padding:10px;margin:10px 0}li img{width:96px;height:72px;object-fit:cover;border-radius:10px;flex:none}" +
     "li b{font-family:Newsreader,Georgia,serif;font-weight:500;font-size:19px;line-height:1.2;display:block}li span{font-size:13px;color:#636A63}</style>\n</head>\n<body><main>\n" +
     "<h1>Solo Supper</h1><p>Dinners for one, planned so nothing goes to waste.</p>\n" +
-    "<a class=\"btn\" href=\"../plan/" + utm + "\">Plan your week</a><a class=\"btn alt\" href=\"../recipes/" + utm + "\">All " + data.recipes.length + " recipes</a>\n<ul>\n" +
+    "<a class=\"btn\" href=\"../plan/" + utm + "\">Plan your week</a><a class=\"btn alt\" href=\"../recipes/" + utm + "\">All " + data.recipes.length + " recipes</a>\n" +
+    // Christmas collections while they are in season (as the site), and the cookbooks always, for the extra posts in campaigns.js.
+    (U.inSeason({ tags: ["christmas"] }, WEEK) ? "<a class=\"btn alt\" href=\"../collections/christmas-dinner-for-one/" + utm + "\">Christmas dinner for one</a><a class=\"btn alt\" href=\"../collections/christmas-leftovers-for-one/" + utm + "\">Christmas leftovers</a>\n" : "") +
+    "<a class=\"btn alt\" href=\"../books/" + utm + "\">The cookbooks: PDF, paperback and Kindle</a>\n<ul>\n" +
     ids.map(function (id) {
       var r = data.byId[id];
       return "<li><a href=\"../recipes/" + r.slug + "/" + utm + "\"><img src=\"../img/recipes/" + r.id + ".webp\" alt=\"\" width=\"96\" height=\"72\"><span><b>" + U.esc(r.title) + "</b><span>" + U.minutes(r) + " min · dinner for one</span></span></a></li>";

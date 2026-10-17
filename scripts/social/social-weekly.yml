@@ -3,13 +3,14 @@ name: Social autopilot
 
 on:
   schedule:
-    - cron: "0 6 * * 6"   # Saturdays at 06:00 UTC: makes next week's posts
+    - cron: "0 6 * * 6"   # Saturdays at 06:00 UTC: makes next week's posts, then any extras due
+    - cron: "0 6 * * 3"   # Wednesdays at 06:00 UTC: extras only (scripts/social/campaigns.js), as a second chance
   workflow_dispatch:
     inputs:
       mode:
-        description: "preview = make the posts only; publish = make and queue in Buffer; queue-existing = queue a week already made; check-buffer = read Buffer settings only"
+        description: "preview = make the posts only; publish = make and queue in Buffer; queue-existing = queue a week already made; check-buffer = read Buffer settings only; extras = only the dated extras due in the next 10 days"
         type: choice
-        options: [preview, publish, queue-existing, check-buffer]
+        options: [preview, publish, queue-existing, check-buffer, extras]
         default: preview
       week:
         description: "Monday of the week, YYYY-MM-DD (blank = next Monday)"
@@ -30,6 +31,7 @@ concurrency:
 
 jobs:
   social:
+    if: github.event.schedule != '0 6 * * 3' && inputs.mode != 'extras'
     runs-on: ubuntu-latest
     timeout-minutes: 45
     env:
@@ -38,6 +40,8 @@ jobs:
       SOCIAL_LAYOUT: ${{ inputs.layout || 'weekly' }}
       MEDIA_BASE: ${{ vars.SOCIAL_MEDIA_BASE || 'https://social-media.solo-supper.pages.dev' }}
       GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      SOCIAL_USE_VEO: ${{ vars.SOCIAL_USE_VEO }}
+      SOCIAL_AI_LABEL: ${{ vars.SOCIAL_AI_LABEL }}
       BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
       GH_TOKEN: ${{ github.token }}
     steps:
@@ -127,3 +131,57 @@ jobs:
           if [ "$RUN" = "preview" ]; then NOTE="**Preview only:** nothing has been queued. To queue these posts, run the Social autopilot workflow with mode queue-existing and week $WEEK."; else NOTE="**Queued in Buffer.** Edit or delete anything in the Buffer app before it goes out."; fi
           { echo "$NOTE"; echo; cat "media/$WEEK/issue.md"; } > /tmp/issue.md
           gh issue create --title "$TITLE" --body-file /tmp/issue.md
+
+  # The dated extra posts (cookbooks, Christmas) in scripts/social/campaigns.js:
+  # each is made and queued in Buffer in the 10 days before it is due, by the
+  # Saturday run and again on Wednesday, so a missed or failed run is picked up.
+  # Posts already queued are left alone.
+  extras:
+    needs: social
+    if: always() && (github.event_name == 'schedule' || inputs.mode == 'extras' || inputs.mode == 'publish')
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      PUBLISH: ${{ (inputs.mode == 'extras' || inputs.mode == 'publish' || vars.SOCIAL_AUTOPUBLISH == 'true') && 'yes' || 'no' }}
+      MEDIA_BASE: ${{ vars.SOCIAL_MEDIA_BASE || 'https://social-media.solo-supper.pages.dev' }}
+      BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Get the media branch
+        run: |
+          URL="https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          git clone --depth 1 --branch social-media "$URL" media
+      - name: Install tools
+        run: cd scripts/social && npm install --no-audit --no-fund && npx playwright install --with-deps chromium
+      - name: Make the extras due soon
+        run: |
+          node scripts/social/make-extras.js --out media --days 10
+          echo "Due: $(tr '\n' ' ' < media/extras-due.txt)"
+      - name: Save media (social-media branch)
+        run: |
+          cd media
+          git config user.name "Solo Supper autopilot"; git config user.email "hello@solosupper.co.uk"
+          git add -A -- . ':!extras-due.txt'
+          git diff --cached --quiet || (git commit -q -m "Extra posts" && git push -q origin HEAD:social-media)
+      - name: Queue in Buffer
+        if: env.PUBLISH == 'yes'
+        run: |
+          FAILED=0
+          while read -r F; do
+            [ -n "$F" ] || continue
+            node scripts/social/publish-week.js --media media --week "$F" || FAILED=1
+          done < media/extras-due.txt
+          exit $FAILED
+      - name: Save Buffer results
+        if: always() && env.PUBLISH == 'yes'
+        run: |
+          cd media
+          git config user.name "Solo Supper autopilot"; git config user.email "hello@solosupper.co.uk"
+          git add -A -- . ':!extras-due.txt'
+          git diff --cached --quiet || (git commit -q -m "Buffer results for extra posts" && git push -q origin HEAD:social-media)

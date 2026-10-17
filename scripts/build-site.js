@@ -1342,13 +1342,10 @@ LEGAL.forEach(function (l) {
 // The four cookbooks: on Amazon in paperback and Kindle, and as PDFs sold
 // here (Stripe) or included with Pro. Prices shown here must match the Stripe
 // prices set in Cloudflare (see functions/_shared/books.js).
-var BOOK_PDF_PRICE = "4.99", BOOK_BUNDLE_PRICE = "12.99";
-var BOOK_LIST = [
-  { id: "asia", name: "Asia", count: 112, from: "China, Japan, Korea, Thailand, Vietnam, India and beyond", paperback: "https://www.amazon.co.uk/dp/B0HMWXN8L8", kindle: "https://www.amazon.co.uk/dp/B0HMSS9DSS" },
-  { id: "mediterranean-middle-east", name: "Mediterranean & Middle East", count: 126, from: "Italy, Greece, Spain, Lebanon, Morocco, Iran and beyond", paperback: "", kindle: "" },
-  { id: "americas-africa", name: "Americas & Africa", count: 105, from: "Mexico, the Caribbean, the USA, Peru, Nigeria, South Africa and beyond", paperback: "", kindle: "" },
-  { id: "britain-europe", name: "Britain & Europe", count: 99, from: "Britain, Ireland, Scandinavia, Germany, Poland, Hungary and beyond", paperback: "", kindle: "" }
-];
+// The book list and prices live in scripts/books-data.js (shared with the social autopilot).
+var BOOKS_DATA = require("./books-data.js");
+var BOOK_PDF_PRICE = BOOKS_DATA.BOOK_PDF_PRICE, BOOK_BUNDLE_PRICE = BOOKS_DATA.BOOK_BUNDLE_PRICE;
+var BOOK_LIST = BOOKS_DATA.BOOK_LIST;
 // Until a book's Amazon links are in, its button searches Amazon for it.
 function amazonButtons(b) {
   // data-amazon lets assets/books.js count the click (a number per book, nothing about the person).

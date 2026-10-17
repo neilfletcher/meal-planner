@@ -27,6 +27,9 @@ function fonts() {
   ].join("");
   return FONTS;
 }
+function bookImg(name) {
+  return "data:image/webp;base64," + fs.readFileSync(path.join(U.ROOT, "img", "books", name + ".webp")).toString("base64");
+}
 function photo(id) {
   return "data:image/webp;base64," + fs.readFileSync(path.join(U.ROOT, "img", "recipes", id + ".webp")).toString("base64");
 }
@@ -92,7 +95,8 @@ function fmtG(k, v, packs) {
 
 async function open() {
   var chromium = require("playwright").chromium;
-  var browser = await chromium.launch();
+  // CHROMIUM_PATH: use an already-installed Chromium (local previews) instead of Playwright's own.
+  var browser = await chromium.launch(process.env.CHROMIUM_PATH ? { executablePath: process.env.CHROMIUM_PATH } : {});
   async function shot(html, w, h, file, transparent) {
     var page = await browser.newPage({ viewport: { width: w, height: h } });
     await page.setContent("<html><head><meta charset='utf-8'><style>" + fonts() + CSS + "body{width:" + w + "px;height:" + h + "px}" +
@@ -148,6 +152,58 @@ async function open() {
       files.push(await shot('<div class="pad night" style="height:100%;padding-top:170px"><div class="eyebrow" style="color:#F2B661">Plan the whole week</div><h1 style="font-size:86px">Dinners for one that share their packs.</h1>' +
         '<div class="sub" style="color:#CDD2CB">Solo Supper picks the week and adds up the shopping list, so the other half of everything gets used.</div><div class="cta">solosupper.co.uk</div></div>' +
         '<div class="brand" style="color:#F7F5F0">' + logo("#F7F5F0") + 'Solo Supper</div>', 1080, 1350, path.join(dir, pre + "-5.jpg")));
+      return files;
+    },
+
+    // ---------------- extras (campaigns.js): the cookbooks and Christmas
+    // Covers: one large, or the four side by side, slightly overlapped.
+    booksPin: function (v, file) {
+      var covers = v.books.length === 1 ? '<img src="' + bookImg(v.books[0].id + "-cover") + '" style="height:900px;border-radius:10px;box-shadow:0 24px 60px rgba(20,26,23,.28)">' :
+        v.books.map(function (b, i) { return '<img src="' + bookImg(b.id + "-cover") + '" style="flex:none;height:440px;border-radius:8px;box-shadow:0 18px 44px rgba(20,26,23,.3);margin-left:' + (i ? -50 : 0) + 'px;transform:rotate(' + [-4, -1.5, 1.5, 4][i] + 'deg)">'; }).join("");
+      return shot('<div class="pad" style="padding-top:70px"><div class="eyebrow">' + esc(v.eyebrow) + '</div><h1 style="font-size:' + (v.headline.length > 34 ? 72 : 84) + 'px">' + nb(v.headline) + "</h1></div>" +
+        '<div style="display:flex;justify-content:center;align-items:center;margin-top:' + (v.books.length === 1 ? 10 : 90) + 'px">' + covers + "</div>" +
+        (v.books.length === 1 ? "" : '<div class="pad" style="padding-top:90px"><div class="sub">' + esc(v.sub) + "</div></div>") +
+        '<div style="position:absolute;left:72px;right:72px;bottom:130px;background:#C2412A;color:#fff;border-radius:999px;padding:24px 34px;font-size:34px;font-weight:600;text-align:center">' + esc(v.cta) + "</div>" + BRAND, 1000, 1500, file);
+    },
+    booksCarousel: async function (v, dir, prefix) {
+      var files = [], first = v.books[0];
+      var covers = v.books.map(function (b, i) { return '<img src="' + bookImg(b.id + "-cover") + '" style="flex:none;height:' + (v.books.length === 1 ? 700 : 460) + 'px;border-radius:8px;box-shadow:0 18px 44px rgba(20,26,23,.3);margin-left:' + (i ? -45 : 0) + 'px;transform:rotate(' + (v.books.length === 1 ? 0 : [-4, -1.5, 1.5, 4][i]) + 'deg)">'; }).join("");
+      var n = 4;
+      files.push(await shot('<div class="pad" style="padding-top:80px"><div class="eyebrow">' + esc(v.eyebrow) + '</div><h1 style="font-size:' + (v.headline.length > 34 ? 76 : 88) + 'px">' + nb(v.headline) + "</h1></div>" +
+        '<div style="display:flex;justify-content:center;margin-top:' + (v.books.length === 1 ? 20 : 70) + 'px">' + covers + "</div>" + BRAND + '<div class="count">1/' + n + "</div>", 1080, 1350, path.join(dir, prefix + "-1.jpg")));
+      var page = function (k, eyebrow, h, sub, i) {
+        return shot('<div class="pad" style="padding-top:80px"><div class="eyebrow">' + eyebrow + '</div><h2 style="margin-top:14px">' + h + '</h2><div class="sub" style="margin-top:14px">' + sub + "</div></div>" +
+          '<div style="display:flex;justify-content:center;margin-top:30px"><img src="' + bookImg(first.id + "-p" + k) + '" style="height:760px;border-radius:10px;box-shadow:0 18px 44px rgba(20,26,23,.22)"></div>' +
+          BRAND + '<div class="count">' + i + "/" + n + "</div>", 1080, 1350, path.join(dir, prefix + "-" + i + ".jpg"));
+      };
+      files.push(await page(2, "Inside", "Planned in weeks", "Each week has its shopping list and what's left over, so the other half of the pack gets used.", 2));
+      files.push(await page(4, "Inside", "Every recipe measured for one", "No dividing by four. Every dish photographed.", 3));
+      files.push(await shot('<div class="pad night" style="height:100%;padding-top:200px"><div class="eyebrow" style="color:#F2B661">' + (v.amazon ? "On Amazon" : "Download today") + '</div>' +
+        '<h1 style="font-size:84px">' + esc(v.cta) + '.</h1><div class="sub" style="color:#CDD2CB">' + esc(v.amazon ? "Search Solo Supper on Amazon, or follow the link in our bio." : "Read on your phone or tablet, or print the pages you want. The recipes stay free on the site.") + '</div><div class="cta">' + (v.amazon ? "Link in bio" : "solosupper.co.uk/books") + "</div></div>" +
+        '<div class="brand" style="color:#F7F5F0">' + logo("#F7F5F0") + "Solo Supper</div>", 1080, 1350, path.join(dir, prefix + "-4.jpg")));
+      return files;
+    },
+    xmasPin: function (v, file) {
+      if (v.single) return shot('<img class="photo" style="height:900px" src="' + photo(v.single.id) + '"><div class="pad" style="padding-top:56px">' +
+        '<div class="eyebrow">' + esc(v.eyebrow) + " · " + mins(v.single) + '</div><h1 style="font-size:' + (v.single.title.length > 42 ? 70 : 88) + 'px">' + titleHtml(v.single.title) + "</h1>" +
+        '<div class="sub" style="font-size:32px">Full recipe and shopping list at solosupper.co.uk</div></div>' + BRAND, 1000, 1500, file);
+      var four = v.recipes.slice(0, 4);
+      return shot('<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;height:860px">' + four.map(function (r) { return '<img src="' + photo(r.id) + '" style="width:100%;height:426px;object-fit:cover">'; }).join("") + "</div>" +
+        '<div class="pad" style="padding-top:50px"><div class="eyebrow">' + esc(v.eyebrow) + '</div><h1 style="font-size:84px">' + nb(v.headline) + '</h1><div class="sub" style="font-size:32px">' + esc(v.sub) + "</div></div>" + BRAND, 1000, 1500, file);
+    },
+    xmasCarousel: async function (v, dir, prefix) {
+      var files = [], rs = v.recipes, n = rs.length + 2;
+      var four = rs.slice(0, 4);
+      files.push(await shot('<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;height:760px">' + four.map(function (r) { return '<img src="' + photo(r.id) + '" style="width:100%;height:376px;object-fit:cover">'; }).join("") + "</div>" +
+        '<div class="pad" style="padding-top:44px"><div class="eyebrow">' + esc(v.eyebrow) + '</div><h1 style="font-size:80px">' + nb(v.headline) + "</h1></div>" + '<div class="count">1/' + n + "</div>", 1080, 1350, path.join(dir, prefix + "-1.jpg")));
+      for (var i = 0; i < rs.length; i++) {
+        var r = rs[i];
+        files.push(await shot('<img class="photo" style="height:860px" src="' + photo(r.id) + '"><div class="pad" style="padding-top:44px"><div class="eyebrow">For one · ' + mins(r) +
+          '</div><h2 style="margin-top:12px;font-size:' + (r.title.length > 50 ? 56 : 66) + 'px">' + titleHtml(r.title) + "</h2></div>" + BRAND + '<div class="count">' + (i + 2) + "/" + n + "</div>", 1080, 1350, path.join(dir, prefix + "-" + (i + 2) + ".jpg")));
+      }
+      files.push(await shot('<div class="pad night" style="height:100%;padding-top:200px"><div class="eyebrow" style="color:#F2B661">Every recipe free</div><h1 style="font-size:84px">' + nb(v.headline) + '.</h1>' +
+        '<div class="sub" style="color:#CDD2CB">' + esc(v.sub) + '</div><div class="cta">solosupper.co.uk</div></div>' +
+        '<div class="brand" style="color:#F7F5F0">' + logo("#F7F5F0") + "Solo Supper</div>", 1080, 1350, path.join(dir, prefix + "-" + n + ".jpg")));
       return files;
     },
 

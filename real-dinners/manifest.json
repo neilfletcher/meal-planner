@@ -1,0 +1,108 @@
+{
+  "week": "real-dinners",
+  "mediaBase": "https://social-media.solo-supper.pages.dev/real-dinners/",
+  "posts": [
+    {
+      "key": "real-tacos-pin",
+      "channel": "pinterest",
+      "kind": "pin",
+      "day": "2026-10-18",
+      "dueAt": "2026-10-18T11:30:00.000Z",
+      "title": "Beef Tacos with Pico de Gallo for One in 15 Minutes",
+      "text": "A real dinner, cooked by a friend from the Solo Supper recipe: spiced beef mince, pico de gallo and cheddar in soft tortillas or crunchy taco shells, written for one person and ready in 15 minutes. Full recipe and shopping list at solosupper.co.uk.",
+      "link": "https://solosupper.co.uk/recipes/beef-tacos-with-pico-de-gallo/?utm_source=pinterest&utm_medium=social&utm_campaign=real-dinners&utm_content=real-tacos-pin",
+      "media": [
+        "tacos-pin.jpg"
+      ],
+      "cover": null,
+      "recipe": "d32",
+      "recipes": null
+    },
+    {
+      "key": "real-tacos-ig",
+      "channel": "instagram",
+      "kind": "carousel",
+      "day": "2026-10-18",
+      "dueAt": "2026-10-18T17:30:00.000Z",
+      "title": "Beef Tacos with Pico de Gallo",
+      "text": "A friend cooked our Beef Tacos with Pico de Gallo and sent us this. He swapped the crunchy shells for soft flour tortillas, and it works just as well, so the recipe now gives you both.\n\nFifteen minutes, written for one person. Swipe to see how it compares with our recipe photo, and for the recipe in three steps.\n\nOur recipe photos are made with AI. These are the real thing.\n\nFull recipe and shopping list: link in bio, or solosupper.co.uk\n\n#dinnerforone #cookingforone #easydinner #mealsforone #solosupper",
+      "link": "https://solosupper.co.uk/recipes/beef-tacos-with-pico-de-gallo/?utm_source=instagram&utm_medium=social&utm_campaign=real-dinners&utm_content=real-tacos-ig",
+      "media": [
+        "tacos-1-real.jpg",
+        "tacos-2-compare.jpg",
+        "tacos-3-recipe.jpg"
+      ],
+      "cover": null,
+      "recipe": "d32",
+      "recipes": null
+    },
+    {
+      "key": "real-chicken-pin",
+      "channel": "pinterest",
+      "kind": "pin",
+      "day": "2026-10-21",
+      "dueAt": "2026-10-21T11:30:00.000Z",
+      "title": "Cajun Chicken with Charred Corn Salsa for One in 18 Minutes",
+      "text": "A real dinner, cooked by a friend from the Solo Supper recipe: Cajun-spiced chicken breast with charred sweetcorn, tomato salsa and lime, written for one person and ready in 18 minutes. Full recipe and shopping list at solosupper.co.uk.",
+      "link": "https://solosupper.co.uk/recipes/cajun-chicken-with-charred-corn-salsa/?utm_source=pinterest&utm_medium=social&utm_campaign=real-dinners&utm_content=real-chicken-pin",
+      "media": [
+        "chicken-pin.jpg"
+      ],
+      "cover": null,
+      "recipe": "d6",
+      "recipes": null
+    },
+    {
+      "key": "real-chicken-ig",
+      "channel": "instagram",
+      "kind": "carousel",
+      "day": "2026-10-21",
+      "dueAt": "2026-10-21T17:30:00.000Z",
+      "title": "Cajun Chicken with Charred Corn Salsa",
+      "text": "Cooked by a friend: Cajun Chicken with Charred Corn Salsa. One chicken breast, a tin of sweetcorn charred in a dry pan, fresh tomato salsa and lime. Eighteen minutes, written for one person.\n\nSwipe to see how it compares with our recipe photo, and for the recipe in three steps.\n\nOur recipe photos are made with AI. These are the real thing.\n\nFull recipe and shopping list: link in bio, or solosupper.co.uk\n\n#dinnerforone #cookingforone #easydinner #mealsforone #solosupper",
+      "link": "https://solosupper.co.uk/recipes/cajun-chicken-with-charred-corn-salsa/?utm_source=instagram&utm_medium=social&utm_campaign=real-dinners&utm_content=real-chicken-ig",
+      "media": [
+        "chicken-1-real.jpg",
+        "chicken-2-compare.jpg",
+        "chicken-3-recipe.jpg"
+      ],
+      "cover": null,
+      "recipe": "d6",
+      "recipes": null
+    },
+    {
+      "key": "real-salmon-pin",
+      "channel": "pinterest",
+      "kind": "pin",
+      "day": "2026-10-25",
+      "dueAt": "2026-10-25T12:30:00.000Z",
+      "title": "Harissa Salmon with Lemon Couscous for One in 17 Minutes",
+      "text": "A real dinner, cooked by a friend from the Solo Supper recipe: harissa-roasted salmon on lemon and parsley couscous, written for one person and ready in 17 minutes. Full recipe and shopping list at solosupper.co.uk.",
+      "link": "https://solosupper.co.uk/recipes/harissa-salmon-with-lemon-couscous/?utm_source=pinterest&utm_medium=social&utm_campaign=real-dinners&utm_content=real-salmon-pin",
+      "media": [
+        "salmon-pin.jpg"
+      ],
+      "cover": null,
+      "recipe": "d2",
+      "recipes": null
+    },
+    {
+      "key": "real-salmon-ig",
+      "channel": "instagram",
+      "kind": "carousel",
+      "day": "2026-10-25",
+      "dueAt": "2026-10-25T18:30:00.000Z",
+      "title": "Harissa Salmon with Lemon Couscous",
+      "text": "Cooked by a friend: Harissa Salmon with Lemon Couscous. One salmon fillet rubbed with harissa and roasted, on couscous with lemon and parsley. Seventeen minutes, written for one person.\n\nSwipe to see how it compares with our recipe photo, and for the recipe in three steps.\n\nOur recipe photos are made with AI. These are the real thing.\n\nFull recipe and shopping list: link in bio, or solosupper.co.uk\n\n#dinnerforone #cookingforone #easydinner #mealsforone #solosupper",
+      "link": "https://solosupper.co.uk/recipes/harissa-salmon-with-lemon-couscous/?utm_source=instagram&utm_medium=social&utm_campaign=real-dinners&utm_content=real-salmon-ig",
+      "media": [
+        "salmon-1-real.jpg",
+        "salmon-2-compare.jpg",
+        "salmon-3-recipe.jpg"
+      ],
+      "cover": null,
+      "recipe": "d2",
+      "recipes": null
+    }
+  ]
+}
